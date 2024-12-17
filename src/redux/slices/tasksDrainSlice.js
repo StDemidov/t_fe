@@ -80,7 +80,6 @@ export const deleteTask = createAsyncThunk(
   'tasksDrain/deleteTask',
   async ({ data, url }, thunkAPI) => {
     try {
-      console.log(data);
       const res = await axios.delete(url, { data: data });
       thunkAPI.dispatch(setNotification('Задача успешно удалена!'));
       return res.data;
@@ -94,7 +93,6 @@ export const goLiveTask = createAsyncThunk(
   'tasksDrain/goLiveTask',
   async ({ data, url }, thunkAPI) => {
     try {
-      console.log(data);
       const res = await axios.post(url, data);
       thunkAPI.dispatch(setNotification('Задача запущена!'));
       return res.data;
@@ -108,7 +106,6 @@ export const stopTask = createAsyncThunk(
   'tasksDrain/stopTask',
   async ({ data, url }, thunkAPI) => {
     try {
-      console.log(data);
       const res = await axios.post(url, data);
       thunkAPI.dispatch(setNotification('Задача остановлена!'));
       return res.data;
@@ -122,7 +119,7 @@ export const setTaskToSkus = createAsyncThunk(
   'tasksDrain/setTaskToSkus',
   async ({ data, url }, thunkAPI) => {
     try {
-      console.log(data);
+      x;
       const res = await axios.post(url, data);
       return res.data;
     } catch (error) {

@@ -121,7 +121,6 @@ const TaskEditDrain = () => {
         };
       }
 
-      console.log(taskData.task.is_active);
       if (taskData.task.is_active) {
         dispatch(
           editTaskDrain({
