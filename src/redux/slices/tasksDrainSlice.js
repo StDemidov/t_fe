@@ -119,7 +119,6 @@ export const setTaskToSkus = createAsyncThunk(
   'tasksDrain/setTaskToSkus',
   async ({ data, url }, thunkAPI) => {
     try {
-      x;
       const res = await axios.post(url, data);
       return res.data;
     } catch (error) {
