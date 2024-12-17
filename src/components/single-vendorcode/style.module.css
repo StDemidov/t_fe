@@ -1,0 +1,320 @@
+.sectionClass {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 30px;
+  background-color: #ffffff;
+  margin-bottom: 10px;
+}
+
+.vcCard {
+  display: flex;
+  flex-direction: row;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 0 8px 3px rgba(0, 0, 0, 0.1);
+  max-width: 100%;
+  width: 90%;
+  overflow: hidden;
+  height: 30%;
+}
+
+.vcBarcodes {
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 0 8px 3px rgba(0, 0, 0, 0.1);
+  max-width: 100%;
+  width: 90%;
+  overflow: hidden;
+  height: 30%;
+}
+
+.vcImage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  width: 30%;
+  max-width: 300px;
+  height: 100%;
+}
+
+.vcPhoto {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 0 8px 3px rgba(0, 0, 0, 0.1);
+}
+
+.vcInfoContainer {
+  display: flex;
+  padding: 20px;
+  justify-content: space-between;
+  box-sizing: border-box;
+  flex-wrap: wrap; /* Разрешаем перенос элементов на следующую строку */
+  gap: 10px; /* Задаем расстояние между прямоугольниками */
+}
+
+.vcName {
+  font-family: 'BebasNeue', sans-serif;
+  text-transform: uppercase;
+  font-size: 20px;
+  color: #747474;
+  font-weight: bold;
+  box-shadow: 0 0 3px 1px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+
+.vcInfo {
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 15px;
+  text-align: center;
+  min-width: 100px;
+  margin-left: 10px;
+  font-family: 'BebasNeue', sans-serif;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.vcInfoLabel {
+  font-size: 14px;
+  color: #888;
+  margin-bottom: 5px;
+}
+
+.vcInfoItem {
+  font-size: 18px;
+  font-weight: bold;
+  color: #8254ff;
+}
+
+.vcChart {
+  padding: 20px;
+  padding-top: 0;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.vcInfoBlock {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  border-left: 1px solid #ddd;
+}
+
+.headerRow {
+  margin: 20px 20px 10px 20px;
+  display: flex;
+  flex-direction: row;
+  font-weight: bold;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  box-shadow: 0 0 3px 1px rgba(0, 0, 0, 0.1);
+  color: #8254ff;
+  font-family: 'BebasNeue', sans-serif;
+  text-transform: uppercase;
+}
+
+.links {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+  width: 50px;
+  height: 30px;
+}
+
+.linkA {
+  text-decoration: none;
+  color: #8254ff;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  box-shadow: 0 0 3px 1px rgba(0, 0, 0, 0.1);
+}
+
+.linkMP {
+  margin-left: 10px;
+}
+
+.links:hover {
+  cursor: pointer;
+}
+
+.headerCell {
+  padding: 15px;
+  text-align: center;
+  width: 17%;
+  min-width: 100px;
+}
+
+.tblContent {
+  display: flex;
+  flex-direction: column;
+  border-radius: 8px;
+  background-color: #fefefe;
+  color: #8f8f8f;
+  margin: 0px 20px 20px 20px;
+  box-shadow: 0 0 3px 1px rgba(0, 0, 0, 0.1);
+  font-family: 'BebasNeue', sans-serif;
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.sizeCell {
+  color: #8254ff;
+  font-weight: bold;
+}
+
+.barcodeRow {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.barcodeCell {
+  padding: 5px;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  width: 17%;
+  vertical-align: center;
+  min-width: 100px;
+}
+
+.barcodeRow:not(:last-child) {
+  border-bottom: 1px solid #d6d6d6;
+}
+
+.vcCategory {
+  display: flex;
+  flex-direction: row;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 0 8px 3px rgba(0, 0, 0, 0.1);
+  max-width: 100%;
+  width: 90%;
+  overflow: hidden;
+  height: 100%;
+}
+
+.chartCategory {
+  width: 50%;
+  margin: 20px;
+}
+
+.noImage {
+  width: 100%;
+  height: 300px;
+  font-size: 250px;
+  color: #f5f2f2;
+  background: #e3e2e2;
+  border-radius: 8px;
+}
+
+.dateBlock {
+  display: flex;
+  justify-content: center;
+}
+
+.editDateButton {
+  margin-left: 5px;
+  height: 20px;
+  color: gray;
+}
+
+.editDateButton:hover {
+  cursor: pointer;
+  color: rgb(95, 95, 95);
+}
+
+.dateInput {
+  text-align: center;
+  width: 85px;
+}
+
+.dateChangeBlock {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.crossButton {
+  color: red;
+  font-size: 15px;
+  margin-left: 10px;
+}
+
+.crossButton:hover {
+  cursor: pointer;
+  color: rgb(205, 5, 5);
+}
+
+.datesFilterTitle {
+  color: gray;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  margin-top: 10px;
+  margin-left: 30px;
+  font-family: 'BebasNeue', sans-serif;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.summary {
+  font-size: 10px;
+  margin-top: 2px;
+}
+
+.abcCategory {
+  display: flex;
+  flex-direction: row;
+  margin: 20px 0 10px 0;
+  font-family: 'BebasNeue', sans-serif;
+  text-transform: uppercase;
+  font-size: 20px;
+  color: #747474;
+  font-weight: bold;
+  box-shadow: 0 0 3px 1px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  border-radius: 10px;
+  align-items: center;
+}
+
+.abcCatBlock {
+  color: white;
+  background-color: Black;
+  padding: 5px;
+  margin-left: 5px;
+  border-radius: 5px;
+}
+
+.aaaCat {
+  background-color: green;
+}
+
+.bCat {
+  background-color: rgb(194, 127, 1);
+}
+
+.cCat {
+  background-color: rgb(192, 4, 4);
+}
+
+.gCat {
+  background-color: rgb(99, 28, 28);
+}
+
+abbr {
+  cursor: help;
+}

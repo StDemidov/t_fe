@@ -1,0 +1,74 @@
+.navMenu {
+  margin: 0px;
+  background: #f9f9f9;
+  padding: 5px;
+  .menuItems {
+    list-style: none;
+    display: flex;
+
+    li {
+      margin-left: 30px;
+      margin-top: 20px;
+      margin-bottom: 20px;
+
+      .navLink {
+        text-decoration: none;
+        font-family: 'BebasNeue', sans-serif;
+        color: #8f8f8f;
+        font-size: 20px;
+        font-weight: 500;
+        transition: all 0.5s ease-in-out;
+        position: relative;
+        text-transform: uppercase;
+
+        .activeLink {
+          color: #8254ff;
+        }
+
+        &::before {
+          content: attr(content);
+          transition: 0.5s;
+          color: #8254ff;
+          position: absolute;
+          top: 0;
+          bottom: 0;
+          left: 0;
+          right: 0;
+          width: 0;
+          overflow: hidden;
+        }
+
+        &:hover {
+          &::before {
+            width: 100%;
+            transition: all 0.5s ease-in-out;
+          }
+        }
+      }
+    }
+  }
+}
+
+.logoutBlock {
+  width: 100%;
+  display: flex;
+  justify-content: end;
+  margin-right: 30px;
+}
+
+.logoutButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border: none;
+  background-color: transparent;
+  border-radius: 50%;
+}
+
+.logoutButton:hover {
+  cursor: pointer;
+  color: white;
+  background-color: #8254ff;
+}

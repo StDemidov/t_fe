@@ -1,0 +1,95 @@
+.dropdown {
+  margin-right: 10px;
+  position: relative;
+  display: block;
+  width: 160px;
+  z-index: 1000;
+  font-family: 'BebasNeue', sans-serif;
+  text-transform: uppercase;
+  /* width */
+  ::-webkit-scrollbar {
+    width: 0px;
+    height: 0px;
+  }
+}
+
+.dropdownToggle {
+  font-family: 'BebasNeue', sans-serif;
+  height: 30px;
+  width: 100%;
+  padding: 10px;
+  background-color: white;
+  color: #8254ff;
+  text-transform: uppercase;
+  border: none;
+  border-radius: 15px;
+  cursor: pointer;
+  text-align: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.3); /* Легкая черная тень */
+  transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.dropdownToggle .arrow {
+  font-size: 10px;
+  transition: transform 0.3s ease;
+}
+
+.drowpdown .circle {
+  font-size: 16px;
+  width: 12px;
+  height: 12px;
+  display: inline-block;
+  transition: background-color 0.3s ease;
+}
+
+.dropdownToggle.open {
+  background-color: #8254ff;
+  color: white; /* Белый цвет текста */
+}
+
+.dropdownToggle.open .arrow {
+  transform: rotate(90deg);
+}
+
+.dropdownMenu {
+  overflow-y: auto;
+  text-align: left;
+  margin-top: 5px;
+  height: 100px;
+  position: absolute;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 15px;
+  box-shadow: 2px 8px 16px rgba(0, 0, 0, 0.2);
+  width: 138px;
+  padding-top: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+  z-index: 1;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.dropdownMenu.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.dropdownItem {
+  display: block;
+  padding: 5px 0;
+  font-family: 'BebasNeue', sans-serif;
+  cursor: pointer;
+  background-color: white;
+  border: none;
+}
+
+.dropdownItem:hover {
+  color: #8254ff; /* Фиолетовый цвет текста */
+}

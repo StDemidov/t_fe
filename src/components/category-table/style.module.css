@@ -1,0 +1,118 @@
+.tableWrapper {
+  width: 100%;
+  overflow-x: auto;
+  height: 68vh;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 2px;
+  height: 2px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  border-radius: 5px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #623fc0;
+  border-radius: 5px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: green;
+}
+
+@media (max-height: 600px) {
+  .tableWrapper {
+    height: 25vh;
+  }
+}
+
+@media (max-height: 800px) {
+  .tableWrapper {
+    height: 55vh;
+  }
+}
+
+.table {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+@media (max-width: 1250px) {
+  .table {
+    width: max-content;
+  }
+}
+
+.row {
+  display: flex;
+  margin-bottom: 7px;
+  height: 80px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border: #613fc029 solid 1px;
+}
+
+.rowHover:hover {
+  background-color: rgba(235, 235, 235, 0.716);
+  cursor: pointer;
+}
+
+.cell {
+  width: 15%;
+  border-right: 1px solid #ddd;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 150px; /* Минимальная ширина ячейки */
+  z-index: 1;
+  font-family: 'BebasNeue', sans-serif;
+  text-transform: uppercase;
+}
+
+.cell .highlight {
+  background-color: #ff0;
+}
+
+.cell:first-child {
+  box-shadow: none;
+}
+
+.tableHeader {
+  height: 50px;
+  background-color: #f9f9f9;
+  font-weight: bold;
+  position: sticky;
+  color: #623fc0;
+  border: #613fc029 solid 1px;
+  top: 0;
+  z-index: 5; /* Заголовок выше остальных элементов */
+}
+
+.sKoef {
+  min-width: 200px;
+}
+
+.category {
+  min-width: 200px;
+}
+
+.koef {
+  width: 37px;
+  height: 28px;
+  background-color: rgba(51, 126, 51, 0.736);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  color: white;
+}
+
+.koefBad {
+  background-color: rgb(223, 82, 82);
+}

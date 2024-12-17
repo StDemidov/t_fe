@@ -1,0 +1,86 @@
+.datePicker {
+  height: 30px;
+  width: 170px;
+  font-family: 'BebasNeue', sans-serif;
+  text-transform: uppercase;
+  text-align: center;
+  border-radius: 15px;
+  border: none;
+  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.3); /* Легкая черная тень */
+  transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: row;
+  color: #8254ff;
+  margin-right: 10px;
+  position: relative;
+  z-index: 1000;
+}
+
+.periodsBlock {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  /* flex-direction: column; */
+}
+
+.periodButton {
+  font-family: 'BebasNeue', sans-serif;
+  text-transform: uppercase;
+  padding: 5px;
+  border-radius: 15px;
+  border: none;
+  color: #8254ff;
+  background-color: white;
+  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.3); /* Легкая черная тень */
+  transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.periodButton:hover {
+  background-color: #8254ff;
+  color: white;
+}
+
+.buttonAccept {
+  font-family: 'BebasNeue', sans-serif;
+  text-transform: uppercase;
+  padding: 5px;
+  border-radius: 15px;
+  border: none;
+  color: #8254ff;
+  background-color: white;
+  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.3); /* Легкая черная тень */
+  transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.acceptDiv:hover {
+  button {
+    background-color: #8254ff;
+    color: white;
+  }
+}
+
+.month {
+  font-family: 'BebasNeue', sans-serif;
+  text-transform: uppercase;
+}
+
+.monthHeader {
+  padding: 0 10px 0 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.monthButton {
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  border: none;
+  background-color: white;
+}
+
+.monthButton:hover {
+  background-color: #8254ff;
+  color: white;
+}

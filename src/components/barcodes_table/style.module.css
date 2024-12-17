@@ -1,0 +1,138 @@
+.tableWrapper {
+  width: 100%;
+  overflow-x: auto;
+  height: 68vh;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 2px;
+  height: 2px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  border-radius: 5px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #623fc0;
+  border-radius: 5px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: green;
+}
+
+@media (max-height: 600px) {
+  .tableWrapper {
+    height: 25vh;
+  }
+}
+
+@media (max-height: 800px) {
+  .tableWrapper {
+    height: 55vh;
+  }
+}
+
+.table {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+@media (max-width: 1250px) {
+  .table {
+    width: max-content;
+  }
+}
+
+.row {
+  display: flex;
+  margin-bottom: 7px;
+  min-height: 320px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border: #613fc029 solid 1px;
+  align-items: center;
+}
+
+.imageCell {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 246px;
+  z-index: 1;
+  font-family: 'BebasNeue', sans-serif;
+  text-transform: uppercase;
+}
+
+.imageCell img {
+  width: 90%;
+  height: 90%;
+  object-fit: cover;
+  box-shadow: 0 0px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 20px;
+}
+
+.cell {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 15%;
+  min-width: 150px; /* Минимальная ширина ячейки */
+  z-index: 1;
+  font-family: 'BebasNeue', sans-serif;
+  text-transform: uppercase;
+  min-height: 80px;
+}
+
+.cell:first-child {
+  box-shadow: none;
+}
+
+.tableHeader {
+  height: 50px;
+  background-color: #f9f9f9;
+  font-weight: bold;
+  position: sticky;
+  color: #623fc0;
+  border: #613fc029 solid 1px;
+  top: 0;
+  z-index: 5; /* Заголовок выше остальных элементов */
+  display: flex;
+  margin-bottom: 7px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border: #613fc029 solid 1px;
+  align-items: center;
+}
+
+.vcCell:hover {
+  color: #fff;
+  background-color: #8254ff60;
+  cursor: pointer;
+}
+
+.summary {
+  font-size: 10px;
+  margin-top: 2px;
+}
+
+.highCell {
+  width: 15%;
+  min-width: 150px;
+  display: flex;
+  flex-direction: column;
+  min-height: 322px;
+  border-right: 1px solid #ddd;
+  align-items: center;
+  justify-content: center;
+  border-left: 1px solid #ddd;
+}
+
+.row > .highCell ~ .highCell {
+  border-left: none;
+}

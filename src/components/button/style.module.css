@@ -1,0 +1,13 @@
+.buttonStyle {
+  background: #8254ff;
+  border: none;
+  text-transform: uppercase;
+  padding: 10px 20px 10px 20px;
+  border-radius: 20px;
+  color: #ffffff;
+}
+
+.buttonStyle:hover {
+  background: #9b7af4;
+  color: #fff;
+}

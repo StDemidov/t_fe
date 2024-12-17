@@ -1,0 +1,44 @@
+.App {
+  text-align: center;
+}
+
+@import url('https://fonts.cdnfonts.com/css/sofia-sans-extra-condensed');
+
+@font-face {
+  font-weight: 400; /* Соответствует значению normal */
+  font-family: 'BebasNeue';
+  src: url('fonts/BebasNeue.ttf');
+}
+
+section {
+  margin-right: 50px;
+  margin-left: 50px;
+}
+
+h1 {
+  font-size: 30px;
+  color: #8f8f8f;
+  text-transform: uppercase;
+  font-weight: 400;
+  text-align: left;
+  margin-bottom: 35px;
+  margin-top: 35px;
+  font-family: 'BebasNeue', sans-serif;
+}
+
+.spinner {
+  animation: spinner 1s infinite linear;
+  padding: 100px;
+  color: #8254ff;
+  font-size: 50px;
+}
+
+@keyframes spinner {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}

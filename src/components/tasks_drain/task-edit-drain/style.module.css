@@ -1,0 +1,241 @@
+.formContainer {
+  width: 60%;
+  background: linear-gradient(#f5f2f2, #f5f2f2) padding-box,
+    linear-gradient(145deg, transparent 35%, #e81cff, #40c9ff) border-box;
+  border: 2px solid transparent;
+  font-size: 16px;
+  font-family: inherit;
+  color: rgb(0, 0, 0);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  box-sizing: border-box;
+  border-radius: 16px;
+  align-items: center;
+  padding: 30px 50px 30px 50px;
+  text-transform: uppercase;
+  font-family: 'BebasNeue', sans-serif;
+  margin-bottom: 20px;
+}
+
+.formContainer ul {
+  list-style-type: none;
+}
+
+.formContainer label {
+  font-size: 12px;
+}
+
+.formContainer form {
+  width: 100%;
+}
+
+.formContainer li {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+}
+.formContainer input {
+  margin-top: 5px;
+  height: 30px;
+  border: 1px solid rgb(43, 43, 43);
+  border-radius: 10px;
+  text-align: center;
+}
+
+.settingsContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.pricesContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.debContainer {
+  display: flex;
+  flex-direction: column;
+  width: 40%;
+}
+
+.nameInput {
+  align-content: center;
+  align-items: center;
+}
+
+.nameInput input {
+  width: 50%;
+}
+
+.skuGrid {
+  display: flex; /* Включаем Flexbox */
+  flex-wrap: wrap; /* Разрешаем перенос элементов на следующую строку */
+  gap: 10px; /* Задаем расстояние между прямоугольниками */
+  justify-content: space-between; /* Размещаем элементы по всей ширине контейнера */
+}
+
+.singleSkuChosen,
+.singleSku {
+  display: flex;
+  flex-direction: row;
+
+  height: 30px; /* Уменьшаем высоту */
+  flex-grow: 1;
+  min-width: 50px; /* Минимальная ширина прямоугольника */
+  max-width: 150px; /* Максимальная ширина прямоугольника */
+  background-color: white;
+  line-height: normal; /* Убираем фиксированное вертикальное выравнивание */
+  padding: 10px; /* Добавляем внутренние отступы для текста */
+  box-sizing: border-box; /* Включаем отступы в размеры элемента */
+  overflow: hidden; /* Скрываем текст, выходящий за пределы блока */
+  text-overflow: ellipsis; /* Если текст не помещается, добавляем многоточие */
+  white-space: nowrap;
+  font-size: 10px;
+  border-radius: 5px;
+  align-items: center;
+  border: 0.5px solid black;
+  cursor: pointer;
+  justify-content: flex-start;
+}
+
+.singleSkuChosen img,
+.singleSku img {
+  position: relative;
+  right: 10px;
+  margin-right: 10px;
+  width: 20px;
+  height: 30px;
+  border-right: 1px #f5f2f2 solid;
+}
+
+.singleSkuChosen {
+  background-color: #623fc0;
+  color: white;
+}
+.singleSkuChosen div,
+.singleSku div {
+  position: relative;
+  right: 10px;
+  font-size: 8px;
+}
+
+.infoText {
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+input[type='number']::-webkit-outer-spin-button,
+input[type='number']::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.mainContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.infoContainer {
+  display: flex;
+  flex-direction: column;
+  width: 35%;
+}
+
+.buttonAccept {
+  width: 100%;
+  height: 100px;
+  background-color: #4158d0;
+  background-image: linear-gradient(
+    43deg,
+    #623fc0 0%,
+    #c850c0 46%,
+    #ffcc70 100%
+  );
+  border-radius: 8px;
+  color: white;
+  overflow: hidden;
+  transform-style: preserve-3d;
+  perspective: 1000px;
+  transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+  cursor: pointer;
+  border: none;
+  text-transform: uppercase;
+  font-family: 'BebasNeue', sans-serif;
+  font-size: 35px;
+}
+
+.buttonAccept:hover {
+  transform: rotateY(10deg) rotateX(10deg) scale(1.05);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  .buttonPara {
+    display: none;
+  }
+}
+.buttonAccept:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.1));
+  transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+  z-index: 1;
+}
+.buttonAccept:hover:before {
+  transform: translateX(-100%);
+}
+
+.buttonAccept:after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.1));
+  transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+  z-index: 1;
+}
+.buttonAccept:hover:after {
+  transform: translateX(100%);
+}
+
+.buttonPara {
+  padding: 0 10px 0 10px;
+  color: inherit;
+  opacity: 0.8;
+  font-size: 14px;
+  font-family: 'BebasNeue', sans-serif;
+}
+
+.description {
+  padding: 10px;
+  background: linear-gradient(#f5f2f2, #f5f2f2);
+  border-radius: 10px;
+  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.3); /* Легкая черная тень */
+  margin-top: 30px;
+  font-size: 10px;
+  text-align: left;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  color: #00000083;
+}
+
+.categoryFilter {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.textFilter {
+  height: 40px;
+  margin-bottom: 20px;
+}
+
+.highlight {
+  background-color: #ff0;
+}

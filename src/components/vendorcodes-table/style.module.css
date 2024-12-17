@@ -1,0 +1,173 @@
+.tableWrapper {
+  width: 100%;
+  overflow-x: auto;
+  height: 68vh;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 2px;
+  height: 2px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  border-radius: 5px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #623fc0;
+  border-radius: 5px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: green;
+}
+
+@media (max-height: 600px) {
+  .tableWrapper {
+    height: 25vh;
+  }
+}
+
+@media (max-height: 800px) {
+  .tableWrapper {
+    height: 55vh;
+  }
+}
+
+.table {
+  display: flex;
+  flex-direction: column;
+  width: max-content; /* Ширина таблицы по контенту */
+}
+
+.row {
+  display: flex;
+  margin-bottom: 7px;
+  height: 80px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border: #613fc029 solid 1px;
+}
+
+.imageBlock {
+  display: flex;
+  height: 100%;
+  border-radius: 10px 0 0 10px;
+  box-shadow: 3px 2px 4px rgba(0, 0, 0, 0.1);
+  border: #613fc029 solid 1px;
+  width: 100%;
+}
+
+.abc {
+  justify-content: center;
+  height: 80px;
+  width: 17px;
+}
+
+.abcText {
+  writing-mode: vertical-lr; /* Альтернативный способ поворота текста */
+  transform: rotate(180deg); /* Поворот текста на 90 градусов */
+  height: 80px; /* Минимальная высота ячейки */
+  white-space: nowrap; /* Отключение переноса текста */
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  font-size: 12px;
+  padding-right: 3px;
+  font-weight: 100;
+}
+
+.imageSmall {
+  /* vertical-align: center; */
+  overflow: hidden;
+  height: 100%;
+  width: 55px;
+  transition: transform 0.3s ease-in-out;
+  transform-origin: top left;
+  z-index: 1000;
+}
+
+.zoomImage {
+  width: 100%;
+  height: 80px;
+  object-fit: cover; /* Масштабирование изображения без искажения */
+}
+
+.cell {
+  border-right: 1px solid #ddd;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 150px; /* Минимальная ширина ячейки */
+  z-index: 1;
+  font-family: 'BebasNeue', sans-serif;
+  text-transform: uppercase;
+}
+
+@import url('https://fonts.cdnfonts.com/css/sofia-sans-condensed');
+.vcCell {
+  font-size: 10px;
+  font-weight: 800;
+}
+
+.vcCell .highlight {
+  background-color: #ff0;
+}
+
+.fixedColumn {
+  background-color: #f9f9f9;
+  position: sticky;
+  left: 0;
+  z-index: 3;
+  min-width: 79px; /* Выделение границы фиксированной колонки */
+  border-radius: 10px 0px 0px 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.cell:first-child {
+  box-shadow: none;
+}
+
+.tableHeader {
+  height: 50px;
+  background-color: #f9f9f9;
+  font-weight: bold;
+  position: sticky;
+  color: #623fc0;
+  border: #613fc029 solid 1px;
+  top: 0;
+  z-index: 5; /* Заголовок выше остальных элементов */
+}
+
+.colForHiding {
+  height: 500px;
+  background-color: white;
+  width: 75px;
+  z-index: 3;
+  position: absolute;
+}
+
+.vcCell:hover {
+  color: #fff;
+  background-color: #8254ff60;
+  cursor: pointer;
+}
+
+.summary {
+  font-size: 10px;
+  margin-top: 2px;
+}
+
+.tableFooter {
+  height: 30px;
+  background-color: #f9f9f9;
+  font-weight: bold;
+  position: sticky;
+  color: #623fc0;
+  border: #613fc029 solid 1px;
+  bottom: 0;
+  z-index: 5; /* Заголовок выше остальных элементов */
+}
