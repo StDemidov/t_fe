@@ -8,6 +8,7 @@ import VCNameFilter from './vc_name_filter/VCNameFilter';
 import VCAbcFilter from './abc_filter/VCAbcFilter';
 import DateFilter from './date_filter/dateFilter';
 import VCSorting from './sorting/VCSorting';
+import VCTagFilter from './tag_filter/VCTagFilter';
 
 const VendorCodesFilters = () => {
   const vendorCodesWMetrics = useSelector(selectVendorCodeMetrics);
@@ -16,6 +17,8 @@ const VendorCodesFilters = () => {
     return vendorcode.categoryName;
   });
 
+  let tags = [...new Set(vendorCodesWMetrics.flatMap((item) => item.tags))];
+
   let abc = vendorCodesWMetrics.map((vendorcode) => {
     return vendorcode.abcCurrent;
   });
@@ -23,11 +26,14 @@ const VendorCodesFilters = () => {
   categories = [...new Set(categories)];
   abc = [...new Set(abc)];
 
+  console.log(tags);
+
   return (
     <div className={styles.filterSection}>
       <DateFilter />
       <VCCategoryFilter options={categories} />
       <VCAbcFilter options={abc} />
+      <VCTagFilter options={tags} />
       <VCSorting />
       <VCNameFilter />
     </div>

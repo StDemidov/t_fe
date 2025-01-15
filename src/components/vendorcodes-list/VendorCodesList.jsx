@@ -16,6 +16,7 @@ import {
   selectVCNameFilter,
   selectVCDatesFilter,
   selectVCSortingType,
+  selectVCTagsFilter,
 } from '../../redux/slices/filterSlice';
 import { hostName } from '../../utils/host';
 
@@ -27,6 +28,7 @@ const VendorCodesList = () => {
   const VCNameFilter = useSelector(selectVCNameFilter);
   const abcFilter = useSelector(selectVendorCodeAbcFilter);
   const dateFilter = useSelector(selectVCDatesFilter);
+  const tagsFilter = useSelector(selectVCTagsFilter);
   const startDate = new Date(dateFilter.start);
   const endDate = new Date(dateFilter.end);
   const selectedSorting = useSelector(selectVCSortingType);
@@ -42,10 +44,13 @@ const VendorCodesList = () => {
     dispatch(fetchVendorCodeMetrics(`${hostName}/vendorcode/`));
   }, [dispatch]);
 
+  const includesAny = (arr, values) => values.some((v) => arr.includes(v));
+
   const filteredVCMetrics = vendorCodesWMetrics.filter((vc) => {
     let categoryMatch = true;
     let vcNameMatch = true;
     let abcMatch = true;
+    let tagMatch = true;
     if (categoryFilter.length !== 0) {
       categoryMatch = categoryFilter.includes(vc.categoryName);
     }
@@ -61,7 +66,10 @@ const VendorCodesList = () => {
     if (abcFilter.length !== 0) {
       abcMatch = abcFilter.includes(vc.abcCurrent);
     }
-    return categoryMatch && vcNameMatch && abcMatch;
+    if (tagsFilter.length !== 0) {
+      tagMatch = includesAny(tagsFilter, vc.tags);
+    }
+    return categoryMatch && vcNameMatch && abcMatch && tagMatch;
   });
 
   let extentedFilteredVCMetrics = structuredClone(filteredVCMetrics);

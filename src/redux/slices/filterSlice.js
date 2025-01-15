@@ -18,6 +18,7 @@ const initialState = {
       end: format(subDays(new Date(), 1), 'MM-dd-yyyy'),
     },
     sortingType: 'EBITDA / день (сумм.) убыв.',
+    tags: [],
   },
   singleVC: {
     dates: {
@@ -69,6 +70,12 @@ const filterSlice = createSlice({
     },
     resetVendorCodeCategoryFilter: (state) => {
       state.vendorCode.category = [];
+    },
+    setVendorCodeTagsFilter: (state, action) => {
+      state.vendorCode.tags = [...action.payload];
+    },
+    resetVendorCodeTagsFilter: (state) => {
+      state.vendorCode.tags = [];
     },
     setVendorCodeAbcFilter: (state, action) => {
       state.vendorCode.abc = [...action.payload];
@@ -131,6 +138,8 @@ export const {
   setSingleVCDatesFilter,
   setSkuOrNameTasksFilter,
   resetSkuOrNameTasksFilter,
+  setVendorCodeTagsFilter,
+  resetVendorCodeTagsFilter,
 } = filterSlice.actions;
 
 export const selectBarcodeCategoryFilter = (state) =>
@@ -159,5 +168,6 @@ export const selectSkuOrNameTasksFilter = (state) =>
 export const selectVCDatesFilter = (state) => state.filter.vendorCode.dates;
 export const selectSingleVCDatesFilter = (state) => state.filter.singleVC.dates;
 export const selectBarcodeDatesFilter = (state) => state.filter.barcode.dates;
+export const selectVCTagsFilter = (state) => state.filter.vendorCode.tags;
 
 export default filterSlice.reducer;
