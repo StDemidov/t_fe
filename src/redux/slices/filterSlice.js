@@ -35,12 +35,39 @@ const initialState = {
     category: '',
     skuOrName: '',
   },
+  autoCmpgns: {
+    createdBy: '',
+    status: [],
+    brand: '',
+    campName: '',
+  },
 };
 
 const filterSlice = createSlice({
   name: 'filter',
   initialState: initialState,
   reducers: {
+    setAutoCmpgCreatedBy: (state, action) => {
+      state.autoCmpgns.createdBy = action.payload;
+    },
+    resetAutoCmpgCreatedBy: (state) => {
+      state.autoCmpgns.createdBy = '';
+    },
+    setAutoCmpgBrand: (state, action) => {
+      state.autoCmpgns.brand = action.payload;
+    },
+    resetAutoCmpgBrand: (state) => {
+      state.autoCmpgns.brand = '';
+    },
+    setAutoCmpgStatus: (state, action) => {
+      state.autoCmpgns.status = action.payload;
+    },
+    resetAutoCmpgStatus: (state, action) => {
+      state.autoCmpgns.status = [];
+    },
+    setAutoCmpgCampName: (state, action) => {
+      state.autoCmpgns.campName = action.payload;
+    },
     setTasksCategory: (state, action) => {
       state.tasks.category = action.payload;
     },
@@ -140,6 +167,13 @@ export const {
   resetSkuOrNameTasksFilter,
   setVendorCodeTagsFilter,
   resetVendorCodeTagsFilter,
+  setAutoCmpgBrand,
+  setAutoCmpgCampName,
+  setAutoCmpgCreatedBy,
+  setAutoCmpgStatus,
+  resetAutoCmpgBrand,
+  resetAutoCmpgCreatedBy,
+  resetAutoCmpgStatus,
 } = filterSlice.actions;
 
 export const selectBarcodeCategoryFilter = (state) =>
@@ -169,5 +203,13 @@ export const selectVCDatesFilter = (state) => state.filter.vendorCode.dates;
 export const selectSingleVCDatesFilter = (state) => state.filter.singleVC.dates;
 export const selectBarcodeDatesFilter = (state) => state.filter.barcode.dates;
 export const selectVCTagsFilter = (state) => state.filter.vendorCode.tags;
+export const selectAutoCampBrandFilter = (state) =>
+  state.filter.autoCmpgns.brand;
+export const selectAutoCampCampNamFilter = (state) =>
+  state.filter.autoCmpgns.campName;
+export const selectAutoCampStatusFilter = (state) =>
+  state.filter.autoCmpgns.status;
+export const selectAutoCampCreatedByFilter = (state) =>
+  state.filter.autoCmpgns.createdBy;
 
 export default filterSlice.reducer;

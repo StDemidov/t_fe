@@ -23,7 +23,6 @@ import AbcPage from './components/abc_page/AbcPage';
 import TaskCreateDrain from './components/tasks_drain/task-create/TaskCreateDrain';
 import TaskB28Edit from './components/price-cotrol-page/tasks-b-28/task-b28-edit/TaskB28Edit';
 import TaskA28Edit from './components/price-cotrol-page/tasks-a-28/task-a28-edit/TaskA28Edit';
-
 import { selectUser } from './redux/slices/authSlice';
 import LoginPage from './components/login_page/LoginPage';
 import SingleTaskDrainInfo from './components/tasks_drain/tasks_table_drain/single-task-drain-info/SingleTaskDrainInfo';
@@ -34,6 +33,8 @@ import { store, persistor } from './redux/store';
 import { PersistGate } from 'redux-persist/integration/react';
 import { Provider } from 'react-redux';
 import EbitdaSettings from './components/ebitda_settings/EbitdaSettings';
+import AutoCampaignsList from './components/autocampaigns_list/AutoCampaignsList';
+import AutoCampaignCreate from './components/autocampaign_create/AutoCampaignCreate';
 
 function App() {
   const currentUser = useSelector(selectUser);
@@ -64,6 +65,14 @@ function App() {
                   <Route
                     path="tools/price_control"
                     element={<PriceControlPage />}
+                  />
+                  <Route
+                    path="tools/auto_campaigns"
+                    element={<AutoCampaignsList />}
+                  />
+                  <Route
+                    path="tools/auto_campaigns/create"
+                    element={<AutoCampaignCreate />}
                   />
                   <Route path="tools/tasks_a_28" element={<TasksA28 />} />
                   <Route

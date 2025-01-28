@@ -71,6 +71,17 @@ const Tools = () => {
       </div>
       <h2 className={styles.blockName}>Реклама</h2>
       <hr className={styles.line} />
+      <NavLink to="auto_campaigns" className={styles.link}>
+        <div className={styles.card}>
+          <div className={styles.cardContent}>
+            <p className={styles.cardTitle}>Автоматические кампании</p>
+            <p className={styles.cardPara}>
+              Просмотр списка автоматических кампаний, заведение новых кампаний
+              на автоматическом контроле
+            </p>
+          </div>
+        </div>
+      </NavLink>
     </section>
   );
 };
