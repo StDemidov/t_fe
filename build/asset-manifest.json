@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/static/css/main.3beadcbb.css",
+    "main.js": "/static/js/main.efc771db.js",
+    "static/media/wb_logo.png": "/static/media/wb_logo.71dcedfb7c013347148d.png",
+    "static/media/BebasNeue.ttf": "/static/media/BebasNeue.9da1ba2d1a1db723123d.ttf",
+    "static/media/mpstats_logo.svg": "/static/media/mpstats_logo.8c6fee77a5b760dc4339e49e534c8e86.svg",
+    "index.html": "/index.html",
+    "main.3beadcbb.css.map": "/static/css/main.3beadcbb.css.map",
+    "main.efc771db.js.map": "/static/js/main.efc771db.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.3beadcbb.css",
+    "static/js/main.efc771db.js"
+  ]
+}
