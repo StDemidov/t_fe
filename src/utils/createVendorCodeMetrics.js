@@ -26,6 +26,7 @@ const createVendorCodeMetrics = (vendorCodeMetrics) => {
       abcCurrent: item.abc_current,
       tags: item.tags,
       selfPrice: item.self_price,
+      categoryName: item.category_name,
     };
   });
   return vcMetrics;
