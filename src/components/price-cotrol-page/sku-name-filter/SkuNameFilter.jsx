@@ -1,6 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  resetSkuOrNameTasksFilter,
   selectSkuOrNameTasksFilter,
   setSkuOrNameTasksFilter,
 } from '../../../redux/slices/filterSlice';

@@ -26,14 +26,13 @@ const AutoCampaignCreate = () => {
   const skuData = useSelector(selectSkuDataAutoCmpgns);
   const isLoading = useSelector(selectIsLoading);
   const skuOrNameFilter = useSelector(selectSkuOrNameTasksFilter);
-  // const skuOrNameFilter = useSelector(selectSkuOrNameTasksFilter);
   const navigation = useNavigate();
 
   useEffect(() => {
     if (notificationMessage !== '') {
       navigation(`/tools/auto_campaigns`);
     }
-  }, [notificationMessage]);
+  }, [notificationMessage, navigation]);
 
   useEffect(() => {
     dispatch(fetchSkuData(`${hostName}/autocampaigns/sku_data`));
@@ -203,6 +202,17 @@ const AutoCampaignCreate = () => {
                       onChange={(e) => setHowMuchToAdd(e.target.value)}
                     />
                   </li>
+                  <li>
+                    <label htmlFor="whenToAddBudget">CPM: </label>
+                    <input
+                      required={true}
+                      type="number"
+                      min="1000"
+                      id="cpm"
+                      value={cpm === 0 ? '' : cpm}
+                      onChange={(e) => setCpm(e.target.value)}
+                    />
+                  </li>
                 </div>
               </div>
             </ul>
@@ -220,16 +230,15 @@ const AutoCampaignCreate = () => {
                     <div
                       key={uuidv4()}
                       className={
-                        item.sku == sku
+                        item.sku === sku
                           ? styles.singleSkuChosen
                           : styles.singleSku
                       }
                       onClick={handeClickOnVC}
                       data-value={item.sku}
                     >
-                      <img src={item.image} />
+                      <img src={item.image} alt={item.vcName} />
                       <div>{highlightMatch(item.vcName, skuOrNameFilter)}</div>
-                      <div>{item.vcName}</div>
                     </div>
                   );
                 })

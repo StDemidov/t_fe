@@ -15,7 +15,6 @@ import { FaMoneyBillWave } from 'react-icons/fa';
 
 import wbLogo from '../single-vendorcode/wb_logo.png';
 import mpStatsLogo from '../single-vendorcode/mpstats_logo.svg';
-import AutoCampaignsFilters from '../autocampaigns_filters/AutoCampaignsFilters';
 
 const CMPGN_STATUS = {
   '-1': 'Кампания в процессе удаления',
@@ -54,7 +53,7 @@ const AutoCampaignsTable = ({ cmpgns }) => {
         {/* Левая часть с карточками кампаний */}
         <div className={styles.campaignList}>
           {cmpgns.map((cmpgn) => (
-            <div key={cmpgn.campName}>
+            <div key={cmpgn.campId}>
               <div
                 className={`${styles.card} ${styles.campaignCard}`}
                 onClick={() => setSelectedCampaign(cmpgn)}

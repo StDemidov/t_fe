@@ -1,14 +1,14 @@
 import { useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { FaSpinner, FaEdit } from 'react-icons/fa';
 import { PiEmptyDuotone } from 'react-icons/pi';
 import { ImCross } from 'react-icons/im';
 import { useSpring, animated } from '@react-spring/web';
 import { setError } from '../../redux/slices/errorSlice';
 import {
-  fetchVendorCodeMetrics,
+  fetchVendorCodeMetricsSingle,
   selectVendorCodeMetrics,
   selectIsLoading,
   setVendorCodeDate,
@@ -29,7 +29,6 @@ const SingleVendorCode = () => {
   const isLoading = useSelector(selectIsLoading);
   const vcMetrics = useSelector(selectVendorCodeMetrics);
   const notificationMessage = useSelector(selectNotificationMessage);
-  const navigation = useNavigate();
   const datesFilter = useSelector(selectSingleVCDatesFilter);
   const startDate = new Date(datesFilter.start);
   const endDate = new Date(datesFilter.end);
@@ -37,7 +36,7 @@ const SingleVendorCode = () => {
 
   useEffect(() => {
     if (notificationMessage == '') {
-      dispatch(fetchVendorCodeMetrics(`${hostName}/vendorcode/${id}`));
+      dispatch(fetchVendorCodeMetricsSingle(`${hostName}/vendorcode/${id}`));
     }
   }, [dispatch, notificationMessage]);
 

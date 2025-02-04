@@ -11,7 +11,7 @@ const createCmpgnSingle = (cmpgn) => {
     changeDate: cmpgn.change_date,
     currBudget: cmpgn.curr_budget,
     cpm: cmpgn.cpm,
-    ctrBench: cmpgn.ctr_bench,
+    ctrBench: cmpgn.ctr_bench * 100,
     viewsBench: cmpgn.views_bench,
     clicks: cmpgn.clicks + cmpgn.today_clicks,
     views: cmpgn.views + cmpgn.today_views,

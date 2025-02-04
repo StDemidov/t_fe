@@ -26,8 +26,6 @@ const VendorCodesFilters = () => {
   categories = [...new Set(categories)];
   abc = [...new Set(abc)];
 
-  console.log(tags);
-
   return (
     <div className={styles.filterSection}>
       <DateFilter />

@@ -33,7 +33,7 @@ const VendorCodesTable = ({ data }) => {
   };
 
   const avg_ebitda = Math.round(
-    data.reduce((total, next) => total + next.ebitda.at(-1), 0) / data.length
+    data.reduce((total, next) => total + next.ebitda, 0) / data.length
   );
   const avg_buyout = Math.round(
     data.reduce((total, next) => total + next.buyoutP, 0) / data.length
@@ -46,10 +46,7 @@ const VendorCodesTable = ({ data }) => {
     data.reduce((total, next) => total + next.lastPriceASpp, 0) / data.length
   );
   const avg_self_price = Math.round(
-    data.reduce(
-      (total, next) => total + next.clothCost + next.costs + next.servicesCost,
-      0
-    ) / data.length
+    data.reduce((total, next) => total + next.selfPrice, 0) / data.length
   );
 
   return (
@@ -160,9 +157,7 @@ const VendorCodesTable = ({ data }) => {
               <div className={styles.cell}>
                 {vc.msTotal === 0 ? <PiEmptyDuotone color="red" /> : vc.msTotal}
               </div>
-              <div className={styles.cell}>
-                {vc.ebitda[vc.ebitda.length - 1]} ₽
-              </div>
+              <div className={styles.cell}>{vc.ebitda} ₽</div>
               <div className={styles.cell}>
                 <LazyLoad key={uuidv4()} offset={100}>
                   <div>
@@ -208,9 +203,7 @@ const VendorCodesTable = ({ data }) => {
                 )}{' '}
                 {vc.lastPriceASpp === 0 ? '' : '₽'}
               </div>
-              <div className={styles.cell}>
-                {vc.clothCost + vc.costs + vc.servicesCost} ₽
-              </div>
+              <div className={styles.cell}>{vc.selfPrice} ₽</div>
               <div className={styles.cell}>
                 {vc.turnoverWB === 0 ? (
                   <PiEmptyDuotone color="red" />
