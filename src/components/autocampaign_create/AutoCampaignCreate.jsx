@@ -207,7 +207,7 @@ const AutoCampaignCreate = () => {
                     <input
                       required={true}
                       type="number"
-                      min="1000"
+                      min="100"
                       id="cpm"
                       value={cpm === 0 ? '' : cpm}
                       onChange={(e) => setCpm(e.target.value)}
