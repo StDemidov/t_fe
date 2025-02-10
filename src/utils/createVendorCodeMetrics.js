@@ -27,6 +27,7 @@ const createVendorCodeMetrics = (vendorCodeMetrics) => {
       tags: item.tags,
       selfPrice: item.self_price,
       categoryName: item.category_name,
+      adsCosts: item.ads_costs.split(',').map(Number),
     };
   });
   return vcMetrics;

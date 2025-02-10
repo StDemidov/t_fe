@@ -54,7 +54,7 @@ const AutoCampaignsList = () => {
       createdByMatch = cmpgn.createdBy === createdByFilter;
     }
     if (statusFilter.length !== 0) {
-      createdByMatch = statusFilter.includes(cmpgn.status);
+      statusMatch = statusFilter.includes(cmpgn.status);
     }
     if (nameFilter.length !== 0) {
       if (isNaN(nameFilter)) {

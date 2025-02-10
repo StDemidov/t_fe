@@ -10,6 +10,8 @@ import {
   Legend,
 } from 'chart.js';
 
+import { calculateCostPerOrder } from '../../utils/calculations';
+
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -34,6 +36,21 @@ const SingleVendorCodePlot = ({ vcData, dates }) => {
         data: getDataForPeriod(vcData.wbOrdersTotal, startDate, endDate),
         borderColor: 'rgba(75, 192, 192, 1)',
         backgroundColor: 'rgba(75, 192, 192, 0.2)',
+        tension: 0.4,
+        fill: false,
+        yAxisID: 'y-axis-1',
+        borderWidth: 1.5,
+        pointRadius: 2,
+      },
+      {
+        label: 'СРО',
+        data: getDataForPeriod(
+          calculateCostPerOrder(vcData.wbOrdersTotal, vcData.adsCosts),
+          startDate,
+          endDate
+        ),
+        borderColor: 'rgb(180, 49, 180)',
+        backgroundColor: 'rgba(157, 9, 120, 0.93)',
         tension: 0.4,
         fill: false,
         yAxisID: 'y-axis-1',
@@ -71,6 +88,17 @@ const SingleVendorCodePlot = ({ vcData, dates }) => {
         ),
         borderColor: 'rgba(39, 39, 245, 0.8)',
         backgroundColor: 'rgba(39, 39, 245, 0.2)',
+        tension: 0.4,
+        fill: false,
+        yAxisID: 'y-axis-4',
+        borderWidth: 1.5,
+        pointRadius: 2,
+      },
+      {
+        label: 'Затраты на РК',
+        data: getDataForPeriod(vcData.adsCosts, startDate, endDate),
+        borderColor: 'rgb(26, 171, 161)',
+        backgroundColor: 'rgba(153, 102, 255, 0.2)',
         tension: 0.4,
         fill: false,
         yAxisID: 'y-axis-4',

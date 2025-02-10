@@ -58,3 +58,15 @@ export const getSumRaw = (data, raw_data, startDate, endDate) => {
   }, 0);
   return sumData;
 };
+
+export const getAverage = (data, startDate, endDate) => {
+  const currData = getDataForPeriod(data, startDate, endDate).filter(
+    (value) => value !== 0
+  );
+  if (currData.length === 0) return 0;
+  const sumData = currData.reduce(
+    (accumulator, currentValue) => accumulator + currentValue,
+    0
+  );
+  return Math.round(sumData / currData.length);
+};

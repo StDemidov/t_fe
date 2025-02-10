@@ -214,6 +214,18 @@ const AutoCampaignsTable = ({ cmpgns }) => {
                   </b>
                 </div>
                 <div className={styles.campaignDetails}>
+                  <GiMoneyStack /> {'Все затраченные деньги:'}{' '}
+                  <b>
+                    {selectedCampaign.totalSpend} {' руб.'}
+                  </b>
+                </div>
+                <div className={styles.campaignDetails}>
+                  <GiMoneyStack /> {'Соотношение трат на ключи ко всем тратам:'}{' '}
+                  <b>
+                    {selectedCampaign.spendRatio} {' %'}
+                  </b>
+                </div>
+                <div className={styles.campaignDetails}>
                   <MdAttachMoney /> {'Цена клика (только по ключам):'}{' '}
                   <b>
                     {selectedCampaign.clicks === 0

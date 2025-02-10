@@ -17,7 +17,7 @@ const initialState = {
       start: format(subDays(new Date(), 14), 'MM-dd-yyyy'),
       end: format(subDays(new Date(), 1), 'MM-dd-yyyy'),
     },
-    sortingType: 'EBITDA / день (сумм.) убыв.',
+    sortingType: 'EBITDA / день (сумм.) ↓',
     tags: [],
   },
   singleVC: {

@@ -156,8 +156,9 @@
 }
 
 .summary {
-  font-size: 10px;
+  font-size: 8px;
   margin-top: 2px;
+  font-family: 'Verdana', Verdana, sans-serif;
 }
 
 .tableFooter {

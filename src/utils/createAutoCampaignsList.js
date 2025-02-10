@@ -28,6 +28,8 @@ const createAutoCampaignsList = (autoCampaigns) => {
             (cmpgn.views + cmpgn.today_views),
       excluded: cmpgn.excluded.split(','),
       image: cmpgn.image,
+      totalSpend: cmpgn.total_cmpgn_spend,
+      spendRatio: Math.round(Number(cmpgn.spend_ratio) * 100),
     };
   });
   return autoCmpgns;
