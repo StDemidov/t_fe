@@ -7,6 +7,7 @@ import {
   fetchVendorCodeMetrics,
   selectVendorCodeMetrics,
   selectIsLoading,
+  selectTagsIsLoading,
 } from '../../redux/slices/vendorCodeSlice';
 import VendorCodesTable from '../vendorcodes-table/VendorCodesTable';
 import VendorCodesFilters from '../vendorcodes_filters/VendorCodesFilters';
@@ -18,7 +19,9 @@ import {
   selectVCSortingType,
   selectVCTagsFilter,
 } from '../../redux/slices/filterSlice';
+import { fetchAvailableTags } from '../../redux/slices/vendorCodeSlice';
 import { hostName } from '../../utils/host';
+import { selectNotificationMessage } from '../../redux/slices/notificationSlice';
 
 import {
   getDataForPeriod,
@@ -31,6 +34,7 @@ import { calculateCostPerOrder } from '../../utils/calculations';
 const VendorCodesList = () => {
   const dispatch = useDispatch();
   const isLoading = useSelector(selectIsLoading);
+  const tagsIsLoading = useSelector(selectTagsIsLoading);
   const vendorCodesWMetrics = useSelector(selectVendorCodeMetrics);
   const categoryFilter = useSelector(selectVendorCodeCategoryFilter);
   const VCNameFilter = useSelector(selectVCNameFilter);
@@ -39,6 +43,8 @@ const VendorCodesList = () => {
   const tagsFilter = useSelector(selectVCTagsFilter);
   const startDate = new Date(dateFilter.start);
   const endDate = new Date(dateFilter.end);
+  const notificationMessage = useSelector(selectNotificationMessage);
+
   const selectedSorting = useSelector(selectVCSortingType);
 
   const animStyles = useSpring({
@@ -49,8 +55,11 @@ const VendorCodesList = () => {
   });
 
   useEffect(() => {
-    dispatch(fetchVendorCodeMetrics(`${hostName}/vendorcode/`));
-  }, [dispatch]);
+    if (notificationMessage === '') {
+      dispatch(fetchVendorCodeMetrics(`${hostName}/vendorcode/`));
+      dispatch(fetchAvailableTags(`${hostName}/tags/all_tags`));
+    }
+  }, [dispatch, notificationMessage]);
 
   const includesAny = (arr, values) => values.some((v) => arr.includes(v));
 
@@ -91,6 +100,12 @@ const VendorCodesList = () => {
       startDate,
       endDate
     );
+    item.debWOAdsSum = getSumRaw(
+      item.dailyEbitdaWoAds,
+      item.dailyEbitdaWoAdsRaw,
+      startDate,
+      endDate
+    );
     item.adsCostsSum = getSum(item.adsCosts, startDate, endDate);
     item.costPerOrder = calculateCostPerOrder(
       item.wbOrdersTotal,
@@ -105,7 +120,7 @@ const VendorCodesList = () => {
 
   return (
     <>
-      {isLoading ? (
+      {isLoading || tagsIsLoading ? (
         <FaSpinner className="spinner" />
       ) : (
         <animated.div style={{ ...animStyles }}>

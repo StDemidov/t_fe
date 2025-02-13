@@ -102,9 +102,41 @@
   justify-content: center;
   align-items: center;
   min-width: 150px; /* Минимальная ширина ячейки */
+  max-width: 150px;
   z-index: 1;
   font-family: 'BebasNeue', sans-serif;
   text-transform: uppercase;
+  position: relative;
+}
+
+.cellCPS {
+  min-width: 50px; /* Минимальная ширина ячейки */
+  max-width: 50px;
+}
+
+.cellMSStock {
+  min-width: 80px; /* Минимальная ширина ячейки */
+  max-width: 80px;
+}
+
+.cellEbitda {
+  min-width: 70px; /* Минимальная ширина ячейки */
+  max-width: 70px;
+}
+
+.cellBuyout {
+  min-width: 70px; /* Минимальная ширина ячейки */
+  max-width: 70px;
+}
+
+.cellSelfPrice {
+  min-width: 100px; /* Минимальная ширина ячейки */
+  max-width: 100px;
+}
+
+.cellSPP {
+  min-width: 120px; /* Минимальная ширина ячейки */
+  max-width: 120px;
 }
 
 .vcCell {

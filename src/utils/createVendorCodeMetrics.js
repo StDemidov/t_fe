@@ -1,3 +1,5 @@
+import { calculateEbitdaWoAds, calculateEbitdaWoAdsRaw } from './calculations';
+
 const createVendorCodeMetrics = (vendorCodeMetrics) => {
   const vcMetrics = vendorCodeMetrics.map((item) => {
     return {
@@ -26,8 +28,15 @@ const createVendorCodeMetrics = (vendorCodeMetrics) => {
       abcCurrent: item.abc_current,
       tags: item.tags,
       selfPrice: item.self_price,
+      selfPriceWONds: item.self_price_wo_nds,
       categoryName: item.category_name,
       adsCosts: item.ads_costs.split(',').map(Number),
+      dailyEbitdaWoAds: calculateEbitdaWoAds(item.daily_ebitda, item.ads_costs),
+      dailyEbitdaWoAdsRaw: calculateEbitdaWoAdsRaw(
+        item.daily_ebitda,
+        item.raw_daily_ebitda,
+        item.ads_costs
+      ),
     };
   });
   return vcMetrics;
