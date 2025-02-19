@@ -13,6 +13,7 @@ import tasksDrainReducer from './slices/tasksDrainSlice';
 import userReducer from './slices/authSlice';
 import ebitdaSettingsReducer from './slices/ebitdaSettingsSlice';
 import autoCampaignsReducer from './slices/autoCampaignsSlice';
+import tasksHoldStocksReducer from './slices/tasksHoldStocksSlice';
 
 import { persistReducer, persistStore } from 'redux-persist';
 import { combineReducers } from '@reduxjs/toolkit';
@@ -39,6 +40,7 @@ const rootReducer = combineReducers({
   auth: authReducer, // Обернули auth
   ebitdaSettings: ebitdaSettingsReducer,
   autoCampaigns: autoCampaignsReducer,
+  tasksHoldStocks: tasksHoldStocksReducer,
 });
 
 const store = configureStore({

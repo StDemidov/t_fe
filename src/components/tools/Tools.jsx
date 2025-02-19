@@ -68,6 +68,18 @@ const Tools = () => {
             </div>
           </div>
         </NavLink>
+
+        <NavLink to="tasks_hold_stocks" className={styles.link}>
+          <div className={styles.card}>
+            <div className={styles.cardContent}>
+              <p className={styles.cardTitle}>Удержание остатков</p>
+              <p className={styles.cardPara}>
+                Задачи на удержание остатков с увеличением цены с целью
+                сохранения остатков к заданной дате
+              </p>
+            </div>
+          </div>
+        </NavLink>
       </div>
       <h2 className={styles.blockName}>Реклама</h2>
       <hr className={styles.line} />

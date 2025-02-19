@@ -35,6 +35,10 @@ import { Provider } from 'react-redux';
 import EbitdaSettings from './components/ebitda_settings/EbitdaSettings';
 import AutoCampaignsList from './components/autocampaigns_list/AutoCampaignsList';
 import AutoCampaignCreate from './components/autocampaign_create/AutoCampaignCreate';
+import TasksHoldStocks from './components/tasks_hold_stocks/TasksHoldStocks';
+import TaskHoldStocksCreate from './components/tasks_hold_stocks/task_hold_stocks_create/TaskHoldStocksCreate';
+import TaskHoldStocksEdit from './components/tasks_hold_stocks/task_hold_stocks_edit/TaskHoldStocksEdit';
+import SingleTaskHoldStocksInfo from './components/tasks_hold_stocks/tasks_table_hold_stocks/single_task_hold_stocks_info/SingleTaskHoldStocksInfo';
 
 function App() {
   const currentUser = useSelector(selectUser);
@@ -61,6 +65,22 @@ function App() {
                   <Route
                     path="tools/ebitda_settings"
                     element={<EbitdaSettings />}
+                  />
+                  <Route
+                    path="tools/tasks_hold_stocks"
+                    element={<TasksHoldStocks />}
+                  />
+                  <Route
+                    path="tools/tasks_hold_stocks/create"
+                    element={<TaskHoldStocksCreate />}
+                  />
+                  <Route
+                    path="tools/tasks_hold_stocks/edit/:id"
+                    element={<TaskHoldStocksEdit />}
+                  />
+                  <Route
+                    path="tools/tasks_hold_stocks/:id"
+                    element={<SingleTaskHoldStocksInfo />}
                   />
                   <Route
                     path="tools/price_control"
