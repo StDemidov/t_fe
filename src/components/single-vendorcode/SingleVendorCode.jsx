@@ -284,11 +284,9 @@ const SingleVendorCode = () => {
                     <div className={styles.vcInfoItem}>
                       ₽{' '}
                       <abbr
-                        title={`Ткань (c НДС): ${vcData?.clothCost} ₽\nУслуги: ${vcData?.servicesCost} ₽\nКосты: ${vcData?.costs} ₽`}
+                        title={`Ткань (c НДС): ${vcData?.clothCost} ₽\nУслуги: ${vcData?.servicesCost} ₽`}
                       >
-                        {vcData?.clothCost +
-                          vcData?.costs +
-                          vcData?.servicesCost}
+                        {vcData?.clothCost + vcData?.servicesCost}
                       </abbr>
                     </div>
                   </div>

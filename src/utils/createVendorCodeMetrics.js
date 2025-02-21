@@ -38,7 +38,9 @@ const createVendorCodeMetrics = (vendorCodeMetrics) => {
         item.ads_costs
       ),
       addToCart: item.add_to_cart_perc.split(',').map(Number),
-      cartToOrder: item.cart_to_order_perc.split(',').map(Number),
+      cartToOrder: item.cart_to_order_perc
+        .split(',')
+        .map((cr) => Number(cr) * 100),
       clickToOrder: item.click_to_order.split(',').map(Number),
     };
   });

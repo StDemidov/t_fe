@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import { useSelector } from 'react-redux';
 import { useRef } from 'react';
+import { FaRegCopy } from 'react-icons/fa';
 
 import styles from './style.module.css';
 
@@ -69,6 +70,8 @@ import FooterSelfPrice from './cells/footer/FooterSelfPrice';
 import FooterSelfPriceWONDS from './cells/footer/FooterSelfPriceWONDS';
 import FooterTurnover from './cells/footer/FooterTurnover';
 import FooterWBStocks from './cells/footer/FooterWBStocks';
+import BodyCartToOrder from './cells/body/BodyCartToOrder';
+import FooterCartToOrder from './cells/footer/FooterCartToOrder';
 
 const сolRender = {
   tags: {
@@ -149,6 +152,13 @@ const сolRender = {
       <FooterCPO key={uuidv4()} avgCostPerOrder={avgCostPerOrder} />
     ),
   },
+  // cartToOrder: {
+  //   render: (vc, datesFilter) => (
+  //     <BodyCartToOrder vc={vc} datesFilter={datesFilter} key={uuidv4()} />
+  //   ),
+  //   renderHeader: () => <HeaderCartToOrder key={uuidv4()} />,
+  //   renderFooter: () => <FooterCartToOrder key={uuidv4()} />,
+  // },
   cps: {
     render: (vc, datesFilter) => <BodyCPS vc={vc} key={uuidv4()} />,
     renderHeader: () => <HeaderCPS key={uuidv4()} />,
@@ -215,6 +225,15 @@ const VendorCodesTable = ({ data, columns }) => {
       }
       return substring;
     });
+  };
+
+  const handleCopy = (event) => {
+    event.stopPropagation(); // Останавливаем всплытие
+    event.preventDefault(); // Предотвращаем переход по ссылке (если нужно)
+
+    navigator.clipboard.writeText(
+      event.currentTarget.getAttribute('data-value')
+    );
   };
 
   const avg_ebitda = Math.round(
@@ -298,6 +317,13 @@ const VendorCodesTable = ({ data, columns }) => {
                 <div data-value={vc.id}>
                   {highlightMatch(vc.vendorCode, vcNameFilter)}
                 </div>
+                <FaRegCopy
+                  size={12}
+                  data-value={vc.vendorCode}
+                  onClick={handleCopy}
+                  style={{ cursor: 'pointer' }}
+                  className={styles.copyIcon}
+                />
               </Link>
               {columns.map((col) => {
                 if (!col.hidden) {
@@ -317,7 +343,7 @@ const VendorCodesTable = ({ data, columns }) => {
         })}
         <div className={`${styles.row} ${styles.tableFooter}`}>
           <div className={`${styles.cell} ${styles.fixedColumn}`} />
-          <div className={styles.cell}></div>
+          <div className={styles.cell}>Количество: {data.length}</div>
           {columns.map((col) => {
             if (!col.hidden && footerVars[col.key]) {
               return сolRender[col.key].renderFooter(footerVars[col.key]);

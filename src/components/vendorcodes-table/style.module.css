@@ -203,3 +203,16 @@
   bottom: 0;
   z-index: 5; /* Заголовок выше остальных элементов */
 }
+
+.copyIcon {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  margin-right: 3px;
+  margin-bottom: 3px;
+}
+
+.copyIcon:hover {
+  scale: 1.1;
+  color: white;
+}

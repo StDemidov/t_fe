@@ -57,6 +57,7 @@ const initialColumns = [
   { key: 'selfPrice', label: 'Себестоимость', hidden: false },
   { key: 'selfPriceWONDS', label: 'Себестоимость без НДС', hidden: false },
   { key: 'turnover', label: 'Оборачиваемость WB', hidden: false },
+  // { key: 'cartToOrder', label: '% Из корзины в заказ', hidden: false },
 ];
 
 const SortableItem = ({ column, toggleHidden }) => {
