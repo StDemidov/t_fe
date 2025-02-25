@@ -1,32 +1,31 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import { FaSpinner } from 'react-icons/fa';
-import { v4 as uuidv4 } from 'uuid';
+import { useParams, useNavigate } from 'react-router-dom';
 import { selectNotificationMessage } from '../../redux/slices/notificationSlice';
 
 import {
-  createAutoCampaign,
-  fetchSkuData,
-  selectSkuDataAutoCmpgns,
-  selectIsLoading,
+  editAutoCampaign,
+  selectCmpgnSingle,
+  fetchAutoCampaignById,
 } from '../../redux/slices/autoCampaignsSlice';
-
-import { selectSkuOrNameTasksFilter } from '../../redux/slices/filterSlice';
-
-import SkuNameFilter from '../price-cotrol-page/sku-name-filter/SkuNameFilter';
 
 import { setError } from '../../redux/slices/errorSlice';
 import styles from './style.module.css';
 import { hostName } from '../../utils/host';
 
-const AutoCampaignCreate = () => {
+const AutoCampaignEdit = () => {
   const dispatch = useDispatch();
   const notificationMessage = useSelector(selectNotificationMessage);
-  const skuData = useSelector(selectSkuDataAutoCmpgns);
-  const isLoading = useSelector(selectIsLoading);
-  const skuOrNameFilter = useSelector(selectSkuOrNameTasksFilter);
   const navigation = useNavigate();
+  const cmpgn = useSelector(selectCmpgnSingle);
+  let { id } = useParams();
+
+  const [campName, setCampName] = useState('');
+  const [ctrBench, setCtrBench] = useState(0);
+  const [viewsBench, setViewsBench] = useState(0);
+  const [whenToPause, setWhenToPause] = useState(0);
+  const [whenToAddBudget, setWhenToAddBudget] = useState(0);
+  const [howMuchToAdd, setHowMuchToAdd] = useState(0);
 
   useEffect(() => {
     if (notificationMessage !== '') {
@@ -35,59 +34,26 @@ const AutoCampaignCreate = () => {
   }, [notificationMessage, navigation]);
 
   useEffect(() => {
-    dispatch(fetchSkuData(`${hostName}/autocampaigns/sku_data`));
-  }, [dispatch]);
+    dispatch(fetchAutoCampaignById(`${hostName}/autocampaigns/by_id/${id}`));
+  }, []);
 
-  const [currBudget, setCurrBudget] = useState(5000);
-  const [cpm, setCpm] = useState(150);
-  const [ctrBench, setCtrBench] = useState(3.5);
-  const [viewsBench, setViewsBench] = useState(70);
-  const [whenToPause, setWhenToPause] = useState(5);
-  const [whenToAddBudget, setWhenToAddBudget] = useState(3000);
-  const [howMuchToAdd, setHowMuchToAdd] = useState(2000);
-  const [sku, setSku] = useState('');
-
-  const filteredSkuDataWCat = skuData.filter((sku) => {
-    let skuOrNameMatch = true;
-    if (skuOrNameFilter.length !== 0) {
-      if (isNaN(skuOrNameFilter)) {
-        skuOrNameMatch = sku.vcName
-          .toLowerCase()
-          .includes(skuOrNameFilter.toLowerCase());
-      } else {
-        skuOrNameMatch = sku.sku.toLowerCase().includes(skuOrNameFilter);
-      }
+  useEffect(() => {
+    if (cmpgn) {
+      setCampName(cmpgn?.campName);
+      setCtrBench(cmpgn?.ctrBench);
+      setViewsBench(cmpgn?.viewsBench);
+      setWhenToPause(cmpgn?.whenToPause);
+      setWhenToAddBudget(cmpgn?.whenToAddBudget);
+      setHowMuchToAdd(cmpgn?.howMuchToAdd);
     }
-    return skuOrNameMatch;
-  });
-
-  const highlightMatch = (text, filter) => {
-    if (filter.length === 0 || !isNaN(filter)) return text;
-    const regex = new RegExp(`(${filter})`, 'gi');
-    return text.split(regex).map((substring, i) => {
-      if (substring.toLowerCase() === filter.toLowerCase()) {
-        return (
-          <span key={i} className={styles.highlight}>
-            {substring}
-          </span>
-        );
-      }
-      return substring;
-    });
-  };
+  }, [cmpgn]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (currBudget < 2000) {
-      dispatch(setError('Бюджет должен быть выше 2000!'));
-    } else if (ctrBench <= 0) {
+    if (ctrBench <= 0) {
       dispatch(setError('Установите пороговый CTR!'));
-    } else if (cpm < 120) {
-      dispatch(setError('Установите CPM выше 120!'));
     } else if (viewsBench < 10) {
       dispatch(setError('Установите порог по просмотрам выше 10!'));
-    } else if (sku === '') {
-      dispatch(setError('Необходимо выбрать артикул!'));
     } else if (whenToPause < 1) {
       dispatch(setError('Установите порог оборачиваемости!'));
     } else if (whenToAddBudget < 1000) {
@@ -96,35 +62,27 @@ const AutoCampaignCreate = () => {
       dispatch(setError('Установите сумму пополнения не менее 1000!'));
     } else {
       const data = {
-        sku: sku,
-        curr_budget: currBudget,
-        cpm: cpm,
         ctr_bench: ctrBench * 100,
         views_bench: viewsBench,
         when_to_pause: whenToPause,
         when_to_add_budget: whenToAddBudget,
         how_much_to_add: howMuchToAdd,
       };
-      console.log(data);
       dispatch(
-        createAutoCampaign({
+        editAutoCampaign({
           data: data,
-          url: `${hostName}/autocampaigns/`,
+          url: `${hostName}/autocampaigns/${id}`,
         })
       );
     }
   };
 
-  const handeClickOnVC = (e) => {
-    const sku = e.currentTarget.getAttribute('data-value');
-    setSku(sku);
-  };
   return (
     <section>
-      <h1>Новая автоматическая кампания</h1>
+      <h1>{campName}</h1>
       <div className={styles.mainContainer}>
         <div className={styles.formContainer}>
-          <form id="cmpgnCreate" onSubmit={handleSubmit}>
+          <form id="cmpgnEdit" onSubmit={handleSubmit}>
             <ul>
               <div className={styles.settingsContainer}>
                 <div className={styles.pricesContainer}>
@@ -163,18 +121,6 @@ const AutoCampaignCreate = () => {
                       onChange={(e) => setWhenToPause(Number(e.target.value))}
                     />
                   </li>
-                  <div className={styles.infoText}>Бюджет</div>
-                  <li>
-                    <label htmlFor="currBudget">Стартовый бюджет: </label>
-                    <input
-                      required={true}
-                      type="number"
-                      min="1000"
-                      id="currBudget"
-                      value={currBudget === 0 ? '' : currBudget}
-                      onChange={(e) => setCurrBudget(Number(e.target.value))}
-                    />
-                  </li>
                 </div>
                 <div className={styles.debContainer}>
                   <div className={styles.infoText}>Автопополнение:</div>
@@ -202,62 +148,20 @@ const AutoCampaignCreate = () => {
                       onChange={(e) => setHowMuchToAdd(e.target.value)}
                     />
                   </li>
-                  <li>
-                    <label htmlFor="whenToAddBudget">CPM: </label>
-                    <input
-                      required={true}
-                      type="number"
-                      min="100"
-                      id="cpm"
-                      value={cpm === 0 ? '' : cpm}
-                      onChange={(e) => setCpm(e.target.value)}
-                    />
-                  </li>
                 </div>
               </div>
             </ul>
-
-            <div className={styles.infoText}>Выберите артикул</div>
-            <div className={styles.textFilter}>
-              <SkuNameFilter />
-            </div>
-            <div className={styles.skuGrid}>
-              {isLoading ? (
-                <FaSpinner className="spinner" />
-              ) : (
-                filteredSkuDataWCat.map((item) => {
-                  return (
-                    <div
-                      key={uuidv4()}
-                      className={
-                        item.sku === sku
-                          ? styles.singleSkuChosen
-                          : styles.singleSku
-                      }
-                      onClick={handeClickOnVC}
-                      data-value={item.sku}
-                    >
-                      <img src={item.image} alt={item.vcName} />
-                      <div>{highlightMatch(item.vcName, skuOrNameFilter)}</div>
-                    </div>
-                  );
-                })
-              )}
-            </div>
           </form>
         </div>
         <div className={styles.infoContainer}>
           <button
             type="submit"
-            form="cmpgnCreate"
+            form="cmpgnEdit"
             className={styles.buttonAccept}
           >
-            Создать
-            <p className={styles.buttonPara}>
-              После создания кампании, она сразу станет активной.
-            </p>
+            Принять изменения
           </button>
-          <div className={styles.description}>
+          {/* <div className={styles.description}>
             <p>
               1. Название задачи должно быть уникальным, лучше всего
               придерживаться шаблона:
@@ -280,11 +184,11 @@ const AutoCampaignCreate = () => {
               другой задаче
               <br />
             </p>
-          </div>
+          </div> */}
         </div>
       </div>
     </section>
   );
 };
 
-export default AutoCampaignCreate;
+export default AutoCampaignEdit;

@@ -37,11 +37,16 @@ const createVendorCodeMetrics = (vendorCodeMetrics) => {
         item.raw_daily_ebitda,
         item.ads_costs
       ),
-      addToCart: item.add_to_cart_perc.split(',').map(Number),
+      addToCart: item.add_to_cart_perc
+        .split(',')
+        .map(Number)
+        .map((cr) => Number(cr) * 100),
       cartToOrder: item.cart_to_order_perc
         .split(',')
         .map((cr) => Number(cr) * 100),
-      clickToOrder: item.click_to_order.split(',').map(Number),
+      clickToOrder: item.click_to_order
+        .split(',')
+        .map((cr) => Number(cr) * 100),
     };
   });
   return vcMetrics;

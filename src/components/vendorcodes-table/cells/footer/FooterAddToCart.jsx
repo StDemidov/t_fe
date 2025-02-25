@@ -1,7 +1,11 @@
 import styles from './style.module.css';
 
-const FooterAddToCart = () => {
-  return <div className={styles.cell}></div>;
+const FooterAddToCart = ({ avgAddToCart }) => {
+  return (
+    <div className={styles.cell}>
+      {avgAddToCart ? avgAddToCart.toLocaleString() : 0} %
+    </div>
+  );
 };
 
 export default FooterAddToCart;

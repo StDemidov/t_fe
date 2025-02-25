@@ -49,6 +49,7 @@ const TaskHoldStocksCreate = () => {
   const [increaseStep, setIncreaseStep] = useState(0);
   const [deadline, setDeadline] = useState('ГГГГ-ММ-ДД');
   const [skuList, setSkuList] = useState([]);
+  const [maxPrice, setMaxPrice] = useState(2000);
 
   const filteredSkuData = skuData.filter((sku) => {
     return !sku.isOnHold;
@@ -94,12 +95,15 @@ const TaskHoldStocksCreate = () => {
       dispatch(setError('Введите дату в формате ГГГГ-ММ-ДД'));
     } else if (skuList.length === 0) {
       dispatch(setError('Необходимо выбрать хотя бы 1 артикул!'));
+    } else if (maxPrice === 0) {
+      dispatch(setError('Установите максимальную цену!'));
     } else {
       const data = {
         task_name: taskName,
         increase_step: increaseStep,
         deadline: deadline,
         sku_list: skuList.join(','),
+        max_price: maxPrice,
         error: 0,
       };
       dispatch(
@@ -153,6 +157,17 @@ const TaskHoldStocksCreate = () => {
                       id="increaseStep"
                       value={increaseStep === 0 ? '' : increaseStep}
                       onChange={(e) => setIncreaseStep(Number(e.target.value))}
+                    />
+                  </li>
+                  <li>
+                    <label htmlFor="maxPrice">Максимальная цена: </label>
+                    <input
+                      required={true}
+                      type="number"
+                      min="500"
+                      id="maxPrice"
+                      value={increaseStep === 0 ? '' : maxPrice}
+                      onChange={(e) => setMaxPrice(Number(e.target.value))}
                     />
                   </li>
                 </div>

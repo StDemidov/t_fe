@@ -17,7 +17,7 @@ const createAutoCampaignsList = (autoCampaigns) => {
       clicks: cmpgn.clicks + cmpgn.today_clicks,
       views: cmpgn.views + cmpgn.today_views,
       spend: cmpgn.spend + cmpgn.today_spend,
-      pausedByTrnover: cmpgn.paused_by_trnover,
+      pausedByTurnover: cmpgn.paused_by_trnover,
       whenToPause: cmpgn.when_to_pause,
       whenToAddBudget: cmpgn.when_to_add_budget,
       howMuchToAdd: cmpgn.how_much_to_add,

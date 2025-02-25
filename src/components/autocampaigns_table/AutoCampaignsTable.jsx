@@ -1,5 +1,8 @@
 import styles from './style.module.css';
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+
 import { FaEye } from 'react-icons/fa';
 import { LuMousePointerClick } from 'react-icons/lu';
 import { FaEdit } from 'react-icons/fa';
@@ -12,9 +15,18 @@ import { MdAttachMoney } from 'react-icons/md';
 import { PiTarget } from 'react-icons/pi';
 import { GiPayMoney } from 'react-icons/gi';
 import { FaMoneyBillWave } from 'react-icons/fa';
+import { RiDeleteBin2Fill } from 'react-icons/ri';
+import { FaPauseCircle } from 'react-icons/fa';
+import { FaCirclePlay } from 'react-icons/fa6';
 
 import wbLogo from '../single-vendorcode/wb_logo.png';
 import mpStatsLogo from '../single-vendorcode/mpstats_logo.svg';
+import {
+  pauseCampaign,
+  runCampaign,
+  endCampaign,
+} from '../../redux/slices/autoCampaignsSlice';
+import { hostName } from '../../utils/host';
 
 const CMPGN_STATUS = {
   '-1': 'Кампания в процессе удаления',
@@ -46,6 +58,29 @@ const CREATED_BY = {
 
 const AutoCampaignsTable = ({ cmpgns }) => {
   const [selectedCampaign, setSelectedCampaign] = useState(null);
+  const navigation = useNavigate();
+
+  const handleClickOnEdit = (event) => {
+    const id = event.currentTarget.getAttribute('data-value');
+    navigation(`/tools/auto_campaigns/edit/${id}`);
+  };
+
+  const handleClickOnPause = (event) => {
+    const id = event.currentTarget.getAttribute('data-value');
+    dispatch(pauseCampaign(`${hostName}/autocampaigns/pause/${id}`));
+  };
+
+  const handleClickOnRun = (event) => {
+    const id = event.currentTarget.getAttribute('data-value');
+    dispatch(runCampaign(`${hostName}/autocampaigns/run/${id}`));
+  };
+
+  const handleClickOnBin = (event) => {
+    const id = event.currentTarget.getAttribute('data-value');
+    dispatch(endCampaign(`${hostName}/autocampaigns/end/${id}`));
+  };
+
+  const dispatch = useDispatch();
 
   return (
     <>
@@ -83,6 +118,18 @@ const AutoCampaignsTable = ({ cmpgns }) => {
                       >
                         {CREATED_BY[cmpgn.createdBy] || 'Статус неизвестен'}
                       </div>
+                      {cmpgn.pausedByTurnover ? (
+                        <div
+                          className={styles.campaignStatus}
+                          style={{
+                            backgroundColor: '#ffcfcf',
+                          }}
+                        >
+                          {'На паузе из-за оборачиваемости'}
+                        </div>
+                      ) : (
+                        <></>
+                      )}
                     </div>
                     <div className={styles.campaignDetails}>
                       <FaEye /> {cmpgn.views}
@@ -103,11 +150,57 @@ const AutoCampaignsTable = ({ cmpgns }) => {
                     </div>
                   </div>
                 </div>
-                <img
-                  src={cmpgn.image}
-                  alt={cmpgn.campName}
-                  className={styles.campaignImage}
-                />
+                <div className={styles.rightPart}>
+                  <img
+                    src={cmpgn.image}
+                    alt={cmpgn.campName}
+                    className={styles.campaignImage}
+                  />
+                  <div className={styles.actionButtons}>
+                    {cmpgn.status === 11 ? (
+                      <FaCirclePlay
+                        className={styles.actionButton}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleClickOnRun(e);
+                        }}
+                        data-value={cmpgn.id}
+                      />
+                    ) : cmpgn.status === 9 ? (
+                      <FaPauseCircle
+                        className={styles.actionButton}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleClickOnPause(e);
+                        }}
+                        data-value={cmpgn.id}
+                      />
+                    ) : (
+                      <></>
+                    )}
+                    {cmpgn.createdBy === 'SOFT' ? (
+                      <FaEdit
+                        className={styles.actionButton}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleClickOnEdit(e);
+                        }}
+                        data-value={cmpgn.id}
+                      />
+                    ) : (
+                      <></>
+                    )}
+
+                    <RiDeleteBin2Fill
+                      className={styles.bin}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleClickOnBin(e);
+                      }}
+                      data-value={cmpgn.id}
+                    />
+                  </div>
+                </div>
               </div>
             </div>
           ))}

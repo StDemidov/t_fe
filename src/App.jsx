@@ -35,6 +35,7 @@ import { Provider } from 'react-redux';
 import EbitdaSettings from './components/ebitda_settings/EbitdaSettings';
 import AutoCampaignsList from './components/autocampaigns_list/AutoCampaignsList';
 import AutoCampaignCreate from './components/autocampaign_create/AutoCampaignCreate';
+import AutoCampaignEdit from './components/autocampaign_edit/AutoCampaignEdit';
 import TasksHoldStocks from './components/tasks_hold_stocks/TasksHoldStocks';
 import TaskHoldStocksCreate from './components/tasks_hold_stocks/task_hold_stocks_create/TaskHoldStocksCreate';
 import TaskHoldStocksEdit from './components/tasks_hold_stocks/task_hold_stocks_edit/TaskHoldStocksEdit';
@@ -93,6 +94,10 @@ function App() {
                   <Route
                     path="tools/auto_campaigns/create"
                     element={<AutoCampaignCreate />}
+                  />
+                  <Route
+                    path="tools/auto_campaigns/edit/:id"
+                    element={<AutoCampaignEdit />}
                   />
                   <Route path="tools/tasks_a_28" element={<TasksA28 />} />
                   <Route

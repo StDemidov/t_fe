@@ -125,3 +125,24 @@
   color: #999;
   text-align: center;
 }
+
+.actionButtons {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.rightPart {
+  align-items: center;
+  display: flex;
+  gap: 50px;
+}
+
+.actionButton:hover {
+  scale: 1.2;
+}
+
+.bin:hover {
+  scale: 1.2;
+  color: red;
+}

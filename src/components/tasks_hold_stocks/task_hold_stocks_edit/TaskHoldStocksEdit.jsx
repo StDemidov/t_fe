@@ -33,9 +33,8 @@ const TaskHoldStocksEdit = () => {
 
   const [taskName, setTaskName] = useState('');
   const [increaseStep, setIncreaseStep] = useState(0);
-  const [decreaseStep, setDecreaseStep] = useState(0);
-  const [minPrice, setMinPrice] = useState();
   const [skuList, setSkuList] = useState('');
+  const [maxPrice, setMaxPrice] = useState(0);
 
   useEffect(() => {
     if (notificationMessage !== '') {
@@ -52,6 +51,7 @@ const TaskHoldStocksEdit = () => {
     if (taskData.task) {
       setTaskName(taskData?.task?.task_name);
       setIncreaseStep(taskData?.task?.increase_step);
+      setMaxPrice(taskData?.task?.max_price);
       setSkuList(taskData?.task?.sku_list.split(','));
     }
   }, [taskData]);
@@ -97,16 +97,20 @@ const TaskHoldStocksEdit = () => {
       dispatch(setError('Заполните шаг изменения цены!'));
     } else if (skuList.length === 0) {
       dispatch(setError('Необходимо выбрать хотя бы 1 артикул!'));
+    } else if (maxPrice === 0) {
+      dispatch(setError('Установите максимальную цену!'));
     } else {
       let data = {
         task_name: taskName,
         increase_step: increaseStep,
         sku_list: skuList.join(','),
+        max_price: maxPrice,
       };
       if (taskData.task.task_name == taskName) {
         data = {
           increase_step: increaseStep,
           sku_list: skuList.join(','),
+          max_price: maxPrice,
         };
       }
 
@@ -170,6 +174,17 @@ const TaskHoldStocksEdit = () => {
                       id="increaseStep"
                       value={increaseStep === 0 ? '' : increaseStep}
                       onChange={(e) => setIncreaseStep(Number(e.target.value))}
+                    />
+                  </li>
+                  <li>
+                    <label htmlFor="maxPrice">Максимальная цена: </label>
+                    <input
+                      required={true}
+                      type="number"
+                      min="500"
+                      id="maxPrice"
+                      value={maxPrice === 0 ? '' : maxPrice}
+                      onChange={(e) => setMaxPrice(Number(e.target.value))}
                     />
                   </li>
                 </div>

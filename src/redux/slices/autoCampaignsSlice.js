@@ -51,6 +51,45 @@ export const fetchAutoCampaignById = createAsyncThunk(
   }
 );
 
+export const pauseCampaign = createAsyncThunk(
+  'autoCampaigns/pauseCampaign',
+  async (url, thunkAPI) => {
+    try {
+      const res = await axios.get(url);
+      thunkAPI.dispatch(setNotification('Кампания приостановлена.'));
+      return res.data;
+    } catch (error) {
+      thunkAPI.dispatch(setError(error.message));
+    }
+  }
+);
+
+export const runCampaign = createAsyncThunk(
+  'autoCampaigns/runCampaign',
+  async (url, thunkAPI) => {
+    try {
+      const res = await axios.get(url);
+      thunkAPI.dispatch(setNotification('Кампания запущена.'));
+      return res.data;
+    } catch (error) {
+      thunkAPI.dispatch(setError(error.message));
+    }
+  }
+);
+
+export const endCampaign = createAsyncThunk(
+  'autoCampaigns/endCampaign',
+  async (url, thunkAPI) => {
+    try {
+      const res = await axios.get(url);
+      thunkAPI.dispatch(setNotification('Кампания завершена.'));
+      return res.data;
+    } catch (error) {
+      thunkAPI.dispatch(setError(error.message));
+    }
+  }
+);
+
 export const createAutoCampaign = createAsyncThunk(
   'autoCampaigns/createAutoCampaign',
   async ({ data, url }, thunkAPI) => {
@@ -116,6 +155,6 @@ const autoCampaignsSlice = createSlice({
 export const selectAutoCampaigns = (state) => state.autoCampaigns.autoCampaigns;
 export const selectIsLoading = (state) => state.autoCampaigns.isLoading;
 export const selectSkuDataAutoCmpgns = (state) => state.autoCampaigns.skuData;
-export const selectCmpgnSingle = (state) => state.tasksDrain.cmpgnSingle;
+export const selectCmpgnSingle = (state) => state.autoCampaigns.cmpgnSingle;
 
 export default autoCampaignsSlice.reducer;

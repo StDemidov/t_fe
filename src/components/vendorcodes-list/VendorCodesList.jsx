@@ -57,7 +57,9 @@ const initialColumns = [
   { key: 'selfPrice', label: 'Себестоимость', hidden: false },
   { key: 'selfPriceWONDS', label: 'Себестоимость без НДС', hidden: false },
   { key: 'turnover', label: 'Оборачиваемость WB', hidden: false },
-  // { key: 'cartToOrder', label: '% Из корзины в заказ', hidden: false },
+  { key: 'addToCart', label: '% Добавления в корзину', hidden: false },
+  { key: 'cartToOrder', label: '% Из корзины в заказ', hidden: false },
+  { key: 'clickToOrder', label: '% Из клика в заказ', hidden: false },
 ];
 
 const SortableItem = ({ column, toggleHidden }) => {
@@ -246,6 +248,9 @@ const VendorCodesList = () => {
       item.adsCosts
     );
     item.costPerOrderAVG = getAverage(item.costPerOrder, startDate, endDate);
+    item.cartToOrderAVG = getAverage(item.cartToOrder, startDate, endDate);
+    item.clickToOrderAVG = getAverage(item.clickToOrder, startDate, endDate);
+    item.addToCartAVG = getAverage(item.addToCart, startDate, endDate);
     return item;
   });
 

@@ -8,6 +8,7 @@ const createTasksHoldStocksList = (tasksHold) => {
       skuList: task.sku_list.split(','),
       isActive: task.is_active,
       isCompleted: task.completed,
+      maxPrice: task.max_price,
     };
   });
   return taskHold;

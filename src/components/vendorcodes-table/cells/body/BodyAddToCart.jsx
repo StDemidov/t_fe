@@ -4,19 +4,17 @@ import { v4 as uuidv4 } from 'uuid';
 import styles from './style.module.css';
 import LineplotVC from '../../../lineplot_vc/LineplotVC';
 
-const BodyCartToOrder = ({ vc, datesFilter }) => {
+const BodyAddToCart = ({ vc, datesFilter }) => {
   return (
     <div className={styles.cell}>
       <LazyLoad key={uuidv4()} offset={100}>
         <div>
-          <LineplotVC data={vc.cartToOrder} dates={datesFilter} />
+          <LineplotVC data={vc.addToCart} dates={datesFilter} />
           <div
             className={styles.summary}
-            style={
-              vc.cartToOrderAVG ? { display: 'block' } : { display: 'none' }
-            }
+            style={vc.addToCartAVG ? { display: 'block' } : { display: 'none' }}
           >
-            Среднее: {vc.cartToOrderAVG} %
+            Среднее: {vc.addToCartAVG} %
           </div>
         </div>
       </LazyLoad>
@@ -24,4 +22,4 @@ const BodyCartToOrder = ({ vc, datesFilter }) => {
   );
 };
 
-export default BodyCartToOrder;
+export default BodyAddToCart;

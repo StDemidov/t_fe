@@ -52,6 +52,9 @@ import BodyPriceASPP from './cells/body/BodyPriceASPP';
 import BodySelfPrice from './cells/body/BodySelfPrice';
 import BodySelfPriceWONDS from './cells/body/BodySelfPriceWONDS';
 import BodyTurnover from './cells/body/BodyTurnover';
+import BodyCartToOrder from './cells/body/BodyCartToOrder';
+import BodyClickToOrder from './cells/body/BodyClickToOrder';
+import BodyAddToCart from './cells/body/BodyAddToCart';
 
 import FooterTags from './cells/footer/FooterTags';
 import FooterOrders from './cells/footer/FooterOrders';
@@ -70,8 +73,9 @@ import FooterSelfPrice from './cells/footer/FooterSelfPrice';
 import FooterSelfPriceWONDS from './cells/footer/FooterSelfPriceWONDS';
 import FooterTurnover from './cells/footer/FooterTurnover';
 import FooterWBStocks from './cells/footer/FooterWBStocks';
-import BodyCartToOrder from './cells/body/BodyCartToOrder';
 import FooterCartToOrder from './cells/footer/FooterCartToOrder';
+import FooterClickToOrder from './cells/footer/FooterClickToOrder';
+import FooterAddToCart from './cells/footer/FooterAddToCart';
 
 const сolRender = {
   tags: {
@@ -152,13 +156,33 @@ const сolRender = {
       <FooterCPO key={uuidv4()} avgCostPerOrder={avgCostPerOrder} />
     ),
   },
-  // cartToOrder: {
-  //   render: (vc, datesFilter) => (
-  //     <BodyCartToOrder vc={vc} datesFilter={datesFilter} key={uuidv4()} />
-  //   ),
-  //   renderHeader: () => <HeaderCartToOrder key={uuidv4()} />,
-  //   renderFooter: () => <FooterCartToOrder key={uuidv4()} />,
-  // },
+  cartToOrder: {
+    render: (vc, datesFilter) => (
+      <BodyCartToOrder vc={vc} datesFilter={datesFilter} key={uuidv4()} />
+    ),
+    renderHeader: () => <HeaderCartToOrder key={uuidv4()} />,
+    renderFooter: (avgCartToOrder) => (
+      <FooterCartToOrder key={uuidv4()} avgCartToOrder={avgCartToOrder} />
+    ),
+  },
+  clickToOrder: {
+    render: (vc, datesFilter) => (
+      <BodyClickToOrder vc={vc} datesFilter={datesFilter} key={uuidv4()} />
+    ),
+    renderHeader: () => <HeaderClickToOrder key={uuidv4()} />,
+    renderFooter: (avgClickToOrder) => (
+      <FooterClickToOrder key={uuidv4()} avgClickToOrder={avgClickToOrder} />
+    ),
+  },
+  addToCart: {
+    render: (vc, datesFilter) => (
+      <BodyAddToCart vc={vc} datesFilter={datesFilter} key={uuidv4()} />
+    ),
+    renderHeader: () => <HeaderAddToCart key={uuidv4()} />,
+    renderFooter: (avgAddToCart) => (
+      <FooterAddToCart key={uuidv4()} avgAddToCart={avgAddToCart} />
+    ),
+  },
   cps: {
     render: (vc, datesFilter) => <BodyCPS vc={vc} key={uuidv4()} />,
     renderHeader: () => <HeaderCPS key={uuidv4()} />,
@@ -197,7 +221,9 @@ const сolRender = {
   selfPriceWONDS: {
     render: (vc, datesFilter) => <BodySelfPriceWONDS vc={vc} key={uuidv4()} />,
     renderHeader: () => <HeaderSelfPriceWONDS key={uuidv4()} />,
-    renderFooter: () => <FooterSelfPriceWONDS key={uuidv4()} />,
+    renderFooter: (selfPriceWONDS) => (
+      <FooterSelfPriceWONDS key={uuidv4()} selfPriceWONDS={selfPriceWONDS} />
+    ),
   },
   turnover: {
     render: (vc, datesFilter) => <BodyTurnover vc={vc} key={uuidv4()} />,
@@ -255,6 +281,20 @@ const VendorCodesTable = ({ data, columns }) => {
   const avg_self_price = Math.round(
     data.reduce((total, next) => total + next.selfPrice, 0) / data.length
   );
+  const avgSelfPriceWONDS = Math.round(
+    data.reduce((total, next) => total + next.selfPriceWONds, 0) / data.length
+  );
+  const avgAddToCart = Math.round(
+    data.reduce((total, next) => total + next.addToCart.at(-1), 0) / data.length
+  );
+  const avgCartToOrder = Math.round(
+    data.reduce((total, next) => total + next.cartToOrder.at(-1), 0) /
+      data.length
+  );
+  const avgClickToOrder = Math.round(
+    data.reduce((total, next) => total + next.clickToOrder.at(-1), 0) /
+      data.length
+  );
 
   const footerVars = {
     orders: data,
@@ -270,6 +310,10 @@ const VendorCodesTable = ({ data, columns }) => {
     priceBSPP: avg_price_b_spp,
     priceASPP: avg_price_ssp,
     selfPrice: avg_self_price,
+    selfPriceWONDS: avgSelfPriceWONDS,
+    addToCart: avgAddToCart,
+    cartToOrder: avgCartToOrder,
+    clickToOrder: avgClickToOrder,
   };
 
   return (
