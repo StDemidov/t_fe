@@ -1,0 +1,52 @@
+/* Общие стили для таблицы */
+.gantt-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: Arial, sans-serif;
+}
+
+.table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+/* Стили для заголовков */
+.gantt-table th,
+.gantt-table td {
+  border: 1px solid #ddd;
+  text-align: center;
+  padding: 8px;
+}
+
+.gantt-table th {
+  background-color: #f4f4f4;
+  font-weight: bold;
+  position: sticky;
+}
+
+/* Стили для ячеек с остатками */
+.cell-green {
+  background-color: #4caf50; /* Полностью зелёный */
+}
+
+.cell-yellow {
+  background-color: #ffeb3b; /* Частично заполненный */
+}
+
+.cell-red {
+  background-color: #f44336; /* Полностью красный */
+}
+
+/* Стили для баркодов */
+.barcode-column {
+  font-weight: bold;
+  background-color: #f9f9f9;
+}
+
+.cell-purple {
+  background-color: purple;
+}
+
+.cell-blue {
+  background-color: blue;
+}

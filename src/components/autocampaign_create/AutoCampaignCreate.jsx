@@ -40,8 +40,8 @@ const AutoCampaignCreate = () => {
 
   const [currBudget, setCurrBudget] = useState(5000);
   const [cpm, setCpm] = useState(150);
-  const [ctrBench, setCtrBench] = useState(3.5);
-  const [viewsBench, setViewsBench] = useState(70);
+  const [ctrBench, setCtrBench] = useState(2);
+  const [viewsBench, setViewsBench] = useState(50);
   const [whenToPause, setWhenToPause] = useState(5);
   const [whenToAddBudget, setWhenToAddBudget] = useState(3000);
   const [howMuchToAdd, setHowMuchToAdd] = useState(2000);

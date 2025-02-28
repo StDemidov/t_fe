@@ -28,6 +28,7 @@ import LoginPage from './components/login_page/LoginPage';
 import SingleTaskDrainInfo from './components/tasks_drain/tasks_table_drain/single-task-drain-info/SingleTaskDrainInfo';
 import SingleTaskB28Info from './components/price-cotrol-page/tasks-b-28/tasks_table/single-task-b28-info/SingleTaskB28Info';
 import SingleTaskA28Info from './components/price-cotrol-page/tasks-a-28/tasks_table_a28/single-task-a28-info/SingleTaskA28Info';
+import BarcodesListNew from './components/barcodes_list_new/BarcodesListNew';
 
 import { store, persistor } from './redux/store';
 import { PersistGate } from 'redux-persist/integration/react';
@@ -58,7 +59,7 @@ function App() {
                     path="vendorcodes/:id"
                     element={<SingleVendorCode />}
                   />
-                  <Route path="barcodes" element={<BarcodesList />} />
+                  <Route path="barcodes" element={<BarcodesListNew />} />
                   <Route path="categories" element={<CategoriesList />} />
                   <Route path="categories/:id" element={<SingleCategory />} />
                   <Route path="tools" element={<Tools />} />
