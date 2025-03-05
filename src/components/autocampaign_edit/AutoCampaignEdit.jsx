@@ -54,8 +54,6 @@ const AutoCampaignEdit = () => {
       dispatch(setError('Установите пороговый CTR!'));
     } else if (viewsBench < 10) {
       dispatch(setError('Установите порог по просмотрам выше 10!'));
-    } else if (whenToPause < 1) {
-      dispatch(setError('Установите порог оборачиваемости!'));
     } else if (whenToAddBudget < 1000) {
       dispatch(setError('Установите порог пополнения бюджета больше 1000!'));
     } else if (howMuchToAdd < 1000) {
@@ -115,7 +113,7 @@ const AutoCampaignEdit = () => {
                     <input
                       required={true}
                       type="number"
-                      min="1"
+                      min="-100"
                       id="whenToPause"
                       value={whenToPause === 0 ? '' : whenToPause}
                       onChange={(e) => setWhenToPause(Number(e.target.value))}

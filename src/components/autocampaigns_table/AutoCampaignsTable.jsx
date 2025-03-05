@@ -18,6 +18,7 @@ import { FaMoneyBillWave } from 'react-icons/fa';
 import { RiDeleteBin2Fill } from 'react-icons/ri';
 import { FaPauseCircle } from 'react-icons/fa';
 import { FaCirclePlay } from 'react-icons/fa6';
+import { RiAuctionFill } from 'react-icons/ri';
 
 import wbLogo from '../single-vendorcode/wb_logo.png';
 import mpStatsLogo from '../single-vendorcode/mpstats_logo.svg';
@@ -63,6 +64,11 @@ const AutoCampaignsTable = ({ cmpgns }) => {
   const handleClickOnEdit = (event) => {
     const id = event.currentTarget.getAttribute('data-value');
     navigation(`/tools/auto_campaigns/edit/${id}`);
+  };
+
+  const handleClickOnAuction = (event) => {
+    const id = event.currentTarget.getAttribute('data-value');
+    navigation(`/tools/auction_campaigns/create/${id}`);
   };
 
   const handleClickOnPause = (event) => {
@@ -191,6 +197,14 @@ const AutoCampaignsTable = ({ cmpgns }) => {
                       <></>
                     )}
 
+                    <RiAuctionFill
+                      className={styles.actionButton}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleClickOnAuction(e);
+                      }}
+                      data-value={cmpgn.id}
+                    />
                     <RiDeleteBin2Fill
                       className={styles.bin}
                       onClick={(e) => {

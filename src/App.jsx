@@ -41,6 +41,10 @@ import TasksHoldStocks from './components/tasks_hold_stocks/TasksHoldStocks';
 import TaskHoldStocksCreate from './components/tasks_hold_stocks/task_hold_stocks_create/TaskHoldStocksCreate';
 import TaskHoldStocksEdit from './components/tasks_hold_stocks/task_hold_stocks_edit/TaskHoldStocksEdit';
 import SingleTaskHoldStocksInfo from './components/tasks_hold_stocks/tasks_table_hold_stocks/single_task_hold_stocks_info/SingleTaskHoldStocksInfo';
+import AuctionCampaignsList from './components/auction_campaigns_list/AuctionCampaignsList';
+import AuctionCampaignCreate from './components/auction_campaign_create/AuctionCampaignCreate';
+import AuctionCampaignEditMain from './components/auction_campaign_edit_main/AuctionCampaignEditMain';
+import AuctionCampaignEdit from './components/auction_campaign_edit/AuctionCampaignEdit';
 
 function App() {
   const currentUser = useSelector(selectUser);
@@ -91,6 +95,22 @@ function App() {
                   <Route
                     path="tools/auto_campaigns"
                     element={<AutoCampaignsList />}
+                  />
+                  <Route
+                    path="tools/auction_campaigns"
+                    element={<AuctionCampaignsList />}
+                  />
+                  <Route
+                    path="tools/auction_campaigns/create/:id"
+                    element={<AuctionCampaignCreate />}
+                  />
+                  <Route
+                    path="tools/auction_campaigns/edit/:id"
+                    element={<AuctionCampaignEditMain />}
+                  />
+                  <Route
+                    path="tools/auction_campaigns/edit_part/:id"
+                    element={<AuctionCampaignEdit />}
                   />
                   <Route
                     path="tools/auto_campaigns/create"

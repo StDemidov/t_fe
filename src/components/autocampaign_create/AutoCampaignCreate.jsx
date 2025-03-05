@@ -88,8 +88,6 @@ const AutoCampaignCreate = () => {
       dispatch(setError('Установите порог по просмотрам выше 10!'));
     } else if (sku === '') {
       dispatch(setError('Необходимо выбрать артикул!'));
-    } else if (whenToPause < 1) {
-      dispatch(setError('Установите порог оборачиваемости!'));
     } else if (whenToAddBudget < 1000) {
       dispatch(setError('Установите порог пополнения бюджета больше 1000!'));
     } else if (howMuchToAdd < 1000) {
@@ -157,7 +155,7 @@ const AutoCampaignCreate = () => {
                     <input
                       required={true}
                       type="number"
-                      min="1"
+                      min="-100"
                       id="whenToPause"
                       value={whenToPause === 0 ? '' : whenToPause}
                       onChange={(e) => setWhenToPause(Number(e.target.value))}

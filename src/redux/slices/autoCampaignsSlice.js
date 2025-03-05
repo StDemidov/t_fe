@@ -12,6 +12,7 @@ const initialState = {
   autoCampaigns: [],
   skuData: [],
   isLoading: false,
+  creatingIsLoading: false,
   cmpgnSingle: {},
 };
 
@@ -103,6 +104,21 @@ export const createAutoCampaign = createAsyncThunk(
   }
 );
 
+export const createAucCampaign = createAsyncThunk(
+  'autoCampaigns/createAucCampaign',
+  async ({ data, url }, thunkAPI) => {
+    try {
+      const res = await axios.post(url, data);
+      thunkAPI.dispatch(
+        setNotification('Кампания успешно переведена в Аукцион!')
+      );
+      return res.data;
+    } catch (error) {
+      thunkAPI.dispatch(setError(error.message));
+    }
+  }
+);
+
 export const editAutoCampaign = createAsyncThunk(
   'autoCampaigns/editAutoCampaign',
   async ({ data, url }, thunkAPI) => {
@@ -130,6 +146,12 @@ const autoCampaignsSlice = createSlice({
     builder.addCase(fetchAutoCampaigns.pending, (state) => {
       state.isLoading = true;
     });
+    builder.addCase(createAucCampaign.pending, (state) => {
+      state.creatingIsLoading = true;
+    });
+    builder.addCase(createAucCampaign.fulfilled, (state) => {
+      state.creatingIsLoading = false;
+    });
     builder.addCase(fetchAutoCampaignById.fulfilled, (state, action) => {
       state.isLoading = false;
       if (action.payload) {
@@ -153,6 +175,8 @@ const autoCampaignsSlice = createSlice({
 });
 
 export const selectAutoCampaigns = (state) => state.autoCampaigns.autoCampaigns;
+export const selectCreatingIsLoading = (state) =>
+  state.autoCampaigns.creatingIsLoading;
 export const selectIsLoading = (state) => state.autoCampaigns.isLoading;
 export const selectSkuDataAutoCmpgns = (state) => state.autoCampaigns.skuData;
 export const selectCmpgnSingle = (state) => state.autoCampaigns.cmpgnSingle;
