@@ -27,11 +27,11 @@ const AuctionCampaignCreate = () => {
   const [ctrBench, setCtrBench] = useState(0);
   const [viewsBench, setViewsBench] = useState(0);
   const [whenToPause, setWhenToPause] = useState(0);
-  const [whenToAddBudget, setWhenToAddBudget] = useState(0);
-  const [howMuchToAdd, setHowMuchToAdd] = useState(0);
-  const [highCPM, setHighCPM] = useState(200);
-  const [lowCPM, setLowCPM] = useState(150);
-  const [budget, setBudget] = useState(5000);
+  const [whenToAddBudget, setWhenToAddBudget] = useState(2000);
+  const [howMuchToAdd, setHowMuchToAdd] = useState(1000);
+  const [cpm, setCPM] = useState(150);
+  const [sku, setSku] = useState('');
+  const [budget, setBudget] = useState(3000);
 
   useEffect(() => {
     if (notificationMessage !== '') {
@@ -49,8 +49,7 @@ const AuctionCampaignCreate = () => {
       setCtrBench(cmpgn?.ctrBench);
       setViewsBench(cmpgn?.viewsBench);
       setWhenToPause(cmpgn?.whenToPause);
-      setWhenToAddBudget(cmpgn?.whenToAddBudget);
-      setHowMuchToAdd(cmpgn?.howMuchToAdd);
+      setSku(cmpgn?.sku);
     }
   }, [cmpgn]);
 
@@ -60,10 +59,8 @@ const AuctionCampaignCreate = () => {
       dispatch(setError('Установите пороговый CTR!'));
     } else if (viewsBench < 10) {
       dispatch(setError('Установите порог по просмотрам выше 10!'));
-    } else if (highCPM <= 0) {
-      dispatch(setError('Установите CPM для ВЧ кампании!'));
-    } else if (lowCPM <= 0) {
-      dispatch(setError('Установите CPM для НЧ кампании!'));
+    } else if (cpm <= 149) {
+      dispatch(setError('Установите CPM не ниже 150 руб.!'));
     } else if (budget <= 1000) {
       dispatch(setError('Установите бюджет не менее 1000!'));
     } else if (whenToAddBudget < 1000) {
@@ -72,11 +69,11 @@ const AuctionCampaignCreate = () => {
       dispatch(setError('Установите сумму пополнения не менее 1000!'));
     } else {
       const data = {
-        camp_id: cmpgn.campId,
+        parent_id: cmpgn.campId,
+        sku: sku,
         ctr_bench: ctrBench * 100,
         views_bench: viewsBench,
-        high_freq_cpm: highCPM,
-        low_freq_cpm: lowCPM,
+        cpm: cpm,
         budget: budget,
         when_to_pause: whenToPause,
         when_to_add_budget: whenToAddBudget,
@@ -85,7 +82,7 @@ const AuctionCampaignCreate = () => {
       dispatch(
         createAucCampaign({
           data: data,
-          url: `${hostName}/auctioncampaigns/create`,
+          url: `${hostName}/auctioncampaigns/create_new`,
         })
       );
     }
@@ -185,25 +182,14 @@ const AuctionCampaignCreate = () => {
                   <div className={styles.debContainer}>
                     <div className={styles.infoText}>CPM:</div>
                     <li>
-                      <label htmlFor="highCPM">CPM ВЧ кампании: </label>
+                      <label htmlFor="cpm">CPM кампаний: </label>
                       <input
                         required={true}
                         type="number"
-                        min="0"
-                        id="highCPM"
-                        value={highCPM === 0 ? '' : highCPM}
-                        onChange={(e) => setHighCPM(e.target.value)}
-                      />
-                    </li>
-                    <li>
-                      <label htmlFor="lowCPM">CPM НЧ кампаний: </label>
-                      <input
-                        required={true}
-                        type="number"
-                        min="0"
-                        id="lowCPM"
-                        value={lowCPM === 0 ? '' : lowCPM}
-                        onChange={(e) => setLowCPM(e.target.value)}
+                        min="150"
+                        id="cpm"
+                        value={cpm === 0 ? '' : cpm}
+                        onChange={(e) => setCPM(e.target.value)}
                       />
                     </li>
                   </div>

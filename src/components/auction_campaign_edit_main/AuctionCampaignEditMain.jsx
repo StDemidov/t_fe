@@ -27,8 +27,7 @@ const AuctionCampaignEditMain = () => {
   const [whenToPause, setWhenToPause] = useState(0);
   const [whenToAddBudget, setWhenToAddBudget] = useState(0);
   const [howMuchToAdd, setHowMuchToAdd] = useState(0);
-  const [highCPM, setHighCPM] = useState(200);
-  const [lowCPM, setLowCPM] = useState(150);
+  const [cpm, setCPM] = useState(150);
 
   useEffect(() => {
     if (notificationMessage !== '') {
@@ -38,15 +37,16 @@ const AuctionCampaignEditMain = () => {
 
   useEffect(() => {
     dispatch(
-      fetchAucCampaignByIdMain(`${hostName}/auctioncampaigns/main_by_id/${id}`)
+      fetchAucCampaignByIdMain(
+        `${hostName}/auctioncampaigns/main_by_id_new/${id}`
+      )
     );
   }, []);
 
   useEffect(() => {
     if (cmpgn) {
       setCampName(cmpgn?.vcName);
-      setHighCPM(cmpgn?.highCPM);
-      setLowCPM(cmpgn?.lowCPM);
+      setCPM(cmpgn?.cpm);
       setWhenToPause(cmpgn?.whenToPause);
       setWhenToAddBudget(cmpgn?.whenToAddBudget);
       setHowMuchToAdd(cmpgn?.howMuchToAdd);
@@ -55,10 +55,8 @@ const AuctionCampaignEditMain = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (highCPM <= 0) {
-      dispatch(setError('Установите CPM для ВЧ кампании!'));
-    } else if (lowCPM <= 0) {
-      dispatch(setError('Установите CPM для НЧ кампании!'));
+    if (cpm <= 0) {
+      dispatch(setError('Установите CPM не ниже 150!'));
     } else if (whenToAddBudget < 1000) {
       dispatch(setError('Установите порог пополнения бюджета больше 1000!'));
     } else if (howMuchToAdd < 1000) {
@@ -66,8 +64,7 @@ const AuctionCampaignEditMain = () => {
     } else {
       const data = {
         camp_id: Number(id),
-        high_freq_cpm: highCPM,
-        low_freq_cpm: lowCPM,
+        cpm: cpm,
         when_to_pause: whenToPause,
         when_to_add_budget: whenToAddBudget,
         how_much_to_add: howMuchToAdd,
@@ -75,7 +72,7 @@ const AuctionCampaignEditMain = () => {
       dispatch(
         editAucCampaign({
           data: data,
-          url: `${hostName}/auctioncampaigns/edit_main`,
+          url: `${hostName}/auctioncampaigns/edit_main_new`,
         })
       );
     }
@@ -145,25 +142,14 @@ const AuctionCampaignEditMain = () => {
                   <div className={styles.debContainer}>
                     <div className={styles.infoText}>CPM:</div>
                     <li>
-                      <label htmlFor="highCPM">CPM ВЧ кампании: </label>
+                      <label htmlFor="CPM">CPM кампании: </label>
                       <input
                         required={true}
                         type="number"
                         min="0"
-                        id="highCPM"
-                        value={highCPM === 0 ? '' : highCPM}
-                        onChange={(e) => setHighCPM(e.target.value)}
-                      />
-                    </li>
-                    <li>
-                      <label htmlFor="lowCPM">CPM НЧ кампаний: </label>
-                      <input
-                        required={true}
-                        type="number"
-                        min="0"
-                        id="lowCPM"
-                        value={lowCPM === 0 ? '' : lowCPM}
-                        onChange={(e) => setLowCPM(e.target.value)}
+                        id="CPM"
+                        value={cpm === 0 ? '' : cpm}
+                        onChange={(e) => setCPM(e.target.value)}
                       />
                     </li>
                   </div>

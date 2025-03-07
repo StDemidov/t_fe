@@ -257,8 +257,9 @@ const AuctionCampaignsTable = ({ cmpgns }) => {
                           {partCamp.views + partCamp.today_views === 0
                             ? 0
                             : (
-                                (partCamp.clicks + partCamp.today_clicks) /
-                                (partCamp.views + partCamp.today_views)
+                                ((partCamp.clicks + partCamp.today_clicks) /
+                                  (partCamp.views + partCamp.today_views)) *
+                                100
                               ).toFixed(2)}
                           {'%'}
                         </b>
@@ -277,7 +278,7 @@ const AuctionCampaignsTable = ({ cmpgns }) => {
                         </b>
                       </div>
                     </div>
-                    <div className={styles.partActionButtons}>
+                    {/* <div className={styles.partActionButtons}>
                       {partCamp.status === 9 ? (
                         <FaPauseCircle
                           className={styles.actionButton}
@@ -313,7 +314,7 @@ const AuctionCampaignsTable = ({ cmpgns }) => {
                         }}
                         data-value={partCamp.camp_id}
                       />
-                    </div>
+                    </div> */}
                   </div>
                 </div>
               ))}
