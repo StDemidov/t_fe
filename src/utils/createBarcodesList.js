@@ -1,51 +1,73 @@
-const createBarcodesList = (inputObj) => {
-  const sizeOrder = [
-    'XS',
-    'S',
-    'L',
-    'M',
-    'XL',
-    'XXL',
-    '4XL',
-    'XS/155',
-    'XS/175',
-    'S/155',
-    'S/175',
-    'M/155',
-    'M/175',
-    'L/155',
-    'L/175',
-    'XL/155',
-    'XXL/175',
-  ];
+const sizeOrder = [
+  'XS',
+  'S',
+  'L',
+  'M',
+  'XL',
+  'XXL',
+  '4XL',
+  'XS/155',
+  'XS/175',
+  'S/155',
+  'S/175',
+  'M/155',
+  'M/175',
+  'L/155',
+  'L/175',
+  'XL/155',
+  'XXL/175',
+];
 
-  // Функция для сортировки ключей barcodes по size
-  const sortBarcodes = (barcodes) => {
-    return Object.fromEntries(
-      Object.entries(barcodes).sort(
-        ([_, a], [__, b]) =>
-          sizeOrder.indexOf(a.size) - sizeOrder.indexOf(b.size)
-      )
-    );
-  };
+function toCamelCase(str) {
+  return str.replace(/_([a-z])/g, (_, letter) => letter.toUpperCase());
+}
 
-  // Создаем новый объект с отсортированными barcodes
-  const sortedObj = {};
-  for (const [articleName, articleData] of Object.entries(inputObj)) {
-    sortedObj[articleName] = {
-      ...articleData,
-      barcodes: sortBarcodes(articleData.barcodes),
+function parseNumberArray(str) {
+  return str.split(',').map(Number);
+}
+
+function transformBcData(bcData) {
+  return bcData.map((item) => {
+    return {
+      vcName: item.vc_name,
+      orders: parseNumberArray(item.orders),
+      abc: item.abc,
+      image: item.image,
+      selfPrice: Math.round(item.self_price),
+      barcodes: item.barcodes
+        .sort((a, b) => {
+          return sizeOrder.indexOf(a.size) - sizeOrder.indexOf(b.size);
+        })
+        .map((barcode) => ({
+          barcode: barcode.barcode,
+          stock: barcode.stock,
+          size: barcode.size,
+          forecasts: parseNumberArray(barcode.forecasts),
+        })),
     };
-  }
+  });
+}
 
-  return sortedObj;
+const transformOrders = (data) => {
+  const transformed = {};
+
+  data.orders.forEach((order) => {
+    if (!transformed[order.barcode]) {
+      transformed[order.barcode] = [];
+    }
+
+    transformed[order.barcode].push({
+      name: order.order_name,
+      amount: order.amount,
+    });
+  });
+
+  return transformed;
 };
 
-export default createBarcodesList;
-
-// data.sort(function (a, b) {
-//   const orderABC = ['AAA', 'A', 'B', 'BC30', 'BC10', 'C', 'G', ''];
-//   var indexA = orderABC.indexOf(a.abcCurrent);
-//   var indexB = orderABC.indexOf(b.abcCurrent);
-//   return indexA > indexB ? -1 : 1;
-// });
+export default function createBarcodesList(data) {
+  return {
+    bcData: transformBcData(data.bc_data),
+    orders: transformOrders(data),
+  };
+}

@@ -1,0 +1,305 @@
+/* Общие стили для таблицы */
+.ganttTable {
+  width: 100%;
+
+  border-collapse: collapse;
+  font-family: Arial, sans-serif;
+}
+
+.ganttTable thead {
+  height: 80px;
+}
+
+.tableWrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.tableWrapper::-webkit-scrollbar {
+  height: 0px;
+}
+
+/* Стили для заголовков */
+.ganttTable th,
+.ganttTable td {
+  padding: 8px;
+  outline: 1px solid #fff;
+  font-family: 'BebasNeue', sans-serif;
+  /* border: 1px solid #ffffff; */
+}
+
+.ganttTable th {
+  background-color: #f4f4f4;
+  font-weight: bold;
+  position: sticky;
+  /* outline: 1px solid #fff; */
+}
+
+/* Стили для ячеек с остатками */
+.cellGreen {
+  background-color: #2fd089; /* Полностью зелёный */
+  width: 100px;
+  min-width: 100px;
+  max-width: 100px;
+}
+
+.cellYellow {
+  background-color: #c7d02f; /* Частично заполненный */
+  width: 100px;
+  min-width: 100px;
+  max-width: 100px;
+}
+
+.cellRed {
+  background-color: #d02f76; /* Полностью красный */
+  width: 100px;
+  min-width: 100px;
+  max-width: 100px;
+  color: white;
+}
+
+/* Стили для баркодов */
+.barcodeColumn {
+  width: 80px;
+  min-width: 80px;
+  max-width: 80px;
+  position: sticky;
+  left: 0;
+  font-weight: bold;
+  background-color: #ffffff;
+  position: sticky;
+  z-index: 3;
+}
+
+.newOrderColumn {
+  width: 150px;
+  min-width: 150px;
+  max-width: 150px;
+  left: 294px;
+  position: sticky;
+  z-index: 3;
+  background-color: #ffffff;
+  align-items: center;
+}
+
+.ordersColumn {
+  width: 80px;
+  min-width: 80px;
+  max-width: 80px;
+  left: 98px;
+  position: sticky;
+  z-index: 3;
+  background-color: #ffffff;
+}
+
+.newOrderColumn input {
+  width: 75px;
+  border-radius: 5px;
+  border: 1px solid #2a9ed5;
+  text-align: center;
+  height: 20px;
+  align-items: center;
+}
+
+.cellPurple {
+  background-color: #382fd0;
+  width: 100px;
+  min-width: 100px;
+  max-width: 100px;
+  color: white;
+}
+
+.cellBlue {
+  background-color: #2a9ed5;
+  width: 100px;
+  min-width: 100px;
+  max-width: 100px;
+  /* color: white; */
+}
+
+.artBlock {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 10px;
+  height: 300px;
+}
+
+.headerBlock {
+  display: flex;
+  flex-direction: column;
+  height: 200px;
+  top: 0;
+  position: sticky;
+  z-index: 10;
+}
+
+.header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 90px;
+  background-color: #fff;
+  margin-bottom: 2px;
+}
+
+.headerFiltersButtons {
+  background-color: #fff;
+  height: 60px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.filters {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+}
+
+.actionButtons {
+  display: flex;
+  align-items: center;
+}
+
+.leftHeaderPart {
+  min-width: 400px;
+  display: flex;
+  margin-right: 1px;
+  height: 80px;
+  font-family: 'BebasNeue', sans-serif;
+  background-color: #f4f4f4;
+  font-size: 20px;
+  align-items: center;
+  justify-content: center;
+}
+
+.artInfo {
+  width: 400px;
+  /* margin-right: 20px; */
+  border: 1px solid black;
+  height: 100%;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+}
+
+.infoBlock {
+  width: 200px;
+}
+
+.imageBlock {
+  width: 200px;
+  padding: 20px;
+}
+
+.zoomImage {
+  width: 100%;
+  object-fit: cover; /* Масштабирование изображения без искажения */
+  border-radius: 20px;
+}
+
+.abcCategory {
+  z-index: 2;
+  display: flex;
+  color: rgb(247, 247, 247);
+  background-color: black;
+  border-radius: 10px;
+  height: 30px;
+  align-items: center;
+  justify-content: center;
+  font-family: 'BebasNeue', sans-serif;
+  font-size: 20px;
+}
+
+.cell {
+  width: 100px;
+  min-width: 100px;
+  max-width: 100px;
+}
+
+.sumOrderDiv {
+  margin-top: 5px;
+  font-size: 30px;
+}
+
+.remainingColumn {
+  width: 80px;
+  min-width: 80px;
+  max-width: 80px;
+  left: 196px;
+  position: sticky;
+  z-index: 3;
+  background-color: #ffffff;
+}
+
+.actionButton {
+  /* position: absolute;
+  right: 100px; */
+  background-color: #000000;
+  color: #ffffff;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 500;
+  border-radius: 0.5rem;
+  text-transform: uppercase;
+  width: 150px;
+  height: 40px;
+  font-family: 'BebasNeue', sans-serif;
+  border: none;
+  margin-left: 10px;
+}
+
+.actionButton:hover {
+  background-color: #6c46d6;
+  cursor: pointer;
+}
+
+.paginator {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  background-color: #fff;
+  height: 40px;
+}
+
+.pageIcon {
+  background-color: white;
+  border: 1px solid gray;
+  border-radius: 50%;
+  width: 25px;
+  height: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.currentPage {
+  background-color: #6c46d6;
+  color: white;
+  border: 1px solid #6c46d6;
+}
+
+.pageIcon:hover {
+  background-color: #6c46d6;
+  color: white;
+  cursor: pointer;
+}
+
+.infoBlock {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.ordersPlot {
+  display: flex;
+  flex-direction: column;
+  font-family: 'BebasNeue', sans-serif;
+}
+
+.summary {
+  font-size: 8px;
+  margin-top: 2px;
+  font-family: 'Verdana', Verdana, sans-serif;
+}

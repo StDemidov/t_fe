@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams, useNavigate } from 'react-router-dom';
 import { selectNotificationMessage } from '../../redux/slices/notificationSlice';
-
+import { FaEye } from 'react-icons/fa';
 import {
   fetchAucCampaignByIdMain,
   selectCmpgnSingle,
@@ -28,6 +28,11 @@ const AuctionCampaignEditMain = () => {
   const [whenToAddBudget, setWhenToAddBudget] = useState(0);
   const [howMuchToAdd, setHowMuchToAdd] = useState(0);
   const [cpm, setCPM] = useState(150);
+  const [ctrBench, setCTRBench] = useState(0);
+  const [viewsBench, setViewsBench] = useState(0);
+  const [topWords, setTopWords] = useState([]);
+  const [exclNum, setExclNum] = useState([]);
+  const [newExcl, setNewExcl] = useState([]);
 
   useEffect(() => {
     if (notificationMessage !== '') {
@@ -50,6 +55,12 @@ const AuctionCampaignEditMain = () => {
       setWhenToPause(cmpgn?.whenToPause);
       setWhenToAddBudget(cmpgn?.whenToAddBudget);
       setHowMuchToAdd(cmpgn?.howMuchToAdd);
+      setCTRBench(cmpgn?.ctrBench * 100);
+      setViewsBench(cmpgn?.viewsBench);
+      setExclNum(cmpgn?.exclNum);
+      cmpgn.topWords
+        ? setTopWords(cmpgn.topWords.split(','))
+        : setTopWords([1]);
     }
   }, [cmpgn]);
 
@@ -61,10 +72,17 @@ const AuctionCampaignEditMain = () => {
       dispatch(setError('Установите порог пополнения бюджета больше 1000!'));
     } else if (howMuchToAdd < 1000) {
       dispatch(setError('Установите сумму пополнения не менее 1000!'));
+    } else if (ctrBench <= 0) {
+      dispatch(setError('Установите пороговый CTR!'));
+    } else if (viewsBench <= 0) {
+      dispatch(setError('Установите порог по просмотрам!'));
     } else {
       const data = {
         camp_id: Number(id),
         cpm: cpm,
+        ctr_bench: ctrBench,
+        views_bench: viewsBench,
+        new_excl: newExcl,
         when_to_pause: whenToPause,
         when_to_add_budget: whenToAddBudget,
         how_much_to_add: howMuchToAdd,
@@ -78,9 +96,25 @@ const AuctionCampaignEditMain = () => {
     }
   };
 
+  const handeClickOnWord = (e) => {
+    const word = e.currentTarget.getAttribute('data-value');
+    if (newExcl.includes(word)) {
+      const newList = newExcl.filter((elem) => {
+        return elem !== word;
+      });
+      setNewExcl(newList);
+    } else {
+      if (exclNum + newExcl.length < 1000) {
+        setNewExcl([].concat(newExcl, word));
+      }
+    }
+  };
+
+  console.log(newExcl);
+
   return (
     <section>
-      <h1>Редактирование всех кампаний для {campName}</h1>
+      <h1>Редактирование кампании для {campName}</h1>
       <div className={styles.mainContainer}>
         <div className={styles.formContainer}>
           {isLoading ? (
@@ -95,9 +129,7 @@ const AuctionCampaignEditMain = () => {
               <ul>
                 <div className={styles.settingsContainer}>
                   <div className={styles.pricesContainer}>
-                    <div className={styles.infoText}>
-                      Пауза по оборачиваемости:
-                    </div>
+                    <div className={styles.infoText}>Пороги:</div>
                     <li>
                       <label htmlFor="whenToPause">
                         Минимальная оборачиваемость:{' '}
@@ -109,6 +141,28 @@ const AuctionCampaignEditMain = () => {
                         id="whenToPause"
                         value={whenToPause === 0 ? '' : whenToPause}
                         onChange={(e) => setWhenToPause(Number(e.target.value))}
+                      />
+                    </li>
+                    <li>
+                      <label htmlFor="ctrBench">Пороговый CTR: </label>
+                      <input
+                        required={true}
+                        type="number"
+                        min="0"
+                        id="ctrBench"
+                        value={ctrBench === 0 ? '' : ctrBench}
+                        onChange={(e) => setCTRBench(Number(e.target.value))}
+                      />
+                    </li>
+                    <li>
+                      <label htmlFor="viewsBench">Порог по просмотрам: </label>
+                      <input
+                        required={true}
+                        type="number"
+                        min="0"
+                        id="viewsBench"
+                        value={viewsBench === 0 ? '' : viewsBench}
+                        onChange={(e) => setViewsBench(Number(e.target.value))}
                       />
                     </li>
                   </div>
@@ -155,6 +209,45 @@ const AuctionCampaignEditMain = () => {
                   </div>
                 </div>
               </ul>
+
+              <div className={styles.infoText}>
+                {topWords && exclNum < 1000 ? (
+                  <>
+                    Топ тратящих ключей{' '}
+                    {exclNum + newExcl.length >= 1000
+                      ? '(Достигнут лимит)'
+                      : ''}
+                    :
+                    <div className={styles.topWordsBlock}>
+                      {topWords.map((item) => {
+                        let word = item.split(';');
+                        return (
+                          <div
+                            className={
+                              newExcl.includes(item)
+                                ? styles.chosenWord
+                                : styles.word
+                            }
+                            onClick={handeClickOnWord}
+                            data-value={item}
+                          >
+                            <div>{word[0]}</div>
+                            <div className={styles.wordStats}>
+                              <div>{word[1]}</div>
+                              <div>CTR: {(word[2] * 100).toFixed(2)} %</div>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    Невозможно добавить исключения{' '}
+                    {exclNum >= 1000 ? '(достигнут лимит)' : ''}
+                  </>
+                )}
+              </div>
             </form>
           )}
         </div>

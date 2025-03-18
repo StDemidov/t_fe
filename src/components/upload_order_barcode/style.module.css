@@ -1,0 +1,70 @@
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modalContent {
+  font-family: 'BebasNeue', sans-serif;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  align-items: center;
+}
+
+.actionButton {
+  background-color: #000000;
+  color: #ffffff;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 500;
+  border-radius: 0.5rem;
+  text-transform: uppercase;
+  width: 150px;
+  height: 40px;
+  font-family: 'BebasNeue', sans-serif;
+  border: none;
+  margin-left: 10px;
+}
+
+.actionButton:hover {
+  background-color: #6c46d6;
+  cursor: pointer;
+}
+
+.smallActionButton {
+  background-color: #000000;
+  color: #ffffff;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 500;
+  border-radius: 0.5rem;
+  text-transform: uppercase;
+  width: 100px;
+  height: 30px;
+  font-family: 'BebasNeue', sans-serif;
+  border: none;
+}
+
+.smallActionButton:hover {
+  background-color: #6c46d6;
+  cursor: pointer;
+}
+
+.orderNameInput {
+  width: 250px;
+  height: 30px;
+  text-align: center;
+  border-radius: 10px;
+}

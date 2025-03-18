@@ -5,7 +5,7 @@ const initialState = {
   barcode: {
     category: [],
     dates: {
-      start: format(subDays(new Date(), 31), 'MM-dd-yyyy'),
+      start: format(subDays(new Date(), 14), 'MM-dd-yyyy'),
       end: format(subDays(new Date(), 1), 'MM-dd-yyyy'),
     },
   },

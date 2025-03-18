@@ -248,3 +248,51 @@ input[type='number']::-webkit-inner-spin-button {
   flex-direction: column;
   align-items: center;
 }
+
+.topWordsBlock {
+  margin-top: 10px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  height: 300px;
+  overflow-y: auto;
+  background-color: #fff;
+  border-radius: 25px;
+  align-items: center;
+}
+
+.word {
+  padding: 10px;
+  width: 80%;
+  border: 1px solid gray;
+  background-color: rgb(255, 255, 255);
+  border-radius: 10px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.word:hover {
+  cursor: pointer;
+  background-color: rgb(238, 199, 199);
+}
+
+.wordStats {
+  display: flex;
+  gap: 20px;
+}
+
+.chosenWord {
+  padding: 10px;
+  width: 80%;
+  border: 1px solid gray;
+  background-color: rgb(238, 199, 199);
+  border-radius: 10px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.chosenWord:hover {
+  cursor: pointer;
+  background-color: rgb(181, 232, 183);
+}

@@ -27,6 +27,7 @@ const createCmpgnSingle = (cmpgn) => {
           (cmpgn.views + cmpgn.today_views),
     excluded: cmpgn.excluded.split(','),
     image: cmpgn.image,
+    pausedInSoft: cmpgn.paused_in_soft,
   };
 };
 
