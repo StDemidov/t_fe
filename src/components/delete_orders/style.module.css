@@ -13,6 +13,8 @@
 
 .modalContent {
   font-family: 'BebasNeue', sans-serif;
+  width: 30vw;
+  height: 20vw;
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -74,7 +76,7 @@
   flex-wrap: wrap; /* Разрешаем перенос элементов на следующую строку */
   gap: 10px; /* Задаем расстояние между прямоугольниками */
   justify-content: space-between; /* Размещаем элементы по всей ширине контейнера */
-  height: 80px;
+  /* height: 80px; */
   overflow-y: auto;
 }
 

@@ -16,6 +16,7 @@ import {
   selectAutoCampCreatedByFilter,
   selectAutoCampStatusFilter,
   selectAutoCampCampNamFilter,
+  selectAutoCampSortingType,
 } from '../../redux/slices/filterSlice';
 import { hostName } from '../../utils/host';
 import AutoCampaignsTable from '../autocampaigns_table/AutoCampaignsTable';
@@ -28,6 +29,7 @@ const AutoCampaignsList = () => {
   const brandFilter = useSelector(selectAutoCampBrandFilter);
   const statusFilter = useSelector(selectAutoCampStatusFilter);
   const createdByFilter = useSelector(selectAutoCampCreatedByFilter);
+  const selectedSorting = useSelector(selectAutoCampSortingType);
   const nameFilter = useSelector(selectAutoCampCampNamFilter);
   const navigation = useNavigate();
 
@@ -73,6 +75,8 @@ const AutoCampaignsList = () => {
     navigation(`/tools/auto_campaigns/create`);
   };
 
+  getSortedData(filteredVCMetrics, selectedSorting);
+
   return (
     <>
       {isLoading ? (
@@ -100,3 +104,28 @@ const AutoCampaignsList = () => {
 };
 
 export default AutoCampaignsList;
+
+const getSortedData = (data, selectedSorting) => {
+  switch (selectedSorting) {
+    case 'CTR ↓':
+      data.sort((a, b) =>
+        (a.ctr * 100).toFixed(2) > (b.ctr * 100).toFixed(2) ? -1 : 1
+      );
+      break;
+    case 'CTR ↑':
+      data.sort((a, b) =>
+        (a.ctr * 100).toFixed(2) > (b.ctr * 100).toFixed(2) ? 1 : -1
+      );
+      break;
+    case 'Затраты ↓':
+      data.sort((a, b) => (a.totalSpend > b.totalSpend ? -1 : 1));
+      break;
+    case 'Затраты ↑':
+      data.sort((a, b) => (a.totalSpend > b.totalSpend ? 1 : -1));
+      break;
+    default:
+      data.sort((a, b) =>
+        (a.ctr * 100).toFixed(2) > (b.ctr * 100).toFixed(2) ? -1 : 1
+      );
+  }
+};

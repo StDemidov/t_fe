@@ -42,7 +42,6 @@ const SingleVendorCode = () => {
   const startDate = new Date(datesFilter.start);
   const endDate = new Date(datesFilter.end);
   let { id } = useParams();
-
   useEffect(() => {
     if (notificationMessage == '') {
       dispatch(fetchVendorCodeMetricsSingle(`${hostName}/vendorcode/${id}`));
@@ -530,8 +529,8 @@ function sortBarcodesBySize(barcodes) {
   const sizeOrder = [
     'XS',
     'S',
-    'L',
     'M',
+    'L',
     'XL',
     'XXL',
     '4XL',

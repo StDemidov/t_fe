@@ -25,6 +25,17 @@ const createAucCampaignsList = (response) => {
       sku: campaigns[0]?.sku || null,
       vcName: campaigns[0]?.vendor_code || null,
       skuImage: campaigns[0]?.image || null,
+      status: campaigns[0]?.paused_in_soft
+        ? 'Остановлено в софте'
+        : campaigns[0]?.paused_by_trnover
+        ? 'Пауза по оборачиваемости'
+        : 'Идут показы',
+      ctr:
+        campaigns[0]?.views + campaigns[0]?.today_views
+          ? ((campaigns[0]?.clicks + campaigns[0]?.today_clicks) /
+              (campaigns[0]?.views + campaigns[0]?.today_views)) *
+            100
+          : 0,
       totalClicks,
       totalSpend,
       totalViews,

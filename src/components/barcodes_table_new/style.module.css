@@ -38,31 +38,31 @@
 /* Стили для ячеек с остатками */
 .cellGreen {
   background-color: #2fd089; /* Полностью зелёный */
-  width: 100px;
-  min-width: 100px;
-  max-width: 100px;
+  width: 40px;
+  min-width: 40px;
+  max-width: 40px;
 }
 
 .cellYellow {
   background-color: #c7d02f; /* Частично заполненный */
-  width: 100px;
-  min-width: 100px;
-  max-width: 100px;
+  width: 40px;
+  min-width: 40px;
+  max-width: 40px;
 }
 
 .cellRed {
   background-color: #d02f76; /* Полностью красный */
-  width: 100px;
-  min-width: 100px;
-  max-width: 100px;
+  width: 40px;
+  min-width: 40px;
+  max-width: 40px;
   color: white;
 }
 
 /* Стили для баркодов */
 .barcodeColumn {
-  width: 80px;
-  min-width: 80px;
-  max-width: 80px;
+  width: 40px;
+  min-width: 40px;
+  max-width: 40px;
   position: sticky;
   left: 0;
   font-weight: bold;
@@ -72,10 +72,10 @@
 }
 
 .newOrderColumn {
-  width: 150px;
-  min-width: 150px;
-  max-width: 150px;
-  left: 294px;
+  width: 130px;
+  min-width: 130px;
+  max-width: 130px;
+  left: 204px;
   position: sticky;
   z-index: 3;
   background-color: #ffffff;
@@ -83,10 +83,10 @@
 }
 
 .ordersColumn {
-  width: 80px;
-  min-width: 80px;
-  max-width: 80px;
-  left: 98px;
+  width: 50px;
+  min-width: 50px;
+  max-width: 50px;
+  left: 58px;
   position: sticky;
   z-index: 3;
   background-color: #ffffff;
@@ -103,26 +103,26 @@
 
 .cellPurple {
   background-color: #382fd0;
-  width: 100px;
-  min-width: 100px;
-  max-width: 100px;
+  width: 40px;
+  min-width: 40px;
+  max-width: 40px;
   color: white;
 }
 
 .cellBlue {
   background-color: #2a9ed5;
-  width: 100px;
-  min-width: 100px;
-  max-width: 100px;
+  width: 40px;
+  min-width: 40px;
+  max-width: 40px;
   /* color: white; */
 }
 
 .artBlock {
   display: flex;
   flex-direction: row;
-  align-items: center;
   margin-bottom: 10px;
   height: 300px;
+  align-items: center;
 }
 
 .headerBlock {
@@ -162,7 +162,7 @@
 }
 
 .leftHeaderPart {
-  min-width: 400px;
+  min-width: 700px;
   display: flex;
   margin-right: 1px;
   height: 80px;
@@ -174,22 +174,72 @@
 }
 
 .artInfo {
-  width: 400px;
-  /* margin-right: 20px; */
+  width: 700px;
   border: 1px solid black;
   height: 100%;
   border-radius: 20px;
   display: flex;
-  align-items: center;
+}
+
+.vcName {
+  display: flex;
+  flex-direction: row;
+  font-family: 'BebasNeue', sans-serif;
+  font-size: 20px;
+  gap: 10px;
+}
+
+.copyIcon:hover {
+  color: #6c46d6;
+}
+
+.linkIcon {
+  font-size: 12px;
 }
 
 .infoBlock {
-  width: 200px;
+  display: grid;
+  height: 100%;
+  flex-direction: column;
+  width: 520px;
+  gap: 30px;
+}
+
+.plotBlock {
+  display: flex;
+  flex-direction: row;
+  /* align-items: center; */
 }
 
 .imageBlock {
-  width: 200px;
+  width: 180px;
   padding: 20px;
+}
+
+.metrics {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+
+.metricBox {
+  padding: 5px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  font-family: 'BebasNeue', sans-serif;
+}
+
+.metricName {
+  font-size: 14px;
+  color: #888;
+  margin-bottom: 5px;
+}
+
+.metricValue {
+  font-size: 18px;
+  font-weight: bold;
+  color: #8254ff;
 }
 
 .zoomImage {
@@ -212,9 +262,9 @@
 }
 
 .cell {
-  width: 100px;
-  min-width: 100px;
-  max-width: 100px;
+  width: 60px;
+  min-width: 40px;
+  max-width: 40px;
 }
 
 .sumOrderDiv {
@@ -223,10 +273,10 @@
 }
 
 .remainingColumn {
-  width: 80px;
-  min-width: 80px;
-  max-width: 80px;
-  left: 196px;
+  width: 60px;
+  min-width: 60px;
+  max-width: 60px;
+  left: 126px;
   position: sticky;
   z-index: 3;
   background-color: #ffffff;
@@ -296,10 +346,13 @@
   display: flex;
   flex-direction: column;
   font-family: 'BebasNeue', sans-serif;
+  width: 200px;
+  align-items: center;
+  vertical-align: center;
 }
 
 .summary {
-  font-size: 8px;
+  font-size: 12px;
   margin-top: 2px;
   font-family: 'Verdana', Verdana, sans-serif;
 }

@@ -226,6 +226,7 @@ const VendorCodesList = () => {
   });
 
   let extentedFilteredVCMetrics = structuredClone(filteredVCMetrics);
+
   extentedFilteredVCMetrics.map((item) => {
     item.ordersSum = getSum(item.wbOrdersTotal, startDate, endDate);
     item.lastWBstock = getDataForPeriod(item.wbStocksTotal, startDate, endDate);

@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { useSpring, animated } from '@react-spring/web';
 import styles from './style.module.css';
-import { useNavigate } from 'react-router-dom';
 
 import {
   fetchAucCampaigns,
@@ -11,24 +10,22 @@ import {
   selectAucCampaigns,
 } from '../../redux/slices/aucCampaignsSlice';
 
-// import {
-//   selectAutoCampBrandFilter,
-//   selectAutoCampCreatedByFilter,
-//   selectAutoCampStatusFilter,
-//   selectAutoCampCampNamFilter,
-// } from '../../redux/slices/filterSlice';
+import {
+  selectAucCampCampNameFilter,
+  selectAucCampStatusFilter,
+  selectAucSortingType,
+} from '../../redux/slices/filterSlice';
 import { hostName } from '../../utils/host';
 import AuctionCampaignsTable from '../auction_campaigns_table/AuctionCampaignsTable';
+import AucCampaignsFilters from '../auccampaigns_filters/AucCampaignsFilters';
 
 const AuctionCampaignsList = () => {
   const dispatch = useDispatch();
   const isLoading = useSelector(selectIsLoading);
   const cmpgns = useSelector(selectAucCampaigns);
-  // const brandFilter = useSelector(selectAutoCampBrandFilter);
-  // const statusFilter = useSelector(selectAutoCampStatusFilter);
-  // const createdByFilter = useSelector(selectAutoCampCreatedByFilter);
-  // const nameFilter = useSelector(selectAutoCampCampNamFilter);
-  const navigation = useNavigate();
+  const statusFilter = useSelector(selectAucCampStatusFilter);
+  const nameFilter = useSelector(selectAucCampCampNameFilter);
+  const selectedSorting = useSelector(selectAucSortingType);
 
   const animStyles = useSpring({
     loop: false,
@@ -41,32 +38,26 @@ const AuctionCampaignsList = () => {
     dispatch(fetchAucCampaigns(`${hostName}/auctioncampaigns/`));
   }, [dispatch]);
 
-  // const filteredVCMetrics = cmpgns.filter((cmpgn) => {
-  //   let brandMatch = true;
-  //   let createdByMatch = true;
-  //   let statusMatch = true;
-  //   let nameMatch = true;
-  //   if (brandFilter !== '') {
-  //     brandMatch = cmpgn.brand === brandFilter;
-  //   }
-  //   if (createdByFilter !== '') {
-  //     createdByMatch = cmpgn.createdBy === createdByFilter;
-  //   }
-  //   if (statusFilter.length !== 0) {
-  //     statusMatch = statusFilter.includes(cmpgn.status);
-  //   }
-  //   if (nameFilter.length !== 0) {
-  //     if (isNaN(nameFilter)) {
-  //       nameMatch = cmpgn.campName
-  //         .toLowerCase()
-  //         .includes(nameFilter.toLowerCase());
-  //     } else {
-  //       nameMatch = cmpgn.sku.toLowerCase().includes(nameFilter);
-  //     }
-  //   }
+  const filteredCamps = cmpgns.filter((cmpgn) => {
+    let statusMatch = true;
+    let nameMatch = true;
+    if (statusFilter.length !== 0) {
+      statusMatch = statusFilter.includes(cmpgn.status);
+    }
+    if (nameFilter.length !== 0) {
+      if (isNaN(nameFilter)) {
+        nameMatch = cmpgn.vcName
+          .toLowerCase()
+          .includes(nameFilter.toLowerCase());
+      } else {
+        nameMatch = cmpgn.sku.toLowerCase().includes(nameFilter);
+      }
+    }
 
-  //   return brandMatch && createdByMatch && statusMatch && nameMatch;
-  // });
+    return statusMatch && nameMatch;
+  });
+
+  getSortedData(filteredCamps, selectedSorting);
 
   return (
     <>
@@ -76,7 +67,8 @@ const AuctionCampaignsList = () => {
         <animated.div style={{ ...animStyles }}>
           <section>
             <h1>Аукцион</h1>
-            <AuctionCampaignsTable cmpgns={cmpgns} />
+            <AucCampaignsFilters />
+            <AuctionCampaignsTable cmpgns={filteredCamps} />
           </section>
         </animated.div>
       )}
@@ -85,3 +77,22 @@ const AuctionCampaignsList = () => {
 };
 
 export default AuctionCampaignsList;
+
+const getSortedData = (data, selectedSorting) => {
+  switch (selectedSorting) {
+    case 'CTR ↓':
+      data.sort((a, b) => (a.ctr > b.ctr ? -1 : 1));
+      break;
+    case 'CTR ↑':
+      data.sort((a, b) => (a.ctr > b.ctr ? 1 : -1));
+      break;
+    case 'Затраты ↓':
+      data.sort((a, b) => (a.totalSpend > b.totalSpend ? -1 : 1));
+      break;
+    case 'Затраты ↑':
+      data.sort((a, b) => (a.totalSpend > b.totalSpend ? 1 : -1));
+      break;
+    default:
+      data.sort((a, b) => (a.ctr > b.ctr ? -1 : 1));
+  }
+};

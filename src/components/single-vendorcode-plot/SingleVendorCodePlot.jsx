@@ -26,10 +26,10 @@ const SingleVendorCodePlot = ({ vcData, dates }) => {
   const startDate = new Date(dates.start);
   const endDate = new Date(dates.end);
 
+  const labels = getDateNumberArray(vcData.wbOrdersTotal);
+
   const data = {
-    labels: getDateNumberArray(
-      getDataForPeriod(vcData.wbOrdersTotal, startDate, endDate)
-    ),
+    labels: getDataForPeriod(labels, startDate, endDate),
     datasets: [
       {
         label: 'Заказы',
@@ -133,6 +133,7 @@ const SingleVendorCodePlot = ({ vcData, dates }) => {
       },
     ],
   };
+  console.log(endDate);
 
   const options = {
     plugins: {

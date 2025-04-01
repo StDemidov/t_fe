@@ -1,5 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import LazyLoad from 'react-lazyload';
+import { FaRegCopy, FaExternalLinkAlt } from 'react-icons/fa';
+
 import { v4 as uuidv4 } from 'uuid';
 import {
   format,
@@ -13,13 +16,16 @@ import * as XLSX from 'xlsx';
 
 import BarcodeFilters from '../barcodes_filters/BarcodeFilters';
 import { ru } from 'date-fns/locale';
-import styles from './style.module.css';
+
 import UploadOrderBarcode from '../upload_order_barcode/UploadOrderBarcode';
 import DeleteOrders from '../delete_orders/DeleteOrders';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectPage, setPageBarcode } from '../../redux/slices/barcodeSlice';
-import BarplotVC from '../barplot_vc/BarplotVC';
 import { selectBarcodeDatesFilter } from '../../redux/slices/filterSlice';
+import BarplotOrdersDouble from '../barplot_orders_double/BarplotOrdersDouble';
+import LineplotVC from '../lineplot_vc/LineplotVC';
+
+import styles from './style.module.css';
 
 const getUniqueOrderNames = (data) => {
   const namesSet = new Set();
@@ -33,7 +39,33 @@ const getUniqueOrderNames = (data) => {
   return Array.from(namesSet);
 };
 
-const BarcodesTableNew = ({ data, endDate, orders, pagesNumber }) => {
+const predefinedColors = [
+  '#FF0000',
+  '#00FF00',
+  '#0000FF',
+  '#FFFF00',
+  '#FF00FF',
+  '#00FFFF',
+];
+
+const colorsNames = {
+  '#FF0000': 'Красный',
+  '#00FF00': 'Зеленый',
+  '#0000FF': 'Синий',
+  '#FFFF00': 'Желтый',
+  '#FF00FF': 'Розовый',
+  '#00FFFF': 'Голубой',
+};
+
+const BarcodesTableNew = ({
+  fullData,
+  data,
+  endDate,
+  orders,
+  pagesNumber,
+  selectedColors,
+  setSelectedColors,
+}) => {
   const [weeks, setWeeks] = useState([]);
   const [extraStock, setExtraStock] = useState({});
   const [months, setMonths] = useState([]);
@@ -59,7 +91,6 @@ const BarcodesTableNew = ({ data, endDate, orders, pagesNumber }) => {
       }
     });
   };
-  console.log(currentPage);
 
   useEffect(() => {
     const today = new Date();
@@ -113,14 +144,35 @@ const BarcodesTableNew = ({ data, endDate, orders, pagesNumber }) => {
     setExtraStock((prev) => ({ ...prev, [barcode]: Number(value) || 0 }));
   };
 
-  const generateXLS = () => {
-    const filteredData = Object.entries(extraStock)
-      .filter(([_, value]) => value > 0)
-      .map(([barcode, value]) => ({ Баркод: barcode, Количество: value }));
+  const handleColorSelect = (vcName, color) => {
+    setSelectedColors((prev) => ({ ...prev, [vcName]: color }));
+  };
 
-    const worksheet = XLSX.utils.json_to_sheet(filteredData);
+  const generateXLS = () => {
+    const sheetsData = {};
+
+    Object.entries(extraStock).forEach(([barcode, value]) => {
+      if (value > 0) {
+        const vc = fullData.find((vc) =>
+          vc.barcodes.some((bc) => bc.barcode === barcode)
+        );
+        const color = colorsNames[selectedColors[vc?.vcName]] || 'Без цвета';
+
+        if (!sheetsData[color]) {
+          sheetsData[color] = [];
+        }
+
+        sheetsData[color].push({ Баркод: barcode, Количество: value });
+      }
+    });
+
     const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, 'Заказ');
+
+    Object.entries(sheetsData).forEach(([sheetName, data]) => {
+      const worksheet = XLSX.utils.json_to_sheet(data);
+      XLSX.utils.book_append_sheet(workbook, worksheet, sheetName);
+    });
+
     XLSX.writeFile(workbook, 'заказ.xlsx');
     setExtraStock({});
   };
@@ -130,15 +182,32 @@ const BarcodesTableNew = ({ data, endDate, orders, pagesNumber }) => {
     dispatch(setPageBarcode(id));
   };
 
+  const handleCopy = (event) => {
+    event.stopPropagation(); // Останавливаем всплытие
+    event.preventDefault(); // Предотвращаем переход по ссылке (если нужно)
+
+    navigator.clipboard.writeText(
+      event.currentTarget.getAttribute('data-value')
+    );
+  };
+
   const pagesArray = [];
   for (let i = 1; i <= pagesNumber; i++) {
     pagesArray.push(i);
   }
 
   var sumExtra = 0;
-  for (var key in extraStock) {
-    sumExtra += extraStock[key];
-  }
+
+  data.map((vc) => {
+    vc.barcodes.map((bc) => {
+      for (var key in extraStock) {
+        if (key === bc.barcode) {
+          sumExtra += extraStock[key];
+        }
+      }
+    });
+  });
+
   return (
     <div>
       <div className={styles.headerBlock}>
@@ -183,7 +252,7 @@ const BarcodesTableNew = ({ data, endDate, orders, pagesNumber }) => {
                     Размер
                   </th>
                   <th className={styles.ordersColumn} rowSpan={2}>
-                    Заказы
+                    В заказе
                   </th>
                   <th className={styles.remainingColumn} rowSpan={2}>
                     Дефицит
@@ -221,30 +290,106 @@ const BarcodesTableNew = ({ data, endDate, orders, pagesNumber }) => {
         let sumRemaining = 0;
         return (
           <div className={styles.artBlock} key={index}>
-            <div className={styles.artInfo}>
+            <div
+              className={styles.artInfo}
+              style={
+                selectedColors[vc.vcName]
+                  ? { border: `1px solid ${selectedColors[vc.vcName]}` }
+                  : {}
+              }
+            >
               <div className={styles.infoBlock}>
-                <div>Себес. без НДС: {vc.selfPrice} руб.</div>
-                <LazyLoad key={uuidv4()} offset={100}>
-                  <div className={styles.ordersPlot}>
-                    <BarplotVC data={vc.orders} dates={datesFilter} />
-                    <div
-                      className={styles.summary}
-                      style={
-                        vc.ordersSum
-                          ? { display: 'block' }
-                          : { display: 'none' }
-                      }
-                    >
-                      Заказы
-                      <br />
-                      Итого: {vc.ordersSum.toLocaleString()}
-                    </div>
+                <div className={styles.vcName}>
+                  {vc.vcName}
+
+                  <FaRegCopy
+                    size={12}
+                    data-value={vc.vcName}
+                    onClick={handleCopy}
+                    style={{ cursor: 'pointer' }}
+                    className={styles.copyIcon}
+                  />
+                  <Link
+                    to={`/vendorcodes/${vc.id}`}
+                    className={styles.linkIcon}
+                    target="_blank"
+                    style={{ textDecoration: 'none', color: 'inherit' }}
+                  >
+                    <FaExternalLinkAlt />
+                  </Link>
+                </div>
+                <div className={styles.metrics}>
+                  <div className={styles.metricBox}>
+                    <div className={styles.metricName}>EBITDA/день (сред)</div>{' '}
+                    <div className={styles.metricValue}>{vc.ebitdaDaily} ₽</div>
                   </div>
-                </LazyLoad>
+                  <div className={styles.metricBox}>
+                    <div className={styles.metricName}>EBITDA (сред)</div>{' '}
+                    <div className={styles.metricValue}>{vc.ebitda} ₽</div>
+                  </div>
+                  <div className={styles.metricBox}>
+                    <div className={styles.metricName}>Себес. без НДС</div>{' '}
+                    <div className={styles.metricValue}>{vc.selfPrice} ₽</div>
+                  </div>
+                </div>
+                <div className={styles.plotBlock}>
+                  <LazyLoad key={uuidv4()} offset={100}>
+                    <div className={styles.ordersPlot}>
+                      Заказы и цены
+                      <BarplotOrdersDouble
+                        orders={vc.orders}
+                        prices={vc.prices}
+                        dates={datesFilter}
+                      />
+                      <div
+                        className={styles.summary}
+                        style={
+                          vc.ordersSum
+                            ? { display: 'block' }
+                            : { display: 'none' }
+                        }
+                      >
+                        <br />
+                        Заказов: {vc.ordersSum.toLocaleString()}
+                      </div>
+                    </div>
+                  </LazyLoad>
+                  <LazyLoad key={uuidv4()} offset={100}>
+                    <div className={styles.ordersPlot}>
+                      СРО
+                      <LineplotVC data={vc.cpo} dates={datesFilter} />
+                      {/* <div
+                        className={styles.summary}
+                        style={
+                          vc.ordersSum
+                            ? { display: 'block' }
+                            : { display: 'none' }
+                        }
+                      >
+                        <br />
+                        Заказов: {vc.ordersSum.toLocaleString()}
+                      </div> */}
+                    </div>
+                  </LazyLoad>
+                </div>
               </div>
               <div className={styles.imageBlock}>
                 <img src={vc.image} alt="Фото" className={styles.zoomImage} />
                 <div className={styles.abcCategory}>{vc.abc}</div>
+                <div>
+                  {predefinedColors.map((color) => (
+                    <button
+                      key={color}
+                      style={{
+                        backgroundColor: color,
+                        width: 12,
+                        height: 12,
+                        margin: 3,
+                      }}
+                      onClick={() => handleColorSelect(vc.vcName, color)}
+                    />
+                  ))}
+                </div>
               </div>
             </div>
             <div

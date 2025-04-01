@@ -1,6 +1,7 @@
 import ACBrandFilter from './ACBrandFilter/ACBrandFilter';
 import ACCreatedByFilter from './ACCreatedByFilter/ACCreatedByFilter';
 import ACNameFilter from './ACNameFilter/ACNameFilter';
+import ACSorting from './ACSorting/ACSorting';
 import ACStatusFilter from './ACStatusFilter/ACStatusFilter';
 import styles from './style.module.css';
 
@@ -14,6 +15,7 @@ const AutoCampaignsFilters = ({ cmpgns }) => {
       <ACBrandFilter options={brands} />
       <ACCreatedByFilter options={createdBy} />
       <ACStatusFilter options={statuses} />
+      <ACSorting />
       <ACNameFilter />
     </div>
   );

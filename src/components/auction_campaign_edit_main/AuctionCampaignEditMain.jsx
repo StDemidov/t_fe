@@ -148,7 +148,6 @@ const AuctionCampaignEditMain = () => {
                       <input
                         required={true}
                         type="number"
-                        min="0"
                         id="ctrBench"
                         value={ctrBench === 0 ? '' : ctrBench}
                         onChange={(e) => setCTRBench(Number(e.target.value))}

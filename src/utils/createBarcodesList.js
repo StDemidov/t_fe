@@ -1,8 +1,8 @@
 const sizeOrder = [
   'XS',
   'S',
-  'L',
   'M',
+  'L',
   'XL',
   'XXL',
   '4XL',
@@ -29,8 +29,15 @@ function parseNumberArray(str) {
 function transformBcData(bcData) {
   return bcData.map((item) => {
     return {
+      id: item.id,
+      sku: item.sku,
       vcName: item.vc_name,
+      startDate: new Date(item.start_date),
       orders: parseNumberArray(item.orders),
+      ebitda: parseNumberArray(item.ebitda),
+      ebitdaDaily: parseNumberArray(item.daily_ebitda),
+      prices: parseNumberArray(item.prices),
+      adsCosts: parseNumberArray(item.ads_costs),
       abc: item.abc,
       image: item.image,
       selfPrice: Math.round(item.self_price),

@@ -8,6 +8,9 @@ const initialState = {
       start: format(subDays(new Date(), 14), 'MM-dd-yyyy'),
       end: format(subDays(new Date(), 1), 'MM-dd-yyyy'),
     },
+    sortingType: 'EBITDA (сред) ↓',
+    vCName: '',
+    color: [],
   },
   vendorCode: {
     category: [],
@@ -40,6 +43,12 @@ const initialState = {
     status: [],
     brand: '',
     campName: '',
+    sortingType: 'CTR ↓',
+  },
+  auсCmpgns: {
+    status: [],
+    campName: '',
+    sortingType: 'CTR ↓',
   },
 };
 
@@ -68,6 +77,15 @@ const filterSlice = createSlice({
     setAutoCmpgCampName: (state, action) => {
       state.autoCmpgns.campName = action.payload;
     },
+    setAuсCmpgStatus: (state, action) => {
+      state.auсCmpgns.status = action.payload;
+    },
+    resetAuсCmpgStatus: (state, action) => {
+      state.auсCmpgns.status = [];
+    },
+    setAuсCmpgCampName: (state, action) => {
+      state.auсCmpgns.campName = action.payload;
+    },
     setTasksCategory: (state, action) => {
       state.tasks.category = action.payload;
     },
@@ -83,9 +101,25 @@ const filterSlice = createSlice({
     setVCSortingType: (state, action) => {
       state.vendorCode.sortingType = action.payload;
     },
+    setAucSortingType: (state, action) => {
+      state.auсCmpgns.sortingType = action.payload;
+    },
+    setAutoCmpgSortingType: (state, action) => {
+      state.autoCmpgns.sortingType = action.payload;
+    },
+    setBarcodeSortingType: (state, action) => {
+      state.barcode.sortingType = action.payload;
+    },
     setBarcodeCategoryFilter: (state, action) => {
       state.barcode.category = [...action.payload];
     },
+    setBarcodeColorFilter: (state, action) => {
+      state.barcode.color = [...action.payload];
+    },
+    resetBarcodeColorFilter: (state) => {
+      state.barcode.color = [];
+    },
+
     setBarcodeDatesFilter: (state, action) => {
       state.barcode.dates = action.payload;
     },
@@ -112,6 +146,9 @@ const filterSlice = createSlice({
     },
     setVCNameFilter: (state, action) => {
       state.vendorCode.vCName = action.payload;
+    },
+    setBarcodesVCNameFilter: (state, action) => {
+      state.barcode.vCName = action.payload;
     },
     setCategoryNameFilter: (state, action) => {
       state.category.categoryName = action.payload;
@@ -174,10 +211,21 @@ export const {
   resetAutoCmpgBrand,
   resetAutoCmpgCreatedBy,
   resetAutoCmpgStatus,
+  setAuсCmpgCampName,
+  setAuсCmpgStatus,
+  resetAuсCmpgStatus,
+  setAucSortingType,
+  setAutoCmpgSortingType,
+  setBarcodeSortingType,
+  setBarcodesVCNameFilter,
+  setBarcodeColorFilter,
+  resetBarcodeColorFilter,
 } = filterSlice.actions;
 
 export const selectBarcodeCategoryFilter = (state) =>
   state.filter.barcode.category;
+
+export const selectBarcodeColorFilter = (state) => state.filter.barcode.color;
 
 export const selectCategoryListFilter = (state) =>
   state.filter.category.category;
@@ -187,6 +235,14 @@ export const selectVendorCodeCategoryFilter = (state) =>
 
 export const selectVCSortingType = (state) =>
   state.filter.vendorCode.sortingType;
+
+export const selectAucSortingType = (state) =>
+  state.filter.auсCmpgns.sortingType;
+export const selectAutoCampSortingType = (state) =>
+  state.filter.autoCmpgns.sortingType;
+export const selectBarcodeSortingType = (state) =>
+  state.filter.barcode.sortingType;
+export const selectBarcodeVCNameFilter = (state) => state.filter.barcode.vCName;
 
 export const selectVendorCodeAbcFilter = (state) => state.filter.vendorCode.abc;
 
@@ -211,5 +267,9 @@ export const selectAutoCampStatusFilter = (state) =>
   state.filter.autoCmpgns.status;
 export const selectAutoCampCreatedByFilter = (state) =>
   state.filter.autoCmpgns.createdBy;
+export const selectAucCampCampNameFilter = (state) =>
+  state.filter.auсCmpgns.campName;
+export const selectAucCampStatusFilter = (state) =>
+  state.filter.auсCmpgns.status;
 
 export default filterSlice.reducer;

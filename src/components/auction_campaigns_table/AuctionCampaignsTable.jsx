@@ -139,7 +139,7 @@ const AuctionCampaignsTable = ({ cmpgns }) => {
                       <FaEye /> {cmpgn.totalViews}
                     </div>
                     <div className={styles.campaignDetails}>
-                      <LuMousePointerClick /> {cmpgn.totalClicks}
+                      <LuMousePointerClick /> {cmpgn.ctr.toFixed(2)} %
                     </div>
                     <div className={styles.campaignDetails}>
                       <GiMoneyStack /> {Math.round(cmpgn.totalSpend)} {'руб.'}
