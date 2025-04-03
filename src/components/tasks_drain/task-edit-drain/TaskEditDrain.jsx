@@ -35,6 +35,7 @@ const TaskEditDrain = () => {
   const [increaseStep, setIncreaseStep] = useState(0);
   const [decreaseStep, setDecreaseStep] = useState(0);
   const [minPrice, setMinPrice] = useState();
+  const [maxPrice, setMaxPrice] = useState();
   const [skuList, setSkuList] = useState('');
 
   useEffect(() => {
@@ -54,6 +55,7 @@ const TaskEditDrain = () => {
       setIncreaseStep(taskData?.task?.increase_step);
       setDecreaseStep(taskData?.task?.decrease_step);
       setMinPrice(taskData?.task?.min_price);
+      setMaxPrice(taskData?.task?.max_price);
       setSkuList(taskData?.task?.sku_list.split(','));
     }
   }, [taskData]);
@@ -102,6 +104,8 @@ const TaskEditDrain = () => {
       dispatch(setError('Заполните шаги изменения цены!'));
     } else if (minPrice < 1) {
       dispatch(setError('Напишите минимальную цену!'));
+    } else if (maxPrice < minPrice) {
+      dispatch(setError('Максимальная цена должна быть выше минимальной!'));
     } else if (skuList.length === 0) {
       dispatch(setError('Необходимо выбрать хотя бы 1 артикул!'));
     } else {
@@ -109,6 +113,7 @@ const TaskEditDrain = () => {
         task_name: taskName,
         increase_step: increaseStep,
         decrease_step: decreaseStep,
+        max_price: maxPrice,
         min_price: minPrice,
         sku_list: skuList.join(','),
       };
@@ -117,6 +122,7 @@ const TaskEditDrain = () => {
           increase_step: increaseStep,
           decrease_step: decreaseStep,
           min_price: minPrice,
+          max_price: maxPrice,
           sku_list: skuList.join(','),
         };
       }
@@ -194,9 +200,7 @@ const TaskEditDrain = () => {
                       onChange={(e) => setDecreaseStep(Number(e.target.value))}
                     />
                   </li>
-                  <div className={styles.infoText}>
-                    Установите нижний порог цены
-                  </div>
+                  <div className={styles.infoText}>Установите порог цен</div>
                   <li>
                     <label htmlFor="minPrice">Нижний порог цены: </label>
                     <input
@@ -206,6 +210,17 @@ const TaskEditDrain = () => {
                       id="minPrice"
                       value={minPrice === 0 ? '' : minPrice}
                       onChange={(e) => setMinPrice(Number(e.target.value))}
+                    />
+                  </li>
+                  <li>
+                    <label htmlFor="maxPrice">Верхний порог цены: </label>
+                    <input
+                      required="true"
+                      type="number"
+                      min="1"
+                      id="maxPrice"
+                      value={maxPrice === 0 ? '' : maxPrice}
+                      onChange={(e) => setMaxPrice(Number(e.target.value))}
                     />
                   </li>
                 </div>

@@ -69,6 +69,7 @@ const TaskCreateDrain = () => {
   const [decreaseStep, setDecreaseStep] = useState(0);
   const [errorDays, setErrorDays] = useState(1);
   const [minPrice, setMinPrice] = useState(0);
+  const [maxPrice, setMaxPrice] = useState(0);
   const [deadline, setDeadline] = useState('ГГГГ-ММ-ДД');
   const [skuList, setSkuList] = useState([]);
 
@@ -128,6 +129,8 @@ const TaskCreateDrain = () => {
       dispatch(setError('Заполните шаги изменения цены!'));
     } else if (minPrice < 1) {
       dispatch(setError('Напишите минимальную цену!'));
+    } else if (maxPrice <= minPrice) {
+      dispatch(setError('Максимальная цена должна быть выше минимальной!'));
     } else if (!isValidDate) {
       dispatch(setError('Введите дату в формате ГГГГ-ММ-ДД'));
     } else if (skuList.length === 0) {
@@ -141,6 +144,7 @@ const TaskCreateDrain = () => {
         decrease_step: decreaseStep,
         deadline: deadline,
         min_price: minPrice,
+        max_price: maxPrice,
         sku_list: skuList.join(','),
         error: errorDays,
       };
@@ -211,9 +215,7 @@ const TaskCreateDrain = () => {
                       onChange={(e) => setDecreaseStep(Number(e.target.value))}
                     />
                   </li>
-                  <div className={styles.infoText}>
-                    Установите нижний порог цены
-                  </div>
+                  <div className={styles.infoText}>Установите пороги цен</div>
                   <li>
                     <label htmlFor="minPrice">Нижний порог цены: </label>
                     <input
@@ -223,6 +225,17 @@ const TaskCreateDrain = () => {
                       id="minPrice"
                       value={minPrice === 0 ? '' : minPrice}
                       onChange={(e) => setMinPrice(Number(e.target.value))}
+                    />
+                  </li>
+                  <li>
+                    <label htmlFor="maxPrice">Верхний порог цены: </label>
+                    <input
+                      required={true}
+                      type="number"
+                      min="2"
+                      id="maxPrice"
+                      value={maxPrice === 0 ? '' : maxPrice}
+                      onChange={(e) => setMaxPrice(Number(e.target.value))}
                     />
                   </li>
                 </div>

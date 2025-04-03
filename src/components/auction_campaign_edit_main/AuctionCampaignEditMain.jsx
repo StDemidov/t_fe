@@ -60,7 +60,7 @@ const AuctionCampaignEditMain = () => {
       setExclNum(cmpgn?.exclNum);
       cmpgn.topWords
         ? setTopWords(cmpgn.topWords.split(','))
-        : setTopWords([1]);
+        : setTopWords(NaN);
     }
   }, [cmpgn]);
 

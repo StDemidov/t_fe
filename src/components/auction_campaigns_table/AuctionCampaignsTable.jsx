@@ -31,6 +31,12 @@ const CMPGN_STATUS = {
   11: 'Кампания на паузе',
 };
 
+const STATUS_NAME_COLORS = {
+  'Идут показы': '#cce5ff',
+  'Остановлено в софте': '#fff0b3',
+  'Пауза по оборачиваемости': '#ccccff',
+};
+
 const STATUS_COLORS = {
   '-1': '#ffcccc',
   4: '#ccffcc',
@@ -53,6 +59,7 @@ const CREATED_BY = {
 const AuctionCampaignsTable = ({ cmpgns }) => {
   const [selectedCampaign, setSelectedCampaign] = useState(null);
   const navigation = useNavigate();
+  const dispatch = useDispatch();
 
   const handleMainClickOnEdit = (event) => {
     const id = event.currentTarget.getAttribute('data-value');
@@ -96,8 +103,6 @@ const AuctionCampaignsTable = ({ cmpgns }) => {
     dispatch(endCampaign(`${hostName}/auctioncampaigns/end/${id}`));
   };
 
-  const dispatch = useDispatch();
-
   return (
     <>
       <div className={styles.tableContainer}>
@@ -113,7 +118,7 @@ const AuctionCampaignsTable = ({ cmpgns }) => {
                   className={`${styles.cardContent} ${styles.campaignCardContent}`}
                 >
                   <div>
-                    <h2 className={styles.campaignName}>{cmpgn.vcName}</h2>
+                    <h2 className={styles.campaignName}>{cmpgn.campName}</h2>
                     <div className={styles.campaignInfo}>
                       {cmpgn.onlineCamps === 0 ? (
                         <div
@@ -128,10 +133,10 @@ const AuctionCampaignsTable = ({ cmpgns }) => {
                         <div
                           className={styles.campaignStatus}
                           style={{
-                            backgroundColor: '#cce5ff',
+                            backgroundColor: STATUS_NAME_COLORS[cmpgn.status],
                           }}
                         >
-                          {`Количество кампаний онлайн: ${cmpgn.onlineCamps}`}
+                          {cmpgn.status}
                         </div>
                       )}
                     </div>
@@ -208,26 +213,6 @@ const AuctionCampaignsTable = ({ cmpgns }) => {
                 >
                   <h2 className={styles.campaignName}>{partCamp.camp_name}</h2>
                   <div className={styles.campaignInfo}>
-                    <div
-                      className={styles.campaignStatus}
-                      style={{
-                        backgroundColor:
-                          STATUS_COLORS[partCamp.status.toString()] ||
-                          '#e0e0e0',
-                      }}
-                    >
-                      {CMPGN_STATUS[partCamp.status.toString()] ||
-                        'Статус неизвестен'}
-                    </div>
-                    <div
-                      className={styles.campaignStatus}
-                      style={{
-                        backgroundColor:
-                          CREATED_BY_COLORS[partCamp.created_by] || '#e0e0e0',
-                      }}
-                    >
-                      {CREATED_BY[partCamp.created_by] || 'Статус неизвестен'}
-                    </div>
                     {partCamp.paused_by_trnover ? (
                       <div
                         className={styles.campaignStatus}
@@ -238,9 +223,32 @@ const AuctionCampaignsTable = ({ cmpgns }) => {
                         {'На паузе из-за оборачиваемости'}
                       </div>
                     ) : (
-                      <></>
+                      <>
+                        {partCamp.paused_in_soft ? (
+                          <div
+                            className={styles.campaignStatus}
+                            style={{
+                              backgroundColor:
+                                STATUS_NAME_COLORS['Остановлено в софте'],
+                            }}
+                          >
+                            {'Остановлено в софте'}
+                          </div>
+                        ) : (
+                          <div
+                            className={styles.campaignStatus}
+                            style={{
+                              backgroundColor:
+                                STATUS_NAME_COLORS['Идут показы'],
+                            }}
+                          >
+                            {'Идут показы'}
+                          </div>
+                        )}
+                      </>
                     )}
                   </div>
+
                   <div className={styles.partCampaign}>
                     <div className={styles.partCampaignInfo}>
                       <div className={styles.campaignDetails}>

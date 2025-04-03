@@ -32,6 +32,7 @@ const AuctionCampaignCreate = () => {
   const [cpm, setCPM] = useState(150);
   const [sku, setSku] = useState('');
   const [budget, setBudget] = useState(3000);
+  const [fixed, setFixed] = useState(true);
 
   useEffect(() => {
     if (notificationMessage !== '') {
@@ -78,6 +79,7 @@ const AuctionCampaignCreate = () => {
         when_to_pause: whenToPause,
         when_to_add_budget: whenToAddBudget,
         how_much_to_add: howMuchToAdd,
+        fixed: fixed,
       };
       dispatch(
         createAucCampaign({
@@ -87,6 +89,7 @@ const AuctionCampaignCreate = () => {
       );
     }
   };
+  console.log(fixed);
 
   return (
     <section>
@@ -134,7 +137,6 @@ const AuctionCampaignCreate = () => {
                       <input
                         required={true}
                         type="number"
-                        min="1"
                         id="whenToPause"
                         value={whenToPause === 0 ? '' : whenToPause}
                         onChange={(e) => setWhenToPause(Number(e.target.value))}
@@ -194,6 +196,18 @@ const AuctionCampaignCreate = () => {
                     </li>
                   </div>
                 </div>
+                <div className={styles.infoText}>Тип кампании</div>
+                <li>
+                  <label htmlFor="fixed">
+                    Использовать фиксированные фразы (иначе - исключения):{' '}
+                  </label>
+                  <input
+                    type="checkbox"
+                    id="fixed"
+                    checked={fixed}
+                    onChange={(e) => setFixed(!fixed)}
+                  />
+                </li>
               </ul>
             </form>
           )}

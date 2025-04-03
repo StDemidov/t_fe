@@ -23,6 +23,7 @@ const createAucCampaignsList = (response) => {
     return {
       parentID,
       sku: campaigns[0]?.sku || null,
+      campName: campaigns[0]?.camp_name,
       vcName: campaigns[0]?.vendor_code || null,
       skuImage: campaigns[0]?.image || null,
       status: campaigns[0]?.paused_in_soft

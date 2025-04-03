@@ -455,7 +455,7 @@ const BarcodesTableNew = ({
                           : '';
                       });
 
-                      sumRemaining += lastCellValue ? lastCellValue : 0;
+                      sumRemaining += -lastCellValue ? lastCellValue : 0;
 
                       remainingStock = stock;
                       extraRemaining = extraStock[barcode] || 0;
@@ -479,7 +479,7 @@ const BarcodesTableNew = ({
                               : 0}
                           </td>
                           <td className={styles.remainingColumn}>
-                            {-lastCellValue}
+                            {-lastCellValue ? -lastCellValue : 0}
                           </td>
                           <td className={styles.newOrderColumn}>
                             <input
