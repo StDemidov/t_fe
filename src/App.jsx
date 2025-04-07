@@ -45,6 +45,7 @@ import AuctionCampaignsList from './components/auction_campaigns_list/AuctionCam
 import AuctionCampaignCreate from './components/auction_campaign_create/AuctionCampaignCreate';
 import AuctionCampaignEditMain from './components/auction_campaign_edit_main/AuctionCampaignEditMain';
 import AuctionCampaignEdit from './components/auction_campaign_edit/AuctionCampaignEdit';
+import AuctionCampaignCreateFID from './components/auction_campaign_create_f_id/AuctionCampaignCreateFID';
 
 function App() {
   const currentUser = useSelector(selectUser);
@@ -99,6 +100,10 @@ function App() {
                   <Route
                     path="tools/auction_campaigns"
                     element={<AuctionCampaignsList />}
+                  />
+                  <Route
+                    path="tools/auction_campaigns/create_from_id"
+                    element={<AuctionCampaignCreateFID />}
                   />
                   <Route
                     path="tools/auction_campaigns/create/:id"

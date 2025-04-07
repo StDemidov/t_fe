@@ -18,6 +18,7 @@ import {
 import { hostName } from '../../utils/host';
 import AuctionCampaignsTable from '../auction_campaigns_table/AuctionCampaignsTable';
 import AucCampaignsFilters from '../auccampaigns_filters/AucCampaignsFilters';
+import { useNavigate } from 'react-router-dom';
 
 const AuctionCampaignsList = () => {
   const dispatch = useDispatch();
@@ -26,6 +27,7 @@ const AuctionCampaignsList = () => {
   const statusFilter = useSelector(selectAucCampStatusFilter);
   const nameFilter = useSelector(selectAucCampCampNameFilter);
   const selectedSorting = useSelector(selectAucSortingType);
+  const navigation = useNavigate();
 
   const animStyles = useSpring({
     loop: false,
@@ -57,6 +59,10 @@ const AuctionCampaignsList = () => {
     return statusMatch && nameMatch;
   });
 
+  const handleClickOnCreate = (event) => {
+    navigation(`/tools/auction_campaigns/create_from_id`);
+  };
+
   getSortedData(filteredCamps, selectedSorting);
 
   return (
@@ -67,6 +73,15 @@ const AuctionCampaignsList = () => {
         <animated.div style={{ ...animStyles }}>
           <section>
             <h1>Аукцион</h1>
+            <button
+              className={styles.buttonCreate}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleClickOnCreate(e);
+              }}
+            >
+              Создать кампанию
+            </button>
             <AucCampaignsFilters />
             <AuctionCampaignsTable cmpgns={filteredCamps} />
           </section>
