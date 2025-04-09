@@ -12,8 +12,11 @@ import {
   selectVCDatesFilter,
 } from '../../redux/slices/filterSlice';
 
-import TagsCell from '../tags_cell/TagsCell';
-import { selectAvailableTags } from '../../redux/slices/vendorCodeSlice';
+import {
+  selectAvailableTagsMain,
+  selectAvailableTagsCloth,
+  selectAvailableTagsOthers,
+} from '../../redux/slices/vendorCodeSlice';
 
 import HeaderTags from './cells/header/HeaderTags';
 import HeaderCPO from './cells/header/HeaderCPO';
@@ -76,13 +79,20 @@ import FooterWBStocks from './cells/footer/FooterWBStocks';
 import FooterCartToOrder from './cells/footer/FooterCartToOrder';
 import FooterClickToOrder from './cells/footer/FooterClickToOrder';
 import FooterAddToCart from './cells/footer/FooterAddToCart';
+import BodyTags from './cells/body/BodyTags';
+import BodyTagsCloth from './cells/body/BodyTagsCloth';
+import HeaderTagsCloth from './cells/header/HeaderTagsCloth';
+import FooterTagsCloth from './cells/footer/FooterTagsCloth';
+import BodyTagsOthers from './cells/body/BodyTagsOthers';
+import HeaderTagsOthers from './cells/header/HeaderTagsOthers';
+import FooterTagsOthers from './cells/footer/FooterTagsOthers';
 
 const сolRender = {
   tags: {
-    render: (vc, availableTags, tableRef) => (
-      <TagsCell
-        tags={vc.tags}
-        availableTags={availableTags}
+    render: (vc, availableTagsMain, tableRef) => (
+      <BodyTags
+        tags={vc.tagsMain}
+        availableTagsMain={availableTagsMain}
         skuId={vc.id}
         tableRef={tableRef}
         key={uuidv4()}
@@ -90,6 +100,32 @@ const сolRender = {
     ),
     renderHeader: () => <HeaderTags key={uuidv4()} />,
     renderFooter: () => <FooterTags key={uuidv4()} />,
+  },
+  tagsCloth: {
+    render: (vc, availableTagsCloth, tableRef) => (
+      <BodyTagsCloth
+        tags={vc.tagsCloth}
+        availableTagsCloth={availableTagsCloth}
+        skuId={vc.id}
+        tableRef={tableRef}
+        key={uuidv4()}
+      />
+    ),
+    renderHeader: () => <HeaderTagsCloth key={uuidv4()} />,
+    renderFooter: () => <FooterTagsCloth key={uuidv4()} />,
+  },
+  tagsOthers: {
+    render: (vc, availableTagsOthers, tableRef) => (
+      <BodyTagsOthers
+        tags={vc.tagsOthers}
+        availableTagsOthers={availableTagsOthers}
+        skuId={vc.id}
+        tableRef={tableRef}
+        key={uuidv4()}
+      />
+    ),
+    renderHeader: () => <HeaderTagsOthers key={uuidv4()} />,
+    renderFooter: () => <FooterTagsOthers key={uuidv4()} />,
   },
   orders: {
     render: (vc, datesFilter) => (
@@ -235,7 +271,9 @@ const сolRender = {
 const VendorCodesTable = ({ data, columns }) => {
   const vcNameFilter = useSelector(selectVCNameFilter);
   const datesFilter = useSelector(selectVCDatesFilter);
-  const availableTags = useSelector(selectAvailableTags);
+  const availableTagsMain = useSelector(selectAvailableTagsMain);
+  const availableTagsCloth = useSelector(selectAvailableTagsCloth);
+  const availableTagsOthers = useSelector(selectAvailableTagsOthers);
   const tableRef = useRef(null);
 
   const highlightMatch = (text, filter) => {
@@ -371,14 +409,32 @@ const VendorCodesTable = ({ data, columns }) => {
               </Link>
               {columns.map((col) => {
                 if (!col.hidden) {
-                  if (col.key !== 'tags') {
+                  if (
+                    col.key !== 'tags' &&
+                    col.key !== 'tagsCloth' &&
+                    col.key !== 'tagsOthers'
+                  ) {
                     return сolRender[col.key].render(vc, datesFilter);
                   } else {
-                    return сolRender[col.key].render(
-                      vc,
-                      availableTags,
-                      tableRef
-                    );
+                    if (col.key == 'tags') {
+                      return сolRender[col.key].render(
+                        vc,
+                        availableTagsMain,
+                        tableRef
+                      );
+                    } else if (col.key == 'tagsCloth') {
+                      return сolRender[col.key].render(
+                        vc,
+                        availableTagsCloth,
+                        tableRef
+                      );
+                    } else {
+                      return сolRender[col.key].render(
+                        vc,
+                        availableTagsOthers,
+                        tableRef
+                      );
+                    }
                   }
                 }
               })}

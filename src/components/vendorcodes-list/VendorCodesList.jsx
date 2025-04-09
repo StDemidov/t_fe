@@ -26,6 +26,8 @@ import {
   selectVCDatesFilter,
   selectVCSortingType,
   selectVCTagsFilter,
+  selectVCTagsClothFilter,
+  selectVCTagsOthersFilter,
 } from '../../redux/slices/filterSlice';
 import { fetchAvailableTags } from '../../redux/slices/vendorCodeSlice';
 import { hostName } from '../../utils/host';
@@ -41,6 +43,8 @@ import { calculateCostPerOrder } from '../../utils/calculations';
 
 const initialColumns = [
   { key: 'tags', label: 'Теги', hidden: false },
+  { key: 'tagsCloth', label: 'Теги (ткань)', hidden: false },
+  { key: 'tagsOthers', label: 'Теги (доп.)', hidden: false },
   { key: 'orders', label: 'Заказы', hidden: false },
   { key: 'sales', label: 'Выкупы', hidden: false },
   { key: 'wbStocks', label: 'Остатки WB', hidden: false },
@@ -174,6 +178,8 @@ const VendorCodesList = () => {
   const abcFilter = useSelector(selectVendorCodeAbcFilter);
   const dateFilter = useSelector(selectVCDatesFilter);
   const tagsFilter = useSelector(selectVCTagsFilter);
+  const tagsClothFilter = useSelector(selectVCTagsClothFilter);
+  const tagsOthersFilter = useSelector(selectVCTagsOthersFilter);
   const startDate = new Date(dateFilter.start);
   const endDate = new Date(dateFilter.end);
   const notificationMessage = useSelector(selectNotificationMessage);
@@ -204,6 +210,8 @@ const VendorCodesList = () => {
     let vcNameMatch = true;
     let abcMatch = true;
     let tagMatch = true;
+    let tagClothMatch = true;
+    let tagOthersMatch = true;
     if (categoryFilter.length !== 0) {
       categoryMatch = categoryFilter.includes(vc.categoryName);
     }
@@ -220,9 +228,22 @@ const VendorCodesList = () => {
       abcMatch = abcFilter.includes(vc.abcCurrent);
     }
     if (tagsFilter.length !== 0) {
-      tagMatch = includesAny(tagsFilter, vc.tags);
+      tagMatch = includesAny(tagsFilter, vc.tagsMain);
     }
-    return categoryMatch && vcNameMatch && abcMatch && tagMatch;
+    if (tagsClothFilter.length !== 0) {
+      tagClothMatch = includesAny(tagsClothFilter, vc.tagsCloth);
+    }
+    if (tagsOthersFilter.length !== 0) {
+      tagOthersMatch = includesAny(tagsOthersFilter, vc.tagsOthers);
+    }
+    return (
+      categoryMatch &&
+      vcNameMatch &&
+      abcMatch &&
+      tagMatch &&
+      tagClothMatch &&
+      tagOthersMatch
+    );
   });
 
   let extentedFilteredVCMetrics = structuredClone(filteredVCMetrics);

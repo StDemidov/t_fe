@@ -6,7 +6,9 @@ import {
   createNewTag,
   selectCreateTag,
   selectVendorCodeMetrics,
-  selectNewSkusTags,
+  selectNewSkusTagsMain,
+  selectNewSkusTagsCloth,
+  selectNewSkusTagsOthers,
 } from '../../redux/slices/vendorCodeSlice';
 
 import styles from './style.module.css';
@@ -16,18 +18,32 @@ import DateFilter from './date_filter/dateFilter';
 import VCSorting from './sorting/VCSorting';
 import VCTagFilter from './tag_filter/VCTagFilter';
 import { hostName } from '../../utils/host';
+import VCTagClothFilter from './tag_filter_cloth/VCTagClothFilter';
+import VCTagOthersFilter from './tag_filter_others/VCTagOthersFilter';
 
 const VendorCodesFilters = () => {
   const vendorCodesWMetrics = useSelector(selectVendorCodeMetrics);
   const createdTags = useSelector(selectCreateTag);
-  const newSkusTags = useSelector(selectNewSkusTags);
+  const newSkusTagsMain = useSelector(selectNewSkusTagsMain);
+  const newSkusTagsCloth = useSelector(selectNewSkusTagsCloth);
+  const newSkusTagsOthers = useSelector(selectNewSkusTagsOthers);
   const dispatch = useDispatch();
 
   let categories = vendorCodesWMetrics.map((vendorcode) => {
     return vendorcode.categoryName;
   });
 
-  let tags = [...new Set(vendorCodesWMetrics.flatMap((item) => item.tags))];
+  let tagsMain = [
+    ...new Set(vendorCodesWMetrics.flatMap((item) => item.tagsMain)),
+  ];
+
+  let tagsCloth = [
+    ...new Set(vendorCodesWMetrics.flatMap((item) => item.tagsCloth)),
+  ];
+
+  let tagsOthers = [
+    ...new Set(vendorCodesWMetrics.flatMap((item) => item.tagsOthers)),
+  ];
 
   let abc = vendorCodesWMetrics.map((vendorcode) => {
     return vendorcode.abcCurrent;
@@ -39,7 +55,9 @@ const VendorCodesFilters = () => {
   const handleCreateTag = () => {
     let data = {
       create_tags: createdTags,
-      skus_tags: newSkusTags,
+      skus_tags_main: newSkusTagsMain,
+      skus_tags_cloth: newSkusTagsCloth,
+      skus_tags_others: newSkusTagsOthers,
     };
     dispatch(
       createNewTag({
@@ -54,13 +72,17 @@ const VendorCodesFilters = () => {
       <DateFilter />
       <VCCategoryFilter options={categories} />
       <VCAbcFilter options={abc} />
-      <VCTagFilter options={tags} />
+      <VCTagFilter options={tagsMain} />
+      <VCTagClothFilter options={tagsCloth} />
+      <VCTagOthersFilter options={tagsOthers} />
       <VCSorting />
       <VCNameFilter />
-      {createdTags.length || newSkusTags.length ? (
-        // <button className={styles.createTag} onClick={handleCreateTag}>
-        //   <span>Создать новые теги</span>
-        // </button>
+      {createdTags.main.length ||
+      createdTags.cloth.length ||
+      createdTags.others.length ||
+      newSkusTagsMain.length ||
+      newSkusTagsCloth.length ||
+      newSkusTagsOthers.length ? (
         <button className={styles.bookmarkBtn} onClick={handleCreateTag}>
           <span className={styles.iconContainer}>
             <FaCloud className={styles.icon} />

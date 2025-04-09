@@ -21,7 +21,9 @@ const initialState = {
       end: format(subDays(new Date(), 1), 'MM-dd-yyyy'),
     },
     sortingType: 'EBITDA / день (сумм.) ↓',
-    tags: [],
+    tagsMain: [],
+    tagsCloth: [],
+    tagsOthers: [],
   },
   singleVC: {
     dates: {
@@ -133,10 +135,22 @@ const filterSlice = createSlice({
       state.vendorCode.category = [];
     },
     setVendorCodeTagsFilter: (state, action) => {
-      state.vendorCode.tags = [...action.payload];
+      state.vendorCode.tagsMain = [...action.payload];
     },
     resetVendorCodeTagsFilter: (state) => {
-      state.vendorCode.tags = [];
+      state.vendorCode.tagsMain = [];
+    },
+    setVendorCodeTagsClothFilter: (state, action) => {
+      state.vendorCode.tagsCloth = [...action.payload];
+    },
+    resetVendorCodeTagsClothFilter: (state) => {
+      state.vendorCode.tagsCloth = [];
+    },
+    setVendorCodeTagsOthersFilter: (state, action) => {
+      state.vendorCode.tagsOthers = [...action.payload];
+    },
+    resetVendorCodeTagsOthersFilter: (state) => {
+      state.vendorCode.tagsOthers = [];
     },
     setVendorCodeAbcFilter: (state, action) => {
       state.vendorCode.abc = [...action.payload];
@@ -204,6 +218,10 @@ export const {
   resetSkuOrNameTasksFilter,
   setVendorCodeTagsFilter,
   resetVendorCodeTagsFilter,
+  setVendorCodeTagsClothFilter,
+  resetVendorCodeTagsClothFilter,
+  setVendorCodeTagsOthersFilter,
+  resetVendorCodeTagsOthersFilter,
   setAutoCmpgBrand,
   setAutoCmpgCampName,
   setAutoCmpgCreatedBy,
@@ -258,7 +276,11 @@ export const selectSkuOrNameTasksFilter = (state) =>
 export const selectVCDatesFilter = (state) => state.filter.vendorCode.dates;
 export const selectSingleVCDatesFilter = (state) => state.filter.singleVC.dates;
 export const selectBarcodeDatesFilter = (state) => state.filter.barcode.dates;
-export const selectVCTagsFilter = (state) => state.filter.vendorCode.tags;
+export const selectVCTagsFilter = (state) => state.filter.vendorCode.tagsMain;
+export const selectVCTagsClothFilter = (state) =>
+  state.filter.vendorCode.tagsCloth;
+export const selectVCTagsOthersFilter = (state) =>
+  state.filter.vendorCode.tagsOthers;
 export const selectAutoCampBrandFilter = (state) =>
   state.filter.autoCmpgns.brand;
 export const selectAutoCampCampNamFilter = (state) =>

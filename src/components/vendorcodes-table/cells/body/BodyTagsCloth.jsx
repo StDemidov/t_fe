@@ -3,15 +3,15 @@ import { createPortal } from 'react-dom';
 import { FaSave } from 'react-icons/fa';
 import { useDispatch } from 'react-redux';
 
-import { setError } from '../../redux/slices/errorSlice';
+import { setError } from '../../../../redux/slices/errorSlice';
 
 import styles from './style.module.css';
 import {
-  setNewSkusTags,
-  setNewAvailableTag,
-} from '../../redux/slices/vendorCodeSlice';
+  setNewSkusTagsCloth,
+  setNewAvailableTagCloth,
+} from '../../../../redux/slices/vendorCodeSlice';
 
-const ItemCell = ({ tags, availableTags, skuId, tableRef }) => {
+const BodyTagsCloth = ({ tags, availableTagsCloth, skuId, tableRef }) => {
   const [selectedTags, setSelectedTags] = useState(tags);
   const [tempTags, setTempTags] = useState(tags);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -93,22 +93,22 @@ const ItemCell = ({ tags, availableTags, skuId, tableRef }) => {
   // Добавление нового тега
   const handleAddTag = useCallback(() => {
     const newTag = newTagRef.current.value.trim();
-    let check = availableTags.map((e) => {
+    let check = availableTagsCloth.map((e) => {
       return e.toLowerCase();
     });
 
     if (newTag && !check.includes(newTag.toLowerCase())) {
-      dispatch(setNewAvailableTag([newTag]));
+      dispatch(setNewAvailableTagCloth([newTag]));
       newTagRef.current.value = '';
     } else {
       dispatch(setError('Тег пустой или такой тег уже существует'));
     }
-  }, [availableTags]);
+  }, [availableTagsCloth]);
 
   // Подтверждение выбора
   const handleAccept = () => {
     setSelectedTags(tempTags);
-    dispatch(setNewSkusTags({ [skuId]: tempTags }));
+    dispatch(setNewSkusTagsCloth({ [skuId]: tempTags }));
     setIsDropdownOpen(false);
   };
 
@@ -139,7 +139,7 @@ const ItemCell = ({ tags, availableTags, skuId, tableRef }) => {
             >
               <h4>Выберите теги</h4>
               <div className={styles.tagList}>
-                {availableTags.map((tag) => (
+                {availableTagsCloth.map((tag) => (
                   <div
                     key={tag}
                     className={`${styles.tagOption} ${
@@ -178,4 +178,4 @@ const ItemCell = ({ tags, availableTags, skuId, tableRef }) => {
   );
 };
 
-export default ItemCell;
+export default BodyTagsCloth;

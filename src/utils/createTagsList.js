@@ -1,5 +1,11 @@
-const createTagsList = (tags) => {
-  return [...tags];
+export const createTagsListMain = (tags) => {
+  return [...tags.main];
 };
 
-export default createTagsList;
+export const createTagsListCloth = (tags) => {
+  return [...tags.cloth];
+};
+
+export const createTagsListOthers = (tags) => {
+  return [...tags.others];
+};

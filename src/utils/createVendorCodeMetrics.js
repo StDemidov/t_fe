@@ -26,7 +26,9 @@ const createVendorCodeMetrics = (vendorCodeMetrics) => {
           ? []
           : item.raw_daily_ebitda.split(',').map(Number),
       abcCurrent: item.abc_current,
-      tags: item.tags,
+      tagsMain: item.tagsMain,
+      tagsCloth: item.tagsCloth,
+      tagsOthers: item.tagsOthers,
       selfPrice: item.self_price,
       selfPriceWONds: item.self_price_wo_nds,
       categoryName: item.category_name,

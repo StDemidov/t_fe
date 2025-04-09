@@ -1,17 +1,17 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setVendorCodeTagsFilter } from '../../../redux/slices/filterSlice';
 import {
-  selectVCTagsFilter,
-  resetVendorCodeTagsFilter,
+  setVendorCodeTagsOthersFilter,
+  selectVCTagsOthersFilter,
+  resetVendorCodeTagsOthersFilter,
 } from '../../../redux/slices/filterSlice';
 
 import styles from './style.module.css';
 
-const VCTagFilter = ({ options }) => {
+const VCTagOthersFilter = ({ options }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOptions, setSelectedOptions] = useState(
-    useSelector(selectVCTagsFilter)
+    useSelector(selectVCTagsOthersFilter)
   );
   const dispatch = useDispatch();
 
@@ -19,13 +19,13 @@ const VCTagFilter = ({ options }) => {
 
   const handleFilterApply = () => {
     toggleDropdown();
-    dispatch(setVendorCodeTagsFilter(selectedOptions));
+    dispatch(setVendorCodeTagsOthersFilter(selectedOptions));
   };
 
   const handleFilterReset = () => {
     setSelectedOptions([]);
-    dispatch(resetVendorCodeTagsFilter);
-    dispatch(setVendorCodeTagsFilter([]));
+    dispatch(resetVendorCodeTagsOthersFilter);
+    dispatch(setVendorCodeTagsOthersFilter([]));
   };
 
   const handleOptionChange = (event) => {
@@ -49,7 +49,7 @@ const VCTagFilter = ({ options }) => {
         className={`${styles.dropdownToggle} ${isOpen ? styles.open : ''}`}
         onClick={toggleDropdown}
       >
-        Теги
+        Теги (доп.)
         <span className={styles.arrow}>
           {selectedOptions.length !== 0 ? (
             <span
@@ -98,4 +98,4 @@ const VCTagFilter = ({ options }) => {
   );
 };
 
-export default VCTagFilter;
+export default VCTagOthersFilter;
