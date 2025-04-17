@@ -69,10 +69,7 @@ const transformOrders = (data) => {
     transformed[order.barcode].push({
       name: order.order_name,
       amount: order.amount,
-      date:
-        order.order_name === '176 кх'
-          ? new Date('2025-07-17')
-          : new Date('2025-05-17'),
+      date: new Date(order.create_date),
     });
   });
 
