@@ -17,7 +17,7 @@ const BarcodesVCNameFilter = () => {
         value={nameFilter}
         onChange={handleVCNameFilterChange}
         type="text"
-        placeholder="Отфильтровать по артикулу или SKU..."
+        placeholder="Отфильтровать по артикулу..."
       />
     </div>
   );

@@ -41,6 +41,9 @@ function transformBcData(bcData) {
       abc: item.abc,
       image: item.image,
       selfPrice: Math.round(item.self_price),
+      tagsMain: item.tags_main,
+      tagsCloth: item.tags_cloth,
+      tagsOthers: item.tags_others,
       barcodes: item.barcodes
         .sort((a, b) => {
           return sizeOrder.indexOf(a.size) - sizeOrder.indexOf(b.size);
@@ -66,8 +69,16 @@ const transformOrders = (data) => {
     transformed[order.barcode].push({
       name: order.order_name,
       amount: order.amount,
+      date:
+        order.order_name === '176 кх'
+          ? new Date('2025-07-17')
+          : new Date('2025-05-17'),
     });
   });
+
+  for (const key in transformed) {
+    transformed[key].sort((a, b) => new Date(a.date) - new Date(b.date));
+  }
 
   return transformed;
 };

@@ -20,10 +20,14 @@ import {
   selectBarcodeColorFilter,
   selectBarcodeDatesFilter,
   selectBarcodeSortingType,
+  selectBarcodeTagsClothFilter,
+  selectBarcodeTagsFilter,
+  selectBarcodeTagsOthersFilter,
   selectBarcodeVCNameFilter,
 } from '../../redux/slices/filterSlice';
 import { getSum, getAverage } from '../../utils/dataSlicing';
 import { calculateCostPerOrder } from '../../utils/calculations';
+import { selectColors } from '../../redux/slices/ordersSlice';
 
 const BarcodesListNew = () => {
   const dispatch = useDispatch();
@@ -36,7 +40,11 @@ const BarcodesListNew = () => {
   const selectedSorting = useSelector(selectBarcodeSortingType);
   const vcNameFilter = useSelector(selectBarcodeVCNameFilter);
   const colorFilter = useSelector(selectBarcodeColorFilter);
-  const [selectedColors, setSelectedColors] = useState({});
+  const tagFilter = useSelector(selectBarcodeTagsFilter);
+  const tagClothFilter = useSelector(selectBarcodeTagsClothFilter);
+  const tagOthersFilter = useSelector(selectBarcodeTagsOthersFilter);
+  const savedColors = useSelector(selectColors);
+  const [selectedColors, setSelectedColors] = useState(savedColors);
   const startDate = new Date(datesFilter.start);
   const endDate = new Date(datesFilter.end);
 
@@ -66,6 +74,9 @@ const BarcodesListNew = () => {
   const filteredBarcodes = extentedBarcodes.filter((vc) => {
     let vcNameMatch = true;
     let colorMatch = true;
+    let tagMatch = true;
+    let tagClothMatch = true;
+    let tagOthersMatch = true;
 
     if (vcNameFilter.length !== 0) {
       if (isNaN(vcNameFilter)) {
@@ -79,7 +90,18 @@ const BarcodesListNew = () => {
     if (colorFilter.length !== 0) {
       colorMatch = colorFilter.includes(selectedColors[vc.vcName]);
     }
-    return vcNameMatch && colorMatch;
+    if (tagFilter.length !== 0) {
+      tagMatch = includesAny(tagFilter, vc.tagsMain);
+    }
+    if (tagClothFilter.length !== 0) {
+      tagClothMatch = includesAny(tagClothFilter, vc.tagsCloth);
+    }
+    if (tagOthersFilter.length !== 0) {
+      tagOthersMatch = includesAny(tagOthersFilter, vc.tagsOthers);
+    }
+    return (
+      vcNameMatch && colorMatch && tagMatch && tagClothMatch && tagOthersMatch
+    );
   });
 
   getSortedData(filteredBarcodes, selectedSorting);
@@ -94,7 +116,8 @@ const BarcodesListNew = () => {
         <animated.div style={{ ...animStyles }}>
           <section>
             <BarcodesTableNew
-              fullData={extentedBarcodes}
+              rawData={extentedBarcodes}
+              fullData={filteredBarcodes}
               data={
                 currentPage > barcodes_splitted.length
                   ? barcodes_splitted[0]
@@ -156,3 +179,5 @@ const getSortedData = (data, selectedSorting) => {
       data.sort((a, b) => (a.ebitda > b.ebitda ? -1 : 1));
   }
 };
+
+const includesAny = (arr, values) => values.some((v) => arr.includes(v));

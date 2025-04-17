@@ -76,7 +76,7 @@ const VCTagOthersFilter = ({ options }) => {
               {option}
             </label>
           ))}
-          <div className={styles.drowdownActions}>
+          <div className={styles.dropdownActions}>
             <button
               className={styles.dropdownReset}
               onClick={handleFilterReset}

@@ -15,6 +15,7 @@ import ebitdaSettingsReducer from './slices/ebitdaSettingsSlice';
 import autoCampaignsReducer from './slices/autoCampaignsSlice';
 import aucCampaignsReducer from './slices/aucCampaignsSlice';
 import tasksHoldStocksReducer from './slices/tasksHoldStocksSlice';
+import ordersReducer from './slices/ordersSlice';
 
 import { persistReducer, persistStore } from 'redux-persist';
 import { combineReducers } from '@reduxjs/toolkit';
@@ -25,7 +26,14 @@ const authPersistConfig = {
   whitelist: ['user'], // Сохраняйте только нужные данные из state.auth
 };
 
+const ordersPersistConfig = {
+  key: 'orders',
+  storage,
+  whitelist: ['orders', 'colors', 'ordersDates'],
+};
+
 const authReducer = persistReducer(authPersistConfig, userReducer);
+const orderBCReducer = persistReducer(ordersPersistConfig, ordersReducer);
 
 const rootReducer = combineReducers({
   category: categoryReducer,
@@ -39,6 +47,7 @@ const rootReducer = combineReducers({
   abc: abcReducer,
   tasksDrain: tasksDrainReducer,
   auth: authReducer, // Обернули auth
+  orders: orderBCReducer,
   ebitdaSettings: ebitdaSettingsReducer,
   autoCampaigns: autoCampaignsReducer,
   tasksHoldStocks: tasksHoldStocksReducer,

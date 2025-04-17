@@ -1,7 +1,7 @@
 .dropdown {
   position: relative;
   display: block;
-  width: 212px;
+  width: 170px;
   z-index: 1000;
   font-family: 'BebasNeue', sans-serif;
   text-transform: uppercase;
@@ -56,7 +56,7 @@
   border: 1px solid #ddd;
   border-radius: 15px;
   box-shadow: 2px 8px 16px rgba(0, 0, 0, 0.2);
-  width: 200px;
+  width: 158px;
   padding-top: 10px;
   padding-bottom: 10px;
   padding-left: 10px;

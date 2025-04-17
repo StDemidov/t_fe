@@ -5,11 +5,13 @@ import styles from './style.module.css';
 
 import { createOrder } from '../../redux/slices/barcodeSlice';
 import { hostName } from '../../utils/host';
+import { setError } from '../../redux/slices/errorSlice';
 
 export default function UploadOrderBarcode({ existingOrders }) {
   const [isOpen, setIsOpen] = useState(false);
   const [file, setFile] = useState(null);
   const [orderName, setOrderName] = useState('');
+  const [orderDate, setOrderDate] = useState('');
   const [isValidFile, setIsValidFile] = useState(false);
   const [isUniqueName, setIsUniqueName] = useState(true);
   const [data, setData] = useState({});
@@ -67,15 +69,25 @@ export default function UploadOrderBarcode({ existingOrders }) {
     setIsUniqueName(!existingOrders.includes(e.target.value));
   };
 
+  const handleOrderDateChange = (e) => {
+    setOrderDate(e.target.value);
+  };
+
   const handleUpload = () => {
-    setConfirmOpen(true);
+    if (validateDate(orderDate)) {
+      setConfirmOpen(true);
+    } else {
+      dispatch(setErrorda('Укажите дату в формате ГГГГ-ММ-ДД!'));
+    }
   };
 
   const confirmUpload = () => {
     const order = {
       orderName,
       data,
+      orderDate,
     };
+    setOrderDate('');
     dispatch(
       createOrder({
         data: order,
@@ -97,12 +109,20 @@ export default function UploadOrderBarcode({ existingOrders }) {
             <input type="file" accept=".xlsx" onChange={handleFileChange} />
             {isValidFile && <span>✅ Файл корректен</span>}
             {isValidFile && (
-              <input
-                className={styles.orderNameInput}
-                placeholder="Название заказа"
-                value={orderName}
-                onChange={handleOrderNameChange}
-              />
+              <>
+                <input
+                  className={styles.orderNameInput}
+                  placeholder="Название заказа"
+                  value={orderName}
+                  onChange={handleOrderNameChange}
+                />
+                <input
+                  className={styles.orderNameInput}
+                  placeholder="Планируемая дата"
+                  value={orderDate}
+                  onChange={handleOrderDateChange}
+                />
+              </>
             )}
             {!isUniqueName && <span>❌ Название уже занято</span>}
             {isValidFile && isUniqueName && (
@@ -140,4 +160,14 @@ export default function UploadOrderBarcode({ existingOrders }) {
       )}
     </div>
   );
+}
+
+function validateDate(input) {
+  // Регулярное выражение для формата ГГГГ-ММ-ДД
+  const regex = /^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/;
+
+  if (regex.test(input)) {
+    return true;
+  }
+  return false;
 }

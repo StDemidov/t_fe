@@ -2,17 +2,17 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import {
-  setVendorCodeTagsClothFilter,
-  selectVCTagsClothFilter,
-  resetVendorCodeTagsClothFilter,
+  setBarcodeTagsClothFilter,
+  selectBarcodeTagsClothFilter,
+  resetBarcodeTagsClothFilter,
 } from '../../../redux/slices/filterSlice';
 
 import styles from './style.module.css';
 
-const VCTagClothFilter = ({ options }) => {
+const BarcodeTagClothFilter = ({ options }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOptions, setSelectedOptions] = useState(
-    useSelector(selectVCTagsClothFilter)
+    useSelector(selectBarcodeTagsClothFilter)
   );
   const dispatch = useDispatch();
 
@@ -20,13 +20,13 @@ const VCTagClothFilter = ({ options }) => {
 
   const handleFilterApply = () => {
     toggleDropdown();
-    dispatch(setVendorCodeTagsClothFilter(selectedOptions));
+    dispatch(setBarcodeTagsClothFilter(selectedOptions));
   };
 
   const handleFilterReset = () => {
     setSelectedOptions([]);
-    dispatch(resetVendorCodeTagsClothFilter);
-    dispatch(setVendorCodeTagsClothFilter([]));
+    dispatch(resetBarcodeTagsClothFilter);
+    dispatch(setBarcodeTagsClothFilter([]));
   };
 
   const handleOptionChange = (event) => {
@@ -99,4 +99,4 @@ const VCTagClothFilter = ({ options }) => {
   );
 };
 
-export default VCTagClothFilter;
+export default BarcodeTagClothFilter;

@@ -2,7 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import LazyLoad from 'react-lazyload';
 import { FaRegCopy, FaExternalLinkAlt } from 'react-icons/fa';
-
+import { MdDeleteForever } from 'react-icons/md';
+import { PiEmptyDuotone } from 'react-icons/pi';
 import { v4 as uuidv4 } from 'uuid';
 import {
   format,
@@ -22,6 +23,15 @@ import DeleteOrders from '../delete_orders/DeleteOrders';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectPage, setPageBarcode } from '../../redux/slices/barcodeSlice';
 import { selectBarcodeDatesFilter } from '../../redux/slices/filterSlice';
+import {
+  saveOrders,
+  deleteOrders,
+  selectOrders,
+  saveColors,
+  saveOrdersDates,
+  selectOrdersDates,
+  deleteOrdersDates,
+} from '../../redux/slices/ordersSlice';
 import BarplotOrdersDouble from '../barplot_orders_double/BarplotOrdersDouble';
 import LineplotVC from '../lineplot_vc/LineplotVC';
 
@@ -43,7 +53,7 @@ const predefinedColors = [
   '#FF0000',
   '#00FF00',
   '#0000FF',
-  '#FFFF00',
+  '#ffae00',
   '#FF00FF',
   '#00FFFF',
 ];
@@ -52,12 +62,13 @@ const colorsNames = {
   '#FF0000': 'Красный',
   '#00FF00': 'Зеленый',
   '#0000FF': 'Синий',
-  '#FFFF00': 'Желтый',
+  '#ffae00': 'Желтый',
   '#FF00FF': 'Розовый',
   '#00FFFF': 'Голубой',
 };
 
 const BarcodesTableNew = ({
+  rawData,
   fullData,
   data,
   endDate,
@@ -67,7 +78,11 @@ const BarcodesTableNew = ({
   setSelectedColors,
 }) => {
   const [weeks, setWeeks] = useState([]);
-  const [extraStock, setExtraStock] = useState({});
+  const savedOrders = useSelector(selectOrders);
+  const savedOrdersDates = useSelector(selectOrdersDates);
+  const [tmpDates, setTmpDates] = useState({});
+  const [extraStock, setExtraStock] = useState(savedOrders);
+  const [ordersDates, setOrdersDates] = useState(savedOrdersDates);
   const [months, setMonths] = useState([]);
   const tableRefs = useRef([]);
   const dispatch = useDispatch();
@@ -91,6 +106,12 @@ const BarcodesTableNew = ({
       }
     });
   };
+
+  useEffect(() => {
+    dispatch(saveOrders(extraStock));
+    dispatch(saveColors(selectedColors));
+    dispatch(saveOrdersDates(ordersDates));
+  }, [selectedColors, extraStock, ordersDates]);
 
   useEffect(() => {
     const today = new Date();
@@ -119,6 +140,8 @@ const BarcodesTableNew = ({
       weekRanges.push({
         start: format(new Date(start), 'dd'),
         end: format(new Date(weekEnd), 'dd'),
+        startDate: new Date(start),
+        endDate: new Date(weekEnd),
       });
       start = addWeeks(start, 1);
     }
@@ -144,8 +167,33 @@ const BarcodesTableNew = ({
     setExtraStock((prev) => ({ ...prev, [barcode]: Number(value) || 0 }));
   };
 
+  const handleOrdersDatesChange = (index, value) => {
+    if (validateDate(value)) {
+      setOrdersDates((prev) => ({ ...prev, [data[index].vcName]: value || 0 }));
+      const newTmpDates = { ...tmpDates };
+      delete newTmpDates[data[index].vcName];
+      setTmpDates(newTmpDates);
+    }
+  };
+  const handleTmpOrdersDatesChange = (index, value) => {
+    setTmpDates((prev) => ({ ...prev, [data[index].vcName]: value || 0 }));
+    handleDateDelete(data[index].vcName);
+  };
+
   const handleColorSelect = (vcName, color) => {
     setSelectedColors((prev) => ({ ...prev, [vcName]: color }));
+  };
+
+  const handleColorDelete = (vcName) => {
+    const newColors = { ...selectedColors };
+    delete newColors[vcName];
+    setSelectedColors(newColors);
+  };
+
+  const handleDateDelete = (vcName) => {
+    const newOrdersDates = { ...ordersDates };
+    delete newOrdersDates[vcName];
+    setOrdersDates(newOrdersDates);
   };
 
   const generateXLS = () => {
@@ -161,8 +209,13 @@ const BarcodesTableNew = ({
         if (!sheetsData[color]) {
           sheetsData[color] = [];
         }
+        const date = ordersDates[vc?.vcName] || '';
 
-        sheetsData[color].push({ Баркод: barcode, Количество: value });
+        sheetsData[color].push({
+          Баркод: barcode,
+          Количество: value,
+          Дата: date,
+        });
       }
     });
 
@@ -175,11 +228,31 @@ const BarcodesTableNew = ({
 
     XLSX.writeFile(workbook, 'заказ.xlsx');
     setExtraStock({});
+    setSelectedColors({});
+    setOrdersDates({});
   };
 
   const handleClickOnPage = (event) => {
     const id = event.currentTarget.getAttribute('data-value');
     dispatch(setPageBarcode(id));
+  };
+
+  const handleDeleteOrders = (event) => {
+    setExtraStock({});
+    setSelectedColors({});
+    setOrdersDates({});
+    dispatch(deleteOrders());
+  };
+
+  const handleDeleteSingleOrder = (event) => {
+    const index = event.currentTarget.getAttribute('data-value');
+    const excludeKeys = data[index].barcodes.map((item) => item.barcode);
+    const filteredOrders = Object.fromEntries(
+      Object.entries(extraStock).filter(([key]) => !excludeKeys.includes(key))
+    );
+    setExtraStock(filteredOrders);
+    handleColorDelete(data[index].vcName);
+    handleDateDelete(data[index].vcName);
   };
 
   const handleCopy = (event) => {
@@ -198,7 +271,7 @@ const BarcodesTableNew = ({
 
   var sumExtra = 0;
 
-  data.map((vc) => {
+  fullData.map((vc) => {
     vc.barcodes.map((bc) => {
       for (var key in extraStock) {
         if (key === bc.barcode) {
@@ -208,12 +281,22 @@ const BarcodesTableNew = ({
     });
   });
 
+  let tagsMain = [...new Set(rawData.flatMap((item) => item.tagsMain))];
+
+  let tagsCloth = [...new Set(rawData.flatMap((item) => item.tagsCloth))];
+
+  let tagsOthers = [...new Set(rawData.flatMap((item) => item.tagsOthers))];
+
   return (
     <div>
       <div className={styles.headerBlock}>
         <div className={styles.headerFiltersButtons}>
           <div className={styles.filters}>
-            <BarcodeFilters />
+            <BarcodeFilters
+              tagsMain={tagsMain}
+              tagsCloth={tagsCloth}
+              tagsOthers={tagsOthers}
+            />
           </div>
           <div className={styles.actionButtons}>
             <UploadOrderBarcode existingOrders={uniqueOrders} />
@@ -261,6 +344,7 @@ const BarcodesTableNew = ({
                     Сумма новых заказов:
                     <br />
                     <div className={styles.sumOrderDiv}>{sumExtra}</div>
+                    <MdDeleteForever onClick={handleDeleteOrders} />
                   </th>
                   {months.map((month, index) => (
                     <th
@@ -288,35 +372,57 @@ const BarcodesTableNew = ({
         let sumOrders = 0;
         let sumExtraOrder = 0;
         let sumRemaining = 0;
+
         return (
           <div className={styles.artBlock} key={index}>
             <div
               className={styles.artInfo}
               style={
                 selectedColors[vc.vcName]
-                  ? { border: `1px solid ${selectedColors[vc.vcName]}` }
+                  ? {
+                      border: `2px solid ${selectedColors[vc.vcName]}`,
+                      boxSizing: `border-box`,
+                    }
                   : {}
               }
             >
               <div className={styles.infoBlock}>
                 <div className={styles.vcName}>
                   {vc.vcName}
-
-                  <FaRegCopy
-                    size={12}
-                    data-value={vc.vcName}
-                    onClick={handleCopy}
-                    style={{ cursor: 'pointer' }}
-                    className={styles.copyIcon}
+                  <div className={styles.iconBox}>
+                    <FaRegCopy
+                      data-value={vc.vcName}
+                      onClick={handleCopy}
+                      style={{ cursor: 'pointer' }}
+                    />
+                    <Link
+                      to={`/vendorcodes/${vc.id}`}
+                      target="_blank"
+                      style={{ textDecoration: 'none', color: 'inherit' }}
+                    >
+                      <FaExternalLinkAlt />
+                    </Link>
+                    <MdDeleteForever
+                      data-value={index}
+                      onClick={handleDeleteSingleOrder}
+                    />
+                  </div>
+                </div>
+                <div>
+                  <label>Дата начала расчета: </label>
+                  <input
+                    type="text"
+                    placeholder="ГГГГ-ММ-ДД"
+                    value={ordersDates[vc.vcName] || tmpDates[vc.vcName] || ''}
+                    onChange={(e) => {
+                      if (e.target.value.length === 10) {
+                        handleOrdersDatesChange(index, e.target.value);
+                      } else {
+                        handleTmpOrdersDatesChange(index, e.target.value);
+                      }
+                    }}
+                    className={styles.disabledScroll}
                   />
-                  <Link
-                    to={`/vendorcodes/${vc.id}`}
-                    className={styles.linkIcon}
-                    target="_blank"
-                    style={{ textDecoration: 'none', color: 'inherit' }}
-                  >
-                    <FaExternalLinkAlt />
-                  </Link>
                 </div>
                 <div className={styles.metrics}>
                   <div className={styles.metricBox}>
@@ -358,25 +464,25 @@ const BarcodesTableNew = ({
                     <div className={styles.ordersPlot}>
                       СРО
                       <LineplotVC data={vc.cpo} dates={datesFilter} />
-                      {/* <div
-                        className={styles.summary}
-                        style={
-                          vc.ordersSum
-                            ? { display: 'block' }
-                            : { display: 'none' }
-                        }
-                      >
-                        <br />
-                        Заказов: {vc.ordersSum.toLocaleString()}
-                      </div> */}
                     </div>
                   </LazyLoad>
                 </div>
               </div>
               <div className={styles.imageBlock}>
                 <img src={vc.image} alt="Фото" className={styles.zoomImage} />
-                <div className={styles.abcCategory}>{vc.abc}</div>
-                <div>
+                <div
+                  className={styles.abcCategory}
+                  style={
+                    selectedColors[vc.vcName]
+                      ? {
+                          backgroundColor: `${selectedColors[vc.vcName]}`,
+                        }
+                      : {}
+                  }
+                >
+                  {vc.abc}
+                </div>
+                <div className={styles.colorSelector}>
                   {predefinedColors.map((color) => (
                     <button
                       key={color}
@@ -385,10 +491,20 @@ const BarcodesTableNew = ({
                         width: 12,
                         height: 12,
                         margin: 3,
+                        cursor: 'pointer',
                       }}
                       onClick={() => handleColorSelect(vc.vcName, color)}
                     />
                   ))}
+                  <PiEmptyDuotone
+                    onClick={() => handleColorDelete(vc.vcName)}
+                    style={{
+                      width: 12,
+                      height: 12,
+                      margin: 3,
+                      cursor: 'pointer',
+                    }}
+                  />
                 </div>
               </div>
             </div>
@@ -402,6 +518,7 @@ const BarcodesTableNew = ({
                   {vc.barcodes.map(
                     ({ barcode, stock, forecasts, size }, index) => {
                       let remainingStock = stock;
+
                       let extraRemaining = extraStock[barcode] || 0;
                       const barcodeOrders = orders[barcode] || [];
                       let orderIndex = 0;
@@ -409,6 +526,9 @@ const BarcodesTableNew = ({
                       let extraUsed = false;
                       let stockPushed = false;
                       let prevOrder = null;
+                      const date_tmp = ordersDates[vc.vcName]
+                        ? new Date(ordersDates[vc.vcName])
+                        : null;
                       sumOrders += orders[barcode]
                         ? Math.round(
                             orders[barcode]?.reduce(
@@ -488,27 +608,37 @@ const BarcodesTableNew = ({
                               onChange={(e) =>
                                 handleExtraStockChange(barcode, e.target.value)
                               }
+                              className={styles.disabledScroll}
                             />
                           </td>
-                          {weeks.map((_, i) => {
+                          {weeks.map((week, i) => {
                             stockPushed = false;
                             const forecast = forecasts[i] || 0;
                             let orderAmounts = [];
                             let extraAdded = 0;
 
-                            while (
+                            if (
                               orderIndex < barcodeOrders.length &&
-                              remainingStock < forecast
+                              ((barcodeOrders[orderIndex].date &&
+                                barcodeOrders[orderIndex].date <=
+                                  week.endDate) ||
+                                week.startDate >=
+                                  barcodeOrders[orderIndex].date)
                             ) {
-                              const order = barcodeOrders[orderIndex];
-                              if (barcodeOrders[orderIndex].amount > 0) {
-                                orderAmounts.push(order.name);
-                                prevOrder = order.name;
-                                remainingStock += order.amount;
-                                stockUsed = true;
-                                stockPushed = true;
+                              while (
+                                orderIndex < barcodeOrders.length &&
+                                remainingStock < forecast
+                              ) {
+                                const order = barcodeOrders[orderIndex];
+                                if (barcodeOrders[orderIndex].amount > 0) {
+                                  orderAmounts.push(order.name);
+                                  prevOrder = order.name;
+                                  remainingStock += order.amount;
+                                  stockUsed = true;
+                                  stockPushed = true;
+                                }
+                                orderIndex++;
                               }
-                              orderIndex++;
                             }
                             let cellClass = getCellClass(
                               remainingStock,
@@ -518,28 +648,66 @@ const BarcodesTableNew = ({
                             );
 
                             if (
-                              remainingStock < forecast &&
-                              extraRemaining > 0
+                              (remainingStock < forecast &&
+                                orderIndex < barcodeOrders.length &&
+                                barcodeOrders[orderIndex].date >
+                                  week.endDate) ||
+                              (date_tmp &&
+                                remainingStock <= 0 &&
+                                remainingStock < forecast &&
+                                orderIndex >= barcodeOrders.length &&
+                                week.endDate < date_tmp)
                             ) {
-                              extraAdded = Math.min(
-                                extraRemaining,
-                                forecast - remainingStock
-                              );
-                              extraUsed = true;
-                              remainingStock += extraAdded;
-                              extraRemaining -= extraAdded;
-                              cellClass = styles.cellBlue;
-                            }
+                              remainingStock = 0;
+                              cellClass = styles.cellGray;
+                            } else {
+                              if (
+                                remainingStock < forecast &&
+                                extraRemaining > 0 &&
+                                (!date_tmp || week.endDate >= date_tmp)
+                              ) {
+                                extraAdded = Math.min(
+                                  extraRemaining,
+                                  forecast - remainingStock
+                                );
+                                extraUsed = true;
+                                remainingStock += extraAdded;
+                                extraRemaining -= extraAdded;
+                                cellClass = styles.cellBlue;
+                              }
 
-                            if (stockUsed) {
-                              if (!stockPushed && remainingStock >= forecast) {
-                                if (!extraUsed) {
-                                  orderAmounts.push(prevOrder);
-                                  cellClass = styles.cellPurple;
+                              if (stockUsed) {
+                                if (
+                                  !stockPushed &&
+                                  remainingStock >= forecast
+                                ) {
+                                  if (!extraUsed) {
+                                    orderAmounts.push(prevOrder);
+                                    cellClass = styles.cellPurple;
+                                  }
                                 }
                               }
+                              remainingStock -= forecast;
                             }
-                            remainingStock -= forecast;
+
+                            if (
+                              cellClass === styles.cellYellow &&
+                              date_tmp &&
+                              date_tmp > week.endDate
+                            ) {
+                              remainingStock = 0;
+                              cellClass = styles.cellGray;
+                            } else {
+                              if (
+                                cellClass === styles.cellYellow &&
+                                ((date_tmp <= week.endDate &&
+                                  date_tmp >= week.startDate) ||
+                                  date_tmp < week.startDate)
+                              ) {
+                                cellClass = styles.cellRed;
+                              }
+                            }
+
                             return (
                               <td key={i} className={cellClass}>
                                 {orderAmounts.map((name, idx) => (
@@ -583,3 +751,13 @@ const BarcodesTableNew = ({
 };
 
 export default BarcodesTableNew;
+
+function validateDate(input) {
+  // Регулярное выражение для формата ГГГГ-ММ-ДД
+  const regex = /^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/;
+
+  if (regex.test(input)) {
+    return true;
+  }
+  return false;
+}

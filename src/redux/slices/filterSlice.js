@@ -11,6 +11,9 @@ const initialState = {
     sortingType: 'EBITDA (сред) ↓',
     vCName: '',
     color: [],
+    tagsMain: [],
+    tagsCloth: [],
+    tagsOthers: [],
   },
   vendorCode: {
     category: [],
@@ -121,7 +124,6 @@ const filterSlice = createSlice({
     resetBarcodeColorFilter: (state) => {
       state.barcode.color = [];
     },
-
     setBarcodeDatesFilter: (state, action) => {
       state.barcode.dates = action.payload;
     },
@@ -151,6 +153,24 @@ const filterSlice = createSlice({
     },
     resetVendorCodeTagsOthersFilter: (state) => {
       state.vendorCode.tagsOthers = [];
+    },
+    setBarcodeTagsFilter: (state, action) => {
+      state.barcode.tagsMain = [...action.payload];
+    },
+    resetBarcodeTagsFilter: (state) => {
+      state.barcode.tagsMain = [];
+    },
+    setBarcodeTagsClothFilter: (state, action) => {
+      state.barcode.tagsCloth = [...action.payload];
+    },
+    resetBarcodeTagsClothFilter: (state) => {
+      state.barcode.tagsCloth = [];
+    },
+    setBarcodeTagsOthersFilter: (state, action) => {
+      state.barcode.tagsOthers = [...action.payload];
+    },
+    resetBarcodeTagsOthersFilter: (state) => {
+      state.barcode.tagsOthers = [];
     },
     setVendorCodeAbcFilter: (state, action) => {
       state.vendorCode.abc = [...action.payload];
@@ -222,6 +242,12 @@ export const {
   resetVendorCodeTagsClothFilter,
   setVendorCodeTagsOthersFilter,
   resetVendorCodeTagsOthersFilter,
+  setBarcodeTagsFilter,
+  resetBarcodeTagsFilter,
+  setBarcodeTagsClothFilter,
+  resetBarcodeTagsClothFilter,
+  setBarcodeTagsOthersFilter,
+  resetBarcodeTagsOthersFilter,
   setAutoCmpgBrand,
   setAutoCmpgCampName,
   setAutoCmpgCreatedBy,
@@ -281,6 +307,11 @@ export const selectVCTagsClothFilter = (state) =>
   state.filter.vendorCode.tagsCloth;
 export const selectVCTagsOthersFilter = (state) =>
   state.filter.vendorCode.tagsOthers;
+export const selectBarcodeTagsFilter = (state) => state.filter.barcode.tagsMain;
+export const selectBarcodeTagsClothFilter = (state) =>
+  state.filter.barcode.tagsCloth;
+export const selectBarcodeTagsOthersFilter = (state) =>
+  state.filter.barcode.tagsOthers;
 export const selectAutoCampBrandFilter = (state) =>
   state.filter.autoCmpgns.brand;
 export const selectAutoCampCampNamFilter = (state) =>
