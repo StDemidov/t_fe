@@ -539,35 +539,96 @@ const BarcodesTableNew = ({
                         : 0;
 
                       let lastCellValue = '';
-                      weeks.forEach((_, i) => {
+                      weeks.forEach((week, i) => {
+                        stockPushed = false;
                         const forecast = forecasts[i] || 0;
                         let orderAmounts = [];
-
-                        while (
-                          orderIndex < barcodeOrders.length &&
-                          remainingStock < forecast
-                        ) {
-                          const order = barcodeOrders[orderIndex];
-                          if (order.amount > 0) {
-                            orderAmounts.push(order.name);
-                            prevOrder = order.name;
-                            remainingStock += order.amount;
-                            stockUsed = true;
-                          }
-                          orderIndex++;
-                        }
-
                         let extraAdded = 0;
-                        if (remainingStock < forecast && extraRemaining > 0) {
-                          extraAdded = Math.min(
-                            extraRemaining,
-                            forecast - remainingStock
-                          );
-                          extraUsed = true;
-                          remainingStock += extraAdded;
-                          extraRemaining -= extraAdded;
+
+                        if (
+                          orderIndex < barcodeOrders.length &&
+                          ((barcodeOrders[orderIndex].date &&
+                            barcodeOrders[orderIndex].date <= week.endDate) ||
+                            week.startDate >= barcodeOrders[orderIndex].date)
+                        ) {
+                          while (
+                            orderIndex < barcodeOrders.length &&
+                            remainingStock < forecast
+                          ) {
+                            const order = barcodeOrders[orderIndex];
+                            if (barcodeOrders[orderIndex].amount > 0) {
+                              orderAmounts.push(order.name);
+                              prevOrder = order.name;
+                              remainingStock += order.amount;
+                              stockUsed = true;
+                              stockPushed = true;
+                            }
+                            orderIndex++;
+                          }
                         }
-                        remainingStock -= forecast;
+                        let cellClass = getCellClass(
+                          remainingStock,
+                          forecast,
+                          orderAmounts,
+                          extraAdded
+                        );
+
+                        if (
+                          (remainingStock < forecast &&
+                            orderIndex < barcodeOrders.length &&
+                            barcodeOrders[orderIndex].date > week.endDate) ||
+                          (date_tmp &&
+                            remainingStock <= 0 &&
+                            remainingStock < forecast &&
+                            orderIndex >= barcodeOrders.length &&
+                            week.endDate < date_tmp)
+                        ) {
+                          remainingStock = 0;
+                          cellClass = styles.cellGray;
+                        } else {
+                          if (
+                            remainingStock < forecast &&
+                            extraRemaining > 0 &&
+                            (!date_tmp || week.endDate >= date_tmp)
+                          ) {
+                            extraAdded = Math.min(
+                              extraRemaining,
+                              forecast - remainingStock
+                            );
+                            extraUsed = true;
+                            remainingStock += extraAdded;
+                            extraRemaining -= extraAdded;
+                            cellClass = styles.cellBlue;
+                          }
+
+                          if (stockUsed) {
+                            if (!stockPushed && remainingStock >= forecast) {
+                              if (!extraUsed) {
+                                orderAmounts.push(prevOrder);
+                                cellClass = styles.cellPurple;
+                              }
+                            }
+                          }
+                          remainingStock -= forecast;
+                        }
+
+                        if (
+                          cellClass === styles.cellYellow &&
+                          date_tmp &&
+                          date_tmp > week.endDate
+                        ) {
+                          remainingStock = 0;
+                          cellClass = styles.cellGray;
+                        } else {
+                          if (
+                            cellClass === styles.cellYellow &&
+                            ((date_tmp <= week.endDate &&
+                              date_tmp >= week.startDate) ||
+                              date_tmp < week.startDate)
+                          ) {
+                            cellClass = styles.cellRed;
+                          }
+                        }
                         lastCellValue = orderAmounts.length
                           ? orderAmounts.join(', ')
                           : remainingStock < 0
