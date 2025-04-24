@@ -26,6 +26,9 @@ const AutoCampaignEdit = () => {
   const [whenToPause, setWhenToPause] = useState(0);
   const [whenToAddBudget, setWhenToAddBudget] = useState(0);
   const [howMuchToAdd, setHowMuchToAdd] = useState(0);
+  const [hasActiveHours, setHasActiveHours] = useState(false);
+  const [startHour, setStartHour] = useState(0);
+  const [endHour, setEndHour] = useState(23);
 
   useEffect(() => {
     if (notificationMessage !== '') {
@@ -45,6 +48,9 @@ const AutoCampaignEdit = () => {
       setWhenToPause(cmpgn?.whenToPause);
       setWhenToAddBudget(cmpgn?.whenToAddBudget);
       setHowMuchToAdd(cmpgn?.howMuchToAdd);
+      setHasActiveHours(cmpgn?.hasActiveHours);
+      setStartHour(cmpgn?.startHour);
+      setEndHour(cmpgn?.endHour);
     }
   }, [cmpgn]);
 
@@ -58,6 +64,10 @@ const AutoCampaignEdit = () => {
       dispatch(setError('Установите порог пополнения бюджета больше 1000!'));
     } else if (howMuchToAdd < 1000) {
       dispatch(setError('Установите сумму пополнения не менее 1000!'));
+    } else if (hasActiveHours && startHour === endHour) {
+      dispatch(
+        setError('Время старта и окончания работы кампании должны отличаться!')
+      );
     } else {
       const data = {
         ctr_bench: ctrBench * 100,
@@ -65,6 +75,11 @@ const AutoCampaignEdit = () => {
         when_to_pause: whenToPause,
         when_to_add_budget: whenToAddBudget,
         how_much_to_add: howMuchToAdd,
+        has_active_hours: hasActiveHours,
+        ...(hasActiveHours && {
+          start_hour: startHour,
+          end_hour: endHour,
+        }),
       };
       dispatch(
         editAutoCampaign({
@@ -149,6 +164,48 @@ const AutoCampaignEdit = () => {
                 </div>
               </div>
             </ul>
+            <div className={styles.infoText}>Часы активности</div>
+            <div className={styles.timeToggle}>
+              <input
+                type="checkbox"
+                checked={hasActiveHours}
+                onChange={(e) => setHasActiveHours(e.target.checked)}
+              />
+              <div>Установить часы активности кампании</div>
+            </div>
+
+            {hasActiveHours && (
+              <div className={styles.timePicker}>
+                <li>
+                  <label htmlFor="startHour">Начало (час): </label>
+                  <select
+                    id="startHour"
+                    value={startHour}
+                    onChange={(e) => setStartHour(Number(e.target.value))}
+                  >
+                    {Array.from({ length: 24 }, (_, i) => (
+                      <option key={i} value={i}>
+                        {i}:00
+                      </option>
+                    ))}
+                  </select>
+                </li>
+                <li>
+                  <label htmlFor="endHour">Окончание (час): </label>
+                  <select
+                    id="endHour"
+                    value={endHour}
+                    onChange={(e) => setEndHour(Number(e.target.value))}
+                  >
+                    {Array.from({ length: 24 }, (_, i) => (
+                      <option key={i} value={i}>
+                        {i}:00
+                      </option>
+                    ))}
+                  </select>
+                </li>
+              </div>
+            )}
           </form>
         </div>
         <div className={styles.infoContainer}>

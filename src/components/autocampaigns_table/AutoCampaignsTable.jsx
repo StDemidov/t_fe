@@ -136,6 +136,18 @@ const AutoCampaignsTable = ({ cmpgns }) => {
                       ) : (
                         <></>
                       )}
+                      {cmpgn.pausedByTime ? (
+                        <div
+                          className={styles.campaignStatus}
+                          style={{
+                            backgroundColor: '#f2d2bd',
+                          }}
+                        >
+                          {'На паузе по времени'}
+                        </div>
+                      ) : (
+                        <></>
+                      )}
                     </div>
                     <div className={styles.campaignDetails}>
                       <FaEye /> {cmpgn.views}
@@ -285,6 +297,18 @@ const AutoCampaignsTable = ({ cmpgns }) => {
                       }}
                     >
                       {'На паузе из-за оборачиваемости'}
+                    </div>
+                  ) : (
+                    <></>
+                  )}
+                  {selectedCampaign.pausedByTime ? (
+                    <div
+                      className={styles.campaignStatus}
+                      style={{
+                        backgroundColor: '#f2d2bd',
+                      }}
+                    >
+                      {'На паузе по времени'}
                     </div>
                   ) : (
                     <></>

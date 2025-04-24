@@ -31,6 +31,7 @@ const createAutoCampaignsList = (autoCampaigns) => {
       totalSpend: cmpgn.total_cmpgn_spend,
       spendRatio: Math.round(Number(cmpgn.spend_ratio) * 100),
       pausedInSoft: cmpgn.paused_in_soft,
+      pausedByTime: cmpgn.paused_by_time,
     };
   });
   return autoCmpgns;

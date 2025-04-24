@@ -28,6 +28,10 @@ const createCmpgnSingle = (cmpgn) => {
     excluded: cmpgn.excluded.split(','),
     image: cmpgn.image,
     pausedInSoft: cmpgn.paused_in_soft,
+    pausedByTime: cmpgn.paused_by_time,
+    hasActiveHours: cmpgn.has_active_hours,
+    startHour: cmpgn?.start_hour,
+    endHour: cmpgn?.end_hour,
   };
 };
 

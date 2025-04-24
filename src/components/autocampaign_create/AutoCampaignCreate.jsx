@@ -45,7 +45,12 @@ const AutoCampaignCreate = () => {
   const [whenToPause, setWhenToPause] = useState(5);
   const [whenToAddBudget, setWhenToAddBudget] = useState(3000);
   const [howMuchToAdd, setHowMuchToAdd] = useState(2000);
+  const [startHour, setStartHour] = useState(0);
+  const [endHour, setEndHour] = useState(23);
+  const [hasActiveHours, setHasActiveHours] = useState(false);
   const [sku, setSku] = useState('');
+
+  console.log(startHour);
 
   const filteredSkuDataWCat = skuData.filter((sku) => {
     let skuOrNameMatch = true;
@@ -92,6 +97,10 @@ const AutoCampaignCreate = () => {
       dispatch(setError('Установите порог пополнения бюджета больше 1000!'));
     } else if (howMuchToAdd < 1000) {
       dispatch(setError('Установите сумму пополнения не менее 1000!'));
+    } else if (hasActiveHours && startHour === endHour) {
+      dispatch(
+        setError('Время старта и окончания работы кампании должны отличаться!')
+      );
     } else {
       const data = {
         sku: sku,
@@ -102,8 +111,12 @@ const AutoCampaignCreate = () => {
         when_to_pause: whenToPause,
         when_to_add_budget: whenToAddBudget,
         how_much_to_add: howMuchToAdd,
+        has_active_hours: hasActiveHours,
+        ...(hasActiveHours && {
+          start_hour: startHour,
+          end_hour: endHour,
+        }),
       };
-      console.log(data);
       dispatch(
         createAutoCampaign({
           data: data,
@@ -214,6 +227,49 @@ const AutoCampaignCreate = () => {
                 </div>
               </div>
             </ul>
+
+            <div className={styles.infoText}>Часы активности</div>
+            <div className={styles.timeToggle}>
+              <input
+                type="checkbox"
+                checked={hasActiveHours}
+                onChange={(e) => setHasActiveHours(e.target.checked)}
+              />
+              <div>Установить часы активности кампании</div>
+            </div>
+
+            {hasActiveHours && (
+              <div className={styles.timePicker}>
+                <li>
+                  <label htmlFor="startHour">Начало (час): </label>
+                  <select
+                    id="startHour"
+                    value={startHour}
+                    onChange={(e) => setStartHour(Number(e.target.value))}
+                  >
+                    {Array.from({ length: 24 }, (_, i) => (
+                      <option key={i} value={i}>
+                        {i}:00
+                      </option>
+                    ))}
+                  </select>
+                </li>
+                <li>
+                  <label htmlFor="endHour">Окончание (час): </label>
+                  <select
+                    id="endHour"
+                    value={endHour}
+                    onChange={(e) => setEndHour(Number(e.target.value))}
+                  >
+                    {Array.from({ length: 24 }, (_, i) => (
+                      <option key={i} value={i}>
+                        {i}:00
+                      </option>
+                    ))}
+                  </select>
+                </li>
+              </div>
+            )}
 
             <div className={styles.infoText}>Выберите артикул</div>
             <div className={styles.textFilter}>
