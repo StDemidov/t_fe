@@ -148,6 +148,18 @@ const AutoCampaignsTable = ({ cmpgns }) => {
                       ) : (
                         <></>
                       )}
+                      {cmpgn.hasActiveHours ? (
+                        <div
+                          className={styles.campaignStatus}
+                          style={{
+                            backgroundColor: '#f2d2bd',
+                          }}
+                        >
+                          {`${cmpgn.startHour}:00 - ${cmpgn.endHour}:00`}
+                        </div>
+                      ) : (
+                        <></>
+                      )}
                     </div>
                     <div className={styles.campaignDetails}>
                       <FaEye /> {cmpgn.views}
@@ -309,6 +321,18 @@ const AutoCampaignsTable = ({ cmpgns }) => {
                       }}
                     >
                       {'На паузе по времени'}
+                    </div>
+                  ) : (
+                    <></>
+                  )}
+                  {selectedCampaign.hasActiveHours ? (
+                    <div
+                      className={styles.campaignStatus}
+                      style={{
+                        backgroundColor: '#f2d2bd',
+                      }}
+                    >
+                      {`${selectedCampaign.startHour}:00 - ${selectedCampaign.endHour}:00`}
                     </div>
                   ) : (
                     <></>
