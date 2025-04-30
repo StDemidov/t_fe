@@ -178,3 +178,59 @@
   flex-direction: column;
   gap: 15px;
 }
+
+.topWords {
+  overflow-y: auto;
+  height: 300px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.noTopWords {
+  height: 40px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  font-family: 'BebasNeue', sans-serif;
+  color: #737373;
+}
+
+.topWordsRow {
+  border: 1px solid #ccc;
+  align-items: center;
+  border-radius: 10px;
+  display: flex;
+  padding: 5px 0 5px 0;
+}
+
+.topWordMetrics {
+  width: 60%;
+  justify-content: end;
+  display: flex;
+  height: 100%;
+}
+
+.topWordText {
+  width: 40%;
+  text-align: left;
+  margin-left: 10px;
+  font-family: 'BebasNeue', sans-serif;
+}
+
+.topWordMetricBlock {
+  font-size: 12px;
+  display: flex;
+  gap: 5px;
+  height: 18px;
+  width: 80px;
+  align-items: center;
+  justify-content: center;
+  background-color: #cce5ff;
+  color: rgb(51, 51, 51);
+  padding: 5px;
+  margin-right: 8px;
+  border-radius: 10px;
+}

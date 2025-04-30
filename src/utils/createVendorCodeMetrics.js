@@ -49,6 +49,7 @@ const createVendorCodeMetrics = (vendorCodeMetrics) => {
       clickToOrder: item.click_to_order
         .split(',')
         .map((cr) => Number(cr) * 100),
+      advCampaigns: item.adv_campaigns,
     };
   });
   return vcMetrics;

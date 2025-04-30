@@ -17,6 +17,7 @@ import {
   selectAutoCampStatusFilter,
   selectAutoCampCampNamFilter,
   selectAutoCampSortingType,
+  selectAutoCampHasActiveHoursFilter,
 } from '../../redux/slices/filterSlice';
 import { hostName } from '../../utils/host';
 import AutoCampaignsTable from '../autocampaigns_table/AutoCampaignsTable';
@@ -31,6 +32,7 @@ const AutoCampaignsList = () => {
   const createdByFilter = useSelector(selectAutoCampCreatedByFilter);
   const selectedSorting = useSelector(selectAutoCampSortingType);
   const nameFilter = useSelector(selectAutoCampCampNamFilter);
+  const hasActiveHours = useSelector(selectAutoCampHasActiveHoursFilter);
   const navigation = useNavigate();
 
   const animStyles = useSpring({
@@ -49,6 +51,7 @@ const AutoCampaignsList = () => {
     let createdByMatch = true;
     let statusMatch = true;
     let nameMatch = true;
+    let activeHoursMatch = true;
     if (brandFilter !== '') {
       brandMatch = cmpgn.brand === brandFilter;
     }
@@ -67,8 +70,21 @@ const AutoCampaignsList = () => {
         nameMatch = cmpgn.sku.toLowerCase().includes(nameFilter);
       }
     }
+    if (hasActiveHours !== 'Все') {
+      let hoursFlag = true;
+      hasActiveHours === 'Без часов активности'
+        ? (hoursFlag = false)
+        : (hoursFlag = true);
+      activeHoursMatch = cmpgn.hasActiveHours === hoursFlag;
+    }
 
-    return brandMatch && createdByMatch && statusMatch && nameMatch;
+    return (
+      brandMatch &&
+      createdByMatch &&
+      statusMatch &&
+      nameMatch &&
+      activeHoursMatch
+    );
   });
 
   const handleClickOnCreate = (event) => {

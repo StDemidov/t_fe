@@ -149,20 +149,24 @@ const BodyTagsOthers = ({ tags, availableTagsOthers, skuId, tableRef }) => {
 
               {/* Поле ввода и кнопка для создания нового тега */}
               <div className={styles.newTagContainer}>
-                <input
-                  type="text"
-                  className={styles.newTagInput}
-                  placeholder="Новый тег..."
-                  ref={newTagRef} // Теперь напрямую управляем инпутом
-                />
-                <button className={styles.addTagButton} onClick={handleAddTag}>
-                  <FaSave />
+                <div className={styles.newTagInputBox}>
+                  <input
+                    type="text"
+                    className={styles.newTagInput}
+                    placeholder="Новый тег..."
+                    ref={newTagRef} // Теперь напрямую управляем инпутом
+                  />
+                  <button
+                    className={styles.addTagButton}
+                    onClick={handleAddTag}
+                  >
+                    <FaSave />
+                  </button>
+                </div>
+                <button className={styles.acceptButton} onClick={handleAccept}>
+                  Принять
                 </button>
               </div>
-
-              <button className={styles.acceptButton} onClick={handleAccept}>
-                Принять
-              </button>
             </div>,
             document.body
           )}

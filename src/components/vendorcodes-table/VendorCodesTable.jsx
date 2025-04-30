@@ -38,6 +38,9 @@ import HeaderTurnover from './cells/header/HeaderTurnover';
 import HeaderAddToCart from './cells/header/HeaderAddToCart';
 import HeaderCartToOrder from './cells/header/HeaderCartToOrder';
 import HeaderClickToOrder from './cells/header/HeaderClickToOrder';
+import HeaderTagsCloth from './cells/header/HeaderTagsCloth';
+import HeaderTagsOthers from './cells/header/HeaderTagsOthers';
+import HeaderCampaigns from './cells/header/HeaderCampaigns';
 
 import BodyOrders from './cells/body/BodyOrders';
 import BodySales from './cells/body/BodySales';
@@ -58,6 +61,10 @@ import BodyTurnover from './cells/body/BodyTurnover';
 import BodyCartToOrder from './cells/body/BodyCartToOrder';
 import BodyClickToOrder from './cells/body/BodyClickToOrder';
 import BodyAddToCart from './cells/body/BodyAddToCart';
+import BodyTags from './cells/body/BodyTags';
+import BodyTagsCloth from './cells/body/BodyTagsCloth';
+import BodyTagsOthers from './cells/body/BodyTagsOthers';
+import BodyCampaigns from './cells/body/BodyCampaigns';
 
 import FooterTags from './cells/footer/FooterTags';
 import FooterOrders from './cells/footer/FooterOrders';
@@ -79,13 +86,9 @@ import FooterWBStocks from './cells/footer/FooterWBStocks';
 import FooterCartToOrder from './cells/footer/FooterCartToOrder';
 import FooterClickToOrder from './cells/footer/FooterClickToOrder';
 import FooterAddToCart from './cells/footer/FooterAddToCart';
-import BodyTags from './cells/body/BodyTags';
-import BodyTagsCloth from './cells/body/BodyTagsCloth';
-import HeaderTagsCloth from './cells/header/HeaderTagsCloth';
-import FooterTagsCloth from './cells/footer/FooterTagsCloth';
-import BodyTagsOthers from './cells/body/BodyTagsOthers';
-import HeaderTagsOthers from './cells/header/HeaderTagsOthers';
 import FooterTagsOthers from './cells/footer/FooterTagsOthers';
+import FooterTagsCloth from './cells/footer/FooterTagsCloth';
+import FooterCampaigns from './cells/footer/FooterCampaigns';
 
 const сolRender = {
   tags: {
@@ -265,6 +268,11 @@ const сolRender = {
     render: (vc, datesFilter) => <BodyTurnover vc={vc} key={uuidv4()} />,
     renderHeader: () => <HeaderTurnover key={uuidv4()} />,
     renderFooter: () => <FooterTurnover key={uuidv4()} />,
+  },
+  campaigns: {
+    render: (vc, datesFilter) => <BodyCampaigns vc={vc} key={uuidv4()} />,
+    renderHeader: () => <HeaderCampaigns key={uuidv4()} />,
+    renderFooter: () => <FooterCampaigns key={uuidv4()} />,
   },
 };
 

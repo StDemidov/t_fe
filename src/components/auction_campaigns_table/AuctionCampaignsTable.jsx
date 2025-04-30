@@ -207,124 +207,116 @@ const AuctionCampaignsTable = ({ cmpgns }) => {
           {selectedCampaign ? (
             <div className={styles.campaignDetailsWrapper}>
               {selectedCampaign.campaigns.map((partCamp) => (
-                <div
-                  className={styles.campaignParameters}
-                  key={partCamp.camp_id}
-                >
-                  <h2 className={styles.campaignName}>{partCamp.camp_name}</h2>
-                  <div className={styles.campaignInfo}>
-                    {partCamp.paused_by_trnover ? (
-                      <div
-                        className={styles.campaignStatus}
-                        style={{
-                          backgroundColor: '#ffcfcf',
-                        }}
-                      >
-                        {'На паузе из-за оборачиваемости'}
-                      </div>
-                    ) : (
-                      <>
-                        {partCamp.paused_in_soft ? (
-                          <div
-                            className={styles.campaignStatus}
-                            style={{
-                              backgroundColor:
-                                STATUS_NAME_COLORS['Остановлено в софте'],
-                            }}
-                          >
-                            {'Остановлено в софте'}
-                          </div>
-                        ) : (
-                          <div
-                            className={styles.campaignStatus}
-                            style={{
-                              backgroundColor:
-                                STATUS_NAME_COLORS['Идут показы'],
-                            }}
-                          >
-                            {'Идут показы'}
-                          </div>
-                        )}
-                      </>
-                    )}
-                  </div>
+                <>
+                  <div
+                    className={styles.campaignParameters}
+                    key={partCamp.camp_id}
+                  >
+                    <h2 className={styles.campaignName}>
+                      {partCamp.camp_name}
+                    </h2>
+                    <div className={styles.campaignInfo}>
+                      {partCamp.paused_by_trnover ? (
+                        <div
+                          className={styles.campaignStatus}
+                          style={{
+                            backgroundColor: '#ffcfcf',
+                          }}
+                        >
+                          {'На паузе из-за оборачиваемости'}
+                        </div>
+                      ) : (
+                        <>
+                          {partCamp.paused_in_soft ? (
+                            <div
+                              className={styles.campaignStatus}
+                              style={{
+                                backgroundColor:
+                                  STATUS_NAME_COLORS['Остановлено в софте'],
+                              }}
+                            >
+                              {'Остановлено в софте'}
+                            </div>
+                          ) : (
+                            <div
+                              className={styles.campaignStatus}
+                              style={{
+                                backgroundColor:
+                                  STATUS_NAME_COLORS['Идут показы'],
+                              }}
+                            >
+                              {'Идут показы'}
+                            </div>
+                          )}
+                        </>
+                      )}
+                    </div>
 
-                  <div className={styles.partCampaign}>
-                    <div className={styles.partCampaignInfo}>
-                      <div className={styles.campaignDetails}>
-                        <FaEye /> {'Количество показов:'}{' '}
-                        <b>{partCamp.views + partCamp.today_views}</b>
-                      </div>
-                      <div className={styles.campaignDetails}>
-                        <LuMousePointerClick /> {'Количество кликов:'}{' '}
-                        <b>{partCamp.clicks + partCamp.today_clicks}</b>
-                      </div>
-                      <div className={styles.campaignDetails}>
-                        <LuMousePointerClick /> {'CTR:'}{' '}
-                        <b>
-                          {partCamp.views + partCamp.today_views === 0
-                            ? 0
-                            : (
-                                ((partCamp.clicks + partCamp.today_clicks) /
-                                  (partCamp.views + partCamp.today_views)) *
-                                100
-                              ).toFixed(2)}
-                          {'%'}
-                        </b>
-                      </div>
-                      <div className={styles.campaignDetails}>
-                        <GiMoneyStack /> {'Затраченные деньги:'}{' '}
-                        <b>
-                          {Math.round(partCamp.spend + partCamp.today_spend)}{' '}
-                          {' руб.'}
-                        </b>
-                      </div>
-                      <div className={styles.campaignDetails}>
-                        <GiMoneyStack /> {'CPM:'}{' '}
-                        <b>
-                          {partCamp.cpm} {' руб.'}
-                        </b>
+                    <div className={styles.partCampaign}>
+                      <div className={styles.partCampaignInfo}>
+                        <div className={styles.campaignDetails}>
+                          <FaEye /> {'Количество показов:'}{' '}
+                          <b>{partCamp.views + partCamp.today_views}</b>
+                        </div>
+                        <div className={styles.campaignDetails}>
+                          <LuMousePointerClick /> {'Количество кликов:'}{' '}
+                          <b>{partCamp.clicks + partCamp.today_clicks}</b>
+                        </div>
+                        <div className={styles.campaignDetails}>
+                          <LuMousePointerClick /> {'CTR:'}{' '}
+                          <b>
+                            {partCamp.views + partCamp.today_views === 0
+                              ? 0
+                              : (
+                                  ((partCamp.clicks + partCamp.today_clicks) /
+                                    (partCamp.views + partCamp.today_views)) *
+                                  100
+                                ).toFixed(2)}
+                            {'%'}
+                          </b>
+                        </div>
+                        <div className={styles.campaignDetails}>
+                          <GiMoneyStack /> {'Затраченные деньги:'}{' '}
+                          <b>
+                            {Math.round(partCamp.spend + partCamp.today_spend)}{' '}
+                            {' руб.'}
+                          </b>
+                        </div>
+                        <div className={styles.campaignDetails}>
+                          <GiMoneyStack /> {'CPM:'}{' '}
+                          <b>
+                            {partCamp.cpm} {' руб.'}
+                          </b>
+                        </div>
                       </div>
                     </div>
-                    {/* <div className={styles.partActionButtons}>
-                      {partCamp.status === 9 ? (
-                        <FaPauseCircle
-                          className={styles.actionButton}
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleClickOnPause(e);
-                          }}
-                          data-value={partCamp.camp_id}
-                        />
-                      ) : (
-                        <FaCirclePlay
-                          className={styles.actionButton}
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleClickOnRun(e);
-                          }}
-                          data-value={partCamp.camp_id}
-                        />
-                      )}
-                      <FaEdit
-                        className={styles.actionButton}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleClickOnEdit(e);
-                        }}
-                        data-value={partCamp.camp_id}
-                      />
-                      <RiDeleteBin2Fill
-                        className={styles.bin}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleClickOnBin(e);
-                        }}
-                        data-value={partCamp.camp_id}
-                      />
-                    </div> */}
                   </div>
-                </div>
+                  {partCamp?.top_words ? (
+                    <div className={styles.topWords}>
+                      {partCamp.top_words.split(',').map((topList) => {
+                        return (
+                          <div className={styles.topWordsRow}>
+                            <div className={styles.topWordText}>
+                              {topList.split(';')[0]}
+                            </div>
+                            <div className={styles.topWordMetrics}>
+                              <div className={styles.topWordMetricBlock}>
+                                <FaEye />
+                                {topList.split(';')[1]}
+                              </div>
+                              <div className={styles.topWordMetricBlock}>
+                                <LuMousePointerClick />
+                                {(topList.split(';')[2] * 100).toFixed(2)} %
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  ) : (
+                    <div className={styles.noTopWords}>Нет списка ключей</div>
+                  )}
+                </>
               ))}
             </div>
           ) : (

@@ -52,6 +52,7 @@ const initialColumns = [
   { key: 'ebitda', label: 'EBITDA', hidden: false },
   { key: 'ebitdaDaily', label: 'EBITDA/День', hidden: false },
   { key: 'ebitdaDailyWOADS', label: 'EBITDA/День без РК', hidden: false },
+  { key: 'campaigns', label: 'Кампании', hidden: false },
   { key: 'adsCosts', label: 'Расходы на РК ВБ', hidden: false },
   { key: 'cpo', label: 'CPO', hidden: false },
   { key: 'cps', label: 'CPS', hidden: false },

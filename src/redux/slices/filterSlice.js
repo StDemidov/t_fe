@@ -48,6 +48,7 @@ const initialState = {
     status: [],
     brand: '',
     campName: '',
+    hasActiveHours: 'Все',
     sortingType: 'CTR ↓',
   },
   auсCmpgns: {
@@ -72,6 +73,12 @@ const filterSlice = createSlice({
     },
     resetAutoCmpgBrand: (state) => {
       state.autoCmpgns.brand = '';
+    },
+    setAutoCmpgHasActiveHours: (state, action) => {
+      state.autoCmpgns.hasActiveHours = action.payload;
+    },
+    resetAutoCmpgHasActiveHours: (state) => {
+      state.autoCmpgns.hasActiveHours = 'Все';
     },
     setAutoCmpgStatus: (state, action) => {
       state.autoCmpgns.status = action.payload;
@@ -252,6 +259,8 @@ export const {
   setAutoCmpgCampName,
   setAutoCmpgCreatedBy,
   setAutoCmpgStatus,
+  setAutoCmpgHasActiveHours,
+  resetAutoCmpgHasActiveHours,
   resetAutoCmpgBrand,
   resetAutoCmpgCreatedBy,
   resetAutoCmpgStatus,
@@ -318,6 +327,8 @@ export const selectAutoCampCampNamFilter = (state) =>
   state.filter.autoCmpgns.campName;
 export const selectAutoCampStatusFilter = (state) =>
   state.filter.autoCmpgns.status;
+export const selectAutoCampHasActiveHoursFilter = (state) =>
+  state.filter.autoCmpgns.hasActiveHours;
 export const selectAutoCampCreatedByFilter = (state) =>
   state.filter.autoCmpgns.createdBy;
 export const selectAucCampCampNameFilter = (state) =>
