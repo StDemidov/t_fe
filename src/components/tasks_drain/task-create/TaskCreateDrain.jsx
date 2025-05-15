@@ -72,6 +72,7 @@ const TaskCreateDrain = () => {
   const [maxPrice, setMaxPrice] = useState(0);
   const [deadline, setDeadline] = useState('ГГГГ-ММ-ДД');
   const [skuList, setSkuList] = useState([]);
+  const [byBuyout, setByBuyout] = useState(true);
 
   const filteredSkuData = skuData.filter((sku) => {
     return !sku.is_on_drain;
@@ -146,6 +147,7 @@ const TaskCreateDrain = () => {
         min_price: minPrice,
         max_price: maxPrice,
         sku_list: skuList.join(','),
+        by_buyout: byBuyout,
         error: errorDays,
       };
       dispatch(
@@ -267,6 +269,18 @@ const TaskCreateDrain = () => {
                   </li>
                 </div>
               </div>
+              <div className={styles.infoText}>Тип оборачиваемости</div>
+              <li>
+                <label htmlFor="byBuyout">
+                  Использовать продажи (иначе - заказы):{' '}
+                </label>
+                <input
+                  type="checkbox"
+                  id="byBuyot"
+                  checked={byBuyout}
+                  onChange={(e) => setByBuyout(!byBuyout)}
+                />
+              </li>
             </ul>
             {selectedCategory === '' ? (
               <></>

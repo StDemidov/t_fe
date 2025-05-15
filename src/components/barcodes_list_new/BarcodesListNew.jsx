@@ -61,7 +61,7 @@ const BarcodesListNew = () => {
     }
   }, [notificationMessage]);
 
-  const deadline = '2025-07-31';
+  const deadline = '2025-12-28';
 
   const extentedBarcodes = structuredClone(barcodes);
   extentedBarcodes.map((item) => {

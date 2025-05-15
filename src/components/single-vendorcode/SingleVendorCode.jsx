@@ -222,6 +222,12 @@ const SingleVendorCode = () => {
                     </div>
                   </div>
                   <div className={styles.vcInfo}>
+                    <div className={styles.vcInfoLabel}>Обор-ть WB (выкуп)</div>
+                    <div className={styles.vcInfoItem}>
+                      {vcData?.turnoverWBBuyout} д.
+                    </div>
+                  </div>
+                  <div className={styles.vcInfo}>
                     <div className={styles.vcInfoLabel}>Кол-во заказов</div>
                     <div className={styles.vcInfoItem}>
                       {getSum(vcData?.wbOrdersTotal, startDate, endDate)} шт.

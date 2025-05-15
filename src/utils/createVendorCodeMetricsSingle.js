@@ -40,6 +40,10 @@ const createVendorCodeMetricsSingle = (vendorCodeMetrics) => {
       msTotal: msTotal,
       barcodes: item.barcodes,
       turnoverWB: item.metrics.turnover_wb,
+      turnoverWBBuyout: (
+        (item.metrics.turnover_wb / item.metrics.avg_buyout_perc) *
+        100
+      ).toFixed(0),
       rawSales:
         item.metrics.raw_sales === ''
           ? []

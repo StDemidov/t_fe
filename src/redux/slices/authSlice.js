@@ -17,6 +17,7 @@ const initialState = {
 export const login = createAsyncThunk(
   'auth/login',
   async ({ data, url }, thunkAPI) => {
+    console.log(url);
     try {
       const res = await axios.post(url, data, {
         headers: {

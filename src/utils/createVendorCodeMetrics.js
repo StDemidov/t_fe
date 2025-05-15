@@ -19,6 +19,10 @@ const createVendorCodeMetrics = (vendorCodeMetrics) => {
       wbStocksTotal: item.wb_stocks_daily.split(',').map(Number),
       msTotal: item.ms_stocks_last,
       turnoverWB: item.turnover_wb,
+      turnoverWBBuyout: (
+        (item.turnover_wb / item.avg_buyout_perc) *
+        100
+      ).toFixed(0),
       rawSales:
         item.raw_sales === '' ? [] : item.raw_sales.split(',').map(Number),
       rawDailyEbitda:

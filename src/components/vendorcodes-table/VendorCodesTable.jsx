@@ -35,6 +35,7 @@ import HeaderPriceBSPP from './cells/header/HeaderPriceBSPP';
 import HeaderPriceASPP from './cells/header/HeaderPriceASPP';
 import HeaderSelfPriceWONDS from './cells/header/HeaderSelfPriceWONDS';
 import HeaderTurnover from './cells/header/HeaderTurnover';
+import HeaderTurnoverBO from './cells/header/HeaderTurnoverBO';
 import HeaderAddToCart from './cells/header/HeaderAddToCart';
 import HeaderCartToOrder from './cells/header/HeaderCartToOrder';
 import HeaderClickToOrder from './cells/header/HeaderClickToOrder';
@@ -58,6 +59,7 @@ import BodyPriceASPP from './cells/body/BodyPriceASPP';
 import BodySelfPrice from './cells/body/BodySelfPrice';
 import BodySelfPriceWONDS from './cells/body/BodySelfPriceWONDS';
 import BodyTurnover from './cells/body/BodyTurnover';
+import BodyTurnoverBO from './cells/body/BodyTurnoverBO';
 import BodyCartToOrder from './cells/body/BodyCartToOrder';
 import BodyClickToOrder from './cells/body/BodyClickToOrder';
 import BodyAddToCart from './cells/body/BodyAddToCart';
@@ -82,6 +84,7 @@ import FooterPriceBSPP from './cells/footer/FooterPriceBSPP';
 import FooterSelfPrice from './cells/footer/FooterSelfPrice';
 import FooterSelfPriceWONDS from './cells/footer/FooterSelfPriceWONDS';
 import FooterTurnover from './cells/footer/FooterTurnover';
+import FooterTurnoverBO from './cells/footer/FooterTurnoverBO';
 import FooterWBStocks from './cells/footer/FooterWBStocks';
 import FooterCartToOrder from './cells/footer/FooterCartToOrder';
 import FooterClickToOrder from './cells/footer/FooterClickToOrder';
@@ -268,6 +271,11 @@ const сolRender = {
     render: (vc, datesFilter) => <BodyTurnover vc={vc} key={uuidv4()} />,
     renderHeader: () => <HeaderTurnover key={uuidv4()} />,
     renderFooter: () => <FooterTurnover key={uuidv4()} />,
+  },
+  turnoverBO: {
+    render: (vc, datesFilter) => <BodyTurnoverBO vc={vc} key={uuidv4()} />,
+    renderHeader: () => <HeaderTurnoverBO key={uuidv4()} />,
+    renderFooter: () => <FooterTurnoverBO key={uuidv4()} />,
   },
   campaigns: {
     render: (vc, datesFilter) => <BodyCampaigns vc={vc} key={uuidv4()} />,

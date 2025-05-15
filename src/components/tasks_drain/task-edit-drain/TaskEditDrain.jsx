@@ -37,6 +37,7 @@ const TaskEditDrain = () => {
   const [minPrice, setMinPrice] = useState();
   const [maxPrice, setMaxPrice] = useState();
   const [skuList, setSkuList] = useState('');
+  const [byBuyout, setByBuyout] = useState(true);
 
   useEffect(() => {
     if (notificationMessage !== '') {
@@ -57,6 +58,7 @@ const TaskEditDrain = () => {
       setMinPrice(taskData?.task?.min_price);
       setMaxPrice(taskData?.task?.max_price);
       setSkuList(taskData?.task?.sku_list.split(','));
+      setByBuyout(taskData?.task?.by_buyout);
     }
   }, [taskData]);
 
@@ -116,6 +118,7 @@ const TaskEditDrain = () => {
         max_price: maxPrice,
         min_price: minPrice,
         sku_list: skuList.join(','),
+        by_buyout: byBuyout,
       };
       if (taskData.task.task_name == taskName) {
         data = {
@@ -124,6 +127,7 @@ const TaskEditDrain = () => {
           min_price: minPrice,
           max_price: maxPrice,
           sku_list: skuList.join(','),
+          by_buyout: byBuyout,
         };
       }
 
@@ -225,6 +229,18 @@ const TaskEditDrain = () => {
                   </li>
                 </div>
               </div>
+              <div className={styles.infoText}>Тип оборачиваемости</div>
+              <li>
+                <label htmlFor="byBuyout">
+                  Использовать продажи (иначе - заказы):{' '}
+                </label>
+                <input
+                  type="checkbox"
+                  id="byBuyot"
+                  checked={byBuyout}
+                  onChange={(e) => setByBuyout(!byBuyout)}
+                />
+              </li>
             </ul>
 
             <div className={styles.infoText}>Выберите артикулы</div>
