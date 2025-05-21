@@ -42,6 +42,9 @@ const initialState = {
   tasks: {
     category: '',
     skuOrName: '',
+    tagsMain: [],
+    tagsCloth: [],
+    tagsOthers: [],
   },
   autoCmpgns: {
     createdBy: '',
@@ -161,6 +164,25 @@ const filterSlice = createSlice({
     resetVendorCodeTagsOthersFilter: (state) => {
       state.vendorCode.tagsOthers = [];
     },
+
+    setSkusOnDrainTagsFilter: (state, action) => {
+      state.tasks.tagsMain = [...action.payload];
+    },
+    resetSkusOnDrainTagsFilter: (state) => {
+      state.tasks.tagsMain = [];
+    },
+    setSkusOnDrainTagsClothFilter: (state, action) => {
+      state.tasks.tagsCloth = [...action.payload];
+    },
+    resetSkusOnDrainTagsClothFilter: (state) => {
+      state.tasks.tagsCloth = [];
+    },
+    setSkusOnDrainTagsOthersFilter: (state, action) => {
+      state.tasks.tagsOthers = [...action.payload];
+    },
+    resetSkusOnDrainTagsOthersFilter: (state) => {
+      state.tasks.tagsOthers = [];
+    },
     setBarcodeTagsFilter: (state, action) => {
       state.barcode.tagsMain = [...action.payload];
     },
@@ -273,6 +295,12 @@ export const {
   setBarcodesVCNameFilter,
   setBarcodeColorFilter,
   resetBarcodeColorFilter,
+  setSkusOnDrainTagsFilter,
+  resetSkusOnDrainTagsFilter,
+  setSkusOnDrainTagsClothFilter,
+  resetSkusOnDrainTagsClothFilter,
+  setSkusOnDrainTagsOthersFilter,
+  resetSkusOnDrainTagsOthersFilter,
 } = filterSlice.actions;
 
 export const selectBarcodeCategoryFilter = (state) =>
@@ -316,6 +344,12 @@ export const selectVCTagsClothFilter = (state) =>
   state.filter.vendorCode.tagsCloth;
 export const selectVCTagsOthersFilter = (state) =>
   state.filter.vendorCode.tagsOthers;
+export const selectSkusOnDrainTagsFilter = (state) =>
+  state.filter.tasks.tagsMain;
+export const selectSkusOnDrainTagsClothFilter = (state) =>
+  state.filter.tasks.tagsCloth;
+export const selectSkusOnDrainTagsOthersFilter = (state) =>
+  state.filter.tasks.tagsOthers;
 export const selectBarcodeTagsFilter = (state) => state.filter.barcode.tagsMain;
 export const selectBarcodeTagsClothFilter = (state) =>
   state.filter.barcode.tagsCloth;

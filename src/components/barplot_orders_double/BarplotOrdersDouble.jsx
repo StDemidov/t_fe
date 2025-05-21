@@ -21,10 +21,12 @@ ChartJS.register(
 );
 
 const BarplotOrdersDouble = ({ orders, prices, dates }) => {
+  console.log(dates);
   const startDate = new Date(dates.start);
   const endDate = new Date(dates.end);
 
   let labels = getDateNumberArray(orders);
+  console.log(labels);
   const data_orders = getDataForPeriod(orders, startDate, endDate);
   const data_prices = getDataForPeriod(prices, startDate, endDate);
 
@@ -104,21 +106,28 @@ function getDateNumberArray(dataArray) {
   const yesterday = new Date(today);
   yesterday.setDate(today.getDate() - 1);
 
+  // Функция для форматирования даты в формате "день - номер месяца"
   const formatDateNumber = (date) => {
     const day = date.getDate();
-    const month = date.getMonth() + 1;
-    return `${day}.${month.toString().padStart(2, '0')}`;
+    const month = date.getMonth() + 1; // Месяцы начинаются с 0, поэтому +1
+    return `${day}.${String(month).length === 1 ? '0' + String(month) : month}`;
   };
 
-  return dataArray.map((_, i) => {
+  // Создаем массив с датами на основе длины массива чисел
+  const datesArray = [];
+  for (let i = dataArray.length - 1; i >= 0; i--) {
+    // Каждая дата уменьшается на i дней от вчерашнего дня
     const date = new Date(yesterday);
     date.setDate(yesterday.getDate() - i);
-    return formatDateNumber(date);
-  });
+    datesArray.push(formatDateNumber(date));
+  }
+
+  return datesArray;
 }
 
 function getDataForPeriod(data, startDate, endDate) {
   const todayDate = new Date();
+  console.log(todayDate);
   const startIndex = Math.ceil((todayDate - startDate) / (1000 * 60 * 60 * 24));
   const endIndex = Math.floor((todayDate - endDate) / (1000 * 60 * 60 * 24));
 

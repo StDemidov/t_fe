@@ -12,6 +12,9 @@ const createSkuDataForTasksDrain = (skuData) => {
       lastChange: new Date(curr.last_change),
       changesHistory: curr.changes_history.split(',').map(Number),
       image: curr.image,
+      tagsMain: curr.tagsMain,
+      tagsCloth: curr.tagsCloth,
+      tagsOthers: curr.tagsOthers,
     };
   });
   return skus;

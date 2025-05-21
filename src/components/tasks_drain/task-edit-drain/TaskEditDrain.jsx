@@ -13,7 +13,17 @@ import {
   selectTaskSingle,
 } from '../../../redux/slices/tasksDrainSlice';
 
-import { selectSkuOrNameTasksFilter } from '../../../redux/slices/filterSlice';
+import {
+  selectSkuOrNameTasksFilter,
+  selectSkusOnDrainTagsOthersFilter,
+  selectSkusOnDrainTagsClothFilter,
+  selectSkusOnDrainTagsFilter,
+} from '../../../redux/slices/filterSlice';
+
+import TaskMainTagFilter from '../task_filters/TaskMainTagFilter';
+import TaskClothTagFilter from '../task_filters/TaskClothTagFilter';
+import TaskOthersTagFilter from '../task_filters/TaskOthersTagFilter';
+
 import { hostName } from '../../../utils/host';
 
 import SkuNameFilter from '../../price-cotrol-page/sku-name-filter/SkuNameFilter';
@@ -28,6 +38,9 @@ const TaskEditDrain = () => {
   const skuData = useSelector(selectSkuDataDrain);
   const isLoading = useSelector(selectIsLoading);
   const skuOrNameFilter = useSelector(selectSkuOrNameTasksFilter);
+  const tagsFilter = useSelector(selectSkusOnDrainTagsFilter);
+  const tagsClothFilter = useSelector(selectSkusOnDrainTagsClothFilter);
+  const tagsOthersFilter = useSelector(selectSkusOnDrainTagsOthersFilter);
   const navigation = useNavigate();
   let { id } = useParams();
 
@@ -69,8 +82,23 @@ const TaskEditDrain = () => {
     );
   });
 
+  let tagsMain = [...new Set(filteredSkuData.flatMap((item) => item.tagsMain))];
+
+  let tagsCloth = [
+    ...new Set(filteredSkuData.flatMap((item) => item.tagsCloth)),
+  ];
+
+  let tagsOthers = [
+    ...new Set(filteredSkuData.flatMap((item) => item.tagsOthers)),
+  ];
+
+  const includesAny = (arr, values) => values.some((v) => arr.includes(v));
+
   const filteredSkuDataWCat = filteredSkuData.filter((sku) => {
     let skuOrNameMatch = true;
+    let tagsFilterMatch = true;
+    let tagsClothFilterMatch = true;
+    let tagsOthersFilterMatch = true;
     if (skuOrNameFilter.length !== 0) {
       if (isNaN(skuOrNameFilter)) {
         skuOrNameMatch = sku.vcName
@@ -80,7 +108,21 @@ const TaskEditDrain = () => {
         skuOrNameMatch = sku.sku.toLowerCase().includes(skuOrNameFilter);
       }
     }
-    return skuOrNameMatch;
+    if (tagsFilter.length != 0) {
+      tagsFilterMatch = includesAny(tagsFilter, sku.tagsMain);
+    }
+    if (tagsClothFilter.length !== 0) {
+      tagsClothFilterMatch = includesAny(tagsClothFilter, sku.tagsCloth);
+    }
+    if (tagsOthersFilter.length !== 0) {
+      tagsOthersFilterMatch = includesAny(tagsOthersFilter, sku.tagsOthers);
+    }
+    return (
+      skuOrNameMatch &&
+      tagsFilterMatch &&
+      tagsClothFilterMatch &&
+      tagsOthersFilterMatch
+    );
   });
 
   const highlightMatch = (text, filter) => {
@@ -160,6 +202,16 @@ const TaskEditDrain = () => {
       setSkuList([].concat(skuList, sku));
     }
   };
+
+  const handeClickOnAllCancel = () => {
+    setSkuList([]);
+  };
+
+  const handeClickOnAllMark = () => {
+    const newListSku = filteredSkuDataWCat.map((sku) => sku.sku);
+    setSkuList([...skuList, ...newListSku]);
+  };
+
   return (
     <section>
       <h1>Редактирование {taskData?.task?.task_name}</h1>
@@ -246,6 +298,37 @@ const TaskEditDrain = () => {
             <div className={styles.infoText}>Выберите артикулы</div>
             <div className={styles.textFilter}>
               <SkuNameFilter />
+            </div>
+            <div>
+              <div className={styles.tagsFilters}>
+                {tagsMain.length ? (
+                  <TaskMainTagFilter options={tagsMain} />
+                ) : (
+                  <></>
+                )}
+                {tagsCloth.length ? (
+                  <TaskClothTagFilter options={tagsCloth} />
+                ) : (
+                  <></>
+                )}
+                {tagsCloth.length ? (
+                  <TaskOthersTagFilter options={tagsOthers} />
+                ) : (
+                  <></>
+                )}
+                <div
+                  className={styles.buttonMark}
+                  onClick={handeClickOnAllMark}
+                >
+                  Выбрать все
+                </div>
+                <div
+                  className={styles.buttonMark}
+                  onClick={handeClickOnAllCancel}
+                >
+                  Отменить выбор
+                </div>
+              </div>
             </div>
             <div className={styles.skuGrid}>
               {isLoading ? (

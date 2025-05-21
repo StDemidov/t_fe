@@ -29,6 +29,16 @@ const Tools = () => {
             </div>
           </div>
         </NavLink>
+        <NavLink to="tags_setup" className={styles.link}>
+          <div className={styles.card}>
+            <div className={styles.cardContent}>
+              <p className={styles.cardTitle}>Работа с Тегами</p>
+              <p className={styles.cardPara}>
+                Массовое добавление тегов, удаление
+              </p>
+            </div>
+          </div>
+        </NavLink>
       </div>
       <h2 className={styles.blockName}>Управление ценами</h2>
       <hr className={styles.line} />

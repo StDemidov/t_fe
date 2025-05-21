@@ -67,6 +67,32 @@ export const fetchAvailableTags = createAsyncThunk(
   }
 );
 
+export const uploadNewTags = createAsyncThunk(
+  'tags/uploadNewTAgs',
+  async ({ data, url }, thunkAPI) => {
+    try {
+      const res = await axios.post(url, data);
+      thunkAPI.dispatch(setNotification('Теги созданы'));
+      return res.data;
+    } catch (error) {
+      thunkAPI.dispatch(setError(error.message));
+    }
+  }
+);
+
+export const deleteTags = createAsyncThunk(
+  'tags/deleteTags',
+  async ({ data, url }, thunkAPI) => {
+    try {
+      const res = await axios.post(url, data);
+      thunkAPI.dispatch(setNotification('Теги удалены!'));
+      return res.data;
+    } catch (error) {
+      thunkAPI.dispatch(setError(error.message));
+    }
+  }
+);
+
 export const fetchVendorCodeMetricsSingle = createAsyncThunk(
   'vendorCode/fetchVendorCodeMetricsSingle',
   async (url, thunkAPI) => {
@@ -178,6 +204,18 @@ const vendorCodeSlice = createSlice({
     });
     builder.addCase(createNewTag.pending, (state) => {
       state.tagsIsLoading = true;
+    });
+    builder.addCase(uploadNewTags.fulfilled, (state) => {
+      state.isLoading = false;
+    });
+    builder.addCase(uploadNewTags.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(deleteTags.fulfilled, (state) => {
+      state.isLoading = false;
+    });
+    builder.addCase(deleteTags.pending, (state) => {
+      state.isLoading = true;
     });
     builder.addCase(createNewTag.fulfilled, (state, action) => {
       state.tagsIsLoading = false;

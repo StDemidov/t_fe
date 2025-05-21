@@ -239,3 +239,32 @@ input[type='number']::-webkit-inner-spin-button {
 .highlight {
   background-color: #ff0;
 }
+
+.tagsFilters {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 10px;
+}
+
+.buttonMark {
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-size: 0.6rem;
+  background-color: white;
+  text-align: center;
+  display: flex;
+  padding: 5px;
+  justify-content: center;
+  flex-direction: column;
+  border: 1px solid #623fc0;
+  border-radius: 10px;
+  color: #623fc0;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.buttonMark:hover {
+  background-color: #623fc0;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}

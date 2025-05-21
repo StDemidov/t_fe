@@ -17,6 +17,9 @@ import {
   resetTasksCategory,
   resetSkuOrNameTasksFilter,
   selectSkuOrNameTasksFilter,
+  selectSkusOnDrainTagsOthersFilter,
+  selectSkusOnDrainTagsClothFilter,
+  selectSkusOnDrainTagsFilter,
 } from '../../../redux/slices/filterSlice';
 import {
   fetchCategories,
@@ -28,6 +31,9 @@ import SkuNameFilter from '../../price-cotrol-page/sku-name-filter/SkuNameFilter
 import { setError } from '../../../redux/slices/errorSlice';
 import styles from './style.module.css';
 import { hostName } from '../../../utils/host';
+import TaskMainTagFilter from '../task_filters/TaskMainTagFilter';
+import TaskClothTagFilter from '../task_filters/TaskClothTagFilter';
+import TaskOthersTagFilter from '../task_filters/TaskOthersTagFilter';
 
 const TaskCreateDrain = () => {
   const dispatch = useDispatch();
@@ -37,6 +43,10 @@ const TaskCreateDrain = () => {
   const allCategories = useSelector(selectCategories);
   const selectedCategory = useSelector(selectTasksCategory);
   const skuOrNameFilter = useSelector(selectSkuOrNameTasksFilter);
+  const tagsFilter = useSelector(selectSkusOnDrainTagsFilter);
+  const tagsClothFilter = useSelector(selectSkusOnDrainTagsClothFilter);
+  const tagsOthersFilter = useSelector(selectSkusOnDrainTagsOthersFilter);
+
   const navigation = useNavigate();
 
   useEffect(() => {
@@ -77,10 +87,14 @@ const TaskCreateDrain = () => {
   const filteredSkuData = skuData.filter((sku) => {
     return !sku.is_on_drain;
   });
+  const includesAny = (arr, values) => values.some((v) => arr.includes(v));
 
   const filteredSkuDataWCat = filteredSkuData.filter((sku) => {
     let categoryMatch = true;
     let skuOrNameMatch = true;
+    let tagsFilterMatch = true;
+    let tagsClothFilterMatch = true;
+    let tagsOthersFilterMatch = true;
     if (skuOrNameFilter.length !== 0) {
       if (isNaN(skuOrNameFilter)) {
         skuOrNameMatch = sku.vcName
@@ -93,8 +107,33 @@ const TaskCreateDrain = () => {
     if (selectedCategory !== '') {
       categoryMatch = Number(sku.categoryId) === Number(selectedCategory.id);
     }
-    return categoryMatch && skuOrNameMatch;
+    if (tagsFilter.length != 0) {
+      tagsFilterMatch = includesAny(tagsFilter, sku.tagsMain);
+    }
+    if (tagsClothFilter.length !== 0) {
+      tagsClothFilterMatch = includesAny(tagsClothFilter, sku.tagsCloth);
+    }
+    if (tagsOthersFilter.length !== 0) {
+      tagsOthersFilterMatch = includesAny(tagsOthersFilter, sku.tagsOthers);
+    }
+    return (
+      categoryMatch &&
+      skuOrNameMatch &&
+      tagsFilterMatch &&
+      tagsClothFilterMatch &&
+      tagsOthersFilterMatch
+    );
   });
+
+  let tagsMain = [...new Set(filteredSkuData.flatMap((item) => item.tagsMain))];
+
+  let tagsCloth = [
+    ...new Set(filteredSkuData.flatMap((item) => item.tagsCloth)),
+  ];
+
+  let tagsOthers = [
+    ...new Set(filteredSkuData.flatMap((item) => item.tagsOthers)),
+  ];
 
   let categories_ids = filteredSkuData.map((sku) => {
     return sku.categoryId;
@@ -170,6 +209,16 @@ const TaskCreateDrain = () => {
       setSkuList([].concat(skuList, sku));
     }
   };
+
+  const handeClickOnAllCancel = () => {
+    setSkuList([]);
+  };
+
+  const handeClickOnAllMark = () => {
+    const newListSku = filteredSkuDataWCat.map((sku) => sku.sku);
+    setSkuList([...skuList, ...newListSku]);
+  };
+
   return (
     <section>
       <h1>Новая задача для ликвидации товаров</h1>
@@ -289,6 +338,29 @@ const TaskCreateDrain = () => {
             )}
             <div className={styles.textFilter}>
               {selectedCategory === '' ? <></> : <SkuNameFilter />}
+            </div>
+            <div>
+              {selectedCategory === '' ? (
+                <></>
+              ) : (
+                <div className={styles.tagsFilters}>
+                  <TaskMainTagFilter options={tagsMain} />
+                  <TaskClothTagFilter options={tagsCloth} />
+                  <TaskOthersTagFilter options={tagsOthers} />
+                  <div
+                    className={styles.buttonMark}
+                    onClick={handeClickOnAllMark}
+                  >
+                    Выбрать все
+                  </div>
+                  <div
+                    className={styles.buttonMark}
+                    onClick={handeClickOnAllCancel}
+                  >
+                    Отменить выбор
+                  </div>
+                </div>
+              )}
             </div>
             <div className={styles.skuGrid}>
               {isLoading ? (

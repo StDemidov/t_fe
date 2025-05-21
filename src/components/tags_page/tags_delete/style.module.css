@@ -1,0 +1,149 @@
+.toggleContainer {
+  padding: 1rem;
+  background-color: #f1f2fa; /* bg-gray-100 */
+  border-radius: 1.4rem;
+  max-width: 800px;
+  min-width: 540px;
+  margin: 0 auto;
+}
+
+.toggleBlock {
+  display: flex;
+  height: 32rem;
+  border-radius: 1rem;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.toggleSide {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  overflow: hidden;
+  position: relative;
+  background-color: #ffffff; /* bg-indigo-700 */
+  color: rgb(28, 28, 28);
+  cursor: default;
+  border-radius: 1rem;
+  height: 90%;
+}
+
+.toggleContent h2 {
+  font-size: 1.25rem;
+  margin-bottom: 0.5rem;
+  font-family: 'BebasNeue', sans-serif;
+}
+
+.toggleContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.toggleContent h2 {
+  font-size: 1.25rem;
+  margin-bottom: 0.5rem;
+  font-family: 'BebasNeue', sans-serif;
+}
+
+.toggleContent div {
+  font-size: 1rem;
+}
+
+/* Вертикальный текст */
+
+.tagCategoryList {
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.tagCategory {
+  padding: 8px;
+  border: 1px solid #d1d5db;
+  border-radius: 0.6rem;
+  cursor: pointer;
+}
+.activeCategory {
+  color: #70dc2a;
+  background-color: #3a4f48;
+  border: none;
+}
+
+.deleteBtn {
+  display: inline-flex;
+  align-items: center;
+  background-color: #ffffff;
+  color: #a21010;
+  padding: 0.5rem 1rem;
+  margin-top: 1rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  border: 1px solid #d1d5db;
+  transition: background-color 0.2s ease;
+}
+
+.deleteBtn:hover {
+  background-color: #a21010;
+  color: white;
+  border-color: #a21010;
+}
+
+.deleteBtn .icon {
+  width: 20px;
+  height: 20px;
+  margin-right: 0.5rem;
+}
+
+.infoText {
+  margin-top: 10px;
+  background-color: #dcdcdc;
+  align-items: center;
+  padding: 10px;
+  justify-self: center;
+  width: 80%;
+  color: #808080;
+  border-radius: 1.5rem;
+}
+
+.tagsField {
+  margin-top: 10px;
+  background-color: #f1f2fa;
+  padding: 10px;
+  width: 80%;
+  color: #808080;
+  border-radius: 1.5rem;
+  display: flex; /* Включаем Flexbox */
+  flex-wrap: wrap; /* Разрешаем перенос элементов на следующую строку */
+  gap: 10px; /* Задаем расстояние между прямоугольниками */
+  overflow-y: auto;
+  height: 100px;
+}
+
+.tagsField::-webkit-scrollbar {
+  width: 0px;
+}
+
+.tag {
+  border: #1f2937 solid 1px;
+  margin-right: 5px;
+  padding: 3px;
+  border-radius: 0.5rem;
+  background-color: white;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  transition: color 0.2s ease;
+}
+
+.tagChosen {
+  color: white;
+  background-color: #3b82f6;
+  border: #3b82f6 solid 1px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  transition: color 0.2s ease;
+}

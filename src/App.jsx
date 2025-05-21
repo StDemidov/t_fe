@@ -46,6 +46,7 @@ import AuctionCampaignCreate from './components/auction_campaign_create/AuctionC
 import AuctionCampaignEditMain from './components/auction_campaign_edit_main/AuctionCampaignEditMain';
 import AuctionCampaignEdit from './components/auction_campaign_edit/AuctionCampaignEdit';
 import AuctionCampaignCreateFID from './components/auction_campaign_create_f_id/AuctionCampaignCreateFID';
+import TagsPage from './components/tags_page/TagsPage';
 
 function App() {
   const currentUser = useSelector(selectUser);
@@ -136,6 +137,7 @@ function App() {
                     element={<SingleTaskB28Info />}
                   />
                   <Route path="tools/tasks_drain" element={<TasksDrain />} />
+                  <Route path="tools/tags_setup" element={<TagsPage />} />
                   <Route
                     path="tools/tasks_b_28/create"
                     element={<TaskCreate />}
