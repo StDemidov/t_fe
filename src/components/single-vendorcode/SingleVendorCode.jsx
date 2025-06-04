@@ -285,20 +285,19 @@ const SingleVendorCode = () => {
                   </div>
 
                   <div className={styles.vcInfo}>
-                    <div className={styles.vcInfoLabel}>Себестоимость</div>
+                    <div className={styles.vcInfoLabel}>
+                      Себестоимость с НДС
+                    </div>
                     <div className={styles.vcInfoItem}>
-                      ₽{' '}
-                      <abbr
-                        title={`Ткань (c НДС): ${vcData?.clothCost} ₽\nУслуги: ${vcData?.servicesCost} ₽`}
-                      >
-                        {vcData?.clothCost + vcData?.servicesCost}
-                      </abbr>
+                      ₽ {vcData?.clothCost}
                     </div>
                   </div>
                   <div className={styles.vcInfo}>
-                    <div className={styles.vcInfoLabel}>Цена доставки</div>
+                    <div className={styles.vcInfoLabel}>
+                      Себестоимость без НДС
+                    </div>
                     <div className={styles.vcInfoItem}>
-                      ₽ {vcData?.deliveryCost ? vcData?.deliveryCost : 0}
+                      ₽ {vcData?.servicesCost}
                     </div>
                   </div>
                   <div className={styles.vcInfo}>

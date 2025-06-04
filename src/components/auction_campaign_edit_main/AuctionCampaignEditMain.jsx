@@ -110,8 +110,6 @@ const AuctionCampaignEditMain = () => {
     }
   };
 
-  console.log(newExcl);
-
   return (
     <section>
       <h1>Редактирование кампании для {campName}</h1>
@@ -141,6 +139,7 @@ const AuctionCampaignEditMain = () => {
                         id="whenToPause"
                         value={whenToPause === 0 ? '' : whenToPause}
                         onChange={(e) => setWhenToPause(Number(e.target.value))}
+                        className={styles.disabledScroll}
                       />
                     </li>
                     <li>
@@ -151,6 +150,7 @@ const AuctionCampaignEditMain = () => {
                         id="ctrBench"
                         value={ctrBench === 0 ? '' : ctrBench}
                         onChange={(e) => setCTRBench(Number(e.target.value))}
+                        className={styles.disabledScroll}
                       />
                     </li>
                     <li>
@@ -162,6 +162,7 @@ const AuctionCampaignEditMain = () => {
                         id="viewsBench"
                         value={viewsBench === 0 ? '' : viewsBench}
                         onChange={(e) => setViewsBench(Number(e.target.value))}
+                        className={styles.disabledScroll}
                       />
                     </li>
                   </div>
@@ -178,6 +179,7 @@ const AuctionCampaignEditMain = () => {
                         id="whenToAddBudget"
                         value={whenToAddBudget === 0 ? '' : whenToAddBudget}
                         onChange={(e) => setWhenToAddBudget(e.target.value)}
+                        className={styles.disabledScroll}
                       />
                     </li>
                     <li>
@@ -189,6 +191,7 @@ const AuctionCampaignEditMain = () => {
                         id="howMuchToAdd"
                         value={howMuchToAdd === 0 ? '' : howMuchToAdd}
                         onChange={(e) => setHowMuchToAdd(e.target.value)}
+                        className={styles.disabledScroll}
                       />
                     </li>
                   </div>
@@ -203,6 +206,7 @@ const AuctionCampaignEditMain = () => {
                         id="CPM"
                         value={cpm === 0 ? '' : cpm}
                         onChange={(e) => setCPM(e.target.value)}
+                        className={styles.disabledScroll}
                       />
                     </li>
                   </div>

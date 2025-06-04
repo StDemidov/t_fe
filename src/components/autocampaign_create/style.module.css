@@ -273,3 +273,10 @@ input[type='number']::-webkit-inner-spin-button {
 .timeToggle input {
   margin: 0;
 }
+
+.disabledScroll {
+  -moz-appearance: textfield;
+}
+.disabledScroll::-webkit-inner-spin-button {
+  display: none;
+}

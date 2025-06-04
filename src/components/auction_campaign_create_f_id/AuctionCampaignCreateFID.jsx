@@ -75,7 +75,6 @@ const AuctionCampaignCreateFID = () => {
       );
     }
   };
-  console.log(fixed);
 
   return (
     <section>
@@ -103,6 +102,7 @@ const AuctionCampaignCreateFID = () => {
                         id="ctrBench"
                         value={ctrBench === 0 ? '' : ctrBench}
                         onChange={(e) => setCtrBench(Number(e.target.value))}
+                        className={styles.disabledScroll}
                       />
                     </li>
                     <li>
@@ -114,6 +114,7 @@ const AuctionCampaignCreateFID = () => {
                         id="viewsBench"
                         value={viewsBench === 0 ? '' : viewsBench}
                         onChange={(e) => setViewsBench(Number(e.target.value))}
+                        className={styles.disabledScroll}
                       />
                     </li>
                     <li>
@@ -126,6 +127,7 @@ const AuctionCampaignCreateFID = () => {
                         id="whenToPause"
                         value={whenToPause === 0 ? '' : whenToPause}
                         onChange={(e) => setWhenToPause(Number(e.target.value))}
+                        className={styles.disabledScroll}
                       />
                     </li>
                   </div>
@@ -140,6 +142,7 @@ const AuctionCampaignCreateFID = () => {
                         id="budget"
                         value={budget === 0 ? '' : budget}
                         onChange={(e) => setBudget(e.target.value)}
+                        className={styles.disabledScroll}
                       />
                     </li>
                     <li>
@@ -153,6 +156,7 @@ const AuctionCampaignCreateFID = () => {
                         id="whenToAddBudget"
                         value={whenToAddBudget === 0 ? '' : whenToAddBudget}
                         onChange={(e) => setWhenToAddBudget(e.target.value)}
+                        className={styles.disabledScroll}
                       />
                     </li>
                     <li>
@@ -164,6 +168,7 @@ const AuctionCampaignCreateFID = () => {
                         id="howMuchToAdd"
                         value={howMuchToAdd === 0 ? '' : howMuchToAdd}
                         onChange={(e) => setHowMuchToAdd(e.target.value)}
+                        className={styles.disabledScroll}
                       />
                     </li>
                   </div>
@@ -178,6 +183,7 @@ const AuctionCampaignCreateFID = () => {
                         id="cpm"
                         value={cpm === 0 ? '' : cpm}
                         onChange={(e) => setCPM(e.target.value)}
+                        className={styles.disabledScroll}
                       />
                     </li>
                   </div>
@@ -192,6 +198,7 @@ const AuctionCampaignCreateFID = () => {
                       id="parentId"
                       value={parentId === 0 ? '' : parentId}
                       onChange={(e) => setParentId(e.target.value)}
+                      className={styles.disabledScroll}
                     />
                   </li>
                   <li>
@@ -202,6 +209,7 @@ const AuctionCampaignCreateFID = () => {
                       id="sku"
                       value={sku === 0 ? '' : sku}
                       onChange={(e) => setSku(e.target.value)}
+                      className={styles.disabledScroll}
                     />
                   </li>
                 </li>

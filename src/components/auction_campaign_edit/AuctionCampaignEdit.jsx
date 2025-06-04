@@ -105,6 +105,7 @@ const AuctionCampaignEdit = () => {
                         id="whenToPause"
                         value={whenToPause === 0 ? '' : whenToPause}
                         onChange={(e) => setWhenToPause(Number(e.target.value))}
+                        className={styles.disabledScroll}
                       />
                     </li>
                   </div>
@@ -121,6 +122,7 @@ const AuctionCampaignEdit = () => {
                         id="whenToAddBudget"
                         value={whenToAddBudget === 0 ? '' : whenToAddBudget}
                         onChange={(e) => setWhenToAddBudget(e.target.value)}
+                        className={styles.disabledScroll}
                       />
                     </li>
                     <li>
@@ -132,6 +134,7 @@ const AuctionCampaignEdit = () => {
                         id="howMuchToAdd"
                         value={howMuchToAdd === 0 ? '' : howMuchToAdd}
                         onChange={(e) => setHowMuchToAdd(e.target.value)}
+                        className={styles.disabledScroll}
                       />
                     </li>
                   </div>
@@ -146,6 +149,7 @@ const AuctionCampaignEdit = () => {
                         id="CPM"
                         value={cpm === 0 ? '' : cpm}
                         onChange={(e) => setCPM(e.target.value)}
+                        className={styles.disabledScroll}
                       />
                     </li>
                   </div>

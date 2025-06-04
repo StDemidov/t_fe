@@ -89,7 +89,6 @@ const AuctionCampaignCreate = () => {
       );
     }
   };
-  console.log(fixed);
 
   return (
     <section>
@@ -117,6 +116,7 @@ const AuctionCampaignCreate = () => {
                         id="ctrBench"
                         value={ctrBench === 0 ? '' : ctrBench}
                         onChange={(e) => setCtrBench(Number(e.target.value))}
+                        className={styles.disabledScroll}
                       />
                     </li>
                     <li>
@@ -128,6 +128,7 @@ const AuctionCampaignCreate = () => {
                         id="viewsBench"
                         value={viewsBench === 0 ? '' : viewsBench}
                         onChange={(e) => setViewsBench(Number(e.target.value))}
+                        className={styles.disabledScroll}
                       />
                     </li>
                     <li>
@@ -140,6 +141,7 @@ const AuctionCampaignCreate = () => {
                         id="whenToPause"
                         value={whenToPause === 0 ? '' : whenToPause}
                         onChange={(e) => setWhenToPause(Number(e.target.value))}
+                        className={styles.disabledScroll}
                       />
                     </li>
                   </div>
@@ -154,6 +156,7 @@ const AuctionCampaignCreate = () => {
                         id="budget"
                         value={budget === 0 ? '' : budget}
                         onChange={(e) => setBudget(e.target.value)}
+                        className={styles.disabledScroll}
                       />
                     </li>
                     <li>
@@ -167,6 +170,7 @@ const AuctionCampaignCreate = () => {
                         id="whenToAddBudget"
                         value={whenToAddBudget === 0 ? '' : whenToAddBudget}
                         onChange={(e) => setWhenToAddBudget(e.target.value)}
+                        className={styles.disabledScroll}
                       />
                     </li>
                     <li>
@@ -178,6 +182,7 @@ const AuctionCampaignCreate = () => {
                         id="howMuchToAdd"
                         value={howMuchToAdd === 0 ? '' : howMuchToAdd}
                         onChange={(e) => setHowMuchToAdd(e.target.value)}
+                        className={styles.disabledScroll}
                       />
                     </li>
                   </div>
@@ -192,6 +197,7 @@ const AuctionCampaignCreate = () => {
                         id="cpm"
                         value={cpm === 0 ? '' : cpm}
                         onChange={(e) => setCPM(e.target.value)}
+                        className={styles.disabledScroll}
                       />
                     </li>
                   </div>

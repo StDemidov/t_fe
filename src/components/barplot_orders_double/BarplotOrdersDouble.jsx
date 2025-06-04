@@ -21,12 +21,10 @@ ChartJS.register(
 );
 
 const BarplotOrdersDouble = ({ orders, prices, dates }) => {
-  console.log(dates);
   const startDate = new Date(dates.start);
   const endDate = new Date(dates.end);
 
   let labels = getDateNumberArray(orders);
-  console.log(labels);
   const data_orders = getDataForPeriod(orders, startDate, endDate);
   const data_prices = getDataForPeriod(prices, startDate, endDate);
 
@@ -127,7 +125,6 @@ function getDateNumberArray(dataArray) {
 
 function getDataForPeriod(data, startDate, endDate) {
   const todayDate = new Date();
-  console.log(todayDate);
   const startIndex = Math.ceil((todayDate - startDate) / (1000 * 60 * 60 * 24));
   const endIndex = Math.floor((todayDate - endDate) / (1000 * 60 * 60 * 24));
 

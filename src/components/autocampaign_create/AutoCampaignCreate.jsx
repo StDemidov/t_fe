@@ -50,8 +50,6 @@ const AutoCampaignCreate = () => {
   const [hasActiveHours, setHasActiveHours] = useState(false);
   const [sku, setSku] = useState('');
 
-  console.log(startHour);
-
   const filteredSkuDataWCat = skuData.filter((sku) => {
     let skuOrNameMatch = true;
     if (skuOrNameFilter.length !== 0) {
@@ -148,6 +146,7 @@ const AutoCampaignCreate = () => {
                       id="ctrBench"
                       value={ctrBench === 0 ? '' : ctrBench}
                       onChange={(e) => setCtrBench(Number(e.target.value))}
+                      className={styles.disabledScroll}
                     />
                   </li>
                   <li>
@@ -159,6 +158,7 @@ const AutoCampaignCreate = () => {
                       id="viewsBench"
                       value={viewsBench === 0 ? '' : viewsBench}
                       onChange={(e) => setViewsBench(Number(e.target.value))}
+                      className={styles.disabledScroll}
                     />
                   </li>
                   <li>
@@ -172,6 +172,7 @@ const AutoCampaignCreate = () => {
                       id="whenToPause"
                       value={whenToPause === 0 ? '' : whenToPause}
                       onChange={(e) => setWhenToPause(Number(e.target.value))}
+                      className={styles.disabledScroll}
                     />
                   </li>
                   <div className={styles.infoText}>Бюджет</div>
@@ -184,6 +185,7 @@ const AutoCampaignCreate = () => {
                       id="currBudget"
                       value={currBudget === 0 ? '' : currBudget}
                       onChange={(e) => setCurrBudget(Number(e.target.value))}
+                      className={styles.disabledScroll}
                     />
                   </li>
                 </div>
@@ -200,6 +202,7 @@ const AutoCampaignCreate = () => {
                       id="whenToAddBudget"
                       value={whenToAddBudget === 0 ? '' : whenToAddBudget}
                       onChange={(e) => setWhenToAddBudget(e.target.value)}
+                      className={styles.disabledScroll}
                     />
                   </li>
                   <li>
@@ -211,6 +214,7 @@ const AutoCampaignCreate = () => {
                       id="howMuchToAdd"
                       value={howMuchToAdd === 0 ? '' : howMuchToAdd}
                       onChange={(e) => setHowMuchToAdd(e.target.value)}
+                      className={styles.disabledScroll}
                     />
                   </li>
                   <li>
@@ -222,6 +226,7 @@ const AutoCampaignCreate = () => {
                       id="cpm"
                       value={cpm === 0 ? '' : cpm}
                       onChange={(e) => setCpm(e.target.value)}
+                      className={styles.disabledScroll}
                     />
                   </li>
                 </div>

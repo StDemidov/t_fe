@@ -108,6 +108,7 @@ const AutoCampaignEdit = () => {
                       id="ctrBench"
                       value={ctrBench === 0 ? '' : ctrBench}
                       onChange={(e) => setCtrBench(Number(e.target.value))}
+                      className={styles.disabledScroll}
                     />
                   </li>
                   <li>
@@ -119,6 +120,7 @@ const AutoCampaignEdit = () => {
                       id="viewsBench"
                       value={viewsBench === 0 ? '' : viewsBench}
                       onChange={(e) => setViewsBench(Number(e.target.value))}
+                      className={styles.disabledScroll}
                     />
                   </li>
                   <li>
@@ -132,6 +134,7 @@ const AutoCampaignEdit = () => {
                       id="whenToPause"
                       value={whenToPause === 0 ? '' : whenToPause}
                       onChange={(e) => setWhenToPause(Number(e.target.value))}
+                      className={styles.disabledScroll}
                     />
                   </li>
                 </div>
@@ -148,6 +151,7 @@ const AutoCampaignEdit = () => {
                       id="whenToAddBudget"
                       value={whenToAddBudget === 0 ? '' : whenToAddBudget}
                       onChange={(e) => setWhenToAddBudget(e.target.value)}
+                      className={styles.disabledScroll}
                     />
                   </li>
                   <li>
@@ -159,6 +163,7 @@ const AutoCampaignEdit = () => {
                       id="howMuchToAdd"
                       value={howMuchToAdd === 0 ? '' : howMuchToAdd}
                       onChange={(e) => setHowMuchToAdd(e.target.value)}
+                      className={styles.disabledScroll}
                     />
                   </li>
                 </div>
