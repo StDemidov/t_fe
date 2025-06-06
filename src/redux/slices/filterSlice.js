@@ -14,6 +14,7 @@ const initialState = {
     tagsMain: [],
     tagsCloth: [],
     tagsOthers: [],
+    deadline: '2026-12-18',
   },
   vendorCode: {
     category: [],
@@ -140,6 +141,12 @@ const filterSlice = createSlice({
     resetBarcodeCategoryFilter: (state) => {
       state.barcode.category = [];
     },
+    setBarcodeDeadline: (state, action) => {
+      state.barcode.deadline = action.payload;
+    },
+    resetBarcodeDeadline: (state, action) => {
+      state.barcode.deadline = '2026-12-28';
+    },
     setVendorCodeCategoryFilter: (state, action) => {
       state.vendorCode.category = [...action.payload];
     },
@@ -249,6 +256,8 @@ export const {
   resetTasksCategory,
   setBarcodeCategoryFilter,
   setBarcodeDatesFilter,
+  setBarcodeDeadline,
+  resetBarcodeDeadline,
   resetBarcodeCategoryFilter,
   setVendorCodeCategoryFilter,
   resetVendorCodeCategoryFilter,
@@ -305,6 +314,8 @@ export const {
 
 export const selectBarcodeCategoryFilter = (state) =>
   state.filter.barcode.category;
+
+export const selectBarcodeDeadline = (state) => state.filter.barcode.deadline;
 
 export const selectBarcodeColorFilter = (state) => state.filter.barcode.color;
 

@@ -44,6 +44,7 @@ function transformBcData(bcData) {
       tagsMain: item.tags_main,
       tagsCloth: item.tags_cloth,
       tagsOthers: item.tags_others,
+      category: item.category.name,
       barcodes: item.barcodes
         .sort((a, b) => {
           return sizeOrder.indexOf(a.size) - sizeOrder.indexOf(b.size);

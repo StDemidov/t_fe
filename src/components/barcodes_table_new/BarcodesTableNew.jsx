@@ -287,6 +287,13 @@ const BarcodesTableNew = ({
 
   let tagsOthers = [...new Set(rawData.flatMap((item) => item.tagsOthers))];
 
+  let categories = rawData.map((vendorcode) => {
+    return vendorcode.category;
+  });
+  categories = [...new Set(categories)];
+
+  console.log(categories);
+
   return (
     <div>
       <div className={styles.headerBlock}>
@@ -296,6 +303,7 @@ const BarcodesTableNew = ({
               tagsMain={tagsMain}
               tagsCloth={tagsCloth}
               tagsOthers={tagsOthers}
+              categories={categories}
             />
           </div>
           <div className={styles.actionButtons}>

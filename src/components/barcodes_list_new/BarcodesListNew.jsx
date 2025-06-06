@@ -24,6 +24,8 @@ import {
   selectBarcodeTagsFilter,
   selectBarcodeTagsOthersFilter,
   selectBarcodeVCNameFilter,
+  selectBarcodeCategoryFilter,
+  selectBarcodeDeadline,
 } from '../../redux/slices/filterSlice';
 import { getSum, getAverage } from '../../utils/dataSlicing';
 import { calculateCostPerOrder } from '../../utils/calculations';
@@ -43,10 +45,12 @@ const BarcodesListNew = () => {
   const tagFilter = useSelector(selectBarcodeTagsFilter);
   const tagClothFilter = useSelector(selectBarcodeTagsClothFilter);
   const tagOthersFilter = useSelector(selectBarcodeTagsOthersFilter);
+  const categoryFilter = useSelector(selectBarcodeCategoryFilter);
   const savedColors = useSelector(selectColors);
   const [selectedColors, setSelectedColors] = useState(savedColors);
   const startDate = new Date(datesFilter.start);
   const endDate = new Date(datesFilter.end);
+  const deadline = useSelector(selectBarcodeDeadline);
 
   const animStyles = useSpring({
     loop: false,
@@ -60,8 +64,6 @@ const BarcodesListNew = () => {
       dispatch(fetchBarcodes(`${hostName}/barcode/get_bc_stats_w_preds`));
     }
   }, [notificationMessage]);
-
-  const deadline = '2025-12-28';
 
   const extentedBarcodes = structuredClone(barcodes);
   extentedBarcodes.map((item) => {
@@ -77,6 +79,7 @@ const BarcodesListNew = () => {
     let tagMatch = true;
     let tagClothMatch = true;
     let tagOthersMatch = true;
+    let categoryMatch = true;
 
     if (vcNameFilter.length !== 0) {
       if (isNaN(vcNameFilter)) {
@@ -99,8 +102,16 @@ const BarcodesListNew = () => {
     if (tagOthersFilter.length !== 0) {
       tagOthersMatch = includesAny(tagOthersFilter, vc.tagsOthers);
     }
+    if (categoryFilter.length !== 0) {
+      categoryMatch = categoryFilter.includes(vc.category);
+    }
     return (
-      vcNameMatch && colorMatch && tagMatch && tagClothMatch && tagOthersMatch
+      vcNameMatch &&
+      colorMatch &&
+      tagMatch &&
+      tagClothMatch &&
+      tagOthersMatch &&
+      categoryMatch
     );
   });
 
