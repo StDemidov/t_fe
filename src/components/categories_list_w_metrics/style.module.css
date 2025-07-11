@@ -1,0 +1,18 @@
+.headerBlock {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.columnSettingsBtn {
+  margin-left: 20px;
+  font-size: 20px;
+  color: gray;
+  transition: scale 0.2s ease, color 0.2s ease;
+}
+
+.columnSettingsBtn:hover {
+  scale: 1.2;
+  cursor: pointer;
+  color: #42209f;
+}

@@ -70,3 +70,28 @@ export const getAverage = (data, startDate, endDate) => {
   );
   return Math.round(sumData / currData.length);
 };
+
+export const getDateNumberArray = (dataArray) => {
+  // Определяем вчерашнюю дату
+  const today = new Date();
+  const yesterday = new Date(today);
+  yesterday.setDate(today.getDate() - 1);
+
+  // Функция для форматирования даты в формате "день - номер месяца"
+  const formatDateNumber = (date) => {
+    const day = date.getDate();
+    const month = date.getMonth() + 1; // Месяцы начинаются с 0, поэтому +1
+    return `${day}.${String(month).length === 1 ? '0' + String(month) : month}`;
+  };
+
+  // Создаем массив с датами на основе длины массива чисел
+  const datesArray = [];
+  for (let i = dataArray.length - 1; i >= 0; i--) {
+    // Каждая дата уменьшается на i дней от вчерашнего дня
+    const date = new Date(yesterday);
+    date.setDate(yesterday.getDate() - i);
+    datesArray.push(formatDateNumber(date));
+  }
+
+  return datesArray;
+};

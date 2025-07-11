@@ -1,0 +1,127 @@
+.tableWrapper {
+  display: flex;
+  flex-direction: row;
+  /* max-width: 100%; */
+}
+
+.leftColumn {
+  display: flex;
+  flex-direction: column;
+  background-color: #eff0fe;
+  min-width: 20vh;
+  position: sticky;
+  left: 0;
+  z-index: 2;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.header {
+  display: flex;
+  flex-direction: row;
+  min-height: 70px;
+  min-width: fit-content;
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+
+.headerCell {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #eff0fe;
+  min-width: 20vh;
+  font-size: 1.7vh;
+  color: #291e48;
+  border-bottom: 1px solid #ddd;
+}
+
+.tableBody {
+  display: flex;
+  flex-direction: column;
+  max-height: 1000px;
+  overflow-y: auto;
+  font-family: 'BebasNeue', sans-serif;
+  max-width: max-content;
+}
+
+@media (max-height: 1100px) {
+  .tableBody {
+    max-height: 800px;
+  }
+}
+
+.bodyRow {
+  display: flex;
+  flex-direction: row;
+  min-height: 120px;
+  min-width: fit-content;
+}
+
+.bodyCell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20vh;
+  font-size: 1.7vh;
+  color: #291e48;
+  background-color: white;
+}
+
+.fixedCell {
+  position: sticky;
+  left: 0;
+  z-index: 19;
+}
+
+.ndsLabelWrapper {
+  display: inline-block;
+  height: 1.7vh; /* подстраиваем под ваш шрифт */
+  margin-left: 6px;
+  overflow: hidden;
+  position: relative;
+}
+
+.ndsLabel {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  position: relative;
+  display: inline-block;
+  font-size: 1.2vh;
+  white-space: nowrap;
+  color: #777;
+}
+
+.ndsLabel.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.tooltip {
+  position: fixed;
+  top: 80px;
+  right: 50px;
+  background-color: #fff;
+  color: #333;
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  font-size: 12px;
+  width: 220px;
+  z-index: 100;
+  white-space: normal;
+  pointer-events: none;
+}
+
+.helpIcon {
+  margin-left: 6px;
+  cursor: pointer;
+  color: #999;
+  font-size: 12px;
+}
+
+.helpIcon:hover {
+  color: #291e48;
+}

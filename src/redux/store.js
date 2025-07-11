@@ -1,6 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
 import storage from 'redux-persist/lib/storage';
 import categoryReducer from './slices/categorySlice';
+import categoriesMetricsReducer from './slices/categoriesMetricsSlice';
 import errorReducer from './slices/errorSlice';
 import notificationReducer from './slices/notificationSlice';
 import barcodeReducer from './slices/barcodeSlice';
@@ -52,6 +53,7 @@ const rootReducer = combineReducers({
   autoCampaigns: autoCampaignsReducer,
   tasksHoldStocks: tasksHoldStocksReducer,
   aucCampaigns: aucCampaignsReducer,
+  categoriesMetrics: categoriesMetricsReducer,
 });
 
 const store = configureStore({

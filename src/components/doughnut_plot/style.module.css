@@ -1,0 +1,35 @@
+.barDiv {
+  border-bottom: 1px solid #ddd;
+}
+
+.barWrapper {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  text-align: center;
+}
+
+.textInside {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 14px;
+  font-weight: bold;
+  font-family: 'BebasNeue', sans-serif;
+  font-size: 18px;
+}
+
+.textDiff {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 1.5vh;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}

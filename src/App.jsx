@@ -6,10 +6,10 @@ import NotFound from './components/not-found/NotFound';
 import MainLayout from './layouts/MainLayout';
 import './App.css';
 import VendorCodesList from './components/vendorcodes-list/VendorCodesList';
-import BarcodesList from './components/barcodes_list/BarcodesList';
-import CategoriesList from './components/categories-list/CategoriesList';
+// import CategoriesList from './components/categories-list/CategoriesList';
+import CategoriesListWMetrics from './components/categories_list_w_metrics/CategoriesListWMetrics';
 import Error from './components/error/Error';
-import SingleCategory from './components/single-category/SingleCategory';
+// import SingleCategory from './components/single-category/SingleCategory';
 import SingleVendorCode from './components/single-vendorcode/SingleVendorCode';
 import PriceControlPage from './components/price-cotrol-page/PriceControlPage';
 import TasksA28 from './components/price-cotrol-page/tasks-a-28/TasksA28';
@@ -47,6 +47,7 @@ import AuctionCampaignEditMain from './components/auction_campaign_edit_main/Auc
 import AuctionCampaignEdit from './components/auction_campaign_edit/AuctionCampaignEdit';
 import AuctionCampaignCreateFID from './components/auction_campaign_create_f_id/AuctionCampaignCreateFID';
 import TagsPage from './components/tags_page/TagsPage';
+import TooltipManager from './TooltipManager/TooltipManager';
 
 function App() {
   const currentUser = useSelector(selectUser);
@@ -66,8 +67,11 @@ function App() {
                     element={<SingleVendorCode />}
                   />
                   <Route path="barcodes" element={<BarcodesListNew />} />
-                  <Route path="categories" element={<CategoriesList />} />
-                  <Route path="categories/:id" element={<SingleCategory />} />
+                  <Route
+                    path="categories"
+                    element={<CategoriesListWMetrics />}
+                  />
+                  {/* <Route path="categories/:id" element={<SingleCategory />} /> */}
                   <Route path="tools" element={<Tools />} />
                   <Route path="tools/abc_page" element={<AbcPage />} />
                   <Route
@@ -175,6 +179,7 @@ function App() {
               </Routes>
             )}
             <Error />
+            <TooltipManager />
           </div>
         </BrowserRouter>
       </PersistGate>
