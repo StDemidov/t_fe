@@ -52,7 +52,8 @@ const createVendorCodeMetricsSingle = (vendorCodeMetrics) => {
         item.metrics.raw_daily_ebitda === ''
           ? []
           : item.metrics.raw_daily_ebitda.split(',').map(Number),
-      abcCurrent: item.abc.current,
+      abcCurrent: item.abc.abc_history.split(',').slice(-1),
+      abcCtgryCurrent: item.abc.abc_in_ctgry_history.split(',').slice(-1),
       tags: item.tags,
     };
   });

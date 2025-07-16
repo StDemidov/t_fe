@@ -260,6 +260,11 @@
   font-family: 'BebasNeue', sans-serif;
   font-size: 20px;
   margin-bottom: 10px;
+  gap: 30px;
+}
+
+.abcCategory small {
+  font-size: 10px;
 }
 
 .cell {

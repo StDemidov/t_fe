@@ -488,7 +488,11 @@ const BarcodesTableNew = ({
                       : {}
                   }
                 >
-                  {vc.abc}
+                  <span>{vc.abc}</span>
+                  <span>
+                    {vc.abcCtgry}
+                    <small> кат.</small>
+                  </span>
                 </div>
                 <div className={styles.colorSelector}>
                   {predefinedColors.map((color) => (

@@ -126,6 +126,7 @@
 .links {
   display: flex;
   align-items: center;
+  margin-top: 10px;
   margin-bottom: 5px;
   width: 50px;
   height: 30px;
@@ -279,7 +280,7 @@
 .abcCategory {
   display: flex;
   flex-direction: row;
-  margin: 20px 0 10px 0;
+  margin: 20px 0 0 0;
   font-family: 'BebasNeue', sans-serif;
   text-transform: uppercase;
   font-size: 20px;

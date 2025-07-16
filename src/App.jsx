@@ -12,22 +12,22 @@ import Error from './components/error/Error';
 // import SingleCategory from './components/single-category/SingleCategory';
 import SingleVendorCode from './components/single-vendorcode/SingleVendorCode';
 import PriceControlPage from './components/price-cotrol-page/PriceControlPage';
-import TasksA28 from './components/price-cotrol-page/tasks-a-28/TasksA28';
-import TasksB28 from './components/price-cotrol-page/tasks-b-28/TasksB28';
+// import TasksA28 from './components/price-cotrol-page/tasks-a-28/TasksA28';
+// import TasksB28 from './components/price-cotrol-page/tasks-b-28/TasksB28';
 import TasksDrain from './components/tasks_drain/TasksDrain';
-import TaskCreate from './components/price-cotrol-page/tasks-b-28/task-create/TaskCreate';
+// import TaskCreate from './components/price-cotrol-page/tasks-b-28/task-create/TaskCreate';
 import TaskEditDrain from './components/tasks_drain/task-edit-drain/TaskEditDrain';
-import TaskCreateA28 from './components/price-cotrol-page/tasks-a-28/task-create/TaskCreateA28';
+// import TaskCreateA28 from './components/price-cotrol-page/tasks-a-28/task-create/TaskCreateA28';
 import Tools from './components/tools/Tools';
 import AbcPage from './components/abc_page/AbcPage';
 import TaskCreateDrain from './components/tasks_drain/task-create/TaskCreateDrain';
-import TaskB28Edit from './components/price-cotrol-page/tasks-b-28/task-b28-edit/TaskB28Edit';
-import TaskA28Edit from './components/price-cotrol-page/tasks-a-28/task-a28-edit/TaskA28Edit';
+// import TaskB28Edit from './components/price-cotrol-page/tasks-b-28/task-b28-edit/TaskB28Edit';
+// import TaskA28Edit from './components/price-cotrol-page/tasks-a-28/task-a28-edit/TaskA28Edit';
 import { selectUser } from './redux/slices/authSlice';
 import LoginPage from './components/login_page/LoginPage';
 import SingleTaskDrainInfo from './components/tasks_drain/tasks_table_drain/single-task-drain-info/SingleTaskDrainInfo';
-import SingleTaskB28Info from './components/price-cotrol-page/tasks-b-28/tasks_table/single-task-b28-info/SingleTaskB28Info';
-import SingleTaskA28Info from './components/price-cotrol-page/tasks-a-28/tasks_table_a28/single-task-a28-info/SingleTaskA28Info';
+// import SingleTaskB28Info from './components/price-cotrol-page/tasks-b-28/tasks_table/single-task-b28-info/SingleTaskB28Info';
+// import SingleTaskA28Info from './components/price-cotrol-page/tasks-a-28/tasks_table_a28/single-task-a28-info/SingleTaskA28Info';
 import BarcodesListNew from './components/barcodes_list_new/BarcodesListNew';
 
 import { store, persistor } from './redux/store';
@@ -130,7 +130,7 @@ function App() {
                     path="tools/auto_campaigns/edit/:id"
                     element={<AutoCampaignEdit />}
                   />
-                  <Route path="tools/tasks_a_28" element={<TasksA28 />} />
+                  {/* <Route path="tools/tasks_a_28" element={<TasksA28 />} />
                   <Route
                     path="tools/tasks_a_28/:id"
                     element={<SingleTaskA28Info />}
@@ -139,10 +139,10 @@ function App() {
                   <Route
                     path="tools/tasks_b_28/:id"
                     element={<SingleTaskB28Info />}
-                  />
+                  /> */}
                   <Route path="tools/tasks_drain" element={<TasksDrain />} />
                   <Route path="tools/tags_setup" element={<TagsPage />} />
-                  <Route
+                  {/* <Route
                     path="tools/tasks_b_28/create"
                     element={<TaskCreate />}
                   />
@@ -157,7 +157,7 @@ function App() {
                   <Route
                     path="tools/tasks_a_28/edit/:id"
                     element={<TaskA28Edit />}
-                  />
+                  /> */}
                   <Route
                     path="tools/tasks_drain/:id"
                     element={<SingleTaskDrainInfo />}

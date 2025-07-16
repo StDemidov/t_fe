@@ -8,7 +8,7 @@ const Tools = () => {
       <h2 className={styles.blockName}>Настройки</h2>
       <hr className={styles.line} />
       <div className={styles.tasksBox}>
-        <NavLink to="abc_page" className={styles.link}>
+        {/* <NavLink to="abc_page" className={styles.link}>
           <div className={styles.card}>
             <div className={styles.cardContent}>
               <p className={styles.cardTitle}>ABC-критерии</p>
@@ -17,7 +17,7 @@ const Tools = () => {
               </p>
             </div>
           </div>
-        </NavLink>
+        </NavLink> */}
 
         <NavLink to="ebitda_settings" className={styles.link}>
           <div className={styles.card}>
@@ -43,7 +43,7 @@ const Tools = () => {
       <h2 className={styles.blockName}>Управление ценами</h2>
       <hr className={styles.line} />
       <div className={styles.tasksBox}>
-        <NavLink to="tasks_b_28" className={styles.link}>
+        {/* <NavLink to="tasks_b_28" className={styles.link}>
           <div className={styles.card}>
             <div className={styles.cardContent}>
               <p className={styles.cardTitle}>Контроль цен до 28 дня</p>
@@ -65,7 +65,7 @@ const Tools = () => {
               </p>
             </div>
           </div>
-        </NavLink>
+        </NavLink> */}
 
         <NavLink to="tasks_drain" className={styles.link}>
           <div className={styles.card}>

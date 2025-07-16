@@ -73,7 +73,8 @@ const SingleTaskDrainInfo = () => {
                 <div className={`${styles.imgCell} ${styles.fixedColumn}`}>
                   <div className={styles.imageBlock}>
                     <div className={styles.abc}>
-                      <div className={styles.abcText}>{sku.current_abc}</div>
+                      <span>{sku.current_abc_ctgry}</span>
+                      <span>{sku.current_abc}</span>
                     </div>
                     <div className={styles.imageSmall}>
                       <LazyLoad display="none" key={uuidv4()} overflow>

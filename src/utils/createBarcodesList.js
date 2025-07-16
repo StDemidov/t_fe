@@ -39,6 +39,7 @@ function transformBcData(bcData) {
       prices: parseNumberArray(item.prices),
       adsCosts: parseNumberArray(item.ads_costs),
       abc: item.abc,
+      abcCtgry: item.abc_ctrgy,
       image: item.image,
       selfPrice: Math.round(item.self_price),
       tagsMain: item.tags_main,

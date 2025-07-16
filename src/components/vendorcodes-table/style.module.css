@@ -62,9 +62,14 @@
 }
 
 .abc {
+  display: flex;
   justify-content: center;
+  gap: 20px;
   height: 80px;
   width: 17px;
+  writing-mode: vertical-lr;
+  transform: rotate(180deg);
+  font-size: 12px;
 }
 
 .abcText {

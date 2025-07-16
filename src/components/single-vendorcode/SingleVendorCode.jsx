@@ -114,17 +114,6 @@ const SingleVendorCode = () => {
                 ) : (
                   <div className={styles.noImage}>?</div>
                 )}
-                <div className={styles.abcCategory}>
-                  Категория:{' '}
-                  <div
-                    className={`${styles.abcCatBlock} ${getStyle(
-                      vcData?.abcCurrent
-                    )}`}
-                  >
-                    {vcData?.abcCurrent ? vcData?.abcCurrent : 'Новый товар'}
-                  </div>
-                </div>
-
                 <div className={styles.links}>
                   <a
                     href={`https://www.wildberries.ru/catalog/${vcData?.sku}/detail.aspx`}
@@ -151,6 +140,28 @@ const SingleVendorCode = () => {
                       alt="wb"
                     />
                   </a>
+                </div>
+                <div className={styles.abcCategory}>
+                  ABC:{' '}
+                  <div
+                    className={`${styles.abcCatBlock} ${getStyle(
+                      vcData?.abcCurrent
+                    )}`}
+                  >
+                    {vcData?.abcCurrent ? vcData?.abcCurrent : 'Новый товар'}
+                  </div>
+                </div>
+                <div className={styles.abcCategory}>
+                  ABC внутри категории:{' '}
+                  <div
+                    className={`${styles.abcCatBlock} ${getStyle(
+                      vcData?.abcCtgryCurrent
+                    )}`}
+                  >
+                    {vcData?.abcCtgryCurrent
+                      ? vcData?.abcCtgryCurrent
+                      : 'Новый товар'}
+                  </div>
                 </div>
               </div>
               <div className={styles.vcInfoBlock}>

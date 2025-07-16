@@ -389,7 +389,8 @@ const VendorCodesTable = ({ data, columns }) => {
               <div className={`${styles.cell} ${styles.fixedColumn}`}>
                 <div className={styles.imageBlock}>
                   <div className={styles.abc}>
-                    <div className={styles.abcText}>{vc.abcCurrent}</div>
+                    <span>{vc.abcCtgryCurrent}</span>
+                    <span>{vc.abcCurrent}</span>
                   </div>
                   <div className={styles.imageSmall}>
                     <LazyLoad display="none" key={uuidv4()} overflow>
