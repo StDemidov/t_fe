@@ -17,6 +17,7 @@ import autoCampaignsReducer from './slices/autoCampaignsSlice';
 import aucCampaignsReducer from './slices/aucCampaignsSlice';
 import tasksHoldStocksReducer from './slices/tasksHoldStocksSlice';
 import ordersReducer from './slices/ordersSlice';
+import systemReducer from './slices/systemSlice';
 
 import { persistReducer, persistStore } from 'redux-persist';
 import { combineReducers } from '@reduxjs/toolkit';
@@ -54,6 +55,7 @@ const rootReducer = combineReducers({
   tasksHoldStocks: tasksHoldStocksReducer,
   aucCampaigns: aucCampaignsReducer,
   categoriesMetrics: categoriesMetricsReducer,
+  system: systemReducer,
 });
 
 const store = configureStore({

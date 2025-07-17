@@ -48,6 +48,7 @@ import AuctionCampaignEdit from './components/auction_campaign_edit/AuctionCampa
 import AuctionCampaignCreateFID from './components/auction_campaign_create_f_id/AuctionCampaignCreateFID';
 import TagsPage from './components/tags_page/TagsPage';
 import TooltipManager from './TooltipManager/TooltipManager';
+import UploadImagePage from './components/upload_image_page/UploadImagePage';
 
 function App() {
   const currentUser = useSelector(selectUser);
@@ -142,6 +143,10 @@ function App() {
                   /> */}
                   <Route path="tools/tasks_drain" element={<TasksDrain />} />
                   <Route path="tools/tags_setup" element={<TagsPage />} />
+                  <Route
+                    path="tools/upload_photo"
+                    element={<UploadImagePage />}
+                  />
                   {/* <Route
                     path="tools/tasks_b_28/create"
                     element={<TaskCreate />}

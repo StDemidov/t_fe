@@ -1,0 +1,393 @@
+.toggleContainer {
+  padding: 1rem;
+  background-color: #f1f2fa; /* bg-gray-100 */
+  border-radius: 1.4rem;
+  max-width: 900px;
+  min-width: 540px;
+  margin: 0 auto;
+}
+
+.toggleBlock {
+  display: flex;
+  height: 32rem;
+  border-radius: 1rem;
+  height: max-content;
+  transition: all 0.3s ease;
+}
+
+.toggleSide {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  overflow: hidden;
+  position: relative;
+}
+
+.toggleSide.left {
+  border-top-left-radius: 1rem;
+  border-bottom-left-radius: 1rem;
+}
+
+.toggleSide.right {
+  border-top-right-radius: 1rem;
+  border-bottom-right-radius: 1rem;
+}
+
+.toggleSide.active {
+  background-color: #ffffff; /* bg-indigo-700 */
+  color: rgb(28, 28, 28);
+  padding: 0;
+  cursor: default;
+}
+
+.toggleSide.inactive {
+  background-color: #d1d5db; /* bg-gray-300 */
+  color: #374151; /* gray-800 */
+}
+
+.wide {
+  flex: 9;
+}
+
+.narrow {
+  flex: 1;
+}
+
+.toggleContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 500px;
+}
+
+.toggleContent h2 {
+  font-size: 1.25rem;
+  margin-bottom: 0.5rem;
+  margin-top: 1.25rem;
+  font-family: 'BebasNeue', sans-serif;
+}
+
+.toggleContent div {
+  font-size: 1rem;
+}
+
+/* Вертикальный текст */
+.verticalLabel {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  transform: rotate(180deg);
+  font-size: 1.1rem;
+  font-weight: bold;
+  text-align: center;
+  color: #808080; /* gray-800 */
+  font-family: 'BebasNeue', sans-serif;
+}
+
+.toggleContent {
+  opacity: 0;
+}
+
+.toggleContent.visible {
+  opacity: 1;
+  transition: opacity 0.3s ease;
+}
+
+.toggleContent.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.tagCategoryList {
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.tagCategory {
+  padding: 8px;
+  border: 1px solid #d1d5db;
+  border-radius: 0.6rem;
+  cursor: pointer;
+}
+.activeCategory {
+  color: #70dc2a;
+  background-color: #3a4f48;
+  border: none;
+}
+
+.uploadBtn {
+  display: inline-flex;
+  align-items: center;
+  background-color: #ffffff;
+  color: #1f2937;
+  padding: 0.5rem 1rem;
+  margin-top: 1rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  border: 1px solid #d1d5db;
+  transition: background-color 0.2s ease;
+}
+
+.uploadBtn:hover {
+  background-color: #f9fafb;
+}
+
+.uploadBtn .icon {
+  width: 20px;
+  height: 20px;
+  margin-right: 0.5rem;
+}
+
+.uploadedBtn {
+  display: inline-flex;
+  align-items: center;
+  color: #1f5f26;
+  background-color: #e7e7e7;
+  border: none;
+  padding: 0.5rem 1rem;
+  margin-top: 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid #d1d5db;
+  transition: background-color 0.2s ease;
+}
+
+.uploadedBtn .icon {
+  width: 20px;
+  height: 20px;
+  margin-right: 0.5rem;
+}
+
+.actionBtn {
+  display: inline-flex;
+  align-items: center;
+  color: #fff;
+  background-color: #3b82f6;
+  border: none;
+  padding: 0.5rem 1rem;
+  margin-top: 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid #d1d5db;
+  transition: background-color 0.2s ease;
+}
+
+.actionBtn .icon {
+  width: 20px;
+  height: 20px;
+  margin-right: 0.5rem;
+}
+
+.actionBtn:hover {
+  background-color: #2563eb;
+  cursor: pointer;
+}
+
+.buttonsGroup {
+  display: flex;
+  flex-direction: column;
+}
+
+.infoText {
+  margin-top: 10px;
+  background-color: #dcdcdc51;
+  align-items: center;
+  padding: 10px;
+  justify-self: center;
+  width: 80%;
+  color: #808080;
+  border-radius: 1.5rem;
+}
+
+.tagsField {
+  margin-top: 10px;
+  background-color: #f1f2fa;
+  padding: 10px;
+  width: 80%;
+  color: #808080;
+  border-radius: 1.5rem;
+  display: flex; /* Включаем Flexbox */
+  flex-wrap: wrap; /* Разрешаем перенос элементов на следующую строку */
+  gap: 10px; /* Задаем расстояние между прямоугольниками */
+  overflow-y: auto;
+  height: 100px;
+}
+
+.tagsField::-webkit-scrollbar {
+  width: 0px;
+}
+
+.tag {
+  border: #1f2937 solid 1px;
+  margin-right: 5px;
+  padding: 3px;
+  border-radius: 0.5rem;
+  background-color: white;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  transition: color 0.2s ease;
+}
+
+.tagChosen {
+  color: white;
+  background-color: #3b82f6;
+  border: #3b82f6 solid 1px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  transition: color 0.2s ease;
+}
+
+.mainBlock {
+  margin-top: 20px;
+  width: 80%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  /* align-items: center; */
+  height: 250px;
+}
+
+.leftInfoBlock {
+  width: 70%;
+}
+
+.description {
+  text-align: left;
+  background-color: #f1f2fa;
+  padding: 10px;
+  border-radius: 10px;
+  color: #373f77;
+}
+
+.posInputBlock {
+  justify-content: center;
+  height: 50px;
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  align-items: center;
+}
+
+.posInput {
+  height: 25px;
+  width: 40px;
+  border: 1px solid #808080;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.noPhotoBox {
+  height: 200px;
+  width: 150px;
+  background-color: #eeeeee42;
+  border-radius: 0.5rem;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  font-family: 'BebasNeue', sans-serif;
+  color: #808080;
+  transition: color 0.3s ease, background-color 0.3s ease;
+}
+
+.uploadImageBtn label {
+  height: 100%;
+}
+
+.noPhotoBox:hover {
+  color: #373f77;
+  border: color;
+  cursor: pointer;
+  background-color: #f1f2fa;
+}
+
+.refreshButton {
+  cursor: pointer;
+  transition: rotate 0.3s ease, scale 0.1s ease, color 0.3s ease;
+}
+
+.refreshButton:hover {
+  rotate: 360deg;
+  scale: 1.2;
+  color: #373f77;
+}
+
+.resetPhotoButton {
+  cursor: pointer;
+  transition: scale 0.1s ease, color 0.3s ease;
+}
+
+.resetPhotoButton:hover {
+  scale: 1.2;
+  color: #9a1c1c;
+}
+
+.actionsWPhoto {
+  margin-top: 5px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 10px;
+}
+
+.bottomBox {
+  height: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.failedBlock {
+  padding: 1rem;
+  border-radius: 1.4rem;
+  max-width: 900px;
+  min-width: 540px;
+  height: 200px;
+  margin: 0 auto;
+  margin-top: 1rem;
+  padding: 1rem;
+  background-color: #ffd1cd;
+  color: #851104;
+  border: 1px solid #ffc4ba;
+  border-radius: 0.5rem;
+}
+
+.failedSkusBox {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-height: 150px;
+  overflow: auto;
+}
+
+.loadingBox {
+  display: inline-flex;
+  align-items: center;
+  background-color: #ffffff;
+  color: #1f2937;
+  padding: 0.5rem 1rem;
+  margin-top: 1rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  border: 1px solid #d1d5db;
+  transition: background-color 0.2s ease;
+  gap: 10px;
+}
+
+.loadingSpinner {
+  animation: spinner 1s infinite linear;
+  color: #8254ff;
+}
+
+@keyframes spinner {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}

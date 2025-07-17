@@ -39,6 +39,17 @@ const Tools = () => {
             </div>
           </div>
         </NavLink>
+        <NavLink to="upload_photo" className={styles.link}>
+          <div className={styles.card}>
+            <div className={styles.cardContent}>
+              <p className={styles.cardTitle}>Загрузка фото в карточки</p>
+              <p className={styles.cardPara}>
+                Массовое добавление фото для заданных артикулов на заданную
+                позицию.
+              </p>
+            </div>
+          </div>
+        </NavLink>
       </div>
       <h2 className={styles.blockName}>Управление ценами</h2>
       <hr className={styles.line} />
