@@ -34,6 +34,8 @@ import BodyCPODirty from './cells/body/BodyCPODirty';
 import HeaderCPODirty from './cells/header/HeaderCPODirty';
 import BodyCPSDirty from './cells/body/BodyCPSDirty';
 import HeaderCPSDirty from './cells/header/HeaderCPSDirty';
+import BodyDailyStocksWB from './cells/body/BodyDailyStocksWB';
+import HeaderDailyStocksWB from './cells/header/HeaderDailyStocksWB';
 
 const CategoriesTableWMetrics = ({ categories, columns }) => {
   const navigation = useNavigate();
@@ -135,6 +137,10 @@ const CategoriesTableWMetrics = ({ categories, columns }) => {
     cpsDirty: {
       render: (ctgry) => <BodyCPSDirty cpsDirty={ctgry.cpsDirty} />,
       renderHeader: () => <HeaderCPSDirty key={uuidv4()} />,
+    },
+    dailyStocksWB: {
+      render: (ctgry) => <BodyDailyStocksWB stocksWB={ctgry.dailyStocks} />,
+      renderHeader: () => <HeaderDailyStocksWB key={uuidv4()} />,
     },
   };
 

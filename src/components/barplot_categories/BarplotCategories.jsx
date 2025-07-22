@@ -11,12 +11,18 @@ import {
 
 ChartJS.register(CategoryScale, LinearScale, BarElement);
 
-const BarplotCategories = ({ data, need_sum = false }) => {
+const BarplotCategories = ({ data, need_sum = false, last_item = false }) => {
   const [showSum, setShowSum] = useState(true);
   const labels = getDateNumberArray(data);
-  const total = data.reduce((acc, val) => acc + val, 0);
+  let total = 0;
 
-  if (total === 0) {
+  if (last_item) {
+    total = data.slice(-1);
+  } else {
+    total = data.reduce((acc, val) => acc + val, 0);
+  }
+
+  if (!last_item && total === 0) {
     return <>Нет данных</>;
   }
 

@@ -17,6 +17,7 @@ import { hostName } from '../../utils/host';
 const initialColumnsData = [
   { key: 'dailyOrders', label: 'Заказы', hidden: false },
   { key: 'dailySales', label: 'Выкупы', hidden: false },
+  { key: 'dailyStocksWB', label: 'Остатки WB', hidden: false },
   { key: 'ebitdaAVG', label: 'Средняя EBITDA', hidden: false },
   { key: 'dailyEbitda', label: 'EBITDA / День', hidden: false },
   {

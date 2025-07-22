@@ -208,6 +208,13 @@
 .cellSPP {
   min-width: 120px; /* Минимальная ширина ячейки */
   max-width: 120px;
+  display: flex;
+  flex-direction: column;
+}
+
+.sppAmount {
+  font-size: 15px;
+  color: gray;
 }
 
 .cell:first-child {

@@ -1,14 +1,17 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import { FaSpinner, FaRegStopCircle } from 'react-icons/fa';
-import { FaCirclePlay, FaRegCalendarCheck } from 'react-icons/fa6';
 import { IoSettings } from 'react-icons/io5';
 import { useNavigate } from 'react-router-dom';
 import { RiDeleteBin2Fill } from 'react-icons/ri';
 import { MdPriceCheck } from 'react-icons/md';
-
-import { FaRegArrowAltCircleUp, FaRegArrowAltCircleDown } from 'react-icons/fa';
+import { FaCirclePlay, FaRegCalendarCheck } from 'react-icons/fa6';
+import {
+  FaSpinner,
+  FaRegStopCircle,
+  FaRegArrowAltCircleUp,
+  FaRegArrowAltCircleDown,
+} from 'react-icons/fa';
 
 import {
   fetchTasksDrain,
@@ -23,6 +26,7 @@ import {
   selectSkuDataDrain,
 } from '../../../redux/slices/tasksDrainSlice';
 import { selectNotificationMessage } from '../../../redux/slices/notificationSlice';
+import ConfirmModal from '../../confirm_modal/ConfirmModal';
 import styles from './style.module.css';
 import { hostName } from '../../../utils/host';
 
@@ -35,6 +39,27 @@ const TasksTableDrain = () => {
   const skuData = useSelector(selectSkuDataDrain);
   const notification = useSelector(selectNotificationMessage);
 
+  const [modalData, setModalData] = useState({
+    isOpen: false,
+    text: '',
+    onConfirm: null,
+  });
+
+  const openConfirmModal = (text, onConfirm) => {
+    setModalData({
+      isOpen: true,
+      text,
+      onConfirm: () => {
+        onConfirm();
+        setModalData({ ...modalData, isOpen: false });
+      },
+    });
+  };
+
+  const closeModal = () => {
+    setModalData({ ...modalData, isOpen: false });
+  };
+
   useEffect(() => {
     dispatch(fetchTasksDrain(`${hostName}/tasksdrain/`));
     dispatch(fetchSkuData(`${hostName}/skusondrain/`));
@@ -46,72 +71,69 @@ const TasksTableDrain = () => {
   };
 
   const handleClickOnDelete = (e) => {
+    e.stopPropagation();
     const skuStr = e.currentTarget.getAttribute('sku-list');
     const isActive = e.currentTarget.getAttribute('is-active');
     const taskName = e.currentTarget.getAttribute('task-name');
-    if (isActive == 1) {
+
+    openConfirmModal(`Вы уверены, что хотите удалить ${taskName}?`, () => {
+      if (isActive == 1) {
+        dispatch(
+          unsetTaskToSkus({
+            url: `${hostName}/skusondrain/unset_task`,
+            data: { sku_str: skuStr, task_name: taskName },
+          })
+        );
+      }
       dispatch(
-        unsetTaskToSkus({
-          url: `${hostName}/skusondrain/unset_task`,
-          data: {
-            sku_str: skuStr,
-            task_name: taskName,
-          },
+        deleteTask({
+          url: `${hostName}/tasksdrain/delete_by_name`,
+          data: { task_name: taskName },
         })
       );
-    }
-    dispatch(
-      deleteTask({
-        url: `${hostName}/tasksdrain/delete_by_name`,
-        data: {
-          task_name: taskName,
-        },
-      })
-    );
+    });
   };
+
   const handeClickOnButton = (e) => {
+    e.stopPropagation();
     const skuStr = e.currentTarget.getAttribute('sku-list');
     const isActive = e.currentTarget.getAttribute('is-active');
     const taskName = e.currentTarget.getAttribute('task-name');
-    if (isActive == 1) {
-      dispatch(
-        stopTask({
-          url: `${hostName}/tasksdrain/change_is_active`,
-          data: {
-            task_name: taskName,
-          },
-        })
-      );
 
-      dispatch(
-        unsetTaskToSkus({
-          url: `${hostName}/skusondrain/unset_task`,
-          data: {
-            sku_str: skuStr,
-            task_name: taskName,
-          },
-        })
-      );
-    } else {
-      dispatch(
-        goLiveTask({
-          url: `${hostName}/tasksdrain/change_is_active`,
-          data: {
-            task_name: taskName,
-          },
-        })
-      );
+    const actionText =
+      isActive == 1
+        ? `Вы уверены, что хотите остановить ${taskName}?`
+        : `Вы уверены, что хотите запустить ${taskName}?`;
 
-      dispatch(
-        setTaskToSkus({
-          url: `${hostName}/skusondrain/set_task`,
-          data: {
-            sku_str: skuStr,
-            task_name: taskName,
-          },
-        })
-      );
-    }
+    openConfirmModal(actionText, () => {
+      if (isActive == 1) {
+        dispatch(
+          stopTask({
+            url: `${hostName}/tasksdrain/change_is_active`,
+            data: { task_name: taskName },
+          })
+        );
+        dispatch(
+          unsetTaskToSkus({
+            url: `${hostName}/skusondrain/unset_task`,
+            data: { sku_str: skuStr, task_name: taskName },
+          })
+        );
+      } else {
+        dispatch(
+          goLiveTask({
+            url: `${hostName}/tasksdrain/change_is_active`,
+            data: { task_name: taskName },
+          })
+        );
+        dispatch(
+          setTaskToSkus({
+            url: `${hostName}/skusondrain/set_task`,
+            data: { sku_str: skuStr, task_name: taskName },
+          })
+        );
+      }
+    });
   };
 
   const navigateToCreateTask = () => {
@@ -289,6 +311,12 @@ const TasksTableDrain = () => {
           </p>
         </div>
       </div>
+      <ConfirmModal
+        isOpen={modalData.isOpen}
+        text={modalData.text}
+        onConfirm={modalData.onConfirm}
+        onCancel={closeModal}
+      />
     </div>
   );
 };

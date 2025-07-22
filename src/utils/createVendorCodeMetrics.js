@@ -55,6 +55,7 @@ const createVendorCodeMetrics = (vendorCodeMetrics) => {
         .split(',')
         .map((cr) => Number(cr) * 100),
       advCampaigns: item.adv_campaigns,
+      sppAmount: item.spp_amount,
     };
   });
   return vcMetrics;
