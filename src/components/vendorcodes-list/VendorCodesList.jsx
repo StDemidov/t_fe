@@ -272,6 +272,7 @@ const VendorCodesList = () => {
       item.adsCosts
     );
     item.costPerOrderAVG = getAverage(item.costPerOrder, startDate, endDate);
+    item.priceAVG = getAverage(item.priceBeforeDisc, startDate, endDate);
     item.cartToOrderAVG = getAverage(item.cartToOrder, startDate, endDate);
     item.clickToOrderAVG = getAverage(item.clickToOrder, startDate, endDate);
     item.addToCartAVG = getAverage(item.addToCart, startDate, endDate);

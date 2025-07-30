@@ -269,3 +269,9 @@ input[type='number']::-webkit-inner-spin-button {
   cursor: pointer;
   transition: background-color 0.2s ease;
 }
+
+.increaseDecreaseBox {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+}

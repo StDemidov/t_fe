@@ -83,6 +83,8 @@ const TaskCreateDrain = () => {
   const [deadline, setDeadline] = useState('ГГГГ-ММ-ДД');
   const [skuList, setSkuList] = useState([]);
   const [byBuyout, setByBuyout] = useState(true);
+  const [daysToIncrease, setDaysToIncrease] = useState(1);
+  const [daysToDecrease, setDaysToDecrease] = useState(3);
 
   const filteredSkuData = skuData.filter((sku) => {
     return !sku.is_on_drain;
@@ -177,6 +179,8 @@ const TaskCreateDrain = () => {
       dispatch(setError('Необходимо выбрать хотя бы 1 артикул!'));
     } else if (errorDays < 1) {
       dispatch(setError('Установите погрешность по дням!'));
+    } else if (daysToIncrease < 1 || daysToDecrease < 1) {
+      dispatch(setError('Установите кол-во дней перед изменения не менее 1!'));
     } else {
       const data = {
         task_name: taskName,
@@ -188,6 +192,8 @@ const TaskCreateDrain = () => {
         sku_list: skuList.join(','),
         by_buyout: byBuyout,
         error: errorDays,
+        days_to_increase: daysToIncrease,
+        days_to_decrease: daysToDecrease,
       };
       dispatch(
         createTaskDrain({
@@ -242,30 +248,71 @@ const TaskCreateDrain = () => {
               <div className={styles.settingsContainer}>
                 <div className={styles.pricesContainer}>
                   <div className={styles.infoText}>
-                    Установите шаги изменения цен
+                    Установите шаги изменения цен и кол-во <br />
+                    дней перед повторным изменением
                   </div>
-                  <li>
-                    <label htmlFor="increaseStep">Шаг повышения: </label>
-                    <input
-                      required={true}
-                      type="number"
-                      min="1"
-                      id="increaseStep"
-                      value={increaseStep === 0 ? '' : increaseStep}
-                      onChange={(e) => setIncreaseStep(Number(e.target.value))}
-                    />
-                  </li>
-                  <li>
-                    <label htmlFor="decreaseStep">Шаг снижения: </label>
-                    <input
-                      required={true}
-                      type="number"
-                      min="1"
-                      id="decreaseStep"
-                      value={decreaseStep === 0 ? '' : decreaseStep}
-                      onChange={(e) => setDecreaseStep(Number(e.target.value))}
-                    />
-                  </li>
+                  <div className={styles.increaseDecreaseBox}>
+                    <div>
+                      <li>
+                        <label htmlFor="increaseStep">Шаг повышения: </label>
+                        <input
+                          required={true}
+                          type="number"
+                          min="1"
+                          id="increaseStep"
+                          value={increaseStep === 0 ? '' : increaseStep}
+                          onChange={(e) =>
+                            setIncreaseStep(Number(e.target.value))
+                          }
+                        />
+                      </li>
+                      <li>
+                        <label htmlFor="decreaseStep">Шаг снижения: </label>
+                        <input
+                          required={true}
+                          type="number"
+                          min="1"
+                          id="decreaseStep"
+                          value={decreaseStep === 0 ? '' : decreaseStep}
+                          onChange={(e) =>
+                            setDecreaseStep(Number(e.target.value))
+                          }
+                        />
+                      </li>
+                    </div>
+                    <div>
+                      <li>
+                        <label htmlFor="daysToIncrease">
+                          Дней до повышения:{' '}
+                        </label>
+                        <input
+                          required={true}
+                          type="number"
+                          min="1"
+                          id="daysToIncrease"
+                          value={daysToIncrease === 0 ? '' : daysToIncrease}
+                          onChange={(e) =>
+                            setDaysToIncrease(Number(e.target.value))
+                          }
+                        />
+                      </li>
+                      <li>
+                        <label htmlFor="daysToDecrease">
+                          Дней до снижения:{' '}
+                        </label>
+                        <input
+                          required={true}
+                          type="number"
+                          min="1"
+                          id="daysToDecrease"
+                          value={daysToDecrease === 0 ? '' : daysToDecrease}
+                          onChange={(e) =>
+                            setDaysToDecrease(Number(e.target.value))
+                          }
+                        />
+                      </li>
+                    </div>
+                  </div>
                   <div className={styles.infoText}>Установите пороги цен</div>
                   <li>
                     <label htmlFor="minPrice">Нижний порог цены: </label>

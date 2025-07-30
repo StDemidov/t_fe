@@ -242,8 +242,12 @@ const сolRender = {
       <BodyPriceBSPP vc={vc} datesFilter={datesFilter} key={uuidv4()} />
     ),
     renderHeader: () => <HeaderPriceBSPP key={uuidv4()} />,
-    renderFooter: (avg_price_b_spp) => (
-      <FooterPriceBSPP key={uuidv4()} avg_price_b_spp={avg_price_b_spp} />
+    renderFooter: (avg_prices) => (
+      <FooterPriceBSPP
+        key={uuidv4()}
+        avg_price_b_spp={avg_prices[0]}
+        fullAvgPrice={avg_prices[1]}
+      />
     ),
   },
   priceASPP: {
@@ -349,6 +353,9 @@ const VendorCodesTable = ({ data, columns }) => {
     data.reduce((total, next) => total + next.clickToOrder.at(-1), 0) /
       data.length
   );
+  const avgPrice = Math.round(
+    data.reduce((total, next) => total + next.priceAVG, 0) / data.length
+  );
 
   const footerVars = {
     orders: data,
@@ -361,7 +368,7 @@ const VendorCodesTable = ({ data, columns }) => {
     adsCosts: data,
     cpo: avgCostPerOrder,
     buyout: avg_buyout,
-    priceBSPP: avg_price_b_spp,
+    priceBSPP: [avg_price_b_spp, avgPrice],
     priceASPP: avg_price_ssp,
     selfPrice: avg_self_price,
     selfPriceWONDS: avgSelfPriceWONDS,
