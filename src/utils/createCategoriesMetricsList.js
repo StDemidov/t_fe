@@ -1,4 +1,8 @@
-import { calculateEbitdaWoAds, calculateCostPerOrder } from './calculations';
+import {
+  calculateEbitdaWoAds,
+  calculateCostPerOrder,
+  calculateEbitdaWoAdsForCategories,
+} from './calculations';
 
 const createCategoriesMetricsList = (categories) => {
   const categoriesMetrics = categories.map((item) => {
@@ -21,10 +25,10 @@ const createCategoriesMetricsList = (categories) => {
         .split(',')
         .map(Number)
         .slice(-30),
-      dailyEbitdaWoAds: calculateEbitdaWoAds(
+      dailyEbitdaWoAds: calculateEbitdaWoAdsForCategories(
         item.daily_ebitda + ',' + item.daily_ebitda_raw,
         item.daily_ads_costs
-      ).slice(-30),
+      ),
       dailyAdsCosts: item.daily_ads_costs.split(',').map(Number).slice(-30),
       cpoClear: item.cpo.split(',').map(Number).slice(-30),
       cpoDirty: cpoDirty,

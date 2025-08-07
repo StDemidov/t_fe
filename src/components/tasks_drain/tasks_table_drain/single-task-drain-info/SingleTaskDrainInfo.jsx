@@ -40,12 +40,26 @@ const SingleTaskDrainInfo = () => {
         <div className={styles.infoBlock}>
           Шаг повышения: {taskData?.task?.increase_step} ₽
         </div>
-
+        <div className={styles.infoBlock}>
+          Дней до повышения: {taskData?.task?.days_to_increase} д.
+        </div>
         <div className={styles.infoBlock}>
           Шаг снижения: {taskData?.task?.decrease_step} ₽
         </div>
         <div className={styles.infoBlock}>
+          Дней до понижения: {taskData?.task?.days_to_decrease} д.
+        </div>
+        <div className={styles.infoBlock}>
           Дедлайн: {taskData?.task?.deadline}{' '}
+        </div>
+        <div className={styles.infoBlock}>
+          Погрешность: {taskData?.task?.error} д.
+        </div>
+        <div className={styles.infoBlock}>
+          Минимальная цена: {taskData?.task?.min_price} ₽
+        </div>
+        <div className={styles.infoBlock}>
+          Максимальная цена: {taskData?.task?.max_price} ₽
         </div>
         {!taskData?.task?.completed ? (
           <button className={styles.editButton} onClick={handleClickOnEdit}>

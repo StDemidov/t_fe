@@ -4,6 +4,14 @@ export const calculateCostPerOrder = (orders, adsCosts) => {
   });
 };
 
+export const calculateEbitdaWoAdsForCategories = (ebitdaDaily, adsCosts) => {
+  const ebitdaDailyArr = ebitdaDaily.split(',').map(Number).slice(-30);
+  const adsCostsArr = adsCosts.split(',').map(Number).slice(-30);
+  return ebitdaDailyArr.map((ebitda, index) => {
+    return Math.round(ebitda - adsCostsArr[index] * 0.8333);
+  });
+};
+
 export const calculateEbitdaWoAds = (ebitdaDaily, adsCosts) => {
   const ebitdaDailyArr = ebitdaDaily.split(',').map(Number);
   const adsCostsArr = adsCosts.split(',').map(Number);

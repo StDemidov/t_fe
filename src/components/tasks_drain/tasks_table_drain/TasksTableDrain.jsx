@@ -229,19 +229,21 @@ const TasksTableDrain = () => {
                     <div className={styles.taskNumbers}>
                       <div className={styles.numberText}>
                         <FaRegCalendarCheck />
-                        {new Date(task.deadline).toLocaleDateString()}
+                        {`${new Date(task.deadline).toLocaleDateString()} [±${
+                          task.error
+                        } д.]`}
                       </div>
                       <div className={styles.numberText}>
                         <FaRegArrowAltCircleUp />
-                        {task.increaseStep} ₽
+                        {`${task.increaseStep} ₽ [${task.daysToIncrease} д.]`}
                       </div>
                       <div className={styles.numberText}>
                         <FaRegArrowAltCircleDown />
-                        {task.decreaseStep} ₽
+                        {`${task.decreaseStep} ₽ [${task.daysToDecrease} д.]`}
                       </div>
                       <div className={styles.numberText}>
                         <MdPriceCheck />
-                        {task.minPrice} ₽
+                        {`min: ${task.minPrice} ₽ | max: ${task.maxPrice} ₽`}
                       </div>
                     </div>
                     <div className={styles.taskButtons}>

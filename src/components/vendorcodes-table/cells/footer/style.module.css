@@ -56,3 +56,13 @@
   margin-top: 2px;
   font-family: 'Verdana', Verdana, sans-serif;
 }
+
+.avgPriceFooter {
+  color: #000;
+}
+
+.avgPriceFooterDiv {
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+}
