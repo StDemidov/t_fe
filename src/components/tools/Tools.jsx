@@ -105,6 +105,17 @@ const Tools = () => {
       <h2 className={styles.blockName}>Реклама</h2>
       <hr className={styles.line} />
       <div className={styles.tasksBox}>
+        <NavLink to="ab_tests" className={styles.link}>
+          <div className={styles.card}>
+            <div className={styles.cardContent}>
+              <p className={styles.cardTitle}>A/B тесты</p>
+              <p className={styles.cardPara}>
+                Просмотр списка запущенных тестов и результатов, запуск новых
+                тестов
+              </p>
+            </div>
+          </div>
+        </NavLink>
         <NavLink to="auto_campaigns" className={styles.link}>
           <div className={styles.card}>
             <div className={styles.cardContent}>

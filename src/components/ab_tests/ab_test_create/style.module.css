@@ -1,0 +1,453 @@
+.stepOneContainer {
+  position: relative;
+  width: 700px;
+  height: auto;
+}
+
+.stepOneSearchBox {
+  width: 70vh;
+  height: 10vh;
+  padding: 15px;
+  border-radius: 2vh;
+  box-shadow: 0px 0px 10px rgb(85, 59, 156, 0.3);
+  background-color: white;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  z-index: 2; /* первый блок сверху */
+}
+
+.stepOneSearchBox h2 {
+  color: rgb(132, 132, 132);
+  font-family: 'BebasNeue', sans-serif;
+}
+
+.stepOneSearchInputBox {
+  margin-top: 1.5vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1vh;
+}
+
+.stepOneSearchInputBox input {
+  height: 3vh;
+  width: 40vh;
+  border-radius: 1.5vh;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
+  border: 0;
+  text-align: center;
+  background-color: #f1eeee59;
+}
+
+.searchIcon {
+  transition: scale 0.3s ease, color 0.3s ease;
+}
+
+.searchIcon:hover {
+  color: rgb(85, 59, 156, 0.8);
+  scale: 1.2;
+  cursor: pointer;
+}
+
+.stepOneSkuBox {
+  width: 70vh;
+  height: auto;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  border-radius: 2vh;
+  box-shadow: 0px 0px 10px rgb(85, 59, 156, 0.3);
+  background-color: white;
+  position: absolute;
+  justify-content: center;
+  z-index: 1; /* ниже первого блока */
+}
+
+.stepOneSkuBox h2 {
+  color: rgb(85, 59, 156, 0.8);
+  font-family: 'BebasNeue', sans-serif;
+  margin-bottom: 2vh;
+}
+
+.stepOneSkuInfoContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.infoRow {
+  display: flex;
+  flex-direction: row;
+}
+
+.labelSKU,
+.labelGood,
+.labelBad {
+  background-color: rgba(130, 84, 255, 0.452);
+  border: 0px;
+  border-radius: 1vh;
+  width: 5vh;
+  height: 2.5vh;
+  align-items: center;
+  justify-content: center;
+  font-family: 'BebasNeue', sans-serif;
+  color: rgb(78, 47, 163);
+}
+
+.labelGood {
+  background-color: rgba(27, 133, 94, 0.452);
+  color: rgb(21, 94, 67);
+}
+
+.labelBad {
+  background-color: rgba(255, 84, 84, 0.3);
+  color: rgba(156, 52, 52, 0.993);
+}
+
+.boxGoToSettings {
+  display: flex;
+  margin-top: 3vh;
+  justify-content: center;
+}
+
+.btnGoToSettings {
+  height: 4vh;
+  width: 25vh;
+  border-radius: 1vh;
+  border: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5vh;
+  font-size: 1.4vh;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.btnGoToSettings:hover {
+  cursor: pointer;
+  background-color: rgba(27, 133, 94, 0.909);
+  color: rgb(255, 255, 255);
+}
+
+.testImpossible {
+  height: 4vh;
+  width: 25vh;
+  border-radius: 1vh;
+  border: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5vh;
+  font-size: 1.4vh;
+  background-color: rgba(255, 84, 84, 0.3);
+  color: rgba(156, 52, 52, 0.993);
+}
+
+.stepOneSkuInfo {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: center;
+  gap: 2px;
+}
+
+.stepOneSkuInfo div {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.stepOneStatusContainer {
+  width: 70vh;
+  height: 16vh;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  border-radius: 2vh;
+  box-shadow: 0px 0px 10px rgb(85, 59, 156, 0.3);
+  background-color: white;
+  position: absolute;
+  justify-content: start;
+  z-index: 1; /* ниже первого блока */
+}
+
+.stepOneStatusContainer h2 {
+  color: rgb(85, 59, 156, 0.8);
+  font-family: 'BebasNeue', sans-serif;
+  margin-bottom: 2vh;
+}
+
+.stepOneStatusBox {
+  display: flex;
+  flex-direction: column;
+  height: auto;
+  gap: 0.7vh;
+}
+
+.statusMark {
+  margin-right: 0.7vh;
+}
+
+.spinner {
+  border: 1px solid #f3f3f3;
+  border-top: 1px solid rgb(85, 59, 156, 0.8);
+  border-radius: 50%;
+  width: 13px;
+  height: 13px;
+  animation: spin 1s linear infinite;
+  margin-right: 0.7vh;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.stepTwoSkuBox {
+  width: 70vh;
+  height: auto;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  border-radius: 2vh;
+  box-shadow: 0px 0px 10px rgb(85, 59, 156, 0.3);
+  background-color: white;
+  position: absolute;
+  left: 0;
+  z-index: 1; /* ниже первого блока */
+  justify-content: center;
+  gap: 0.8vh;
+}
+
+.stepTwoSkuBox h2 {
+  color: rgb(85, 59, 156, 0.8);
+  font-family: 'BebasNeue', sans-serif;
+  margin-bottom: 1vh;
+}
+
+.photosBox {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 2vh;
+  justify-content: center;
+}
+
+.photosCarousel {
+  display: flex;
+  flex-direction: row;
+  overflow-x: auto;
+  gap: 1vh;
+  scroll-behavior: smooth;
+  padding: 1vh;
+}
+
+.chosenPhotoNum {
+  color: gray;
+  font-family: 'BebasNeue', sans-serif;
+  font-size: 1.2vh;
+}
+
+.photoFrame {
+  cursor: pointer;
+  max-height: 160px;
+  min-height: 160px;
+  border-radius: 0.5rem;
+  max-width: 120px;
+  min-width: 120px;
+  background-size: cover; /* картинка заполняет div */
+  background-position: center; /* центрируем */
+  background-repeat: no-repeat;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.photoMark {
+  font-size: 10vh;
+  color: rgba(93, 50, 212, 0.684);
+  animation: markOpacity 0.1s linear;
+}
+
+@keyframes markOpacity {
+  0% {
+    transform: scale(0);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.paramsScroll {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.labelInput {
+  font-family: 'BebasNeue', sans-serif;
+  height: 3.5vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(197, 197, 197, 0.885);
+
+  border-radius: 1vh;
+  color: rgb(71, 71, 71);
+}
+
+.numInput {
+  text-align: center;
+  height: 3.5vh;
+  border-radius: 1vh;
+  border: 0;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
+}
+
+.estimatedBudget {
+  display: flex;
+}
+
+.settingsGrid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 3fr;
+  grid-template-rows: repeat(3, 1fr);
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+}
+
+.scrollInput {
+  -webkit-appearance: none;
+  height: 1.5vh;
+  margin: 1vh 0 1vh 0;
+  border-radius: 5px;
+  background: rgba(255, 84, 84, 1);
+  background: linear-gradient(
+    90deg,
+    rgba(255, 84, 84, 0.5) 0%,
+    rgba(130, 84, 255, 0.5) 10%,
+    rgba(83, 237, 168, 1) 30%
+  );
+  outline: none;
+  opacity: 0.7;
+  -webkit-transition: 0.2s;
+  transition: opacity 0.2s;
+}
+
+.scrollInput::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 1.5vh;
+  height: 1.5vh;
+  border-radius: 50%;
+  background-color: #ffffff;
+  border: 0.5px solid gray;
+  cursor: pointer;
+  transition: 0.3s ease-in-out;
+}
+
+.scrollInput::-webkit-slider-thumb:hover {
+  box-shadow: 0px 0px 0px 5px rgba(0, 0, 0, 0.16);
+  transition: 0.3s ease-in-out;
+}
+
+.cmpgnBudget {
+  display: flex;
+  background-color: rgba(197, 197, 197, 0.885);
+
+  border-radius: 1vh;
+  color: rgb(71, 71, 71);
+  font-family: 'BebasNeue', sans-serif;
+  justify-content: center;
+  align-items: center;
+}
+
+.settingsGridBalance {
+  margin-top: 5px;
+  display: grid;
+  grid-template-columns: 2fr 3fr 1fr;
+  grid-column-gap: 10px;
+}
+
+.settingsGridBalance .labelInput {
+  height: 5vh;
+}
+
+.balanceType {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  height: 5vh;
+}
+
+.balanceType button {
+  height: 5vh;
+  width: 30%;
+  border-radius: 1vh;
+  border: 0;
+  transition: background-color ease 0.2s, color ease 0.2s;
+}
+
+.balanceName {
+  font-family: 'BebasNeue', sans-serif;
+}
+
+.balanceAmount {
+  font-size: 1.2vh;
+}
+
+.startButton,
+.readyStartButton {
+  width: 25vh;
+  height: 5vh;
+  border-radius: 1vh;
+  border: 0;
+  display: flex;
+  justify-self: center;
+  justify-content: center;
+  align-items: center;
+  gap: 1vh;
+  transition: scale ease 0.2s, background-color ease 0.2s;
+}
+
+.readyStartButton:hover {
+  cursor: pointer;
+  scale: 1.02;
+  background-color: rgba(130, 84, 255, 1);
+  color: white;
+}
+
+.testStartedMark {
+  display: flex;
+  margin: auto;
+  font-size: 6vh;
+  background-color: rgba(130, 84, 255, 1);
+  color: rgb(255, 255, 255);
+  animation: markOpacity 0.2s linear, boxShadowScaling 1s infinite;
+  border-radius: 50%;
+  padding: 0;
+}
+
+@keyframes boxShadowScaling {
+  0% {
+    box-shadow: 0px 0px 10px 0px rgba(130, 84, 255, 0.1);
+  }
+  50% {
+    box-shadow: 0px 0px 20px 5px rgba(130, 84, 255, 0.3);
+  }
+  100% {
+    box-shadow: 0px 0px 10px 0px rgba(130, 84, 255, 0.1);
+  }
+}
+
+.testStartedText {
+  margin-top: 2vh;
+  font-family: 'BebasNeue', sans-serif;
+}

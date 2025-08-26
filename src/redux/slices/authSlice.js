@@ -17,14 +17,17 @@ const initialState = {
 export const login = createAsyncThunk(
   'auth/login',
   async ({ data, url }, thunkAPI) => {
-    console.log(url);
     try {
-      const res = await axios.post(url, data, {
+      const params = new URLSearchParams();
+      params.append('username', data.username);
+      params.append('password', data.password);
+
+      const res = await axios.post(url, params, {
         headers: {
-          accept: 'application/json',
           'Content-Type': 'application/x-www-form-urlencoded',
         },
       });
+
       thunkAPI.dispatch(setNotification('Привет!'));
       return res.data;
     } catch (error) {

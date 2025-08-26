@@ -1,0 +1,127 @@
+.headerRow {
+  display: flex;
+  gap: 3vh;
+  align-items: center;
+}
+
+.headerRow h1 {
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+.newTestButton {
+  height: 3vh;
+  border: 0;
+  padding: 0 2vh 0 2vh;
+  border-radius: 1vh;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  transition: scale ease 0.2s, background-color ease 0.2s, color ease 0.2s;
+  cursor: pointer;
+}
+
+.newTestButton:hover {
+  background-color: rgba(130, 84, 255, 1);
+  color: white;
+  scale: 1.05;
+}
+
+.mainBodyBlock {
+  display: flex;
+  min-height: 80vh;
+  gap: 1%;
+  width: 100%;
+}
+
+.rightPart {
+  display: flex;
+  min-width: 60%;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.completedTests {
+  /* border: 1px solid black; */
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 5vh 33vh;
+  grid-column-gap: 0px;
+  grid-row-gap: 1vh;
+}
+
+.activeTests {
+  /* border: 1px solid black; */
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 5vh 33vh;
+  grid-column-gap: 0px;
+  grid-row-gap: 1vh;
+}
+
+.leftPart {
+  /* border: 1px solid black; */
+  min-width: 39%;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 5vh 75vh;
+  grid-column-gap: 0px;
+  grid-row-gap: 1vh;
+}
+
+.blockTestsHeader {
+  background-color: #eff0fe;
+  height: 2vh;
+  padding: 1vh;
+  text-align: left;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-size: 1.7vh;
+  border-radius: 1.5vh;
+  display: grid;
+  grid-template-columns: 0.5fr repeat(2, 5fr);
+  grid-template-rows: 1fr;
+  grid-column-gap: 0px;
+  grid-row-gap: 10px;
+}
+
+.searchBox {
+  display: flex;
+  gap: 1vh;
+  align-items: center;
+}
+
+.searchInput {
+  border-radius: 1vh;
+  border: 0.5px rgba(130, 84, 255, 1) solid;
+  text-align: center;
+  width: 90%;
+  height: 2vh;
+}
+
+.blockBody {
+  background-color: #e6e3e354;
+  border-radius: 1.5vh;
+  padding: 1vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  gap: 1vh;
+  max-height: 100%;
+  overflow-y: auto;
+  border: 0.5px rgba(130, 84, 255, 0.3) solid;
+}
+
+.emptyBlock {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  gap: 3vh;
+  color: rgb(161, 161, 161);
+}
+
+.emptyBlockIcon {
+  font-size: 10vh;
+}
+
+.emptyBlockText {
+  font-size: 2vh;
+}

@@ -255,3 +255,13 @@ input[type='number']::-webkit-inner-spin-button {
 .disabledScroll::-webkit-inner-spin-button {
   display: none;
 }
+
+.timeToggle {
+  font-weight: 500;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 13px;
+  gap: 10px;
+  margin-bottom: 10px;
+}

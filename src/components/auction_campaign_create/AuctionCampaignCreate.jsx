@@ -33,6 +33,7 @@ const AuctionCampaignCreate = () => {
   const [sku, setSku] = useState('');
   const [budget, setBudget] = useState(3000);
   const [fixed, setFixed] = useState(true);
+  const [byBc, setByBc] = useState(true);
 
   useEffect(() => {
     if (notificationMessage !== '') {
@@ -51,6 +52,7 @@ const AuctionCampaignCreate = () => {
       setViewsBench(cmpgn?.viewsBench);
       setWhenToPause(cmpgn?.whenToPause);
       setSku(cmpgn?.sku);
+      setByBc(cmpgn?.byBc);
     }
   }, [cmpgn]);
 
@@ -80,6 +82,7 @@ const AuctionCampaignCreate = () => {
         when_to_add_budget: whenToAddBudget,
         how_much_to_add: howMuchToAdd,
         fixed: fixed,
+        by_bc: byBc,
       };
       dispatch(
         createAucCampaign({
@@ -201,6 +204,23 @@ const AuctionCampaignCreate = () => {
                       />
                     </li>
                   </div>
+                </div>
+                <div className={styles.infoText}>
+                  Смотреть оборачиваемость по
+                </div>
+                <div className={styles.timeToggle}>
+                  <input
+                    type="checkbox"
+                    checked={byBc}
+                    onChange={(e) => setByBc(true)}
+                  />
+                  <div>Баркодам</div>
+                  <input
+                    type="checkbox"
+                    checked={!byBc}
+                    onChange={(e) => setByBc(false)}
+                  />
+                  <div>Артикулам</div>
                 </div>
                 <div className={styles.infoText}>Тип кампании</div>
                 <li>

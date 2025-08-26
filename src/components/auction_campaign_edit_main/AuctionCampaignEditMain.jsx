@@ -33,6 +33,7 @@ const AuctionCampaignEditMain = () => {
   const [topWords, setTopWords] = useState([]);
   const [exclNum, setExclNum] = useState([]);
   const [newExcl, setNewExcl] = useState([]);
+  const [byBc, setByBc] = useState(true);
 
   useEffect(() => {
     if (notificationMessage !== '') {
@@ -58,6 +59,7 @@ const AuctionCampaignEditMain = () => {
       setCTRBench(cmpgn?.ctrBench * 100);
       setViewsBench(cmpgn?.viewsBench);
       setExclNum(cmpgn?.exclNum);
+      setByBc(cmpgn?.byBc);
       cmpgn.topWords
         ? setTopWords(cmpgn.topWords.split(','))
         : setTopWords(NaN);
@@ -86,6 +88,7 @@ const AuctionCampaignEditMain = () => {
         when_to_pause: whenToPause,
         when_to_add_budget: whenToAddBudget,
         how_much_to_add: howMuchToAdd,
+        by_bc: byBc,
       };
       dispatch(
         editAucCampaign({
@@ -212,6 +215,22 @@ const AuctionCampaignEditMain = () => {
                   </div>
                 </div>
               </ul>
+
+              <div className={styles.infoText}>Смотреть оборачиваемость по</div>
+              <div className={styles.timeToggle}>
+                <input
+                  type="checkbox"
+                  checked={byBc}
+                  onChange={(e) => setByBc(true)}
+                />
+                <div>Баркодам</div>
+                <input
+                  type="checkbox"
+                  checked={!byBc}
+                  onChange={(e) => setByBc(false)}
+                />
+                <div>Артикулам</div>
+              </div>
 
               <div className={styles.infoText}>
                 {topWords && exclNum < 1000 ? (

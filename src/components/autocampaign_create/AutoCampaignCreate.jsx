@@ -49,6 +49,7 @@ const AutoCampaignCreate = () => {
   const [endHour, setEndHour] = useState(23);
   const [hasActiveHours, setHasActiveHours] = useState(false);
   const [sku, setSku] = useState('');
+  const [byBc, setByBc] = useState(true);
 
   const filteredSkuDataWCat = skuData.filter((sku) => {
     let skuOrNameMatch = true;
@@ -109,6 +110,7 @@ const AutoCampaignCreate = () => {
         when_to_pause: whenToPause,
         when_to_add_budget: whenToAddBudget,
         how_much_to_add: howMuchToAdd,
+        by_bc: byBc,
         has_active_hours: hasActiveHours,
         ...(hasActiveHours && {
           start_hour: startHour,
@@ -233,6 +235,22 @@ const AutoCampaignCreate = () => {
               </div>
             </ul>
 
+            <div className={styles.infoText}>Смотреть оборачиваемость по</div>
+            <div className={styles.timeToggle}>
+              <input
+                type="checkbox"
+                checked={byBc}
+                onChange={(e) => setByBc(true)}
+              />
+              <div>Баркодам</div>
+              <input
+                type="checkbox"
+                checked={!byBc}
+                onChange={(e) => setByBc(false)}
+              />
+              <div>Артикулам</div>
+            </div>
+
             <div className={styles.infoText}>Часы активности</div>
             <div className={styles.timeToggle}>
               <input
@@ -316,7 +334,7 @@ const AutoCampaignCreate = () => {
               После создания кампании, она сразу станет активной.
             </p>
           </button>
-          <div className={styles.description}>
+          {/* <div className={styles.description}>
             <p>
               1. Название задачи должно быть уникальным, лучше всего
               придерживаться шаблона:
@@ -339,7 +357,7 @@ const AutoCampaignCreate = () => {
               другой задаче
               <br />
             </p>
-          </div>
+          </div> */}
         </div>
       </div>
     </section>

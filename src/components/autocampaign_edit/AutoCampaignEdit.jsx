@@ -29,6 +29,7 @@ const AutoCampaignEdit = () => {
   const [hasActiveHours, setHasActiveHours] = useState(false);
   const [startHour, setStartHour] = useState(0);
   const [endHour, setEndHour] = useState(23);
+  const [byBc, setByBc] = useState(true);
 
   useEffect(() => {
     if (notificationMessage !== '') {
@@ -51,6 +52,7 @@ const AutoCampaignEdit = () => {
       setHasActiveHours(cmpgn?.hasActiveHours);
       setStartHour(cmpgn?.startHour);
       setEndHour(cmpgn?.endHour);
+      setByBc(cmpgn?.byBc);
     }
   }, [cmpgn]);
 
@@ -80,6 +82,7 @@ const AutoCampaignEdit = () => {
           start_hour: startHour,
           end_hour: endHour,
         }),
+        by_bc: byBc,
       };
       dispatch(
         editAutoCampaign({
@@ -169,6 +172,22 @@ const AutoCampaignEdit = () => {
                 </div>
               </div>
             </ul>
+            <div className={styles.infoText}>Смотреть оборачиваемость по</div>
+            <div className={styles.timeToggle}>
+              <input
+                type="checkbox"
+                checked={byBc}
+                onChange={(e) => setByBc(true)}
+              />
+              <div>Баркодам</div>
+              <input
+                type="checkbox"
+                checked={!byBc}
+                onChange={(e) => setByBc(false)}
+              />
+              <div>Артикулам</div>
+            </div>
+
             <div className={styles.infoText}>Часы активности</div>
             <div className={styles.timeToggle}>
               <input

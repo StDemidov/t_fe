@@ -32,6 +32,7 @@ const createCmpgnSingle = (cmpgn) => {
     hasActiveHours: cmpgn.has_active_hours,
     startHour: cmpgn?.start_hour,
     endHour: cmpgn?.end_hour,
+    byBc: cmpgn?.by_bc,
   };
 };
 

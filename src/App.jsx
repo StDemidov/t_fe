@@ -49,6 +49,9 @@ import AuctionCampaignCreateFID from './components/auction_campaign_create_f_id/
 import TagsPage from './components/tags_page/TagsPage';
 import TooltipManager from './TooltipManager/TooltipManager';
 import UploadImagePage from './components/upload_image_page/UploadImagePage';
+import AbTestsMainPage from './components/ab_tests/AbTestsMainPage';
+import AbTestCreate from './components/ab_tests/ab_test_create/AbTestCreate';
+import AbTestsSingleTest from './components/ab_tests/ab_tests_single_test/AbTestsSingleTest';
 
 function App() {
   const currentUser = useSelector(selectUser);
@@ -67,7 +70,17 @@ function App() {
                     path="vendorcodes/:id"
                     element={<SingleVendorCode />}
                   />
+                  x
                   <Route path="barcodes" element={<BarcodesListNew />} />
+                  <Route path="tools/ab_tests" element={<AbTestsMainPage />} />
+                  <Route
+                    path="tools/ab_tests/create"
+                    element={<AbTestCreate />}
+                  />
+                  <Route
+                    path="tools/ab_tests/info/:id"
+                    element={<AbTestsSingleTest />}
+                  />
                   <Route
                     path="categories"
                     element={<CategoriesListWMetrics />}

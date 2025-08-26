@@ -1,0 +1,219 @@
+.card,
+.cardCompleted,
+.cardActive {
+  border: 0.5px rgba(130, 84, 255, 0.732) solid;
+  border-radius: 1vh;
+  background-color: white;
+  min-height: 90px;
+  display: flex;
+  align-items: center;
+  padding: 1vh;
+  justify-content: space-between;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+.cardCompleted:hover {
+  background-color: rgba(205, 207, 235, 0.2);
+  cursor: pointer;
+}
+
+.cardActive:hover {
+  background-color: rgba(205, 207, 235, 0.2);
+  cursor: pointer;
+}
+
+.cardFailed {
+  border: 0.5px rgba(234, 61, 8, 0.732) solid;
+  border-radius: 1vh;
+  background-color: rgba(239, 223, 223, 0.48);
+  min-height: 45px;
+  display: flex;
+  align-items: center;
+  padding: 1vh;
+  justify-content: space-between;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+.cardPaused {
+  border: 0.5px orange solid;
+}
+
+.cardImage {
+  min-width: 65px;
+  max-width: 65px;
+  max-height: 100%;
+  min-height: 100%;
+  background-size: cover; /* картинка заполняет div */
+  background-position: center; /* центрируем */
+  background-repeat: no-repeat;
+  height: 100%;
+  border-radius: 0.5vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 4vh;
+}
+
+.cardImageFailed {
+  min-width: 32px;
+  max-width: 32px;
+  max-height: 100%;
+  min-height: 100%;
+  background-size: cover; /* картинка заполняет div */
+  background-position: center; /* центрируем */
+  background-repeat: no-repeat;
+  height: 100%;
+  border-radius: 0.5vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 4vh;
+}
+
+.baseInfo {
+  min-width: 40%;
+  max-width: 40%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.5vh;
+}
+
+.baseInfoFailed {
+  display: flex;
+  min-width: 80%;
+  max-width: 80%;
+}
+
+.settingsInfo {
+  min-width: 40%;
+  max-width: 40%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.5vh;
+}
+
+@keyframes gradient {
+  0% {
+    color: rgba(130, 84, 255, 1);
+  }
+  25% {
+    color: white;
+  }
+  50% {
+    color: rgb(76, 44, 165);
+  }
+  75% {
+    color: white;
+  }
+  100% {
+    color: rgba(130, 84, 255, 1);
+  }
+}
+
+.animateRainbow {
+  animation: gradient 5s infinite linear;
+}
+
+.buttons {
+  min-width: 5%;
+}
+
+.buttonsFailed {
+  display: flex;
+  align-items: center;
+  gap: 1vh;
+}
+
+.buttonDelete {
+  background-color: rgb(255, 255, 255);
+  width: 40px;
+  height: 40px;
+  border: 0;
+  border-radius: 1vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2vh;
+  color: gray;
+  transition: background-color 0.2s ease, color 0.2s ease;
+  cursor: pointer;
+}
+
+.buttonContinue {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.5vh;
+  color: gray;
+  cursor: pointer;
+  transition: font-size 0.2s ease, color 0.2s ease;
+}
+
+.buttonPause {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2vh;
+  color: gray;
+  cursor: pointer;
+  transition: font-size 0.2s ease, color 0.2s ease;
+}
+
+.buttonPause:hover {
+  color: rgb(169, 93, 6);
+  font-size: 2.2vh;
+}
+
+.buttonContinue:hover {
+  color: green;
+  font-size: 1.7vh;
+}
+
+.buttonDelete:hover {
+  background-color: rgb(231, 25, 25);
+  color: white;
+}
+
+.infoRow {
+  display: flex;
+  gap: 1vh;
+  margin-left: 1vh;
+  align-items: center;
+}
+
+.infoLabel,
+.infoLabelLong {
+  width: 50px;
+  padding: 0.2vh;
+  background-color: rgba(130, 84, 255, 0.452);
+  color: white;
+  border-radius: 1vh;
+}
+
+.infoLabelLong {
+  width: 100px;
+}
+
+.pauseNotif {
+  background-color: white;
+  font-size: 2vh;
+  padding: 1vh;
+  border-radius: 50%;
+  color: gray;
+  position: relative;
+  cursor: help;
+}
+
+.buttonRestart {
+}
+
+.buttonDeleteFailed {
+}

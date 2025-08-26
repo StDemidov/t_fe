@@ -25,7 +25,7 @@ const LoginPage = () => {
       dispatch(
         login({
           data: data,
-          url: `${hostName}/user/login/`,
+          url: `${hostName}/user/login`,
         })
       );
     } else {
