@@ -44,6 +44,7 @@ const AbTestsMainPage = () => {
               <div className={styles.searchBox}>
                 <IoSearch />
                 <input
+                  disabled={true}
                   type="text"
                   placeholder="SKU или артикул"
                   className={styles.searchInput}
@@ -74,6 +75,7 @@ const AbTestsMainPage = () => {
               <div className={styles.searchBox}>
                 <IoSearch />
                 <input
+                  disabled={true}
                   type="text"
                   placeholder="SKU или артикул"
                   className={styles.searchInput}
@@ -106,6 +108,7 @@ const AbTestsMainPage = () => {
             <div className={styles.searchBox}>
               <IoSearch />
               <input
+                disabled={true}
                 type="text"
                 placeholder="SKU или артикул"
                 className={styles.searchInput}

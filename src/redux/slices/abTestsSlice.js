@@ -5,7 +5,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import createSKUListForAbTests from '../../utils/createSKUListForAbTests';
 import { setError } from './errorSlice';
 import { store } from '../store';
-import api from '../../utils/host';
+import api, { hostName } from '../../utils/host';
 import { clearCredentials } from './authSlice';
 import createABtestsLists from '../../utils/createABtestsLists';
 import createABtestSingle from '../../utils/createABtestSingle';
@@ -53,6 +53,42 @@ export const deleteABTest = createAsyncThunk(
     try {
       const res = await api.delete(url);
       thunkAPI.dispatch(setNotification('Тест удален.'));
+      return res.data;
+    } catch (error) {
+      if (error.request.status == 401) {
+        thunkAPI.dispatch(clearCredentials());
+        thunkAPI.dispatch(setError('Повторите вход!'));
+      } else {
+        thunkAPI.dispatch(setError(error.message));
+      }
+    }
+  }
+);
+
+export const pauseABTest = createAsyncThunk(
+  'abTests/pauseABTest',
+  async (url, thunkAPI) => {
+    try {
+      const res = await api.get(url);
+      thunkAPI.dispatch(setNotification('Тест приостановлен.'));
+      return res.data;
+    } catch (error) {
+      if (error.request.status == 401) {
+        thunkAPI.dispatch(clearCredentials());
+        thunkAPI.dispatch(setError('Повторите вход!'));
+      } else {
+        thunkAPI.dispatch(setError(error.message));
+      }
+    }
+  }
+);
+
+export const startABTest = createAsyncThunk(
+  'abTests/startABTest',
+  async (url, thunkAPI) => {
+    try {
+      const res = await api.get(url);
+      thunkAPI.dispatch(setNotification('Тест запущен.'));
       return res.data;
     } catch (error) {
       if (error.request.status == 401) {
@@ -137,6 +173,44 @@ export const getImagesAndSettings = createAsyncThunk(
   }
 );
 
+export const restartABTest = createAsyncThunk(
+  'abTests/restartABTest',
+  async (url, thunkAPI) => {
+    const state = store.getState();
+    const token = state.auth.user?.token; // токен из Redux
+    return new Promise((resolve, reject) => {
+      const es = new EventSource(`${url}?token=${token}`);
+
+      es.addEventListener('progress', (e) => {
+        const data = JSON.parse(e.data);
+        thunkAPI.dispatch(setIntermediateStatusCreating(data)); // новый action для промежуточных шагов
+      });
+
+      es.addEventListener('done', (e) => {
+        const data = JSON.parse(e.data);
+        thunkAPI.dispatch(setFinalResultCreating(data));
+        thunkAPI.dispatch(resetIntermediateStatusCreating());
+        es.close();
+        resolve(data);
+      });
+      es.addEventListener('error', (e) => {
+        try {
+          const data = JSON.parse(e.data);
+          thunkAPI.dispatch(setErrorStepCreating(data));
+        } catch {
+          thunkAPI.dispatch(
+            setErrorStepCreating({
+              message: 'Неизвестная ошибка при заведении теста',
+            })
+          );
+        }
+        es.close();
+        reject(new Error('SSE error'));
+      });
+    });
+  }
+);
+
 export const startTest = createAsyncThunk(
   'abTests/startTest',
   async ({ data, url }, thunkAPI) => {
@@ -150,7 +224,9 @@ export const startTest = createAsyncThunk(
       }
       const { test_id } = await response.data;
       return new Promise((resolve, reject) => {
-        const es = new EventSource(`${url}/${test_id}?token=${token}`);
+        const es = new EventSource(
+          `${hostName}/sse/ab_tests/create/${test_id}?token=${token}`
+        );
 
         es.addEventListener('progress', (e) => {
           const data = JSON.parse(e.data);
@@ -332,6 +408,18 @@ const abTestsSlice = createSlice({
       }
     });
     builder.addCase(deleteABTest.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(pauseABTest.fulfilled, (state, action) => {
+      state.isLoading = false;
+    });
+    builder.addCase(pauseABTest.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(startABTest.fulfilled, (state, action) => {
+      state.isLoading = false;
+    });
+    builder.addCase(startABTest.pending, (state) => {
       state.isLoading = true;
     });
   },

@@ -1,11 +1,55 @@
+import { useDispatch } from 'react-redux';
+
 import { MdOutlineRestartAlt } from 'react-icons/md';
 import { RiDeleteBin2Fill } from 'react-icons/ri';
 import { IoMdSettings } from 'react-icons/io';
+import { useState } from 'react';
 
 import styles from './style.module.css';
-import TestingAnimation from '../../testing_animation/TestingAnimation';
+import {
+  deleteABTest,
+  restartABTest,
+} from '../../../redux/slices/abTestsSlice';
+import ConfirmModal from '../../confirm_modal/ConfirmModal';
+import { hostName } from '../../../utils/host';
 
 const AbTestFailed = ({ test }) => {
+  const dispatch = useDispatch();
+
+  const [modalData, setModalData] = useState({
+    isOpen: false,
+    text: '',
+    onConfirm: null,
+  });
+
+  const openConfirmModal = (text, onConfirm) => {
+    setModalData({
+      isOpen: true,
+      text,
+      onConfirm: () => {
+        onConfirm();
+        setModalData({ ...modalData, isOpen: false });
+      },
+    });
+  };
+
+  const closeModal = () => {
+    setModalData({ ...modalData, isOpen: false });
+  };
+
+  const handleClickOnRestart = (e) => {
+    e.stopPropagation();
+    // dispatch(restartABTest(`${hostName}/sse/ab_tests/create/${test.testId}`));
+  };
+
+  const handleClickOnDelete = (e) => {
+    e.stopPropagation();
+
+    openConfirmModal(`Вы уверены, что хотите удалить ${test.name}?`, () => {
+      dispatch(deleteABTest(`${hostName}/ab_tests/delete/${test.testId}`));
+    });
+  };
+
   return (
     <div className={styles.cardFailed} key={test.ad_id}>
       <div
@@ -27,12 +71,18 @@ const AbTestFailed = ({ test }) => {
 
       <div className={styles.buttonsFailed}>
         <div className={styles.buttonRestart}>
-          <MdOutlineRestartAlt />
+          <MdOutlineRestartAlt onClick={handleClickOnRestart} />
         </div>
-        <div className={styles.buttonDeleteFailed}>
-          <RiDeleteBin2Fill />
+        <div className={styles.buttonDelete}>
+          <RiDeleteBin2Fill onClick={handleClickOnDelete} />
         </div>
       </div>
+      <ConfirmModal
+        isOpen={modalData.isOpen}
+        text={modalData.text}
+        onConfirm={modalData.onConfirm}
+        onCancel={closeModal}
+      />
     </div>
   );
 };

@@ -153,10 +153,14 @@
   color: gray;
   cursor: pointer;
   transition: font-size 0.2s ease, color 0.2s ease;
+  border: none;
+  background-color: rgba(0, 0, 0, 0);
 }
 
 .buttonPause {
   width: 40px;
+  border: none;
+  background-color: rgba(0, 0, 0, 0);
   height: 40px;
   display: flex;
   justify-content: center;
@@ -169,7 +173,6 @@
 
 .buttonPause:hover {
   color: rgb(169, 93, 6);
-  font-size: 2.2vh;
 }
 
 .buttonContinue:hover {
@@ -213,6 +216,21 @@
 }
 
 .buttonRestart {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2vh;
+  color: gray;
+  cursor: pointer;
+  transition: font-size 0.2s ease, color 0.2s ease, rotate 0.2s ease;
+}
+
+.buttonRestart:hover {
+  color: rgb(169, 93, 6);
+  rotate: -360deg;
+  cursor: pointer;
 }
 
 .buttonDeleteFailed {

@@ -19,7 +19,8 @@ const AbTestsSingleTest = () => {
 
   useEffect(() => {
     dispatch(fetchSingleABTest(`${hostName}/ab_tests/single_tests/${id}`));
-  }, []);
+  }, [id]);
+
   return (
     <section>
       <div className={styles.mainBox}>

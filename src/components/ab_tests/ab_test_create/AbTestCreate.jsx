@@ -106,14 +106,7 @@ const AbTestCreate = () => {
   }, [selectedPhotos, showsPerPhoto, cpm]);
 
   useEffect(() => {
-    if (
-      sku &&
-      !sku.isOnAb &&
-      !sku.hasAutoAd &&
-      !sku.hasAucAd &&
-      !sku.isOnDrain &&
-      !sku.isOnHold
-    ) {
+    if (sku && !sku.isOnAb && !sku.isOnDrain && !sku.isOnHold) {
       setValidSku(true);
     } else {
       setValidSku(false);
@@ -160,7 +153,9 @@ const AbTestCreate = () => {
   };
 
   const handleClickOnGoToSettings = (e) => {
-    dispatch(getImagesAndSettings(`${hostName}/ab_tests/settings/${sku.sku}`));
+    dispatch(
+      getImagesAndSettings(`${hostName}/sse/ab_tests/settings/${sku.sku}`)
+    );
   };
 
   const handleClickOnStartTest = (e) => {
@@ -592,14 +587,14 @@ const AbTestCreate = () => {
         <AnimatePresence>
           {finalResult && (
             <motion.div
-              className={styles.stepOneStatusContainer}
+              className={styles.finalStatusContainer}
               initial={{ marginTop: -100, opacity: 0 }}
               animate={{ marginTop: 10, opacity: 1 }}
               exit={{ marginTop: -100, opacity: 0 }}
               transition={{ type: 'spring', stiffness: 300, damping: 25 }}
             >
               <h2>Статус обработки:</h2>
-              <div className={styles.stepOneStatusBox}>
+              <div className={styles.finalStatusBox}>
                 <IoIosCheckmarkCircle className={styles.testStartedMark} />
                 <div className={styles.testStartedText}>
                   Тест успешно запущен
