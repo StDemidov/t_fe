@@ -1,5 +1,6 @@
 import { IoDiamondOutline } from 'react-icons/io5';
 import { RiDeleteBin2Fill } from 'react-icons/ri';
+import { v4 as uuidv4 } from 'uuid';
 
 import styles from './style.module.css';
 import { useNavigate } from 'react-router-dom';
@@ -52,7 +53,9 @@ const AbTestCompleted = ({ test }) => {
         <div
           className={styles.cardImage}
           style={{
-            backgroundImage: `linear-gradient(rgba(255, 255, 255, 0.2), rgba(93, 50, 212, 0.2)), url(${test.image})`,
+            backgroundImage: `linear-gradient(rgba(255, 255, 255, 0.2), rgba(93, 50, 212, 0.2)), url(${
+              test.image
+            }?v=${uuidv4()})`,
           }}
         >
           <IoDiamondOutline className={styles.animateRainbow} />

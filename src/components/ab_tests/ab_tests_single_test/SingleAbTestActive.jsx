@@ -1,4 +1,5 @@
 import { IoCheckmarkCircle } from 'react-icons/io5';
+import { v4 as uuidv4 } from 'uuid';
 
 import TestingAnimation from '../../testing_animation/TestingAnimation';
 
@@ -20,7 +21,7 @@ const SingleAbTestActive = ({ task }) => {
                   img?.isTested
                     ? 'linear-gradient(rgba(37, 255, 44, 0.48), rgba(93, 50, 212, 0.2))'
                     : 'linear-gradient(rgba(255, 219, 13, 0.48), rgba(255, 255, 255, 0.48))'
-                }, url(${img.url})`,
+                }, url(${img.url}?v=${uuidv4()})`,
               }}
             >
               {img?.isTesting && <TestingAnimation />}

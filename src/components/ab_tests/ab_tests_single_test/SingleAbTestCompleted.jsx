@@ -1,5 +1,6 @@
 import { GiDiamondTrophy } from 'react-icons/gi';
 import { IoIosTrophy } from 'react-icons/io';
+import { v4 as uuidv4 } from 'uuid';
 
 import styles from './style.module.css';
 
@@ -24,7 +25,7 @@ const SingleAbTestCompleted = ({ task }) => {
               className={styles.imageFrame}
               key={img?.url}
               style={{
-                backgroundImage: `url(${img?.url})`,
+                backgroundImage: `url(${img?.url}?v=${uuidv4()})`,
               }}
             >
               {img?.url === leaderUrl && (

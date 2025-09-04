@@ -1,6 +1,7 @@
 import { RiDeleteBin2Fill } from 'react-icons/ri';
 import { MdPauseCircleFilled } from 'react-icons/md';
 import { LuPause } from 'react-icons/lu';
+import { v4 as uuidv4 } from 'uuid';
 
 import { FaPause, FaPlay } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
@@ -82,7 +83,9 @@ const AbTestActive = ({ test }) => {
         <div
           className={styles.cardImage}
           style={{
-            backgroundImage: `linear-gradient(rgba(255, 255, 255, 0.2), rgba(93, 50, 212, 0.2)), url(${test.image})`,
+            backgroundImage: `linear-gradient(rgba(255, 255, 255, 0.2), rgba(93, 50, 212, 0.2)), url(${
+              test.image
+            }?v=${uuidv4()})`,
           }}
         >
           {!test.isOnPause ? (
