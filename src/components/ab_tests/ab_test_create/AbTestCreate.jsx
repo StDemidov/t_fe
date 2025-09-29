@@ -9,6 +9,7 @@ import {
 
 import { useEffect, useState, useMemo, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { v4 as uuidv4 } from 'uuid';
 
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -400,9 +401,9 @@ const AbTestCreate = () => {
                       style={
                         selectedPhotos.includes(url)
                           ? {
-                              backgroundImage: `linear-gradient(rgba(93, 50, 212, 0.2), rgba(93, 50, 212, 0.2)), url(${url})`,
+                              backgroundImage: `linear-gradient(rgba(93, 50, 212, 0.2), rgba(93, 50, 212, 0.2)), url(${url}?v=${uuidv4()})`,
                             }
-                          : { backgroundImage: `url(${url})` }
+                          : { backgroundImage: `url(${url}?v=${uuidv4()})` }
                       }
                     >
                       {selectedPhotos.includes(url) && (

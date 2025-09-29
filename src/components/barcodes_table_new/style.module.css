@@ -1,7 +1,6 @@
 /* Общие стили для таблицы */
 .ganttTable {
   width: 100%;
-
   border-collapse: collapse;
   font-family: Arial, sans-serif;
 }
@@ -13,6 +12,7 @@
 .tableWrapper {
   width: 100%;
   overflow-x: auto;
+  max-height: 320px;
 }
 
 .tableWrapper::-webkit-scrollbar {
@@ -383,4 +383,14 @@
   gap: 5px;
   text-decoration: none;
   cursor: pointer;
+}
+
+.summaryRow {
+  position: sticky;
+  bottom: 0;
+  z-index: 3;
+}
+
+.summaryRowBlank {
+  background-color: white;
 }

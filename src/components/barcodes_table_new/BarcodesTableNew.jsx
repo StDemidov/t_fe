@@ -798,7 +798,7 @@ const BarcodesTableNew = ({
                       );
                     }
                   )}
-                  <tr>
+                  <tr className={styles.summaryRow}>
                     <td className={styles.barcodeColumn}></td>
                     <td className={styles.ordersColumn}>{sumOrders}</td>
                     <td className={styles.remainingColumn}>{-sumRemaining}</td>
@@ -812,6 +812,10 @@ const BarcodesTableNew = ({
                         {sumExtraOrder}
                       </div>
                     </td>
+                    {weeks.map(() => {
+                      return <td className={styles.summaryRowBlank} />;
+                    })}
+                    <td className={styles.summaryRowBlank} />
                   </tr>
                 </tbody>
               </table>

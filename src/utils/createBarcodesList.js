@@ -16,6 +16,18 @@ const sizeOrder = [
   'L/175',
   'XL/155',
   'XXL/175',
+  'XS РОСТ 1',
+  'XS РОСТ 2',
+  'S РОСТ 1',
+  'S РОСТ 2',
+  'M РОСТ 1',
+  'M РОСТ 2',
+  'L РОСТ 1',
+  'L РОСТ 2',
+  'XL РОСТ 1',
+  'XL РОСТ 2',
+  'XXL РОСТ 1',
+  'XXL РОСТ 2',
 ];
 
 function toCamelCase(str) {
@@ -48,7 +60,10 @@ function transformBcData(bcData) {
       category: item.category.name,
       barcodes: item.barcodes
         .sort((a, b) => {
-          return sizeOrder.indexOf(a.size) - sizeOrder.indexOf(b.size);
+          return (
+            sizeOrder.indexOf(a.size.toUpperCase()) -
+            sizeOrder.indexOf(b.size.toUpperCase())
+          );
         })
         .map((barcode) => ({
           barcode: barcode.barcode,
