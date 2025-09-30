@@ -1,100 +1,97 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { selectNotificationMessage } from '../../redux/slices/notificationSlice';
 
 import {
-  editAutoCampaign,
-  selectCmpgnSingle,
-  fetchAutoCampaignById,
-} from '../../redux/slices/autoCampaignsSlice';
+  fetchDefaultSettings,
+  selectDefaultSettings,
+  setDefaultSettings,
+} from '../../redux/slices/aucCampaignsSlice';
 
 import { setError } from '../../redux/slices/errorSlice';
 import styles from './style.module.css';
 import { hostName } from '../../utils/host';
 
-const AutoCampaignEdit = () => {
+const AuctionCampaignDefaultSettings = () => {
   const dispatch = useDispatch();
   const notificationMessage = useSelector(selectNotificationMessage);
   const navigation = useNavigate();
-  const cmpgn = useSelector(selectCmpgnSingle);
-  let { id } = useParams();
-
-  const [campName, setCampName] = useState('');
-  const [ctrBench, setCtrBench] = useState(0);
-  const [viewsBench, setViewsBench] = useState(0);
-  const [whenToPause, setWhenToPause] = useState(0);
-  const [whenToAddBudget, setWhenToAddBudget] = useState(0);
-  const [howMuchToAdd, setHowMuchToAdd] = useState(0);
-  const [hasActiveHours, setHasActiveHours] = useState(false);
-  const [startHour, setStartHour] = useState(0);
-  const [endHour, setEndHour] = useState(23);
-  const [byBc, setByBc] = useState(true);
-  const [daysForTurnover, setDaysForTurnover] = useState(4);
 
   useEffect(() => {
     if (notificationMessage !== '') {
-      navigation(`/tools/auto_campaigns`);
+      navigation(`/tools/auction_campaigns`);
     }
   }, [notificationMessage, navigation]);
 
   useEffect(() => {
-    dispatch(fetchAutoCampaignById(`${hostName}/autocampaigns/by_id/${id}`));
-  }, []);
+    dispatch(fetchDefaultSettings(`${hostName}/auction_campaigns_settings/`));
+  }, [dispatch]);
 
+  const settings = useSelector(selectDefaultSettings);
+
+  const [budget, setBudget] = useState(settings.budget);
+  const [cpm, setCpm] = useState(settings.cpm);
+  const [ctrBench, setCtrBench] = useState(settings.ctrBench);
+  const [viewsBench, setViewsBench] = useState(settings.viewsBench);
+  const [whenToPause, setWhenToPause] = useState(settings.whenToPause);
+  const [whenToAddBudget, setWhenToAddBudget] = useState(
+    settings.whenToAddBudget
+  );
+  const [howMuchToAdd, setHowMuchToAdd] = useState(settings.howMuchToAdd);
+
+  const [byBc, setByBc] = useState(settings.byBc);
+  const [daysForTurnover, setDaysForTurnover] = useState(
+    settings.daysForTurnover
+  );
   useEffect(() => {
-    if (cmpgn) {
-      setCampName(cmpgn?.campName);
-      setCtrBench(cmpgn?.ctrBench);
-      setViewsBench(cmpgn?.viewsBench);
-      setWhenToPause(cmpgn?.whenToPause);
-      setWhenToAddBudget(cmpgn?.whenToAddBudget);
-      setHowMuchToAdd(cmpgn?.howMuchToAdd);
-      setHasActiveHours(cmpgn?.hasActiveHours);
-      setStartHour(cmpgn?.startHour);
-      setEndHour(cmpgn?.endHour);
-      setByBc(cmpgn?.byBc);
-      setDaysForTurnover(cmpgn?.daysForTurnover);
+    if (settings) {
+      setBudget(settings.budget);
+      setCpm(settings.cpm);
+      setCtrBench(settings.ctrBench);
+      setViewsBench(settings.viewsBench);
+      setWhenToPause(settings.whenToPause);
+      setWhenToAddBudget(settings.whenToAddBudget);
+      setHowMuchToAdd(settings.howMuchToAdd);
+      setByBc(settings.byBc);
+      setDaysForTurnover(settings.daysForTurnover);
     }
-  }, [cmpgn]);
+  }, [settings]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (ctrBench <= 0) {
+    if (budget < 2000) {
+      dispatch(setError('Бюджет должен быть выше 2000!'));
+    } else if (ctrBench <= 0) {
       dispatch(setError('Установите пороговый CTR!'));
+    } else if (cpm < 120) {
+      dispatch(setError('Установите CPM выше 120!'));
     } else if (viewsBench < 10) {
       dispatch(setError('Установите порог по просмотрам выше 10!'));
     } else if (whenToAddBudget < 1000) {
       dispatch(setError('Установите порог пополнения бюджета больше 1000!'));
-    } else if (howMuchToAdd < 1000) {
-      dispatch(setError('Установите сумму пополнения не менее 1000!'));
     } else if (daysForTurnover < 0) {
       dispatch(
         setError('Установите кол-во дней для проверки оборачиваемости!')
       );
-    } else if (hasActiveHours && startHour === endHour) {
-      dispatch(
-        setError('Время старта и окончания работы кампании должны отличаться!')
-      );
+    } else if (howMuchToAdd < 1000) {
+      dispatch(setError('Установите сумму пополнения не менее 1000!'));
     } else {
       const data = {
+        budget: budget,
+        cpm: cpm,
         ctr_bench: ctrBench * 100,
         views_bench: viewsBench,
         when_to_pause: whenToPause,
         when_to_add_budget: whenToAddBudget,
         how_much_to_add: howMuchToAdd,
-        has_active_hours: hasActiveHours,
-        ...(hasActiveHours && {
-          start_hour: startHour,
-          end_hour: endHour,
-        }),
         by_bc: byBc,
         days_for_turnover: daysForTurnover,
       };
       dispatch(
-        editAutoCampaign({
+        setDefaultSettings({
           data: data,
-          url: `${hostName}/autocampaigns/${id}`,
+          url: `${hostName}/auction_campaigns_settings/`,
         })
       );
     }
@@ -102,10 +99,10 @@ const AutoCampaignEdit = () => {
 
   return (
     <section>
-      <h1>{campName}</h1>
+      <h1>Настройки по умолчанию для автоматических кампаний</h1>
       <div className={styles.mainContainer}>
         <div className={styles.formContainer}>
-          <form id="cmpgnEdit" onSubmit={handleSubmit}>
+          <form id="settingsUpdate" onSubmit={handleSubmit}>
             <ul>
               <div className={styles.settingsContainer}>
                 <div className={styles.pricesContainer}>
@@ -116,6 +113,7 @@ const AutoCampaignEdit = () => {
                       required={true}
                       type="number"
                       id="ctrBench"
+                      step="0.01"
                       value={ctrBench === 0 ? '' : ctrBench}
                       onChange={(e) => setCtrBench(Number(e.target.value))}
                       className={styles.disabledScroll}
@@ -144,6 +142,19 @@ const AutoCampaignEdit = () => {
                       id="whenToPause"
                       value={whenToPause === 0 ? '' : whenToPause}
                       onChange={(e) => setWhenToPause(Number(e.target.value))}
+                      className={styles.disabledScroll}
+                    />
+                  </li>
+                  <div className={styles.infoText}>Бюджет</div>
+                  <li>
+                    <label htmlFor="budget">Стартовый бюджет: </label>
+                    <input
+                      required={true}
+                      type="number"
+                      min="1000"
+                      id="budget"
+                      value={budget === 0 ? '' : budget}
+                      onChange={(e) => setBudget(Number(e.target.value))}
                       className={styles.disabledScroll}
                     />
                   </li>
@@ -176,6 +187,18 @@ const AutoCampaignEdit = () => {
                       className={styles.disabledScroll}
                     />
                   </li>
+                  <li>
+                    <label htmlFor="whenToAddBudget">CPM: </label>
+                    <input
+                      required={true}
+                      type="number"
+                      min="100"
+                      id="cpm"
+                      value={cpm === 0 ? '' : cpm}
+                      onChange={(e) => setCpm(e.target.value)}
+                      className={styles.disabledScroll}
+                    />
+                  </li>
                   <div className={styles.infoText}>Оборачиваемость</div>
                   <li>
                     <label htmlFor="daysForTurnover">
@@ -196,6 +219,7 @@ const AutoCampaignEdit = () => {
                 </div>
               </div>
             </ul>
+
             <div className={styles.infoText}>Смотреть оборачиваемость по</div>
             <div className={styles.timeToggle}>
               <input
@@ -211,87 +235,20 @@ const AutoCampaignEdit = () => {
               />
               <div>Артикулам</div>
             </div>
-
-            <div className={styles.infoText}>Часы активности</div>
-            <div className={styles.timeToggle}>
-              <input
-                type="checkbox"
-                checked={hasActiveHours}
-                onChange={(e) => setHasActiveHours(e.target.checked)}
-              />
-              <div>Установить часы активности кампании</div>
-            </div>
-
-            {hasActiveHours && (
-              <div className={styles.timePicker}>
-                <li>
-                  <label htmlFor="startHour">Начало (час): </label>
-                  <select
-                    id="startHour"
-                    value={startHour}
-                    onChange={(e) => setStartHour(Number(e.target.value))}
-                  >
-                    {Array.from({ length: 24 }, (_, i) => (
-                      <option key={i} value={i}>
-                        {i}:00
-                      </option>
-                    ))}
-                  </select>
-                </li>
-                <li>
-                  <label htmlFor="endHour">Окончание (час): </label>
-                  <select
-                    id="endHour"
-                    value={endHour}
-                    onChange={(e) => setEndHour(Number(e.target.value))}
-                  >
-                    {Array.from({ length: 24 }, (_, i) => (
-                      <option key={i} value={i}>
-                        {i}:00
-                      </option>
-                    ))}
-                  </select>
-                </li>
-              </div>
-            )}
           </form>
         </div>
         <div className={styles.infoContainer}>
           <button
             type="submit"
-            form="cmpgnEdit"
+            form="settingsUpdate"
             className={styles.buttonAccept}
           >
-            Принять изменения
+            Применить изменения
           </button>
-          {/* <div className={styles.description}>
-            <p>
-              1. Название задачи должно быть уникальным, лучше всего
-              придерживаться шаблона:
-              <br />
-              ДатаДропа_Категория_Пометка_ДатаЗаведенияЗадачи
-              <br />
-              (Пример: 01.01_Футболки_Узбекистан_02.01)
-              <br />
-              2. Алгоритм будет стараться попасть в дедлайн с ошибкой в N дней,
-              установленных в погрешности.
-              <br />
-              3. Перед заведением задачи посмотрите работу алгоритма.
-              <br />
-              4. После заведения задачи, она автоматически становится
-              неактивной, чтобы запустить ее, нажмите кнопку "Запустить" в меню
-              задач.
-              <br />
-              5. Каждый артикул можно добавить только в одну задачу данного
-              типа, если артикула нет в списке, возможно, он уже привязан к
-              другой задаче
-              <br />
-            </p>
-          </div> */}
         </div>
       </div>
     </section>
   );
 };
 
-export default AutoCampaignEdit;
+export default AuctionCampaignDefaultSettings;

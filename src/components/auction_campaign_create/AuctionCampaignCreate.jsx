@@ -34,6 +34,7 @@ const AuctionCampaignCreate = () => {
   const [budget, setBudget] = useState(3000);
   const [fixed, setFixed] = useState(true);
   const [byBc, setByBc] = useState(true);
+  const [daysForTurnover, setDaysForTurnover] = useState(4);
 
   useEffect(() => {
     if (notificationMessage !== '') {
@@ -53,6 +54,7 @@ const AuctionCampaignCreate = () => {
       setWhenToPause(cmpgn?.whenToPause);
       setSku(cmpgn?.sku);
       setByBc(cmpgn?.byBc);
+      setDaysForTurnover(cmpgn?.daysForTurnover);
     }
   }, [cmpgn]);
 
@@ -64,6 +66,10 @@ const AuctionCampaignCreate = () => {
       dispatch(setError('Установите порог по просмотрам выше 10!'));
     } else if (cpm <= 149) {
       dispatch(setError('Установите CPM не ниже 150 руб.!'));
+    } else if (daysForTurnover < 0) {
+      dispatch(
+        setError('Установите кол-во дней для проверки оборачиваемости!')
+      );
     } else if (budget <= 1000) {
       dispatch(setError('Установите бюджет не менее 1000!'));
     } else if (whenToAddBudget < 1000) {
@@ -83,6 +89,7 @@ const AuctionCampaignCreate = () => {
         how_much_to_add: howMuchToAdd,
         fixed: fixed,
         by_bc: byBc,
+        days_for_turnover: daysForTurnover,
       };
       dispatch(
         createAucCampaign({
@@ -200,6 +207,23 @@ const AuctionCampaignCreate = () => {
                         id="cpm"
                         value={cpm === 0 ? '' : cpm}
                         onChange={(e) => setCPM(e.target.value)}
+                        className={styles.disabledScroll}
+                      />
+                    </li>
+                    <div className={styles.infoText}>Оборачиваемость</div>
+                    <li>
+                      <label htmlFor="daysForTurnover">
+                        Кол-во дней для проверки оборачиваемости:{' '}
+                      </label>
+                      <input
+                        required={true}
+                        type="number"
+                        min="1"
+                        id="daysForTurnover"
+                        value={daysForTurnover === 0 ? '' : daysForTurnover}
+                        onChange={(e) =>
+                          setDaysForTurnover(Number(e.target.value))
+                        }
                         className={styles.disabledScroll}
                       />
                     </li>

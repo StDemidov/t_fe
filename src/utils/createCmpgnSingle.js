@@ -33,6 +33,7 @@ const createCmpgnSingle = (cmpgn) => {
     startHour: cmpgn?.start_hour,
     endHour: cmpgn?.end_hour,
     byBc: cmpgn?.by_bc,
+    daysForTurnover: cmpgn?.days_for_turnover,
   };
 };
 

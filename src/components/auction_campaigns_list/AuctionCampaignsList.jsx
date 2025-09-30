@@ -2,6 +2,7 @@ import { FaSpinner } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { useSpring, animated } from '@react-spring/web';
+import { IoSettings } from 'react-icons/io5';
 import styles from './style.module.css';
 
 import {
@@ -63,6 +64,10 @@ const AuctionCampaignsList = () => {
     navigation(`/tools/auction_campaigns/create_from_id`);
   };
 
+  const handleClickOnSettings = (event) => {
+    navigation(`/tools/auction_campaigns_settings`);
+  };
+
   getSortedData(filteredCamps, selectedSorting);
 
   return (
@@ -72,7 +77,17 @@ const AuctionCampaignsList = () => {
       ) : (
         <animated.div style={{ ...animStyles }}>
           <section>
-            <h1>Аукцион</h1>
+            <h1>
+              Аукцион{' '}
+              <IoSettings
+                className={styles.settingsButton}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleClickOnSettings(e);
+                }}
+              />
+            </h1>
+
             <button
               className={styles.buttonCreate}
               onClick={(e) => {

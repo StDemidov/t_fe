@@ -6,6 +6,8 @@ import { selectNotificationMessage } from '../../redux/slices/notificationSlice'
 import {
   createAucCampaign,
   selectCreatingIsLoading,
+  selectDefaultSettings,
+  fetchDefaultSettings,
 } from '../../redux/slices/autoCampaignsSlice';
 import { FaSpinner } from 'react-icons/fa';
 
@@ -17,6 +19,7 @@ const AuctionCampaignCreateFID = () => {
   const dispatch = useDispatch();
   const notificationMessage = useSelector(selectNotificationMessage);
   const creatingIsLoading = useSelector(selectCreatingIsLoading);
+  const settings = useSelector(selectDefaultSettings);
   const navigation = useNavigate();
 
   const [ctrBench, setCtrBench] = useState(3.5);
@@ -30,6 +33,7 @@ const AuctionCampaignCreateFID = () => {
   const [budget, setBudget] = useState(5000);
   const [fixed, setFixed] = useState(true);
   const [byBc, setByBc] = useState(true);
+  const [daysForTurnover, setDaysForTurnover] = useState(4);
 
   useEffect(() => {
     if (notificationMessage !== '') {
@@ -37,13 +41,31 @@ const AuctionCampaignCreateFID = () => {
     }
   }, [notificationMessage, navigation]);
 
+  useEffect(() => {
+    dispatch(fetchDefaultSettings(`${hostName}/auction_campaigns_settings/`));
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (settings) {
+      setBudget(settings.budget);
+      setCPM(settings.cpm);
+      setCtrBench(settings.ctrBench);
+      setViewsBench(settings.viewsBench);
+      setWhenToPause(settings.whenToPause);
+      setWhenToAddBudget(settings.whenToAddBudget);
+      setHowMuchToAdd(settings.howMuchToAdd);
+      setByBc(settings.byBc);
+      setDaysForTurnover(settings.daysForTurnover);
+    }
+  }, [settings]);
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (ctrBench <= 0) {
       dispatch(setError('Установите пороговый CTR!'));
     } else if (viewsBench < 10) {
       dispatch(setError('Установите порог по просмотрам выше 10!'));
-    } else if (cpm <= 149) {
+    } else if (cpm <= 150) {
       dispatch(setError('Установите CPM не ниже 150 руб.!'));
     } else if (budget <= 1000) {
       dispatch(setError('Установите бюджет не менее 1000!'));
@@ -53,6 +75,10 @@ const AuctionCampaignCreateFID = () => {
       dispatch(setError('Установите сумму пополнения не менее 1000!'));
     } else if (sku === '') {
       dispatch(setError('Введите SKU!'));
+    } else if (daysForTurnover < 0) {
+      dispatch(
+        setError('Установите кол-во дней для проверки оборачиваемости!')
+      );
     } else if (parentId === '') {
       dispatch(setError('Введите ID родительской кампании!'));
     } else {
@@ -66,6 +92,7 @@ const AuctionCampaignCreateFID = () => {
         when_to_pause: whenToPause,
         when_to_add_budget: whenToAddBudget,
         how_much_to_add: howMuchToAdd,
+        days_for_turnover: daysForTurnover,
         fixed: fixed,
         by_bc: byBc,
       };
@@ -185,6 +212,23 @@ const AuctionCampaignCreateFID = () => {
                         id="cpm"
                         value={cpm === 0 ? '' : cpm}
                         onChange={(e) => setCPM(e.target.value)}
+                        className={styles.disabledScroll}
+                      />
+                    </li>
+                    <div className={styles.infoText}>Оборачиваемость</div>
+                    <li>
+                      <label htmlFor="daysForTurnover">
+                        Кол-во дней для проверки оборачиваемости:{' '}
+                      </label>
+                      <input
+                        required={true}
+                        type="number"
+                        min="1"
+                        id="daysForTurnover"
+                        value={daysForTurnover === 0 ? '' : daysForTurnover}
+                        onChange={(e) =>
+                          setDaysForTurnover(Number(e.target.value))
+                        }
                         className={styles.disabledScroll}
                       />
                     </li>

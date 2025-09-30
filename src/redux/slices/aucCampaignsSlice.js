@@ -7,12 +7,39 @@ import createAucCmpgnSingleMain from '../../utils/createAucCmpgnSingleMain';
 import createCmpgnSingle from '../../utils/createCmpgnSingle';
 import { setError } from './errorSlice';
 import { setNotification } from './notificationSlice';
+import createAuctionCampDefaultSettings from '../../utils/createAuctionCampDefaultSettings';
 
 const initialState = {
   aucCampaigns: [],
   isLoading: false,
   cmpgnSingle: {},
+  defaultSettings: {},
 };
+
+export const fetchDefaultSettings = createAsyncThunk(
+  'aucCampaigns/fetchDefaultSettings',
+  async (url, thunkAPI) => {
+    try {
+      const res = await axios.get(url);
+      return res.data;
+    } catch (error) {
+      thunkAPI.dispatch(setError(error.message));
+    }
+  }
+);
+
+export const setDefaultSettings = createAsyncThunk(
+  'aucCampaigns/setDefaultSettings',
+  async ({ data, url }, thunkAPI) => {
+    try {
+      const res = await axios.post(url, data);
+      thunkAPI.dispatch(setNotification('Изменения применены!'));
+      return res.data;
+    } catch (error) {
+      thunkAPI.dispatch(setError(error.message));
+    }
+  }
+);
 
 export const fetchAucCampaigns = createAsyncThunk(
   'aucCampaigns/fetchAucCampaigns',
@@ -192,11 +219,30 @@ const aucCampaignsSlice = createSlice({
     builder.addCase(editAucCampaign.fulfilled, (state) => {
       state.isLoading = false;
     });
+    builder.addCase(fetchDefaultSettings.fulfilled, (state, action) => {
+      state.isLoading = false;
+      if (action.payload) {
+        state.defaultSettings = createAuctionCampDefaultSettings(
+          action.payload
+        );
+      }
+    });
+    builder.addCase(fetchDefaultSettings.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(setDefaultSettings.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(setDefaultSettings.fulfilled, (state) => {
+      state.isLoading = false;
+    });
   },
 });
 
 export const selectAucCampaigns = (state) => state.aucCampaigns.aucCampaigns;
 export const selectIsLoading = (state) => state.aucCampaigns.isLoading;
 export const selectCmpgnSingle = (state) => state.aucCampaigns.cmpgnSingle;
+export const selectDefaultSettings = (state) =>
+  state.aucCampaigns.defaultSettings;
 
 export default aucCampaignsSlice.reducer;

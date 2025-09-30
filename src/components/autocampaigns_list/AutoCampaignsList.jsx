@@ -2,6 +2,7 @@ import { FaSpinner } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { useSpring, animated } from '@react-spring/web';
+import { IoSettings } from 'react-icons/io5';
 import styles from './style.module.css';
 import { useNavigate } from 'react-router-dom';
 
@@ -91,6 +92,10 @@ const AutoCampaignsList = () => {
     navigation(`/tools/auto_campaigns/create`);
   };
 
+  const handleClickOnSettings = (event) => {
+    navigation(`/tools/auto_campaigns_settings`);
+  };
+
   getSortedData(filteredVCMetrics, selectedSorting);
 
   return (
@@ -100,7 +105,16 @@ const AutoCampaignsList = () => {
       ) : (
         <animated.div style={{ ...animStyles }}>
           <section>
-            <h1>Автоматические кампании</h1>
+            <h1>
+              Автоматические кампании
+              <IoSettings
+                className={styles.settingsButton}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleClickOnSettings(e);
+                }}
+              />
+            </h1>
             <button
               className={styles.buttonCreate}
               onClick={(e) => {

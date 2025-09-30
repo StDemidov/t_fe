@@ -14,6 +14,18 @@
   border: none;
 }
 
+.settingsButton {
+  position: relative;
+  left: 10px;
+  color: gray;
+  font-size: 20px;
+}
+
+.settingsButton:hover {
+  scale: 1.2;
+  cursor: pointer;
+}
+
 .buttonCreate:hover {
   background-color: #6c46d6;
   cursor: pointer;

@@ -52,6 +52,8 @@ import UploadImagePage from './components/upload_image_page/UploadImagePage';
 import AbTestsMainPage from './components/ab_tests/AbTestsMainPage';
 import AbTestCreate from './components/ab_tests/ab_test_create/AbTestCreate';
 import AbTestsSingleTest from './components/ab_tests/ab_tests_single_test/AbTestsSingleTest';
+import AutoCampaignDefaultSettings from './components/autocampaign_default_settings/AutocampaignDefaultSettings';
+import AuctionCampaignDefaultSettings from './components/auсtion_campaign_default_settings/AuctionCampaignDefaultSettings';
 
 function App() {
   const currentUser = useSelector(selectUser);
@@ -115,6 +117,14 @@ function App() {
                   <Route
                     path="tools/auto_campaigns"
                     element={<AutoCampaignsList />}
+                  />
+                  <Route
+                    path="tools/auto_campaigns_settings"
+                    element={<AutoCampaignDefaultSettings />}
+                  />
+                  <Route
+                    path="tools/auction_campaigns_settings"
+                    element={<AuctionCampaignDefaultSettings />}
                   />
                   <Route
                     path="tools/auction_campaigns"

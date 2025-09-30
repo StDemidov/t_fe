@@ -42,6 +42,7 @@ import HeaderClickToOrder from './cells/header/HeaderClickToOrder';
 import HeaderTagsCloth from './cells/header/HeaderTagsCloth';
 import HeaderTagsOthers from './cells/header/HeaderTagsOthers';
 import HeaderCampaigns from './cells/header/HeaderCampaigns';
+import HeaderDeadline from './cells/header/HeaderDeadline';
 
 import BodyOrders from './cells/body/BodyOrders';
 import BodySales from './cells/body/BodySales';
@@ -67,6 +68,7 @@ import BodyTags from './cells/body/BodyTags';
 import BodyTagsCloth from './cells/body/BodyTagsCloth';
 import BodyTagsOthers from './cells/body/BodyTagsOthers';
 import BodyCampaigns from './cells/body/BodyCampaigns';
+import BodyDeadline from './cells/body/BodyDeadline';
 
 import FooterTags from './cells/footer/FooterTags';
 import FooterOrders from './cells/footer/FooterOrders';
@@ -92,6 +94,7 @@ import FooterAddToCart from './cells/footer/FooterAddToCart';
 import FooterTagsOthers from './cells/footer/FooterTagsOthers';
 import FooterTagsCloth from './cells/footer/FooterTagsCloth';
 import FooterCampaigns from './cells/footer/FooterCampaigns';
+import FooterDeadline from './cells/footer/FooterDeadline';
 
 const сolRender = {
   tags: {
@@ -285,6 +288,12 @@ const сolRender = {
     render: (vc, datesFilter) => <BodyCampaigns vc={vc} key={uuidv4()} />,
     renderHeader: () => <HeaderCampaigns key={uuidv4()} />,
     renderFooter: () => <FooterCampaigns key={uuidv4()} />,
+  },
+
+  deadline: {
+    render: (vc, datesFilter) => <BodyDeadline vc={vc} key={uuidv4()} />,
+    renderHeader: () => <HeaderDeadline key={uuidv4()} />,
+    renderFooter: () => <FooterDeadline key={uuidv4()} />,
   },
 };
 

@@ -56,6 +56,8 @@ const createVendorCodeMetrics = (vendorCodeMetrics) => {
         .map((cr) => Number(cr) * 100),
       advCampaigns: item.adv_campaigns,
       sppAmount: item.spp_amount,
+      deadline: item.deadline,
+      lastStockRefill: item.last_stock_refill,
     };
   });
   return vcMetrics;

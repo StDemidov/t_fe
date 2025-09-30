@@ -10,6 +10,8 @@ import {
   fetchSkuData,
   selectSkuDataAutoCmpgns,
   selectIsLoading,
+  selectDefaultSettings,
+  fetchDefaultSettings,
 } from '../../redux/slices/autoCampaignsSlice';
 
 import { selectSkuOrNameTasksFilter } from '../../redux/slices/filterSlice';
@@ -38,6 +40,12 @@ const AutoCampaignCreate = () => {
     dispatch(fetchSkuData(`${hostName}/autocampaigns/sku_data`));
   }, [dispatch]);
 
+  useEffect(() => {
+    dispatch(fetchDefaultSettings(`${hostName}/auto_campaigns_settings/`));
+  }, [dispatch]);
+
+  const settings = useSelector(selectDefaultSettings);
+
   const [currBudget, setCurrBudget] = useState(5000);
   const [cpm, setCpm] = useState(150);
   const [ctrBench, setCtrBench] = useState(2);
@@ -50,6 +58,7 @@ const AutoCampaignCreate = () => {
   const [hasActiveHours, setHasActiveHours] = useState(false);
   const [sku, setSku] = useState('');
   const [byBc, setByBc] = useState(true);
+  const [daysForTurnover, setDaysForTurnover] = useState(4);
 
   const filteredSkuDataWCat = skuData.filter((sku) => {
     let skuOrNameMatch = true;
@@ -80,6 +89,20 @@ const AutoCampaignCreate = () => {
     });
   };
 
+  useEffect(() => {
+    if (settings) {
+      setCurrBudget(settings.budget);
+      setCpm(settings.cpm);
+      setCtrBench(settings.ctrBench);
+      setViewsBench(settings.viewsBench);
+      setWhenToPause(settings.whenToPause);
+      setWhenToAddBudget(settings.whenToAddBudget);
+      setHowMuchToAdd(settings.howMuchToAdd);
+      setByBc(settings.byBc);
+      setDaysForTurnover(settings.daysForTurnover);
+    }
+  }, [settings]);
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (currBudget < 2000) {
@@ -94,6 +117,10 @@ const AutoCampaignCreate = () => {
       dispatch(setError('Необходимо выбрать артикул!'));
     } else if (whenToAddBudget < 1000) {
       dispatch(setError('Установите порог пополнения бюджета больше 1000!'));
+    } else if (daysForTurnover < 0) {
+      dispatch(
+        setError('Установите кол-во дней для проверки оборачиваемости!')
+      );
     } else if (howMuchToAdd < 1000) {
       dispatch(setError('Установите сумму пополнения не менее 1000!'));
     } else if (hasActiveHours && startHour === endHour) {
@@ -111,6 +138,7 @@ const AutoCampaignCreate = () => {
         when_to_add_budget: whenToAddBudget,
         how_much_to_add: howMuchToAdd,
         by_bc: byBc,
+        days_for_turnover: daysForTurnover,
         has_active_hours: hasActiveHours,
         ...(hasActiveHours && {
           start_hour: startHour,
@@ -228,6 +256,23 @@ const AutoCampaignCreate = () => {
                       id="cpm"
                       value={cpm === 0 ? '' : cpm}
                       onChange={(e) => setCpm(e.target.value)}
+                      className={styles.disabledScroll}
+                    />
+                  </li>
+                  <div className={styles.infoText}>Оборачиваемость</div>
+                  <li>
+                    <label htmlFor="daysForTurnover">
+                      Кол-во дней для проверки оборачиваемости:{' '}
+                    </label>
+                    <input
+                      required={true}
+                      type="number"
+                      min="1"
+                      id="daysForTurnover"
+                      value={daysForTurnover === 0 ? '' : daysForTurnover}
+                      onChange={(e) =>
+                        setDaysForTurnover(Number(e.target.value))
+                      }
                       className={styles.disabledScroll}
                     />
                   </li>

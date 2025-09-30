@@ -262,3 +262,36 @@
   background-color: rgb(189, 111, 9);
   color: white;
 }
+
+.cellDeadline {
+  display: flex;
+  flex-direction: column;
+}
+
+.deadlineDate {
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+}
+
+.refillDate {
+  color: gray;
+  font-size: 13px;
+  align-items: center;
+}
+
+.deadlineDays {
+  font-size: 13px;
+}
+
+.deadlineGreen {
+  color: rgb(14, 123, 74);
+}
+
+.deadlineRed {
+  color: rgb(160, 11, 11);
+}
+
+.deadlineGray {
+  color: gray;
+}

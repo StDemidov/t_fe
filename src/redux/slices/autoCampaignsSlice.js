@@ -7,6 +7,7 @@ import createSkuDataForAutoCampaigns from '../../utils/createSkuDataForAutoCampa
 import createCmpgnSingle from '../../utils/createCmpgnSingle';
 import { setError } from './errorSlice';
 import { setNotification } from './notificationSlice';
+import createAutoCampDefaultSettings from '../../utils/createAutoCampDefaultSettings';
 
 const initialState = {
   autoCampaigns: [],
@@ -14,6 +15,7 @@ const initialState = {
   isLoading: false,
   creatingIsLoading: false,
   cmpgnSingle: {},
+  defaultSettings: {},
 };
 
 export const fetchAutoCampaigns = createAsyncThunk(
@@ -21,6 +23,31 @@ export const fetchAutoCampaigns = createAsyncThunk(
   async (url, thunkAPI) => {
     try {
       const res = await axios.get(url);
+      return res.data;
+    } catch (error) {
+      thunkAPI.dispatch(setError(error.message));
+    }
+  }
+);
+
+export const fetchDefaultSettings = createAsyncThunk(
+  'autoCampaigns/fetchDefaultSettings',
+  async (url, thunkAPI) => {
+    try {
+      const res = await axios.get(url);
+      return res.data;
+    } catch (error) {
+      thunkAPI.dispatch(setError(error.message));
+    }
+  }
+);
+
+export const setDefaultSettings = createAsyncThunk(
+  'autoCampaigns/setDefaultSettings',
+  async ({ data, url }, thunkAPI) => {
+    try {
+      const res = await axios.post(url, data);
+      thunkAPI.dispatch(setNotification('Изменения применены!'));
       return res.data;
     } catch (error) {
       thunkAPI.dispatch(setError(error.message));
@@ -146,11 +173,26 @@ const autoCampaignsSlice = createSlice({
     builder.addCase(fetchAutoCampaigns.pending, (state) => {
       state.isLoading = true;
     });
+    builder.addCase(fetchDefaultSettings.fulfilled, (state, action) => {
+      state.isLoading = false;
+      if (action.payload) {
+        state.defaultSettings = createAutoCampDefaultSettings(action.payload);
+      }
+    });
+    builder.addCase(fetchDefaultSettings.pending, (state) => {
+      state.isLoading = true;
+    });
     builder.addCase(createAucCampaign.pending, (state) => {
       state.creatingIsLoading = true;
     });
     builder.addCase(createAucCampaign.fulfilled, (state) => {
       state.creatingIsLoading = false;
+    });
+    builder.addCase(setDefaultSettings.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(setDefaultSettings.fulfilled, (state) => {
+      state.isLoading = false;
     });
     builder.addCase(fetchAutoCampaignById.fulfilled, (state, action) => {
       state.isLoading = false;
@@ -180,5 +222,7 @@ export const selectCreatingIsLoading = (state) =>
 export const selectIsLoading = (state) => state.autoCampaigns.isLoading;
 export const selectSkuDataAutoCmpgns = (state) => state.autoCampaigns.skuData;
 export const selectCmpgnSingle = (state) => state.autoCampaigns.cmpgnSingle;
+export const selectDefaultSettings = (state) =>
+  state.autoCampaigns.defaultSettings;
 
 export default autoCampaignsSlice.reducer;
