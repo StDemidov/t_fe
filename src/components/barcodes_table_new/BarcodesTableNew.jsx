@@ -33,9 +33,9 @@ import {
   deleteOrdersDates,
 } from '../../redux/slices/ordersSlice';
 import BarplotOrdersDouble from '../barplot_orders_double/BarplotOrdersDouble';
-import LineplotVC from '../lineplot_vc/LineplotVC';
 
 import styles from './style.module.css';
+import LineplotBC from '../lineplot_bc/LineplotBC';
 
 const getUniqueOrderNames = (data) => {
   const namesSet = new Set();
@@ -471,7 +471,7 @@ const BarcodesTableNew = ({
                   <LazyLoad key={uuidv4()} offset={100}>
                     <div className={styles.ordersPlot}>
                       СРО
-                      <LineplotVC data={vc.cpo} dates={datesFilter} />
+                      <LineplotBC data={vc.cpo} dates={datesFilter} />
                     </div>
                   </LazyLoad>
                 </div>

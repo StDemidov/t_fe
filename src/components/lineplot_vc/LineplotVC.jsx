@@ -1,4 +1,5 @@
 import { Line } from 'react-chartjs-2';
+import { useState } from 'react';
 import { PiEmptyDuotone } from 'react-icons/pi';
 import styles from './style.module.css';
 import {
@@ -9,29 +10,73 @@ import {
   LineElement,
 } from 'chart.js';
 
+import { getDatesBetween } from '../../utils/dataSlicing';
+
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement);
 
-const LineplotVC = ({ data, dates }) => {
-  const startDate = new Date(dates.start);
-  const endDate = new Date(dates.end);
+const LineplotVC = ({
+  data,
+  dates,
+  need_average = true,
+  perc = false,
+  total = 0,
+}) => {
+  const [showAvg, setShowAvg] = useState(true);
 
-  var labels = getDateNumberArray(data);
+  var labels = getDatesBetween(dates.start, dates.end);
 
-  data = getDataForPeriod(data, startDate, endDate);
-  let sum = data.reduce((acc, num) => acc + num, 0);
-  if (sum === 0) {
-    return <PiEmptyDuotone color="red" />;
+  // data = getDataForPeriod(data, startDate, endDate);
+
+  // Среднее значение
+  const filtered = data.filter((d) => d !== 0);
+  const average =
+    filtered.length === 0
+      ? 0
+      : filtered.reduce((a, b) => a + b, 0) / filtered.length;
+
+  if (average === 0) {
+    return <div className={styles.noData}>Нет данных</div>;
   }
-  labels = getDataForPeriod(labels, startDate, endDate);
+
+  const colors = {
+    positive: 'rgba(130, 84, 255, 0.3)',
+    negative: 'rgba(255, 84, 84, 0.3)',
+    zero: '#aaaaaa',
+  };
+
+  // Цвета точек
+  const pointBackgroundColor = data.map((v) =>
+    v > 0 ? colors.positive : v < 0 ? colors.negative : colors.zero
+  );
+  // labels = getDataForPeriod(labels, startDate, endDate);
+
   const chartData = {
     labels,
     datasets: [
       {
         data: data,
-        borderColor: 'rgba(130, 84, 255, 1)',
-        backgroundColor: 'rgba(130, 84, 255, 0.3)',
-        borderWidth: 0.7,
+        fill: false,
+        stepped: !perc,
+
+        pointBackgroundColor,
+        pointBorderColor: pointBackgroundColor,
+        borderWidth: 1,
         pointRadius: 0.7,
+        borderColor: (context) => {
+          const index = context.dataIndex;
+          const value = context.dataset.data[index];
+          return value < 0
+            ? 'rgba(255, 84, 84, 0.3)'
+            : 'rgba(130, 84, 255, 0.3)';
+        },
+        segment: {
+          borderColor: (context) => {
+            const value = context.p0.parsed.y;
+            return value < 0
+              ? 'rgba(255, 84, 84, 0.3)'
+              : 'rgba(130, 84, 255, 0.3)';
+          },
+        },
       },
     ],
   };
@@ -41,14 +86,17 @@ const LineplotVC = ({ data, dates }) => {
     maintainAspectRatio: false,
     plugins: {
       legend: { display: false },
-      title: { display: false },
       tooltip: {
         enabled: true,
-        yAlign: 'top',
         backgroundColor: 'rgba(0, 0, 0, 0.7)',
+        bodyColor: '#ffffff',
         titleFont: { size: 6, weight: 'bold' },
-        bodyFont: { size: 8 },
+        bodyFont: { size: 9 },
         padding: { top: 4, right: 6, bottom: 4, left: 6 },
+        caretSize: 0,
+        displayColors: false,
+        titleAlign: 'center',
+        bodyAlign: 'center',
       },
     },
     scales: {
@@ -57,54 +105,34 @@ const LineplotVC = ({ data, dates }) => {
     },
   };
 
+  const avgClassName = average < 0 ? styles.sumNegative : styles.sumPositive;
+
   return (
     <div
-      className={styles.lineDiv}
-      style={{ width: '100px', height: '50px', textAlign: 'center' }}
+      className={styles.barWrapper}
+      onMouseEnter={() => setShowAvg(false)}
+      onMouseLeave={() => setShowAvg(true)}
     >
-      <Line data={chartData} options={options} />
+      {(need_average || perc) && (
+        <div
+          className={`${styles.sumOverlay} ${avgClassName} ${
+            showAvg ? styles.visible : styles.hidden
+          }`}
+        >
+          {perc
+            ? average.toFixed(0).toLocaleString() + ' %'
+            : average.toFixed(0).toLocaleString()}
+        </div>
+      )}
+      <div
+        className={`${styles.chartContainer} ${
+          showAvg && (need_average || perc) ? styles.dimmed : ''
+        }`}
+      >
+        <Line data={chartData} options={options} />
+      </div>
     </div>
   );
 };
 
 export default LineplotVC;
-
-function getDateNumberArray(dataArray) {
-  // Определяем вчерашнюю дату
-  const today = new Date();
-  const yesterday = new Date(today);
-  yesterday.setDate(today.getDate() - 1);
-
-  // Функция для форматирования даты в формате "день - номер месяца"
-  const formatDateNumber = (date) => {
-    const day = date.getDate();
-    const month = date.getMonth() + 1; // Месяцы начинаются с 0, поэтому +1
-    return `${day}.${String(month).length === 1 ? '0' + String(month) : month}`;
-  };
-
-  // Создаем массив с датами на основе длины массива чисел
-  const datesArray = [];
-  for (let i = dataArray.length - 1; i >= 0; i--) {
-    // Каждая дата уменьшается на i дней от вчерашнего дня
-    const date = new Date(yesterday);
-    date.setDate(yesterday.getDate() - i);
-    datesArray.push(formatDateNumber(date));
-  }
-
-  return datesArray;
-}
-
-const getDataForPeriod = (data, startDate, endDate) => {
-  const todayDate = new Date();
-  const startIndex = Math.ceil((todayDate - startDate) / (1000 * 60 * 60 * 24)); // Индекс начала
-  const endIndex = Math.floor((todayDate - endDate) / (1000 * 60 * 60 * 24)); // Индекс конца
-  // Проверяем, что индексы в пределах массива
-  if (startIndex < 0 || endIndex >= data.length || startIndex < endIndex) {
-    throw new Error('Период выходит за пределы массива');
-  }
-  // Извлекаем данные за указанный период
-  if (endIndex === 1) {
-    return data.slice(-startIndex + 1);
-  }
-  return data.slice(-startIndex + 1, -endIndex + 1); // Используем reverse(), чтобы вернуть порядок
-};

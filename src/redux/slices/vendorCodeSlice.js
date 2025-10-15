@@ -28,6 +28,9 @@ const initialState = {
   newSkusTagsMain: [],
   newSkusTagsCloth: [],
   newSkusTagsOthers: [],
+
+  page: 1,
+  vcsPerPage: 20,
 };
 
 function updateSkusTags(obj, newSkusTags) {
@@ -165,6 +168,12 @@ const vendorCodeSlice = createSlice({
         state.newSkusTagsOthers
       );
     },
+    setPageVendorcodes: (state, action) => {
+      state.page = action.payload;
+    },
+    setVCsPerPageVendorcodes: (state, action) => {
+      state.vcsPerPage = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(fetchVendorCodeMetrics.fulfilled, (state, action) => {
@@ -240,6 +249,8 @@ export const {
   setNewSkusTagsCloth,
   setNewAvailableTagOthers,
   setNewSkusTagsOthers,
+  setPageVendorcodes,
+  setVCsPerPageVendorcodes,
 } = vendorCodeSlice.actions;
 
 export const selectVendorCodeMetrics = (state) =>
@@ -262,5 +273,9 @@ export const selectNewSkusTagsCloth = (state) =>
   state.vendorCode.newSkusTagsCloth;
 export const selectNewSkusTagsOthers = (state) =>
   state.vendorCode.newSkusTagsOthers;
+
+export const selectPageVendorcodes = (state) => state.vendorCode.page;
+export const selectVCsPerPageVendorcodes = (state) =>
+  state.vendorCode.vcsPerPage;
 
 export default vendorCodeSlice.reducer;

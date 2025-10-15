@@ -4,6 +4,12 @@
   height: 68vh;
 }
 
+.mainWrapper {
+  width: 100%;
+  overflow-x: auto;
+  gap: 2vh;
+}
+
 /* width */
 ::-webkit-scrollbar {
   width: 2px;
@@ -46,18 +52,19 @@
 
 .row {
   display: flex;
-  margin-bottom: 7px;
+  /* margin-bottom: 7px; */
   height: 80px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  border: #613fc029 solid 1px;
+  /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); */
+  border-top: #613fc029 solid 1px;
+  border-bottom: #613fc029 solid 1px;
+  margin-top: 5px;
 }
 
 .imageBlock {
   display: flex;
+  justify-content: space-between;
   height: 100%;
-  border-radius: 10px 0 0 10px;
-  box-shadow: 3px 2px 4px rgba(0, 0, 0, 0.1);
-  border: #613fc029 solid 1px;
+  border-left: #613fc029 solid 1px;
   width: 100%;
 }
 
@@ -85,16 +92,6 @@
   font-weight: 100;
 }
 
-.imageSmall {
-  /* vertical-align: center; */
-  overflow: hidden;
-  height: 100%;
-  width: 55px;
-  transition: transform 0.3s ease-in-out;
-  transform-origin: top left;
-  z-index: 1000;
-}
-
 .zoomImage {
   width: 100%;
   height: 80px;
@@ -102,7 +99,7 @@
 }
 
 .cell {
-  border-right: 1px solid #ddd;
+  border-right: 1px solid #613fc029;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -114,38 +111,8 @@
   position: relative;
 }
 
-.cellCPS {
-  min-width: 50px; /* Минимальная ширина ячейки */
-  max-width: 50px;
-}
-
-.cellMSStock {
-  min-width: 80px; /* Минимальная ширина ячейки */
-  max-width: 80px;
-}
-
-.cellEbitda {
-  min-width: 70px; /* Минимальная ширина ячейки */
-  max-width: 70px;
-}
-
-.cellBuyout {
-  min-width: 70px; /* Минимальная ширина ячейки */
-  max-width: 70px;
-}
-
-.cellSelfPrice {
-  min-width: 100px; /* Минимальная ширина ячейки */
-  max-width: 100px;
-}
-
-.cellSPP {
-  min-width: 120px; /* Минимальная ширина ячейки */
-  max-width: 120px;
-}
-
 .vcCell {
-  font-size: 10px;
+  font-size: 16px;
   font-weight: 800;
 }
 
@@ -154,12 +121,11 @@
 }
 
 .fixedColumn {
-  background-color: #f9f9f9;
+  background-color: #eff0fe;
   position: sticky;
-  left: 0;
+  left: 0px;
   z-index: 3;
   min-width: 79px; /* Выделение границы фиксированной колонки */
-  border-radius: 10px 0px 0px 10px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
@@ -169,21 +135,17 @@
 
 .tableHeader {
   height: 50px;
-  background-color: #f9f9f9;
+  background-color: #eff0fe;
   font-weight: bold;
   position: sticky;
   color: #623fc0;
-  border: #613fc029 solid 1px;
+  margin-top: 0;
   top: 0;
   z-index: 5; /* Заголовок выше остальных элементов */
 }
 
-.colForHiding {
-  height: 500px;
-  background-color: white;
-  width: 75px;
-  z-index: 3;
-  position: absolute;
+.tableHeader .fixedColumn {
+  border-left: #613fc029 solid 1px;
 }
 
 .vcCell:hover {
@@ -199,13 +161,13 @@
 }
 
 .tableFooter {
-  height: 30px;
-  background-color: #f9f9f9;
+  height: 40px;
+  background-color: #eff0fe;
   font-weight: bold;
   position: sticky;
   color: #623fc0;
-  border: #613fc029 solid 1px;
-  bottom: 0;
+  /* border: #613fc029 solid 1px; */
+  bottom: 0px;
   z-index: 5; /* Заголовок выше остальных элементов */
 }
 
@@ -220,4 +182,73 @@
 .copyIcon:hover {
   scale: 1.1;
   color: white;
+}
+
+.mainWrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.paginator {
+  display: flex;
+  justify-content: center;
+  gap: 2px;
+}
+.currentPage {
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-size: 13px;
+}
+
+.paginatorDefault {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.pageArrow {
+  color: gray;
+  cursor: pointer;
+}
+
+.pageArrow:hover {
+  color: #623fc0;
+}
+
+.disabledArrow {
+  cursor: default;
+  color: lightgray;
+}
+
+.vendorcodeName {
+  position: relative;
+  width: 120px; /* ширина блока — можно изменить */
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.vendorcodeText {
+  display: inline-block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+  transition: all 0.3s ease;
+}
+
+/* При наведении */
+.vcCell:hover .vendorcodeText {
+  text-overflow: clip; /* убираем троеточие */
+  animation: marquee 6s linear infinite;
+  padding-right: 100%; /* чтобы строка полностью прокручивалась */
+}
+
+/* Анимация бегущей строки */
+@keyframes marquee {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
 }

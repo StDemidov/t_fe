@@ -9,15 +9,7 @@ const BodyCartToOrder = ({ vc, datesFilter }) => {
     <div className={styles.cell}>
       <LazyLoad key={uuidv4()} offset={100}>
         <div>
-          <LineplotVC data={vc.cartToOrder} dates={datesFilter} />
-          <div
-            className={styles.summary}
-            style={
-              vc.cartToOrderAVG ? { display: 'block' } : { display: 'none' }
-            }
-          >
-            Среднее: {vc.cartToOrderAVG} %
-          </div>
+          <LineplotVC data={vc.cartToOrder} dates={datesFilter} perc={true} />
         </div>
       </LazyLoad>
     </div>

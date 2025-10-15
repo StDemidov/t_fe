@@ -14,12 +14,6 @@ const BodyDailyEbitda = ({ vc, datesFilter }) => {
             raw_data={vc.rawDailyEbitda}
             dates={datesFilter}
           />
-          <div
-            className={styles.summary}
-            style={vc.debSum ? { display: 'block' } : { display: 'none' }}
-          >
-            Итого: {vc.debSum.toLocaleString()}
-          </div>
         </div>
       </LazyLoad>
     </div>

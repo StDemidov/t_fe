@@ -10,44 +10,24 @@
   font-family: 'BebasNeue', sans-serif;
 }
 
-.settingsTop {
+.headerBlock {
   display: flex;
   flex-direction: row;
-}
-
-.tableSettings {
-  border: none;
-  border-radius: 50%;
-  height: 30px;
-  width: 30px;
-  font-size: 20px;
-  background-color: rgba(255, 255, 255, 0);
-  margin-right: 5px;
-  color: #6a44d2;
-}
-
-.tableSettings:hover {
-  cursor: pointer;
-}
-
-.sortableItem {
-  font-size: 11px;
-  display: flex;
-  flex-direction: row;
-
-  gap: 3px;
-}
-
-.sortableItem label {
-  font-size: 11px;
-  display: flex;
-  flex-direction: row;
-  gap: 3px;
-}
-
-.sortableDiv {
-  height: 15px;
   align-items: center;
+  gap: 5px;
+}
+
+.columnSettingsBtn {
+  margin-left: 20px;
+  font-size: 20px;
+  color: gray;
+  transition: scale 0.2s ease, color 0.2s ease;
+}
+
+.columnSettingsBtn:hover {
+  scale: 1.2;
+  cursor: pointer;
+  color: #42209f;
 }
 
 .customCheckbox {

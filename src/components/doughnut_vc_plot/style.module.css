@@ -1,0 +1,39 @@
+.barDiv {
+  border-bottom: 1px solid #ddd;
+}
+
+.barWrapper {
+  position: relative;
+  width: 60px;
+  height: 60px;
+  text-align: center;
+}
+
+.textInside {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 16px;
+  font-weight: bold;
+  font-family: 'BebasNeue', sans-serif;
+  color: #623fc0;
+}
+
+.textInside span {
+  font-size: 12px;
+}
+
+/* .textDiff {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 1.5vh;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+} */

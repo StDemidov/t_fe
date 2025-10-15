@@ -21,6 +21,13 @@ export const getSum = (data, startDate, endDate) => {
   return sumData;
 };
 
+export const getSumNew = (data) => {
+  var sumData = data.reduce((accumulator, currentValue) => {
+    return accumulator + currentValue;
+  }, 0);
+  return sumData;
+};
+
 export const getDataForPeriodRaw = (data, raw_data, startDate, endDate) => {
   const todayDate = new Date();
   const startIndex = Math.ceil((todayDate - startDate) / (1000 * 60 * 60 * 24)); // Индекс начала
@@ -59,6 +66,14 @@ export const getSumRaw = (data, raw_data, startDate, endDate) => {
   return sumData;
 };
 
+export const getSumRawNew = (data, raw_data) => {
+  const currData = data.concat(raw_data);
+  var sumData = currData.reduce((accumulator, currentValue) => {
+    return accumulator + currentValue;
+  }, 0);
+  return sumData;
+};
+
 export const getAverage = (data, startDate, endDate) => {
   const currData = getDataForPeriod(data, startDate, endDate).filter(
     (value) => value !== 0
@@ -69,6 +84,15 @@ export const getAverage = (data, startDate, endDate) => {
     0
   );
   return Math.round(sumData / currData.length);
+};
+
+export const getAverageNew = (data) => {
+  if (data.length === 0) return 0;
+  const sumData = data.reduce(
+    (accumulator, currentValue) => accumulator + currentValue,
+    0
+  );
+  return Math.round(sumData / data.length);
 };
 
 export const getDateNumberArray = (dataArray) => {
@@ -94,4 +118,24 @@ export const getDateNumberArray = (dataArray) => {
   }
 
   return datesArray;
+};
+
+export const getDatesBetween = (startDate, endDate) => {
+  const start = new Date(startDate);
+  const end = new Date(endDate);
+  const dates = [];
+
+  for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
+    // создаём копию даты, чтобы избежать мутации
+    const current = new Date(d);
+
+    // форматируем без UTC-сдвига
+    const year = current.getFullYear();
+    const month = String(current.getMonth() + 1).padStart(2, '0');
+    const day = String(current.getDate()).padStart(2, '0');
+
+    dates.push(`${year}-${month}-${day}`);
+  }
+
+  return dates;
 };

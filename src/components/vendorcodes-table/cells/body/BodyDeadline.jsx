@@ -1,26 +1,34 @@
+import { BsDatabaseAdd } from 'react-icons/bs';
+
 import styles from './style.module.css';
 
 const BodyDeadline = ({ vc }) => {
   return !(vc.deadline === '-' || vc.deadline === 0) ? (
     <div className={`${styles.cell} ${styles.cellDeadline}`}>
-      <div
-        className={`${styles.deadlineDate} ${
-          vc.deadline > vc.turnoverWBBuyout
-            ? styles.deadlineGreen
-            : styles.deadlineRed
-        }`}
-      >
-        <div>{addDays(vc.deadline)}</div>
-        <div className={styles.deadlineDays}>({vc.deadline} д.)</div>
+      <div className={`${styles.deadlineDate}`}>
+        <div
+          className={`${
+            vc.deadline > vc.turnoverWBBuyout
+              ? styles.deadlineGreen
+              : styles.deadlineRed
+          }`}
+        >
+          {addDays(vc.deadline)}
+        </div>
+        <div className={styles.deadlineDays}>{vc.deadline} д.</div>
       </div>
-      <div className={styles.refillDate}>UPD: {vc.lastStockRefill}</div>{' '}
+      <div className={styles.refillDate}>
+        <BsDatabaseAdd /> <span>{vc.lastStockRefill}</span>
+      </div>
     </div>
   ) : (
     <div className={`${styles.cell} ${styles.cellDeadline}`}>
-      <div className={`${styles.deadlineDate} ${styles.deadlineGray}`}>
+      <div className={`${styles.deadlineGray}`}>
         <div>{vc.deadline}</div>
       </div>
-      <div className={styles.refillDate}>UPD: {vc.lastStockRefill}</div>{' '}
+      <div className={styles.refillDate}>
+        <BsDatabaseAdd /> <span>{vc.lastStockRefill}</span>
+      </div>{' '}
     </div>
   );
 };

@@ -1,9 +1,10 @@
 import { IoDiamondOutline } from 'react-icons/io5';
 import { RiDeleteBin2Fill } from 'react-icons/ri';
+import { FaRegCopy } from 'react-icons/fa';
 import { v4 as uuidv4 } from 'uuid';
 
 import styles from './style.module.css';
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { useState } from 'react';
 import { deleteABTest } from '../../../redux/slices/abTestsSlice';
@@ -11,11 +12,7 @@ import ConfirmModal from '../../confirm_modal/ConfirmModal';
 import { hostName } from '../../../utils/host';
 
 const AbTestCompleted = ({ test }) => {
-  const navigation = useNavigate();
   const dispatch = useDispatch();
-  const handleClickOnCard = () => {
-    navigation(`/tools/ab_tests/info/${test.testId}`);
-  };
 
   const [modalData, setModalData] = useState({
     isOpen: false,
@@ -43,12 +40,23 @@ const AbTestCompleted = ({ test }) => {
       dispatch(deleteABTest(`${hostName}/ab_tests/delete/${test.testId}`));
     });
   };
+
+  const handleCopy = (event) => {
+    event.stopPropagation(); // Останавливаем всплытие
+    event.preventDefault(); // Предотвращаем переход по ссылке (если нужно)
+
+    navigator.clipboard.writeText(
+      event.currentTarget.getAttribute('data-value')
+    );
+  };
   return (
     <>
-      <div
+      <Link
         className={styles.cardCompleted}
-        key={test.ad_id}
-        onClick={handleClickOnCard}
+        key={test.testId}
+        to={`/tools/ab_tests/info/${test.testId}`}
+        target="_blank"
+        style={{ textDecoration: 'none', color: 'inherit' }}
       >
         <div
           className={styles.cardImage}
@@ -72,7 +80,14 @@ const AbTestCompleted = ({ test }) => {
           </div>
           <div className={styles.infoRow}>
             <div className={styles.infoLabel}>SKU</div>
-            <div>{test.sku}</div>
+            <div>{test.vcName}</div>
+            <FaRegCopy
+              size={12}
+              data-value={test.vcName}
+              onClick={handleCopy}
+              style={{ cursor: 'pointer' }}
+              className={styles.copyIcon}
+            />
           </div>
         </div>
         <div className={styles.settingsInfo}>
@@ -101,7 +116,7 @@ const AbTestCompleted = ({ test }) => {
             <RiDeleteBin2Fill />
           </button>
         </div>
-      </div>
+      </Link>
       <ConfirmModal
         isOpen={modalData.isOpen}
         text={modalData.text}

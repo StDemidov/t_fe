@@ -65,7 +65,9 @@ const ColumnSettingsModal = ({
   return (
     <div className={styles.modalOverlay}>
       <div className={styles.modalContent}>
-        <h2>Настройка колонок</h2>
+        <div className={styles.headerBlock}>
+          <h2>Настройка колонок</h2>
+        </div>
 
         <DragDropContext onDragEnd={handleDragEnd}>
           <Droppable droppableId="columns">

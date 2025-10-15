@@ -24,6 +24,8 @@ const createABtestsLists = (response) => {
         isOnPause: item.is_on_pause,
         pauseReason: item.pause_reason,
         image: item.image,
+        category: item.category,
+        vcName: item.vc_name,
       };
     });
     if (key === 'active') {

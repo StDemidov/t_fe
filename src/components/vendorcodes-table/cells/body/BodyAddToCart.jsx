@@ -9,13 +9,7 @@ const BodyAddToCart = ({ vc, datesFilter }) => {
     <div className={styles.cell}>
       <LazyLoad key={uuidv4()} offset={100}>
         <div>
-          <LineplotVC data={vc.addToCart} dates={datesFilter} />
-          <div
-            className={styles.summary}
-            style={vc.addToCartAVG ? { display: 'block' } : { display: 'none' }}
-          >
-            Среднее: {vc.addToCartAVG} %
-          </div>
+          <LineplotVC data={vc.addToCart} dates={datesFilter} perc={true} />
         </div>
       </LazyLoad>
     </div>

@@ -13,10 +13,8 @@ export const calculateEbitdaWoAdsForCategories = (ebitdaDaily, adsCosts) => {
 };
 
 export const calculateEbitdaWoAds = (ebitdaDaily, adsCosts) => {
-  const ebitdaDailyArr = ebitdaDaily.split(',').map(Number);
-  const adsCostsArr = adsCosts.split(',').map(Number);
-  return ebitdaDailyArr.map((ebitda, index) => {
-    return Math.round(ebitda - adsCostsArr[index] * 0.8333);
+  return ebitdaDaily.map((ebitda, index) => {
+    return Math.round(ebitda - adsCosts[index] * 0.8333);
   });
 };
 
@@ -25,13 +23,9 @@ export const calculateEbitdaWoAdsRaw = (
   ebitdaDailyRaw,
   adsCosts
 ) => {
-  const ebitdaDailyArr = ebitdaDaily.split(',').map(Number);
-  const ebitdaDailyRawArr =
-    ebitdaDailyRaw === '' ? [] : ebitdaDailyRaw.split(',').map(Number);
-  const adsCostsArr = adsCosts.split(',').map(Number);
-  if (ebitdaDailyRawArr.length) {
-    const adsCostRawArr = adsCostsArr.slice(ebitdaDailyArr.length);
-    return ebitdaDailyRawArr.map((ebitda, index) => {
+  if (ebitdaDailyRaw.length) {
+    const adsCostRawArr = adsCosts.slice(ebitdaDaily.length);
+    return ebitdaDailyRaw.map((ebitda, index) => {
       return Math.round(ebitda - adsCostRawArr[index] * 0.8333);
     });
   } else return [];

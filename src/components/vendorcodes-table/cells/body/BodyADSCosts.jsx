@@ -10,19 +10,6 @@ const BodyADSCosts = ({ vc, datesFilter }) => {
       <LazyLoad key={uuidv4()} offset={100}>
         <div>
           <BarplotVC data={vc.adsCosts} dates={datesFilter} />
-          <div
-            className={styles.summary}
-            style={vc.adsCostsSum ? { display: 'block' } : { display: 'none' }}
-          >
-            <div
-              className={styles.summary}
-              style={
-                vc.adsCostsSum ? { display: 'block' } : { display: 'none' }
-              }
-            >
-              Итого: {vc.adsCostsSum.toLocaleString()}
-            </div>
-          </div>
         </div>
       </LazyLoad>
     </div>

@@ -1,9 +1,11 @@
+import { MdCurrencyRuble } from 'react-icons/md';
 import styles from './style.module.css';
 
 const FooterCPO = ({ avgCostPerOrder }) => {
   return (
     <div className={styles.cell}>
-      {avgCostPerOrder ? avgCostPerOrder.toLocaleString() : 0} ₽
+      <div>{avgCostPerOrder ? avgCostPerOrder.toLocaleString() : 0}</div>
+      <MdCurrencyRuble className={styles.ruble} />
     </div>
   );
 };

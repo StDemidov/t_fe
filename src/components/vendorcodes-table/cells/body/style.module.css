@@ -3,8 +3,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  min-width: 150px; /* Минимальная ширина ячейки */
-  max-width: 150px;
+  min-width: 170px; /* Минимальная ширина ячейки */
+  max-width: 170px;
   z-index: 1;
   font-family: 'BebasNeue', sans-serif;
   text-transform: uppercase;
@@ -181,8 +181,13 @@
 }
 
 .cellCPS {
-  min-width: 50px; /* Минимальная ширина ячейки */
-  max-width: 50px;
+  min-width: 90px; /* Минимальная ширина ячейки */
+  max-width: 90px;
+  font-size: 22px;
+  color: #623fc0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 
 .cellMSStock {
@@ -191,30 +196,50 @@
 }
 
 .cellEbitda {
-  min-width: 70px; /* Минимальная ширина ячейки */
-  max-width: 70px;
+  min-width: 90px; /* Минимальная ширина ячейки */
+  max-width: 90px;
+  display: flex;
+  align-items: center;
+  color: #623fc0;
+  font-size: 22px;
 }
 
 .cellBuyout {
-  min-width: 70px; /* Минимальная ширина ячейки */
-  max-width: 70px;
+  min-width: 90px; /* Минимальная ширина ячейки */
+  max-width: 90px;
 }
 
 .cellSelfPrice {
-  min-width: 100px; /* Минимальная ширина ячейки */
-  max-width: 100px;
+  min-width: 120px; /* Минимальная ширина ячейки */
+  max-width: 120px;
+  font-size: 25px;
+  display: flex;
+  flex-direction: column;
 }
 
 .cellSPP {
   min-width: 120px; /* Минимальная ширина ячейки */
   max-width: 120px;
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  color: #623fc0;
+  font-size: 22px;
 }
 
-.sppAmount {
-  font-size: 15px;
+.sppAmount,
+.refillDate {
+  font-size: 13px;
   color: gray;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  display: flex;
+  align-items: center;
+  position: absolute;
+  top: -30px;
+  gap: 2px;
+}
+
+.ruble {
+  font-size: 15px;
 }
 
 .cell:first-child {
@@ -235,31 +260,37 @@
 
 .campaignsStatuses {
   display: flex;
+  flex-direction: column;
   gap: 10px;
-  height: 20px;
 }
 
 .campaignDiv {
   border-radius: 3px;
   display: flex;
+
   justify-content: center;
   align-items: center;
-  width: 30px;
+  width: 50px;
   font-size: 13px;
+  font-weight: bold;
+  padding: 2px;
+  height: 18px;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-stretch: extra-condensed;
 }
 
 .campaignNotExist {
-  background-color: rgb(160, 11, 11);
+  background-color: rgba(255, 84, 84, 1);
   color: white;
 }
 
 .campaignIsActive {
-  background-color: rgb(14, 123, 74);
+  background-color: rgb(53, 111, 85);
   color: white;
 }
 
 .campaignIsPaused {
-  background-color: rgb(189, 111, 9);
+  background-color: rgb(234, 161, 64);
   color: white;
 }
 
@@ -271,27 +302,120 @@
 .deadlineDate {
   display: flex;
   flex-direction: row;
-  gap: 5px;
-}
-
-.refillDate {
-  color: gray;
-  font-size: 13px;
+  width: 110px;
   align-items: center;
+  justify-content: space-between;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
 
-.deadlineDays {
+.deadlineDays,
+.deadlineGray {
+  background-color: rgba(130, 84, 255, 0.3);
+  color: #623fc0;
+  text-transform: lowercase;
+  display: flex;
+  flex-direction: row;
+  padding: 2px;
   font-size: 13px;
+  font-weight: bold;
+  height: 18px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 3px;
+  width: 40px;
+}
+
+.deadlineGreen,
+.deadlineRed {
+  display: flex;
+  flex-direction: row;
+  color: white;
+  padding: 2px;
+  font-size: 13px;
+  font-weight: bold;
+  height: 18px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 3px;
+  width: 60px;
 }
 
 .deadlineGreen {
-  color: rgb(14, 123, 74);
+  background-color: rgb(53, 111, 85);
 }
 
 .deadlineRed {
-  color: rgb(160, 11, 11);
+  background-color: rgba(255, 84, 84, 1);
 }
 
-.deadlineGray {
+.ndsValue {
+  color: #623fc0;
+  z-index: 3;
+  background-color: white;
+  width: 100px;
+  font-size: 22px;
+}
+
+.ndsLabelWrapper {
+  position: relative;
+  height: 1.7vh; /* высота достаточная для одной строки */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.woNdsLabel,
+.ndsLabel {
+  position: absolute;
+  transition: transform 0.3s ease, opacity 0.15s ease;
+  text-align: center;
+  font-size: 13px;
+  white-space: nowrap;
+  z-index: -1;
   color: gray;
+}
+
+/* Состояние видимости - на своем месте */
+.woNdsLabel.visible,
+.ndsLabel.visible {
+  transform: translateY(0);
+  opacity: 1;
+  top: 30px;
+}
+
+/* Состояние скрытия - уезжает вверх */
+.woNdsLabel.hidden {
+  transform: translateY(-100%);
+  opacity: 0;
+}
+
+/* Состояние скрытия - уезжает вниз (для с НДС) */
+.ndsLabel.hidden {
+  transform: translateY(60%);
+  opacity: 0;
+}
+
+.turnoverCell {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  color: #623fc0;
+}
+
+.turnoverLabel {
+  background-color: rgba(130, 84, 255, 0.3);
+  width: 50px;
+  padding: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 3px;
+}
+
+.turnoverRow {
+  display: flex;
+  align-items: center;
+  width: 100px;
+  justify-content: space-between;
 }

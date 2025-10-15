@@ -43,7 +43,7 @@ const DateFilter = () => {
   };
 
   const handleCommitDates = () => {
-    if (startDate < endDate) {
+    if (startDate <= endDate) {
       dispatch(
         setDatesFilter({
           start: format(startDate, 'MM-dd-yyyy'),

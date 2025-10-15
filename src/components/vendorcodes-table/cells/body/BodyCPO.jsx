@@ -10,14 +10,6 @@ const BodyCPO = ({ vc, datesFilter }) => {
       <LazyLoad key={uuidv4()} offset={100}>
         <div>
           <LineplotVC data={vc.costPerOrder} dates={datesFilter} />
-          <div
-            className={styles.summary}
-            style={
-              vc.costPerOrderAVG ? { display: 'block' } : { display: 'none' }
-            }
-          >
-            Среднее: {vc.costPerOrderAVG} ₽
-          </div>
         </div>
       </LazyLoad>
     </div>

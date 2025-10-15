@@ -10,12 +10,6 @@ const BodyOrders = ({ vc, datesFilter }) => {
       <LazyLoad key={uuidv4()} offset={100}>
         <div>
           <BarplotVC data={vc.wbOrdersTotal} dates={datesFilter} />
-          <div
-            className={styles.summary}
-            style={vc.ordersSum ? { display: 'block' } : { display: 'none' }}
-          >
-            Итого: {vc.ordersSum.toLocaleString()}
-          </div>
         </div>
       </LazyLoad>
     </div>

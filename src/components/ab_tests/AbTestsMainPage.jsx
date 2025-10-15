@@ -14,11 +14,18 @@ import { hostName } from '../../utils/host';
 import AbTestCompleted from './ab_tests_cards/AbTestCompleted';
 import AbTestActive from './ab_tests_cards/AbTestActive';
 import AbTestFailed from './ab_tests_cards/AbTestFailed';
+import {
+  selectAbTestActiveVCNameFilter,
+  selectAbTestCompletedVCNameFilter,
+} from '../../redux/slices/filterSlice';
+import VCNameFilter from './filters/vc_name_filter/VCNameFilter';
 
 const AbTestsMainPage = () => {
   const navigation = useNavigate();
   const dispatch = useDispatch();
   const abTests = useSelector(selectABTests);
+  const activeVCNameFilter = useSelector(selectAbTestActiveVCNameFilter);
+  const completedVCNameFilter = useSelector(selectAbTestCompletedVCNameFilter);
 
   useEffect(() => {
     dispatch(fetchABTests(`${hostName}/ab_tests/all_tests`));
@@ -27,6 +34,34 @@ const AbTestsMainPage = () => {
   const handleClickOnCreate = () => {
     navigation(`/tools/ab_tests/create`);
   };
+
+  const completedAbTests = abTests.completed.filter((item) => {
+    let vcNameMatch = true;
+    if (completedVCNameFilter.length !== 0) {
+      if (isNaN(completedVCNameFilter)) {
+        vcNameMatch = item.vcName
+          .toLowerCase()
+          .includes(completedVCNameFilter.toLowerCase());
+      } else {
+        vcNameMatch = item.sku.toLowerCase().includes(completedVCNameFilter);
+      }
+    }
+    return vcNameMatch;
+  });
+
+  const activeAbTests = abTests.active.filter((item) => {
+    let vcNameMatch = true;
+    if (activeVCNameFilter.length !== 0) {
+      if (isNaN(activeVCNameFilter)) {
+        vcNameMatch = item.vcName
+          .toLowerCase()
+          .includes(activeVCNameFilter.toLowerCase());
+      } else {
+        vcNameMatch = item.sku.toLowerCase().includes(activeVCNameFilter);
+      }
+    }
+    return vcNameMatch;
+  });
 
   return (
     <section>
@@ -41,20 +76,12 @@ const AbTestsMainPage = () => {
           <div className={styles.completedTests}>
             <div className={styles.blockTestsHeader}>
               <IoIosCheckmarkCircle color="green" /> Завершенные тесты
-              <div className={styles.searchBox}>
-                <IoSearch />
-                <input
-                  disabled={true}
-                  type="text"
-                  placeholder="SKU или артикул"
-                  className={styles.searchInput}
-                />
-              </div>
+              <VCNameFilter type={'completed'} />
             </div>
             <div className={styles.blockBody}>
-              {abTests.completed.length ? (
+              {completedAbTests.length ? (
                 <>
-                  {abTests.completed.map((test) => {
+                  {completedAbTests.map((test) => {
                     return <AbTestCompleted test={test} key={test.testId} />;
                   })}{' '}
                 </>
@@ -72,20 +99,12 @@ const AbTestsMainPage = () => {
             <div className={styles.blockTestsHeader}>
               <RiTestTubeFill color="violet" />
               Активные тесты
-              <div className={styles.searchBox}>
-                <IoSearch />
-                <input
-                  disabled={true}
-                  type="text"
-                  placeholder="SKU или артикул"
-                  className={styles.searchInput}
-                />
-              </div>
+              <VCNameFilter type={'active'} />
             </div>
             <div className={styles.blockBody}>
-              {abTests.active.length ? (
+              {activeAbTests.length ? (
                 <>
-                  {abTests.active.map((test) => {
+                  {activeAbTests.map((test) => {
                     return <AbTestActive test={test} key={test.testId} />;
                   })}
                 </>

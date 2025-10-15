@@ -14,12 +14,6 @@ const BodyDailyEbitdaWOAds = ({ vc, datesFilter }) => {
             raw_data={vc.dailyEbitdaWoAdsRaw}
             dates={datesFilter}
           />
-          <div
-            className={styles.summary}
-            style={vc.debWOAdsSum ? { display: 'block' } : { display: 'none' }}
-          >
-            Итого: {vc.debWOAdsSum.toLocaleString()}
-          </div>
         </div>
       </LazyLoad>
     </div>

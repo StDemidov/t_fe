@@ -1,10 +1,16 @@
 import styles from './style.module.css';
-import { PiEmptyDuotone } from 'react-icons/pi';
 
 const BodyTurnover = ({ vc }) => {
   return (
-    <div className={styles.cell}>
-      {vc.turnoverWB === 0 ? <PiEmptyDuotone color="red" /> : vc.turnoverWB}
+    <div className={`${styles.cell} ${styles.turnoverCell}`}>
+      <div className={styles.turnoverRow}>
+        <div className={styles.turnoverLabel}>Заказы</div>
+        <span>{vc.turnoverWB}</span>
+      </div>
+      <div className={styles.turnoverRow}>
+        <div className={styles.turnoverLabel}>Выкупы</div>
+        <span>{vc.turnoverWBBuyout}</span>
+      </div>
     </div>
   );
 };

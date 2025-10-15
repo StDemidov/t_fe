@@ -1,3 +1,4 @@
+import { MdCurrencyRuble } from 'react-icons/md';
 import styles from './style.module.css';
 
 const FooterClickToOrder = ({ avgClickToOrder }) => {

@@ -60,6 +60,14 @@ const initialState = {
     campName: '',
     sortingType: 'CTR ↓',
   },
+  abTest: {
+    completed: {
+      vcName: '',
+    },
+    active: {
+      vcName: '',
+    },
+  },
 };
 
 const filterSlice = createSlice({
@@ -220,6 +228,12 @@ const filterSlice = createSlice({
     setBarcodesVCNameFilter: (state, action) => {
       state.barcode.vCName = action.payload;
     },
+    setABTestsActiveVCNameFilter: (state, action) => {
+      state.abTest.active.vcName = action.payload;
+    },
+    setABTestsCompletedVCNameFilter: (state, action) => {
+      state.abTest.completed.vcName = action.payload;
+    },
     setCategoryNameFilter: (state, action) => {
       state.category.categoryName = action.payload;
     },
@@ -310,6 +324,8 @@ export const {
   resetSkusOnDrainTagsClothFilter,
   setSkusOnDrainTagsOthersFilter,
   resetSkusOnDrainTagsOthersFilter,
+  setABTestsActiveVCNameFilter,
+  setABTestsCompletedVCNameFilter,
 } = filterSlice.actions;
 
 export const selectBarcodeCategoryFilter = (state) =>
@@ -380,5 +396,9 @@ export const selectAucCampCampNameFilter = (state) =>
   state.filter.auсCmpgns.campName;
 export const selectAucCampStatusFilter = (state) =>
   state.filter.auсCmpgns.status;
+export const selectAbTestActiveVCNameFilter = (state) =>
+  state.filter.abTest.active.vcName;
+export const selectAbTestCompletedVCNameFilter = (state) =>
+  state.filter.abTest.completed.vcName;
 
 export default filterSlice.reducer;

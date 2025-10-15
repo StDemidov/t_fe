@@ -9,17 +9,12 @@ const BodyWBStocks = ({ vc, datesFilter }) => {
     <div className={styles.cell}>
       <LazyLoad key={uuidv4()} offset={100}>
         <div>
-          <BarplotVC data={vc.wbStocksTotal} dates={datesFilter} />
-          <div
-            className={styles.summary}
-            style={
-              getSum(vc.lastWBstock)
-                ? { display: 'block' }
-                : { display: 'none' }
-            }
-          >
-            Текущие: {vc.lastWBstock.at(-1).toLocaleString()}
-          </div>
+          <BarplotVC
+            data={vc.wbStocksTotal}
+            dates={datesFilter}
+            need_sum={true}
+            last_item={true}
+          />
         </div>
       </LazyLoad>
     </div>

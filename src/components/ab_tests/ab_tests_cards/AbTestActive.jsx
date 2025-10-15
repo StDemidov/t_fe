@@ -1,15 +1,14 @@
 import { RiDeleteBin2Fill } from 'react-icons/ri';
 import { MdPauseCircleFilled } from 'react-icons/md';
-import { LuPause } from 'react-icons/lu';
+import { FaRegCopy } from 'react-icons/fa';
 import { v4 as uuidv4 } from 'uuid';
 
-import { FaPause, FaPlay } from 'react-icons/fa';
-import { useNavigate } from 'react-router-dom';
+import { FaPlay } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { useState } from 'react';
 
 import styles from './style.module.css';
-import TestingAnimation from '../../testing_animation/TestingAnimation';
 import {
   deleteABTest,
   pauseABTest,
@@ -19,7 +18,6 @@ import ConfirmModal from '../../confirm_modal/ConfirmModal';
 import { hostName } from '../../../utils/host';
 
 const AbTestActive = ({ test }) => {
-  const navigation = useNavigate();
   const dispatch = useDispatch();
 
   const [modalData, setModalData] = useState({
@@ -43,9 +41,6 @@ const AbTestActive = ({ test }) => {
     setModalData({ ...modalData, isOpen: false });
   };
 
-  const handleClickOnCard = () => {
-    navigation(`/tools/ab_tests/info/${test.testId}`);
-  };
   const handleClickOnDelete = (e) => {
     openConfirmModal(`Вы уверены, что хотите удалить ${test.name}?`, (e) => {
       dispatch(deleteABTest(`${hostName}/ab_tests/delete/${test.testId}`));
@@ -68,17 +63,27 @@ const AbTestActive = ({ test }) => {
       dispatch(startABTest(`${hostName}/ab_tests/run/${test.testId}`));
     });
   };
+  const handleCopy = (event) => {
+    event.stopPropagation(); // Останавливаем всплытие
+    event.preventDefault(); // Предотвращаем переход по ссылке (если нужно)
+
+    navigator.clipboard.writeText(
+      event.currentTarget.getAttribute('data-value')
+    );
+  };
 
   return (
     <>
-      <div
+      <Link
         className={
           test.isOnPause
             ? `${styles.cardActive} ${styles.cardPaused}`
             : `${styles.cardActive}`
         }
-        key={test.ad_id}
-        onClick={handleClickOnCard}
+        key={test.testId}
+        to={`/tools/ab_tests/info/${test.testId}`}
+        target="_blank"
+        style={{ textDecoration: 'none', color: 'inherit' }}
       >
         <div
           className={styles.cardImage}
@@ -88,11 +93,16 @@ const AbTestActive = ({ test }) => {
             }?v=${uuidv4()})`,
           }}
         >
-          {!test.isOnPause ? (
+          <div
+            className={`${
+              !test.isOnPause ? styles.pointActive : styles.pointInactive
+            }`}
+          ></div>
+          {/* {!test.isOnPause ? (
             <TestingAnimation />
           ) : (
             <FaPause title={test.pauseReason} className={styles.pauseNotif} />
-          )}
+          )} */}
         </div>
         <div className={styles.baseInfo}>
           <div className={styles.infoRow}>
@@ -106,7 +116,14 @@ const AbTestActive = ({ test }) => {
           </div>
           <div className={styles.infoRow}>
             <div className={styles.infoLabel}>SKU</div>
-            <div>{test.sku}</div>
+            <div>{test.vcName}</div>
+            <FaRegCopy
+              size={12}
+              data-value={test.vcName}
+              onClick={handleCopy}
+              style={{ cursor: 'pointer' }}
+              className={styles.copyIcon}
+            />
           </div>
         </div>
         <div className={styles.settingsInfo}>
@@ -158,7 +175,7 @@ const AbTestActive = ({ test }) => {
             <RiDeleteBin2Fill />
           </button>
         </div>
-      </div>
+      </Link>
       <ConfirmModal
         isOpen={modalData.isOpen}
         text={modalData.text}

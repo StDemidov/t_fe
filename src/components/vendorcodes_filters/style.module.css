@@ -2,6 +2,7 @@
   display: flex;
   margin-bottom: 25px;
   align-items: center;
+  z-index: 100;
 }
 
 /* From Uiverse.io by vinodjangid07 */

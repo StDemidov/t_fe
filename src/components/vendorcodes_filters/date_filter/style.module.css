@@ -13,7 +13,7 @@
   color: #8254ff;
   margin-right: 10px;
   position: relative;
-  z-index: 1000;
+  z-index: 998;
 }
 
 .periodsBlock {

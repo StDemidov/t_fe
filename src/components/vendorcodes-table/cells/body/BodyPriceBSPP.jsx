@@ -10,16 +10,6 @@ const BodyPriceBSPP = ({ vc, datesFilter }) => {
       <LazyLoad key={uuidv4()} offset={100}>
         <div>
           <LineplotVC data={vc.priceBeforeDisc} dates={datesFilter} />
-          <div
-            className={styles.summary}
-            style={
-              vc.priceBeforeDisc.at(-1)
-                ? { display: 'block' }
-                : { display: 'none' }
-            }
-          >
-            Последняя: {vc.priceBeforeDisc.at(-1).toLocaleString()} ₽
-          </div>
         </div>
       </LazyLoad>
     </div>

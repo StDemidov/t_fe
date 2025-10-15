@@ -14,12 +14,6 @@ const BodySales = ({ vc, datesFilter }) => {
             raw_data={vc.rawSales}
             dates={datesFilter}
           />
-          <div
-            className={styles.summary}
-            style={vc.salesSum ? { display: 'block' } : { display: 'none' }}
-          >
-            Итого: {vc.salesSum.toLocaleString()}
-          </div>
         </div>
       </LazyLoad>
     </div>

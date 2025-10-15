@@ -1,7 +1,7 @@
 import LazyLoad from 'react-lazyload';
 import { Link } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useRef } from 'react';
 import { FaRegCopy } from 'react-icons/fa';
 
@@ -16,7 +16,15 @@ import {
   selectAvailableTagsMain,
   selectAvailableTagsCloth,
   selectAvailableTagsOthers,
+  selectPageVendorcodes,
+  setPageVendorcodes,
 } from '../../redux/slices/vendorCodeSlice';
+
+import { FaAngleLeft } from 'react-icons/fa6';
+import { FaAnglesLeft } from 'react-icons/fa6';
+
+import { FaAngleRight } from 'react-icons/fa6';
+import { FaAnglesRight } from 'react-icons/fa6';
 
 import HeaderTags from './cells/header/HeaderTags';
 import HeaderCPO from './cells/header/HeaderCPO';
@@ -95,6 +103,9 @@ import FooterTagsOthers from './cells/footer/FooterTagsOthers';
 import FooterTagsCloth from './cells/footer/FooterTagsCloth';
 import FooterCampaigns from './cells/footer/FooterCampaigns';
 import FooterDeadline from './cells/footer/FooterDeadline';
+import BodyROI from './cells/body/BodyROI';
+import HeaderROI from './cells/header/HeaderROI';
+import FooterROI from './cells/footer/FooterROI';
 
 const сolRender = {
   tags: {
@@ -233,6 +244,11 @@ const сolRender = {
     renderHeader: () => <HeaderCPS key={uuidv4()} />,
     renderFooter: () => <FooterCPS key={uuidv4()} />,
   },
+  roi: {
+    render: (vc, datesFilter) => <BodyROI vc={vc} key={uuidv4()} />,
+    renderHeader: () => <HeaderROI key={uuidv4()} />,
+    renderFooter: () => <FooterROI key={uuidv4()} />,
+  },
   buyout: {
     render: (vc, datesFilter) => <BodyBuyout vc={vc} key={uuidv4()} />,
     renderHeader: () => <HeaderBuyout key={uuidv4()} />,
@@ -297,28 +313,16 @@ const сolRender = {
   },
 };
 
-const VendorCodesTable = ({ data, columns }) => {
+const VendorCodesTable = ({ data, columns, dataSplitted }) => {
+  const pagesNumber = dataSplitted?.length;
   const vcNameFilter = useSelector(selectVCNameFilter);
   const datesFilter = useSelector(selectVCDatesFilter);
   const availableTagsMain = useSelector(selectAvailableTagsMain);
   const availableTagsCloth = useSelector(selectAvailableTagsCloth);
   const availableTagsOthers = useSelector(selectAvailableTagsOthers);
   const tableRef = useRef(null);
-
-  const highlightMatch = (text, filter) => {
-    if (filter.length === 0) return text;
-    const regex = new RegExp(`(${filter})`, 'gi');
-    return text.split(regex).map((substring, i) => {
-      if (substring.toLowerCase() === filter.toLowerCase()) {
-        return (
-          <span key={i} className={styles.highlight}>
-            {substring}
-          </span>
-        );
-      }
-      return substring;
-    });
-  };
+  const currentPage = useSelector(selectPageVendorcodes);
+  const dispatch = useDispatch();
 
   const handleCopy = (event) => {
     event.stopPropagation(); // Останавливаем всплытие
@@ -328,6 +332,40 @@ const VendorCodesTable = ({ data, columns }) => {
       event.currentTarget.getAttribute('data-value')
     );
   };
+
+  const handleClickOnPage = (event) => {
+    const id = event.currentTarget.getAttribute('data-value');
+    dispatch(setPageVendorcodes(id));
+  };
+  const handleClickOnNextPage = (event) => {
+    if (currentPage !== pagesArray.length) {
+      dispatch(setPageVendorcodes(currentPage + 1));
+    }
+  };
+  const handleClickOnPrevPage = (event) => {
+    if (currentPage > 1) {
+      dispatch(setPageVendorcodes(currentPage - 1));
+    }
+  };
+  const handleClickOnFirstPage = (event) => {
+    if (currentPage > 1) {
+      dispatch(setPageVendorcodes(1));
+    }
+  };
+  const handleClickOnLastPage = (event) => {
+    if (currentPage !== pagesArray.length - 1) {
+      dispatch(setPageVendorcodes(pagesArray.length));
+    }
+  };
+
+  const pagesArray = [];
+  for (let i = 1; i <= pagesNumber; i++) {
+    pagesArray.push(i);
+  }
+
+  if (currentPage > pagesArray.length) {
+    dispatch(setPageVendorcodes(1));
+  }
 
   const avg_ebitda = Math.round(
     data.reduce((total, next) => total + next.ebitda, 0) / data.length
@@ -387,104 +425,153 @@ const VendorCodesTable = ({ data, columns }) => {
   };
 
   return (
-    <div className={styles.tableWrapper} ref={tableRef}>
-      <div className={styles.table}>
-        <div className={styles.colForHiding}></div>
-        <div className={`${styles.row} ${styles.tableHeader}`}>
-          <div className={`${styles.cell} ${styles.fixedColumn}`} />
-          <div className={styles.cell}>Артикул</div>
-          {columns.map((col) => {
-            if (!col.hidden) {
-              return сolRender[col.key].renderHeader();
-            }
-          })}
-        </div>
-        {data.map((vc) => {
-          return (
-            <div className={styles.row} key={vc.id}>
-              <div className={`${styles.cell} ${styles.fixedColumn}`}>
-                <div className={styles.imageBlock}>
-                  <div className={styles.abc}>
-                    <span>{vc.abcCtgryCurrent}</span>
-                    <span>{vc.abcCurrent}</span>
-                  </div>
-                  <div className={styles.imageSmall}>
-                    <LazyLoad display="none" key={uuidv4()} overflow>
-                      {vc.image ? (
-                        <img
-                          src={vc.image}
-                          className={styles.zoomImage}
-                          alt="Фото"
-                        />
-                      ) : (
-                        'Фото'
-                      )}
-                    </LazyLoad>
-                  </div>
-                </div>
-              </div>
-              <Link
-                className={`${styles.cell} ${styles.vcCell}`}
-                to={`/vendorcodes/${vc.id}`}
-                target="_blank"
-                style={{ textDecoration: 'none', color: 'inherit' }}
-              >
-                <div data-value={vc.id}>
-                  {highlightMatch(vc.vendorCode, vcNameFilter)}
-                </div>
-                <FaRegCopy
-                  size={12}
-                  data-value={vc.vendorCode}
-                  onClick={handleCopy}
-                  style={{ cursor: 'pointer' }}
-                  className={styles.copyIcon}
-                />
-              </Link>
-              {columns.map((col) => {
-                if (!col.hidden) {
-                  if (
-                    col.key !== 'tags' &&
-                    col.key !== 'tagsCloth' &&
-                    col.key !== 'tagsOthers'
-                  ) {
-                    return сolRender[col.key].render(vc, datesFilter);
-                  } else {
-                    if (col.key == 'tags') {
-                      return сolRender[col.key].render(
-                        vc,
-                        availableTagsMain,
-                        tableRef
-                      );
-                    } else if (col.key == 'tagsCloth') {
-                      return сolRender[col.key].render(
-                        vc,
-                        availableTagsCloth,
-                        tableRef
-                      );
-                    } else {
-                      return сolRender[col.key].render(
-                        vc,
-                        availableTagsOthers,
-                        tableRef
-                      );
-                    }
-                  }
-                }
-              })}
+    <div className={styles.mainWrapper}>
+      <div className={styles.tableWrapper} ref={tableRef}>
+        <div className={styles.table}>
+          <div className={styles.colForHiding}></div>
+          <div className={`${styles.row} ${styles.tableHeader}`}>
+            <div className={`${styles.cell} ${styles.fixedColumn}`} />
+            <div className={styles.cell} style={{ color: 'black' }}>
+              Артикул
             </div>
-          );
-        })}
-        <div className={`${styles.row} ${styles.tableFooter}`}>
-          <div className={`${styles.cell} ${styles.fixedColumn}`} />
-          <div className={styles.cell}>Количество: {data.length}</div>
-          {columns.map((col) => {
-            if (!col.hidden && footerVars[col.key]) {
-              return сolRender[col.key].renderFooter(footerVars[col.key]);
-            } else if (!col.hidden && !footerVars[col.key]) {
-              return сolRender[col.key].renderFooter();
-            }
-          })}
+            {columns.map((col) => {
+              if (!col.hidden) {
+                return сolRender[col.key].renderHeader();
+              }
+            })}
+          </div>
+          {dataSplitted[currentPage - 1] ? (
+            dataSplitted[currentPage - 1].map((vc) => {
+              return (
+                <div className={styles.row} key={vc.id}>
+                  <div className={`${styles.cell} ${styles.fixedColumn}`}>
+                    <div className={styles.imageBlock}>
+                      <div className={styles.abc}>
+                        <span>{vc.abcCtgryCurrent}</span>
+                        <span>{vc.abcCurrent}</span>
+                      </div>
+                      <div className={styles.imageSmall}>
+                        <LazyLoad display="none" key={uuidv4()} overflow>
+                          {vc.image ? (
+                            <img
+                              src={vc.image}
+                              className={styles.zoomImage}
+                              alt="Фото"
+                            />
+                          ) : (
+                            'Фото'
+                          )}
+                        </LazyLoad>
+                      </div>
+                    </div>
+                  </div>
+                  <Link
+                    className={`${styles.cell} ${styles.vcCell}`}
+                    to={`/vendorcodes/${vc.id}`}
+                    target="_blank"
+                    style={{ textDecoration: 'none', color: 'inherit' }}
+                  >
+                    <div className={styles.vendorcodeName} data-value={vc.id}>
+                      <div className={styles.vendorcodeText}>
+                        {vc.vendorCode}
+                      </div>
+                    </div>
+                    <FaRegCopy
+                      size={12}
+                      data-value={vc.vendorCode}
+                      onClick={handleCopy}
+                      style={{ cursor: 'pointer' }}
+                      className={styles.copyIcon}
+                    />
+                  </Link>
+                  {columns.map((col) => {
+                    if (!col.hidden) {
+                      if (
+                        col.key !== 'tags' &&
+                        col.key !== 'tagsCloth' &&
+                        col.key !== 'tagsOthers'
+                      ) {
+                        return сolRender[col.key].render(vc, datesFilter);
+                      } else {
+                        if (col.key == 'tags') {
+                          return сolRender[col.key].render(
+                            vc,
+                            availableTagsMain,
+                            tableRef
+                          );
+                        } else if (col.key == 'tagsCloth') {
+                          return сolRender[col.key].render(
+                            vc,
+                            availableTagsCloth,
+                            tableRef
+                          );
+                        } else {
+                          return сolRender[col.key].render(
+                            vc,
+                            availableTagsOthers,
+                            tableRef
+                          );
+                        }
+                      }
+                    }
+                  })}
+                </div>
+              );
+            })
+          ) : (
+            <></>
+          )}
+          <div className={`${styles.row} ${styles.tableFooter}`}>
+            <div className={`${styles.cell} ${styles.fixedColumn}`} />
+            <div className={styles.cell} style={{ color: 'black' }}>
+              Количество: {data.length}
+            </div>
+            {columns.map((col) => {
+              if (!col.hidden && footerVars[col.key]) {
+                return сolRender[col.key].renderFooter(footerVars[col.key]);
+              } else if (!col.hidden && !footerVars[col.key]) {
+                return сolRender[col.key].renderFooter();
+              }
+            })}
+          </div>
         </div>
+      </div>
+      <div className={styles.paginatorDefault}>
+        <FaAnglesLeft
+          className={`${
+            currentPage > 1 ? styles.pageArrow : styles.disabledArrow
+          }`}
+          onClick={handleClickOnFirstPage}
+        />
+        <FaAngleLeft
+          className={`${
+            currentPage > 1 ? styles.pageArrow : styles.disabledArrow
+          }`}
+          onClick={handleClickOnPrevPage}
+        />
+        <div
+          className={`${styles.pageIcon} ${styles.currentPage}`}
+          data-value={currentPage}
+          key={'page_' + currentPage}
+        >
+          Страница {currentPage} из {pagesArray.length}
+        </div>
+        <FaAngleRight
+          className={`${
+            currentPage !== pagesArray.length
+              ? styles.pageArrow
+              : styles.disabledArrow
+          }`}
+          onClick={handleClickOnNextPage}
+        />
+        <FaAnglesRight
+          className={`${
+            currentPage !== pagesArray.length
+              ? styles.pageArrow
+              : styles.disabledArrow
+          }`}
+          onClick={handleClickOnLastPage}
+        />
       </div>
     </div>
   );

@@ -19,7 +19,7 @@ const DoughnutPlot = ({ buyoutPercAVG, benchmark }) => {
       {
         data: [buyoutPercAVG, 100 - buyoutPercAVG],
         backgroundColor: [
-          isAboveBenchmark ? 'rgba(130, 84, 255, 1)' : 'rgba(255, 84, 84, 1)', // зелёный или красный
+          isAboveBenchmark ? '#623fc0' : 'rgba(255, 84, 84, 1)', // зелёный или красный
           '#e0e0e0', // серый фон
         ],
         borderWidth: 0,

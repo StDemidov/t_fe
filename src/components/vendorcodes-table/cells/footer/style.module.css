@@ -3,17 +3,22 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  min-width: 150px; /* Минимальная ширина ячейки */
-  max-width: 150px;
+  min-width: 170px; /* Минимальная ширина ячейки */
+  max-width: 170px;
   z-index: 1;
   font-family: 'BebasNeue', sans-serif;
   text-transform: uppercase;
   position: relative;
+  font-size: 20px;
+  color: rgb(46, 46, 46);
 }
 
 .cellCPS {
-  min-width: 50px; /* Минимальная ширина ячейки */
-  max-width: 50px;
+  min-width: 90px; /* Минимальная ширина ячейки */
+  max-width: 90px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .cellMSStock {
@@ -22,18 +27,22 @@
 }
 
 .cellEbitda {
-  min-width: 70px; /* Минимальная ширина ячейки */
-  max-width: 70px;
+  min-width: 90px; /* Минимальная ширина ячейки */
+  max-width: 90px;
+  display: flex;
+  align-items: center;
+  font-size: 20px;
+  justify-content: center;
 }
 
 .cellBuyout {
-  min-width: 70px; /* Минимальная ширина ячейки */
-  max-width: 70px;
+  min-width: 90px; /* Минимальная ширина ячейки */
+  max-width: 90px;
 }
 
 .cellSelfPrice {
-  min-width: 100px; /* Минимальная ширина ячейки */
-  max-width: 100px;
+  min-width: 120px; /* Минимальная ширина ячейки */
+  max-width: 120px;
 }
 
 .cellSPP {
@@ -57,12 +66,23 @@
   font-family: 'Verdana', Verdana, sans-serif;
 }
 
-.avgPriceFooter {
+/* .avgPriceFooter {
   color: #000;
-}
+} */
 
-.avgPriceFooterDiv {
+.avgPriceFooter {
   display: flex;
   flex-direction: row;
-  gap: 5px;
+  align-items: center;
+  font-size: 12px;
+}
+
+.avgPriceFooter .ruble {
+  font-size: 10px;
+  padding-bottom: 1px;
+}
+
+.ruble {
+  font-size: 15px;
+  padding-bottom: 3px;
 }
