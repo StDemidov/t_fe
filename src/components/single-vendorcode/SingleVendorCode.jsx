@@ -32,6 +32,7 @@ import {
 } from '../../utils/dataSlicing';
 
 import { calculateCostPerOrder } from '../../utils/calculations';
+import BarplotVCSingle from '../barplot_vc_single/BarplotVCSingle';
 
 const SingleVendorCode = () => {
   const dispatch = useDispatch();
@@ -344,7 +345,7 @@ const SingleVendorCode = () => {
                         </div>
                         <div className={styles.barcodeCell}>
                           <div className={styles.barcodePlot}>
-                            <BarplotVC
+                            <BarplotVCSingle
                               data={barcode.wb_orders_daily
                                 .split(',')
                                 .map(Number)}
@@ -375,7 +376,7 @@ const SingleVendorCode = () => {
                         </div>
                         <div className={styles.barcodeCell}>
                           <div className={styles.barcodePlot}>
-                            <BarplotVC
+                            <BarplotVCSingle
                               data={barcode.wb_stocks_daily
                                 .split(',')
                                 .map(Number)}
