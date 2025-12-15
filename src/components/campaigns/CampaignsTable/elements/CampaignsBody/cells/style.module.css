@@ -29,17 +29,41 @@
   .nameAndDate {
     min-width: 140px;
     max-width: 140px;
+    overflow: hidden;
+    white-space: nowrap;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     gap: 5px;
+    padding: 0 10px 0 10px;
     .skuName {
-      font-size: 12px;
+      font-size: 13px;
+      display: inline-block;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 100%;
+      transition: all 0.3s ease;
     }
     .creationDate {
       font-size: 10px;
     }
+  }
+  .nameAndDate:hover .skuName {
+    text-overflow: clip; /* убираем троеточие */
+    animation: marquee 6s linear infinite;
+    padding-right: 100%; /* чтобы строка полностью прокручивалась */
+  }
+}
+
+/* Анимация бегущей строки */
+@keyframes marquee {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-100%);
   }
 }
 

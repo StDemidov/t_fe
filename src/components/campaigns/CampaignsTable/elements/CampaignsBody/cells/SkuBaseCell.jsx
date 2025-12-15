@@ -27,7 +27,14 @@ const SkuBaseCell = ({ sku, image, skuName, creationDate, cellStyle }) => {
         }}
       ></div>
       <div className={styles.nameAndDate}>
-        <div className={styles.skuName}>{skuName}</div>
+        <div
+          className={styles.skuName}
+          data-value={skuName}
+          onClick={handleCopy}
+          style={{ cursor: 'copy' }}
+        >
+          {skuName}
+        </div>
         <div className={styles.creationDate}>
           {creationDate ? creationDate : '-'}
         </div>

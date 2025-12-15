@@ -11,6 +11,8 @@ import { setError } from './errorSlice';
 import { setNotification } from './notificationSlice';
 import createAutoCampDefaultSettings from '../../utils/createAutoCampDefaultSettings';
 
+import { clearCredentials } from './authSlice';
+
 const initialState = {
   campaigns: [],
   last_update: '',
@@ -77,10 +79,15 @@ export const createCampaigns = createAsyncThunk(
   async ({ data, url }, thunkAPI) => {
     try {
       const res = await api.post(url, data);
-      thunkAPI.dispatch(setNotification('Кампаниb успешно создана!'));
+      thunkAPI.dispatch(setNotification('Кампании успешно созданы!'));
       return res.data;
     } catch (error) {
-      thunkAPI.dispatch(setError(error.message));
+      if (error.request.status == 401) {
+        thunkAPI.dispatch(clearCredentials());
+        thunkAPI.dispatch(setError('Повторите вход!'));
+      } else {
+        thunkAPI.dispatch(setError(error.message));
+      }
     }
   }
 );
