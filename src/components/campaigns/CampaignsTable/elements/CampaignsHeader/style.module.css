@@ -1,0 +1,24 @@
+.headerCell {
+  display: flex;
+  height: 60px;
+  align-items: center;
+  justify-content: center;
+  background-color: #eff0fe;
+}
+
+.tableHeader {
+  display: flex;
+  background-color: #eff0fe;
+  align-items: center;
+  height: 60px;
+  justify-content: space-between;
+  width: 100%;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  min-width: 100%;
+  box-shadow: 0px -3px 0px 0px #f0f8ff;
+  font-family: 'BebasNeue', sans-serif;
+  font-size: 18px;
+  color: #623fc0;
+}

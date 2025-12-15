@@ -1,0 +1,76 @@
+.tableWrapper {
+  overflow-x: auto;
+}
+
+.skuBaseCell {
+  min-width: 200px;
+  max-width: 200px;
+  position: sticky;
+  left: 0;
+  z-index: 9;
+}
+
+.statusCell {
+  min-width: 140px;
+  max-width: 140px;
+}
+
+.bidType {
+  min-width: 80px;
+  max-width: 80px;
+}
+
+.bids {
+  min-width: 80px;
+  max-width: 80px;
+}
+
+.activeHours {
+  min-width: 120px;
+  max-width: 120px;
+}
+
+.ctrBench {
+  min-width: 80px;
+  max-width: 80px;
+}
+
+.turnover {
+  min-width: 140px;
+  max-width: 140px;
+}
+
+.totalSpend {
+  min-width: 100px;
+  max-width: 100px;
+}
+
+.totalCTR {
+  min-width: 80px;
+  max-width: 80px;
+}
+
+.views {
+  min-width: 80px;
+  max-width: 80px;
+}
+
+.clicks {
+  min-width: 80px;
+  max-width: 80px;
+}
+
+.spend {
+  min-width: 80px;
+  max-width: 80px;
+}
+
+.ctr {
+  min-width: 80px;
+  max-width: 80px;
+}
+
+.actionButtons {
+  min-width: 140px;
+  max-width: 140px;
+}

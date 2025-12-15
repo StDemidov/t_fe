@@ -19,6 +19,7 @@ import tasksHoldStocksReducer from './slices/tasksHoldStocksSlice';
 import ordersReducer from './slices/ordersSlice';
 import systemReducer from './slices/systemSlice';
 import abTestReducer from './slices/abTestsSlice';
+import campaignsReducer from './slices/campaignsSlice';
 
 import { persistReducer, persistStore } from 'redux-persist';
 import { combineReducers } from '@reduxjs/toolkit';
@@ -58,6 +59,7 @@ const rootReducer = combineReducers({
   categoriesMetrics: categoriesMetricsReducer,
   system: systemReducer,
   abTests: abTestReducer,
+  campaigns: campaignsReducer,
 });
 
 const store = configureStore({

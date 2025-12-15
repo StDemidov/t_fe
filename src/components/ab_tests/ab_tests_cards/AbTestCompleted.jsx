@@ -36,6 +36,8 @@ const AbTestCompleted = ({ test }) => {
   };
 
   const handleClickOnDelete = (e) => {
+    e.stopPropagation();
+    e.preventDefault();
     openConfirmModal(`Вы уверены, что хотите удалить ${test.name}?`, (e) => {
       dispatch(deleteABTest(`${hostName}/ab_tests/delete/${test.testId}`));
     });

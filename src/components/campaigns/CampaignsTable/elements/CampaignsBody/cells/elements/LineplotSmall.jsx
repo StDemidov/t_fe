@@ -9,40 +9,33 @@ import {
   LineElement,
 } from 'chart.js';
 
-import { getDatesBetween } from '../../utils/dataSlicing';
+import { getDatesBetween } from '../../../../../../../utils/dataSlicing';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement);
 
-const LineplotVC = ({ data, dates, need_average = true, perc = false }) => {
+const LineplotSmall = ({
+  data,
+  dates,
+  need_average = true,
+  perc = false,
+  total = 0,
+}) => {
   const [showAvg, setShowAvg] = useState(true);
 
   var labels = getDatesBetween(dates.start, dates.end);
 
-  // data = getDataForPeriod(data, startDate, endDate);
-
-  // Среднее значение
-  const filtered = data.filter((d) => d !== 0);
-  const average =
-    filtered.length === 0
-      ? 0
-      : filtered.reduce((a, b) => a + b, 0) / filtered.length;
-
-  if (average === 0) {
+  if (total == 0) {
     return <div className={styles.noData}>Нет данных</div>;
   }
 
   const colors = {
-    positive: 'rgba(130, 84, 255, 0.3)',
-    negative: 'rgba(255, 84, 84, 0.3)',
-    zero: '#aaaaaa',
+    common: 'rgba(130, 84, 255, 0.3)',
+    last: 'rgba(84, 149, 255, 0.3)',
   };
 
   // Цвета точек
-  const pointBackgroundColor = data.map((v) =>
-    v > 0 ? colors.positive : v < 0 ? colors.negative : colors.zero
-  );
-  // labels = getDataForPeriod(labels, startDate, endDate);
-
+  const pointBackgroundColor = data.map(() => colors.common);
+  pointBackgroundColor[data.length - 1] = colors.last;
   const chartData = {
     labels,
     datasets: [
@@ -98,7 +91,7 @@ const LineplotVC = ({ data, dates, need_average = true, perc = false }) => {
     },
   };
 
-  const avgClassName = average < 0 ? styles.sumNegative : styles.sumPositive;
+  const avgClassName = total < 0 ? styles.sumNegative : styles.sumPositive;
 
   return (
     <div
@@ -113,8 +106,8 @@ const LineplotVC = ({ data, dates, need_average = true, perc = false }) => {
           }`}
         >
           {perc
-            ? average.toFixed(0).toLocaleString() + ' %'
-            : average.toFixed(0).toLocaleString()}
+            ? (total * 100).toFixed(2).toLocaleString() + ' %'
+            : (total * 100).toFixed(2).toLocaleString()}
         </div>
       )}
       <div
@@ -128,4 +121,4 @@ const LineplotVC = ({ data, dates, need_average = true, perc = false }) => {
   );
 };
 
-export default LineplotVC;
+export default LineplotSmall;

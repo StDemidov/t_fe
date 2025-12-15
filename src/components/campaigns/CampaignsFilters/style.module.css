@@ -1,0 +1,9 @@
+.filtersMainDiv {
+  display: flex;
+  width: 100%;
+  height: 40px;
+  background-color: antiquewhite;
+  overflow-x: auto;
+  margin-bottom: 10px;
+  align-items: center;
+}

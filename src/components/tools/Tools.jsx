@@ -116,7 +116,7 @@ const Tools = () => {
             </div>
           </div>
         </NavLink>
-        <NavLink to="auto_campaigns" className={styles.link}>
+        {/* <NavLink to="auto_campaigns" className={styles.link}>
           <div className={styles.card}>
             <div className={styles.cardContent}>
               <p className={styles.cardTitle}>Автоматические кампании</p>
@@ -133,6 +133,16 @@ const Tools = () => {
               <p className={styles.cardTitle}>Аукцион</p>
               <p className={styles.cardPara}>
                 Просмотр списка кампаний типа Аукцион и управление
+              </p>
+            </div>
+          </div>
+        </NavLink> */}
+        <NavLink to="campaigns" className={styles.link}>
+          <div className={styles.card}>
+            <div className={styles.cardContent}>
+              <p className={styles.cardTitle}>Кампании</p>
+              <p className={styles.cardPara}>
+                Управление рекламными кампаниями и статистика
               </p>
             </div>
           </div>

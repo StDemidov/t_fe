@@ -42,6 +42,8 @@ const AbTestActive = ({ test }) => {
   };
 
   const handleClickOnDelete = (e) => {
+    e.stopPropagation();
+    e.preventDefault();
     openConfirmModal(`Вы уверены, что хотите удалить ${test.name}?`, (e) => {
       dispatch(deleteABTest(`${hostName}/ab_tests/delete/${test.testId}`));
     });
@@ -49,6 +51,7 @@ const AbTestActive = ({ test }) => {
 
   const handleClickOnPause = (e) => {
     e.stopPropagation();
+    e.preventDefault();
     openConfirmModal(
       `Вы уверены, что хотите поставить на паузу ${test.name}?`,
       (e) => {
@@ -59,6 +62,7 @@ const AbTestActive = ({ test }) => {
 
   const handleClickOnStart = (e) => {
     e.stopPropagation();
+    e.preventDefault();
     openConfirmModal(`Вы уверены, что хотите запустить ${test.name}?`, (e) => {
       dispatch(startABTest(`${hostName}/ab_tests/run/${test.testId}`));
     });

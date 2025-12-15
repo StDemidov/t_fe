@@ -54,6 +54,8 @@ import AbTestCreate from './components/ab_tests/ab_test_create/AbTestCreate';
 import AbTestsSingleTest from './components/ab_tests/ab_tests_single_test/AbTestsSingleTest';
 import AutoCampaignDefaultSettings from './components/autocampaign_default_settings/AutocampaignDefaultSettings';
 import AuctionCampaignDefaultSettings from './components/auсtion_campaign_default_settings/AuctionCampaignDefaultSettings';
+import CampaignsList from './components/campaigns/CampaignsList';
+import CampaignsCreate from './components/campaigns/CampaignsCreate/CampaignsCreate';
 
 function App() {
   const currentUser = useSelector(selectUser);
@@ -78,6 +80,11 @@ function App() {
                   <Route
                     path="tools/ab_tests/create"
                     element={<AbTestCreate />}
+                  />
+                  <Route path="tools/campaigns" element={<CampaignsList />} />
+                  <Route
+                    path="tools/campaigns/create"
+                    element={<CampaignsCreate />}
                   />
                   <Route
                     path="tools/ab_tests/info/:id"
@@ -114,7 +121,7 @@ function App() {
                     path="tools/price_control"
                     element={<PriceControlPage />}
                   />
-                  <Route
+                  {/* <Route
                     path="tools/auto_campaigns"
                     element={<AutoCampaignsList />}
                   />
@@ -153,7 +160,7 @@ function App() {
                   <Route
                     path="tools/auto_campaigns/edit/:id"
                     element={<AutoCampaignEdit />}
-                  />
+                  /> */}
                   {/* <Route path="tools/tasks_a_28" element={<TasksA28 />} />
                   <Route
                     path="tools/tasks_a_28/:id"
