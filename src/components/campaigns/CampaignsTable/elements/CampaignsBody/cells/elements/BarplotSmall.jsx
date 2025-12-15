@@ -9,7 +9,6 @@ import {
 } from 'chart.js';
 
 import { getDatesBetween } from '../../../../../../../utils/dataSlicing';
-
 ChartJS.register(CategoryScale, LinearScale, BarElement);
 
 const BarplotSmall = ({ data, dates, need_sum = true, last_item = false }) => {
