@@ -1,4 +1,4 @@
-import BarplotSmall from './elements/BarPlotSmall';
+import BarplotSmall from './elements/BarplotSmall';
 import styles from './style.module.css';
 
 const ClicksCell = ({ clicks, dates, cellStyle }) => {
