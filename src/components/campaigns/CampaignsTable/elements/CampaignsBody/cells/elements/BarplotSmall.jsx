@@ -91,7 +91,6 @@ const BarplotSmall = ({ data, dates, need_sum = true, last_item = false }) => {
   };
 
   const sumClassName = total < 0 ? styles.sumNegative : styles.sumPositive;
-
   return (
     <div
       className={styles.barWrapper}
