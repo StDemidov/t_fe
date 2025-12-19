@@ -13,6 +13,15 @@ import createAutoCampDefaultSettings from '../../utils/createAutoCampDefaultSett
 
 import { clearCredentials } from './authSlice';
 
+const today = new Date();
+
+const todayFormatted = today.toISOString().split('T')[0];
+
+// 14 дней назад
+const daysAgo13 = new Date(today);
+daysAgo13.setDate(today.getDate() - 13);
+const daysAgo13Formatted = daysAgo13.toISOString().split('T')[0];
+
 const initialState = {
   campaigns: [],
   last_update: '',
@@ -22,6 +31,11 @@ const initialState = {
   cmpgnSingle: {},
   defaultSettings: {},
   currentPage: 1,
+  changeIsLoading: false,
+  dates: {
+    start: daysAgo13Formatted,
+    end: todayFormatted,
+  },
 };
 
 export const fetchCampaigns = createAsyncThunk(
@@ -35,7 +49,24 @@ export const fetchCampaigns = createAsyncThunk(
         thunkAPI.dispatch(clearCredentials());
         thunkAPI.dispatch(setError('Повторите вход!'));
       } else {
-        thunkAPI.dispatch(setError(error.message));
+        thunkAPI.dispatch(setError('Ошибка на сервере'));
+      }
+    }
+  }
+);
+
+export const fetchDates = createAsyncThunk(
+  'campaigns/fetchDates',
+  async (url, thunkAPI) => {
+    try {
+      const res = await api.get(url);
+      return res.data;
+    } catch (error) {
+      if (error.request.status == 401) {
+        thunkAPI.dispatch(clearCredentials());
+        thunkAPI.dispatch(setError('Повторите вход!'));
+      } else {
+        thunkAPI.dispatch(setError('Ошибка на сервере'));
       }
     }
   }
@@ -53,6 +84,24 @@ export const fetchSkuData = createAsyncThunk(
         thunkAPI.dispatch(setError('Повторите вход!'));
       } else {
         thunkAPI.dispatch(setError(error.message));
+      }
+    }
+  }
+);
+
+export const changeCampaignStatus = createAsyncThunk(
+  'campaigns/changeCampaignStatus',
+  async (url, thunkAPI) => {
+    try {
+      const res = await api.get(url);
+      thunkAPI.dispatch(setNotification('Статус изменен!'));
+      return res.data;
+    } catch (error) {
+      if (error.request.status == 401) {
+        thunkAPI.dispatch(clearCredentials());
+        thunkAPI.dispatch(setError('Повторите вход!'));
+      } else {
+        thunkAPI.dispatch(setError(error.response.data.detail));
       }
     }
   }
@@ -116,6 +165,38 @@ const campaignsSlice = createSlice({
         state.skuData = createSkuDataForCamps(action.payload);
       }
     });
+    builder.addCase(fetchDates.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(fetchDates.fulfilled, (state, action) => {
+      state.isLoading = false;
+      if (action.payload) {
+        state.dates.end = action.payload;
+        const date = new Date(action.payload);
+        date.setDate(date.getDate() - 13);
+        state.dates.start = date.toISOString().split('T')[0];
+        console.log(state.dates);
+      }
+    });
+    builder.addCase(changeCampaignStatus.pending, (state) => {
+      state.changeIsLoading = true;
+    });
+    builder.addCase(changeCampaignStatus.fulfilled, (state, action) => {
+      state.changeIsLoading = false;
+      if (action.payload) {
+        state.campaigns = state.campaigns.map((campaign) =>
+          Number(campaign.campId) === Number(action.payload.camp_id)
+            ? {
+                ...campaign,
+                status: action.payload.new_status,
+                pausedByUser: true,
+                pausedByTime: false,
+                pausedByTurnover: false,
+              }
+            : campaign
+        );
+      }
+    });
     builder.addCase(fetchSkuData.pending, (state) => {
       state.isLoading = true;
     });
@@ -134,5 +215,7 @@ export const selectCampaigns = (state) => state.campaigns.campaigns;
 export const selectCurrentPage = (state) => state.campaigns.currentPage;
 export const selectSkuData = (state) => state.campaigns.skuData;
 export const selectIsLoading = (state) => state.campaigns.isLoading;
+export const selectChangeIsLoading = (state) => state.campaigns.changeIsLoading;
+export const selectDates = (state) => state.campaigns.dates;
 
 export default campaignsSlice.reducer;

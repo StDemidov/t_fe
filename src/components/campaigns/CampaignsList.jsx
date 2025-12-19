@@ -8,8 +8,10 @@ import { chunkArray } from '../../utils/base_utils/data_slicing';
 import { hostName } from '../../utils/host';
 import {
   fetchCampaigns,
+  fetchDates,
   selectCampaigns,
   selectCurrentPage,
+  selectDates,
   selectIsLoading,
   setCurrentPage,
 } from '../../redux/slices/campaignsSlice';
@@ -24,12 +26,11 @@ const CampaignsList = () => {
   const campaigns = useSelector(selectCampaigns);
   const isLoading = useSelector(selectIsLoading);
   const currentPage = useSelector(selectCurrentPage);
-  const dates = {
-    start: '2025-10-31',
-    end: '2025-11-13',
-  };
+  const dates = useSelector(selectDates);
+  console.log(dates);
 
   useEffect(() => {
+    dispatch(fetchDates(`${hostName}/ad_camps/dates`));
     dispatch(fetchCampaigns(`${hostName}/ad_camps/`));
   }, []);
 
@@ -39,7 +40,10 @@ const CampaignsList = () => {
   return (
     <section>
       <div className={styles.h1Row}>
-        <h1>Кампании</h1>
+        <div className={styles.h1Box}>
+          <h1>Кампании</h1>
+          <div className={styles.lastUpdate}>Обновлено: {dates.end}</div>
+        </div>
         <ButtonCreateCamps />
       </div>
       {isLoading ? (

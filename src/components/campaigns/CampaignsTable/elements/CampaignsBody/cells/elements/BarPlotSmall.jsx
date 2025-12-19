@@ -11,7 +11,13 @@ import {
 import { getDatesBetween } from '../../../../../../../utils/dataSlicing';
 ChartJS.register(CategoryScale, LinearScale, BarElement);
 
-const BarplotSmall = ({ data, dates, need_sum = true, last_item = false }) => {
+const BarplotSmall = ({
+  data,
+  dates,
+  need_sum = true,
+  last_item = false,
+  ended = false,
+}) => {
   const [showSum, setShowSum] = useState(true);
   let total = 0;
 
@@ -27,8 +33,7 @@ const BarplotSmall = ({ data, dates, need_sum = true, last_item = false }) => {
     return <div className={styles.noData}>Нет данных</div>;
   }
 
-  // Цвета
-  const colors = {
+  let colors = {
     positive: {
       fill: 'rgba(130, 84, 255, 0.3)',
       border: 'rgba(130, 84, 255, 1)',
@@ -40,6 +45,21 @@ const BarplotSmall = ({ data, dates, need_sum = true, last_item = false }) => {
       hover: 'rgb(84, 192, 255)',
     },
   };
+  // Цвета
+  if (ended) {
+    colors = {
+      positive: {
+        fill: 'rgba(72, 72, 73, 0.3)',
+        border: 'rgba(0, 0, 0, 1)',
+        hover: 'rgba(13, 13, 39, 0.6)',
+      },
+      last: {
+        fill: 'rgba(72, 72, 73, 0.3)',
+        border: 'rgba(0, 0, 0, 1)',
+        hover: 'rgba(13, 13, 39, 0.6)',
+      },
+    };
+  }
 
   const backgroundColor = data.map(() => colors.positive.fill);
   const borderColor = data.map(() => colors.positive.border);
@@ -101,6 +121,7 @@ const BarplotSmall = ({ data, dates, need_sum = true, last_item = false }) => {
           className={`${styles.sumOverlay} ${sumClassName} ${
             showSum ? styles.visible : styles.hidden
           } ${total == 0 ? styles.sumNegative : ''}`}
+          style={ended ? { color: 'gray' } : {}}
         >
           {total.toLocaleString()}
         </div>

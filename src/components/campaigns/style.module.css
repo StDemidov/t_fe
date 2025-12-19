@@ -3,4 +3,18 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  .h1Box {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    .lastUpdate {
+      border: 0px solid black;
+      font-size: 10px;
+      background-color: #595959;
+      padding: 4px 10px 4px 10px;
+      border-radius: 5px;
+      color: white;
+      margin-bottom: 6px;
+    }
+  }
 }

@@ -19,6 +19,7 @@ const LineplotSmall = ({
   need_average = true,
   perc = false,
   total = 0,
+  ended = false,
 }) => {
   const [showAvg, setShowAvg] = useState(true);
 
@@ -28,10 +29,16 @@ const LineplotSmall = ({
     return <div className={styles.noData}>Нет данных</div>;
   }
 
-  const colors = {
+  let colors = {
     common: 'rgba(130, 84, 255, 0.3)',
     last: 'rgba(84, 149, 255, 0.3)',
   };
+  if (ended) {
+    colors = {
+      common: 'rgba(72, 72, 73, 0.3)',
+      last: 'rgba(72, 72, 73, 0.3)',
+    };
+  }
 
   // Цвета точек
   const pointBackgroundColor = data.map(() => colors.common);
@@ -48,20 +55,9 @@ const LineplotSmall = ({
         pointBorderColor: pointBackgroundColor,
         borderWidth: 1,
         pointRadius: 0.7,
-        borderColor: (context) => {
-          const index = context.dataIndex;
-          const value = context.dataset.data[index];
-          return value < 0
-            ? 'rgba(255, 84, 84, 0.3)'
-            : 'rgba(130, 84, 255, 0.3)';
-        },
+        borderColor: colors.common,
         segment: {
-          borderColor: (context) => {
-            const value = context.p0.parsed.y;
-            return value < 0
-              ? 'rgba(255, 84, 84, 0.3)'
-              : 'rgba(130, 84, 255, 0.3)';
-          },
+          borderColor: colors.common,
         },
       },
     ],
@@ -104,6 +100,7 @@ const LineplotSmall = ({
           className={`${styles.sumOverlay} ${avgClassName} ${
             showAvg ? styles.visible : styles.hidden
           }`}
+          style={ended ? { color: 'gray' } : {}}
         >
           {perc
             ? (total * 100).toFixed(2).toLocaleString() + ' %'

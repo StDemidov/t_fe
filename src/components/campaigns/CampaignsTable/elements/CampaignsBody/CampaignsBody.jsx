@@ -69,19 +69,42 @@ const bodyCellsRender = {
     />
   ),
   totalSpend: (camp, style) => (
-    <TotalSpendCell totalSpend={camp.totalSpend} cellStyle={style} />
+    <TotalSpendCell
+      totalSpend={camp.totalSpend}
+      cellStyle={style}
+      ended={camp.endDate === '' ? false : true}
+    />
   ),
   totalCTR: (camp, style) => (
-    <TotalCtrCell totalCtr={camp.totalCtr} cellStyle={style} />
+    <TotalCtrCell
+      totalCtr={camp.totalCtr}
+      cellStyle={style}
+      ended={camp.endDate === '' ? false : true}
+    />
   ),
   views: (camp, style, dates) => (
-    <ViewsCell views={camp.views} dates={dates} cellStyle={style} />
+    <ViewsCell
+      views={camp.views}
+      dates={dates}
+      cellStyle={style}
+      ended={camp.endDate === '' ? false : true}
+    />
   ),
   clicks: (camp, style, dates) => (
-    <ClicksCell clicks={camp.clicks} dates={dates} cellStyle={style} />
+    <ClicksCell
+      clicks={camp.clicks}
+      dates={dates}
+      cellStyle={style}
+      ended={camp.endDate === '' ? false : true}
+    />
   ),
   spend: (camp, style, dates) => (
-    <SpendCell spend={camp.spend} dates={dates} cellStyle={style} />
+    <SpendCell
+      spend={camp.spend}
+      dates={dates}
+      cellStyle={style}
+      ended={camp.endDate === '' ? false : true}
+    />
   ),
   ctr: (camp, style, dates) => (
     <CtrCell
@@ -89,6 +112,7 @@ const bodyCellsRender = {
       dates={dates}
       cellStyle={style}
       ctr14dTotal={camp.ctr14dTotal}
+      ended={camp.endDate === '' ? false : true}
     />
   ),
   actionButtons: (camp, style) => (

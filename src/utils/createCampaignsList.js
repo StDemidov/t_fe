@@ -30,6 +30,7 @@ const createCampaignsList = (campaigns) => {
       totalCtr: camp.total_ctr,
       photo: camp.photo,
       ctr14dTotal: camp.ctr_14d_total,
+      endDate: camp.end_date,
     };
   });
   return campaignList;
