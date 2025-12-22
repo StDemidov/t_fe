@@ -99,8 +99,7 @@
 .actionButtons {
   gap: 5px;
   color: gray;
-  .startButton {
-  }
+  .launchButton,
   .pauseButton {
     cursor: pointer;
   }
@@ -110,6 +109,9 @@
   }
   .pauseButton:hover {
     color: #623fc0;
+  }
+  .launchButton:hover {
+    color: #29642a;
   }
 }
 

@@ -53,6 +53,17 @@ const ActionButtons = ({ camp, cellStyle }) => {
       }
     );
   };
+  const handleClickOnRun = (event) => {
+    const campId = Number(camp.campId);
+    openConfirmModal(
+      `Вы уверены, что хотите запустить кампанию ${camp.campId}?`,
+      (e) => {
+        dispatch(
+          changeCampaignStatus(`${hostName}/ad_camps/launch_camp/${campId}`)
+        );
+      }
+    );
+  };
   return (
     <>
       <div className={`${cellStyle} ${styles.actionButtons}`}>
@@ -68,7 +79,15 @@ const ActionButtons = ({ camp, cellStyle }) => {
             ) : (
               <></>
             )}
-            {/* <BsFillPlayCircleFill />
+            {(camp.status == 11) & camp.pausedByUser ? (
+              <BsFillPlayCircleFill
+                className={styles.launchButton}
+                onClick={handleClickOnRun}
+              />
+            ) : (
+              <></>
+            )}
+            {/* 
           <BsFillXCircleFill />
           <BsFillWrenchAdjustableCircleFill /> */}
           </>

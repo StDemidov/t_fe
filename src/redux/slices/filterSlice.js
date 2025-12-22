@@ -68,6 +68,9 @@ const initialState = {
       vcName: '',
     },
   },
+  campaigns: {
+    sku: '',
+  },
 };
 
 const filterSlice = createSlice({
@@ -262,6 +265,9 @@ const filterSlice = createSlice({
     resetCategoryListFilter: (state) => {
       state.category.category = [];
     },
+    setCampaignsFilterSKU: (state, action) => {
+      state.campaigns.sku = action.payload;
+    },
   },
 });
 
@@ -326,6 +332,7 @@ export const {
   resetSkusOnDrainTagsOthersFilter,
   setABTestsActiveVCNameFilter,
   setABTestsCompletedVCNameFilter,
+  setCampaignsFilterSKU,
 } = filterSlice.actions;
 
 export const selectBarcodeCategoryFilter = (state) =>
@@ -400,5 +407,6 @@ export const selectAbTestActiveVCNameFilter = (state) =>
   state.filter.abTest.active.vcName;
 export const selectAbTestCompletedVCNameFilter = (state) =>
   state.filter.abTest.completed.vcName;
+export const selectCampaignsFilterSKU = (state) => state.filter.campaigns.sku;
 
 export default filterSlice.reducer;

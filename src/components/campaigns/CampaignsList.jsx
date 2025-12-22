@@ -19,6 +19,7 @@ import TablesPaginator from '../tables_paginator/TablesPaginator';
 
 import styles from './style.module.css';
 import ButtonCreateCamps from './elements/ButtonCreateCamps';
+import { selectCampaignsFilterSKU } from '../../redux/slices/filterSlice';
 
 const CampaignsList = () => {
   const campaignsOnPage = 50;
@@ -27,14 +28,30 @@ const CampaignsList = () => {
   const isLoading = useSelector(selectIsLoading);
   const currentPage = useSelector(selectCurrentPage);
   const dates = useSelector(selectDates);
-  console.log(dates);
+
+  const skuNameFilter = useSelector(selectCampaignsFilterSKU);
 
   useEffect(() => {
     dispatch(fetchDates(`${hostName}/ad_camps/dates`));
     dispatch(fetchCampaigns(`${hostName}/ad_camps/`));
   }, []);
 
-  const chunkedCampaigns = chunkArray(campaigns, campaignsOnPage);
+  const filteredCampaigns = campaigns.filter((camp) => {
+    let skuNameMatch = true;
+
+    if (skuNameFilter.length != 0) {
+      if (isNaN(skuNameFilter)) {
+        skuNameMatch = camp.skuName
+          .toLowerCase()
+          .includes(skuNameFilter.toLowerCase());
+      } else {
+        skuNameMatch = camp.sku.includes(skuNameFilter);
+      }
+    }
+    return skuNameMatch;
+  });
+
+  const chunkedCampaigns = chunkArray(filteredCampaigns, campaignsOnPage);
   const numOfPages = chunkedCampaigns.length;
 
   return (
@@ -52,11 +69,17 @@ const CampaignsList = () => {
         <>
           <CampaignsFilters />
           <CampaignsTable
-            campaigns={chunkedCampaigns[currentPage - 1]}
+            campaigns={
+              currentPage > chunkedCampaigns.length
+                ? chunkedCampaigns[0]
+                : chunkedCampaigns[currentPage - 1]
+            }
             dates={dates}
           />
           <TablesPaginator
-            currentPage={currentPage}
+            currentPage={
+              currentPage > chunkedCampaigns.length ? 1 : currentPage
+            }
             numOfPages={numOfPages}
             setPageFunction={setCurrentPage}
           />

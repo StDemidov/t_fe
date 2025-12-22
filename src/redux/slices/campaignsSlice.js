@@ -183,14 +183,21 @@ const campaignsSlice = createSlice({
     });
     builder.addCase(changeCampaignStatus.fulfilled, (state, action) => {
       state.changeIsLoading = false;
+      console.log(action);
       if (action.payload) {
         state.campaigns = state.campaigns.map((campaign) =>
           Number(campaign.campId) === Number(action.payload.camp_id)
             ? {
                 ...campaign,
                 status: action.payload.new_status,
-                pausedByUser: true,
-                pausedByTime: false,
+                pausedByUser: action.payload.action === 'pause' ? true : false,
+                pausedByTime:
+                  action.payload.action === 'pause'
+                    ? false
+                    : action.payload.action === 'start' &&
+                      action.payload.new_status === 11
+                    ? true
+                    : false,
                 pausedByTurnover: false,
               }
             : campaign

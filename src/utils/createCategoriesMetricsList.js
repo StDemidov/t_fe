@@ -15,20 +15,32 @@ const createCategoriesMetricsList = (categories) => {
       categoryName: item.category_name,
       activeItemCount: item.items_count,
       dailyOrders: item.daily_orders.split(',').map(Number).slice(-30),
-      dailySales: (item.daily_sales + ',' + item.daily_sales_raw)
-        .split(',')
-        .map(Number)
-        .slice(-30),
+      dailySales:
+        item.daily_sales_raw === ''
+          ? item.daily_sales.split(',').map(Number).slice(-30)
+          : (item.daily_sales + ',' + item.daily_sales_raw)
+              .split(',')
+              .map(Number)
+              .slice(-30),
       dailyStocks: item.daily_stocks_wb.split(',').map(Number).slice(-30),
       ebitdaAVG: item.ebitda_avg.split(',').map(Number).slice(-30),
-      dailyEbitda: (item.daily_ebitda + ',' + item.daily_ebitda_raw)
-        .split(',')
-        .map(Number)
-        .slice(-30),
-      dailyEbitdaWoAds: calculateEbitdaWoAdsForCategories(
-        item.daily_ebitda + ',' + item.daily_ebitda_raw,
-        item.daily_ads_costs
-      ),
+      dailyEbitda:
+        item.daily_ebitda_raw === ''
+          ? item.daily_ebitda.split(',').map(Number).slice(-30)
+          : (item.daily_ebitda + ',' + item.daily_ebitda_raw)
+              .split(',')
+              .map(Number)
+              .slice(-30),
+      dailyEbitdaWoAds:
+        item.daily_ebitda_raw === ''
+          ? calculateEbitdaWoAdsForCategories(
+              item.daily_ebitda,
+              item.daily_ads_costs
+            )
+          : calculateEbitdaWoAdsForCategories(
+              item.daily_ebitda + ',' + item.daily_ebitda_raw,
+              item.daily_ads_costs
+            ),
       dailyAdsCosts: item.daily_ads_costs.split(',').map(Number).slice(-30),
       cpoClear: item.cpo.split(',').map(Number).slice(-30),
       cpoDirty: cpoDirty,

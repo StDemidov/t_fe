@@ -3,6 +3,8 @@ import { useState } from 'react';
 import CampaignsHeader from './elements/CampaignsHeader/CampaignsHeader';
 import CampaignsBody from './elements/CampaignsBody/CampaignsBody';
 
+import { TbMoodEmpty } from 'react-icons/tb';
+
 const initialColumns = [
   {
     key: 'skuBase',
@@ -76,7 +78,14 @@ const CampaignsTable = ({ campaigns, dates }) => {
   return (
     <div className={styles.tableWrapper}>
       <CampaignsHeader columns={columns} />
-      <CampaignsBody columns={columns} campaigns={campaigns} dates={dates} />
+      {campaigns.length === 0 ? (
+        <div className={styles.emptyTable}>
+          <TbMoodEmpty className={styles.moodIcon} />
+          <div>Ничего не найдено</div>
+        </div>
+      ) : (
+        <CampaignsBody columns={columns} campaigns={campaigns} dates={dates} />
+      )}
     </div>
   );
 };
