@@ -16,7 +16,13 @@ import TurnoverCell from './cells/TurnoverCell';
 import ViewsCell from './cells/ViewsCell';
 import ActionButtons from './cells/ActionButtons';
 
-const CampaignsBody = ({ columns, campaigns, dates }) => {
+const CampaignsBody = ({
+  columns,
+  campaigns,
+  dates,
+  selectedCamps,
+  setSelectedCamps,
+}) => {
   return (
     <div className={styles.tableBody}>
       {campaigns.map((camp) => {
@@ -24,7 +30,13 @@ const CampaignsBody = ({ columns, campaigns, dates }) => {
           <div className={styles.campRow} key={camp.campId}>
             {columns.map((col) => {
               if (!col.hidden) {
-                return bodyCellsRender[col.key](camp, col.cellStyle, dates);
+                return bodyCellsRender[col.key](
+                  camp,
+                  col.cellStyle,
+                  dates,
+                  selectedCamps,
+                  setSelectedCamps
+                );
               }
             })}
           </div>
@@ -35,13 +47,16 @@ const CampaignsBody = ({ columns, campaigns, dates }) => {
 };
 
 const bodyCellsRender = {
-  skuBase: (camp, style) => (
+  skuBase: (camp, style, dates, selectedCamps, setSelectedCamps) => (
     <SkuBaseCell
       image={camp.photo}
       sku={camp.sku}
       skuName={camp.skuName}
+      campId={camp.campId}
       creationDate={camp.creationDate}
       cellStyle={style}
+      selectedCamps={selectedCamps}
+      setSelectedCamps={setSelectedCamps}
     />
   ),
   status: (camp, style) => <StatusCell camp={camp} cellStyle={style} />,

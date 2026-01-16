@@ -22,3 +22,11 @@
   font-size: 18px;
   color: #623fc0;
 }
+
+.pick {
+  margin-right: 120px;
+}
+
+.pick:hover {
+  cursor: pointer;
+}

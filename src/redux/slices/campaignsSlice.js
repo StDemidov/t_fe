@@ -141,6 +141,24 @@ export const createCampaigns = createAsyncThunk(
   }
 );
 
+export const editCampaigns = createAsyncThunk(
+  'campaigns/editCampaigns',
+  async ({ data, url }, thunkAPI) => {
+    try {
+      const res = await api.post(url, data);
+      thunkAPI.dispatch(setNotification('Кампании успешно изменены!'));
+      return res.data;
+    } catch (error) {
+      if (error.request.status == 401) {
+        thunkAPI.dispatch(clearCredentials());
+        thunkAPI.dispatch(setError('Повторите вход!'));
+      } else {
+        thunkAPI.dispatch(setError(error.message));
+      }
+    }
+  }
+);
+
 const campaignsSlice = createSlice({
   name: 'campaigns',
   initialState: initialState,
@@ -212,6 +230,15 @@ const campaignsSlice = createSlice({
     });
     builder.addCase(createCampaigns.fulfilled, (state) => {
       state.isLoading = false;
+    });
+    builder.addCase(editCampaigns.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(editCampaigns.fulfilled, (state, action) => {
+      state.isLoading = false;
+      if (action.payload) {
+        state.campaigns = createCampaignsList(action.payload);
+      }
     });
   },
 });

@@ -8,7 +8,7 @@ import { TbMoodEmpty } from 'react-icons/tb';
 const initialColumns = [
   {
     key: 'skuBase',
-    label: '',
+    label: 'base',
     hidden: false,
     cellStyle: styles.skuBaseCell,
   },
@@ -73,18 +73,34 @@ const initialColumns = [
   },
 ];
 
-const CampaignsTable = ({ campaigns, dates }) => {
+const CampaignsTable = ({
+  campaigns,
+  dates,
+  selectedCamps,
+  setSelectedCamps,
+}) => {
   const [columns, setColumns] = useState(initialColumns);
   return (
     <div className={styles.tableWrapper}>
-      <CampaignsHeader columns={columns} />
+      <CampaignsHeader
+        columns={columns}
+        selectedCamps={selectedCamps}
+        setSelectedCamps={setSelectedCamps}
+        campaigns={campaigns}
+      />
       {campaigns.length === 0 ? (
         <div className={styles.emptyTable}>
           <TbMoodEmpty className={styles.moodIcon} />
           <div>Ничего не найдено</div>
         </div>
       ) : (
-        <CampaignsBody columns={columns} campaigns={campaigns} dates={dates} />
+        <CampaignsBody
+          columns={columns}
+          campaigns={campaigns}
+          dates={dates}
+          selectedCamps={selectedCamps}
+          setSelectedCamps={setSelectedCamps}
+        />
       )}
     </div>
   );

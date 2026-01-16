@@ -9,10 +9,22 @@ const ConfirmModal = ({ isOpen, text, onConfirm, onCancel }) => {
       <div className={styles.modalContent}>
         <p className={styles.modalText}>{text}</p>
         <div className={styles.modalButtons}>
-          <button onClick={onConfirm} className={styles.confirmBtn}>
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              onConfirm();
+            }}
+            className={styles.confirmBtn}
+          >
             Подтвердить
           </button>
-          <button onClick={onCancel} className={styles.cancelBtn}>
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              onCancel();
+            }}
+            className={styles.cancelBtn}
+          >
             Отмена
           </button>
         </div>

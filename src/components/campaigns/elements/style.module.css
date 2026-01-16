@@ -3,7 +3,7 @@
   padding: 0px 5px 0px 5px;
   max-width: 150px;
   min-width: 150px;
-  background-color: rgb(140, 140, 140);
+  background-color: rgb(24, 138, 39);
   border: none;
   color: white;
   border-radius: 10px;
@@ -12,5 +12,162 @@
 
 .buttonCreate:hover {
   cursor: pointer;
-  background-color: #623fc0;
+  background-color: rgb(14, 90, 24);
+}
+
+.buttonEdit,
+.buttonEditActive {
+  height: 30px;
+  width: 30px;
+  border-radius: 50%;
+  border: 0px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  background-color: rgb(140, 140, 140);
+  color: white;
+  transition: background-color 0.3s ease;
+}
+
+.buttonEditActive {
+  background-color: rgba(71, 35, 200, 0.803);
+  animation: rotate 4s linear infinite;
+}
+
+.buttonEditActive:hover {
+  background-color: rgb(70, 35, 200);
+  cursor: pointer;
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  min-width: 600px;
+  max-width: 90%;
+  .settingsBox {
+    padding: 10px;
+    border-radius: 10px;
+    .legend {
+      font-family: 'BebasNeue', sans-serif;
+      font-size: 20px;
+      padding: 5px;
+    }
+    .mainLabel {
+      color: rgb(70, 35, 200);
+      font-family: 'BebasNeue', sans-serif;
+    }
+    .selectedCampsNumber {
+      font-size: 10px;
+      margin-bottom: 10px;
+    }
+    .settingsSection {
+      margin-top: 10px;
+      margin-bottom: 10px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 5px;
+      .settingsRow {
+        min-width: 500px;
+        max-width: 500px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        .changeInput {
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          justify-content: center;
+        }
+        .cancelIcon {
+          cursor: pointer;
+        }
+        .labelRow {
+          display: flex;
+          gap: 5px;
+          align-items: center;
+          justify-content: center;
+        }
+      }
+      .changeButton:hover {
+        cursor: pointer;
+        color: rgb(70, 35, 200);
+      }
+      .settingsRowCheckbox {
+        min-width: 400px;
+        max-width: 400px;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        gap: 40px;
+        .oneCheckbox {
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          gap: 5px;
+        }
+        .cancelIcon {
+          cursor: pointer;
+        }
+      }
+    }
+    .settingsSection input {
+      text-align: center;
+    }
+  }
+}
+
+.actions {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 20px;
+  .cancelButton,
+  .acceptButton,
+  .disabledAcceptButton {
+    width: 70px;
+    padding: 5px;
+    border: 0px solid;
+    border-radius: 10px;
+  }
+  .acceptButton,
+  .disabledAcceptButton {
+    width: 170px;
+  }
+  .cancelButton:hover {
+    background-color: rgb(250, 58, 58);
+    cursor: pointer;
+    color: white;
+  }
+  .acceptButton:hover {
+    background-color: rgb(20, 130, 20);
+    cursor: pointer;
+    color: white;
+  }
+  .disabledAcceptButton {
+    color: gray;
+  }
 }

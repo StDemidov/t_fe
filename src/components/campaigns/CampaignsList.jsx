@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import CampaignsFilters from './CampaignsFilters/CampaignsFilters';
@@ -20,6 +20,7 @@ import TablesPaginator from '../tables_paginator/TablesPaginator';
 import styles from './style.module.css';
 import ButtonCreateCamps from './elements/ButtonCreateCamps';
 import { selectCampaignsFilterSKU } from '../../redux/slices/filterSlice';
+import ButtonEditCamps from './elements/ButtonEditCamps';
 
 const CampaignsList = () => {
   const campaignsOnPage = 50;
@@ -28,6 +29,7 @@ const CampaignsList = () => {
   const isLoading = useSelector(selectIsLoading);
   const currentPage = useSelector(selectCurrentPage);
   const dates = useSelector(selectDates);
+  const [selectedCamps, setSelectedCamps] = useState([]);
 
   const skuNameFilter = useSelector(selectCampaignsFilterSKU);
 
@@ -61,7 +63,10 @@ const CampaignsList = () => {
           <h1>Кампании</h1>
           <div className={styles.lastUpdate}>Обновлено: {dates.end}</div>
         </div>
-        <ButtonCreateCamps />
+        <div className={styles.buttonsGroup}>
+          <ButtonEditCamps selectedCamps={selectedCamps} />
+          <ButtonCreateCamps />
+        </div>
       </div>
       {isLoading ? (
         <></>
@@ -75,6 +80,8 @@ const CampaignsList = () => {
                 : chunkedCampaigns[currentPage - 1]
             }
             dates={dates}
+            selectedCamps={selectedCamps}
+            setSelectedCamps={setSelectedCamps}
           />
           <TablesPaginator
             currentPage={
