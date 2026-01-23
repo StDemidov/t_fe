@@ -5,6 +5,7 @@ import {
   BsFillWrenchAdjustableCircleFill,
 } from 'react-icons/bs';
 import { TbLoaderQuarter } from 'react-icons/tb';
+import { MdOutlineQueryStats } from 'react-icons/md';
 
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -17,6 +18,7 @@ import { hostName } from '../../../../../../utils/host';
 import styles from './style.module.css';
 import ConfirmModal from '../../../../../confirm_modal/ConfirmModal';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 const ActionButtons = ({ camp, cellStyle }) => {
   const dispatch = useDispatch();
@@ -71,6 +73,13 @@ const ActionButtons = ({ camp, cellStyle }) => {
           <TbLoaderQuarter />
         ) : (
           <>
+            {/* <Link
+              to={`/tools/campaigns/${camp.id}`}
+              target="_blank"
+              className={styles.statsButton}
+            >
+              <MdOutlineQueryStats />
+            </Link> */}
             {[9, 11].includes(camp.status) & !camp.pausedByUser ? (
               <BsPauseCircleFill
                 className={styles.pauseButton}

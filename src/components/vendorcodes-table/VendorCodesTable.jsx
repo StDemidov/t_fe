@@ -269,13 +269,13 @@ const сolRender = {
       />
     ),
   },
-  priceASPP: {
-    render: (vc, datesFilter) => <BodyPriceASPP vc={vc} key={uuidv4()} />,
-    renderHeader: () => <HeaderPriceASPP key={uuidv4()} />,
-    renderFooter: (avg_price_ssp) => (
-      <FooterPriceASPP key={uuidv4()} avg_price_ssp={avg_price_ssp} />
-    ),
-  },
+  // priceASPP: {
+  //   render: (vc, datesFilter) => <BodyPriceASPP vc={vc} key={uuidv4()} />,
+  //   renderHeader: () => <HeaderPriceASPP key={uuidv4()} />,
+  //   renderFooter: (avg_price_ssp) => (
+  //     <FooterPriceASPP key={uuidv4()} avg_price_ssp={avg_price_ssp} />
+  //   ),
+  // },
   selfPrice: {
     render: (vc, datesFilter) => <BodySelfPrice vc={vc} key={uuidv4()} />,
     renderHeader: () => <HeaderSelfPrice key={uuidv4()} />,

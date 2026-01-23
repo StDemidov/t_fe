@@ -12,6 +12,7 @@ import { setNotification } from './notificationSlice';
 import createAutoCampDefaultSettings from '../../utils/createAutoCampDefaultSettings';
 
 import { clearCredentials } from './authSlice';
+import createCampaignSingle from '../../utils/createCampaignSingle';
 
 const today = new Date();
 
@@ -36,10 +37,28 @@ const initialState = {
     start: daysAgo13Formatted,
     end: todayFormatted,
   },
+  campaignsById: {},
 };
 
 export const fetchCampaigns = createAsyncThunk(
   'campaigns/fetchCampaigns',
+  async (url, thunkAPI) => {
+    try {
+      const res = await api.get(url);
+      return res.data;
+    } catch (error) {
+      if (error.request.status == 401) {
+        thunkAPI.dispatch(clearCredentials());
+        thunkAPI.dispatch(setError('Повторите вход!'));
+      } else {
+        thunkAPI.dispatch(setError('Ошибка на сервере'));
+      }
+    }
+  }
+);
+
+export const fetchCampaign = createAsyncThunk(
+  'campaigns/fetchCampaign',
   async (url, thunkAPI) => {
     try {
       const res = await api.get(url);
@@ -240,6 +259,17 @@ const campaignsSlice = createSlice({
         state.campaigns = createCampaignsList(action.payload);
       }
     });
+    builder.addCase(fetchCampaign.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(fetchCampaign.fulfilled, (state, action) => {
+      state.isLoading = false;
+      if (action.payload) {
+        const newCamp = createCampaignSingle(action.payload);
+        const [id] = Object.keys(newCamp);
+        state.campaignsById[id] = newCamp[id];
+      }
+    });
   },
 });
 
@@ -250,6 +280,8 @@ export const selectCurrentPage = (state) => state.campaigns.currentPage;
 export const selectSkuData = (state) => state.campaigns.skuData;
 export const selectIsLoading = (state) => state.campaigns.isLoading;
 export const selectChangeIsLoading = (state) => state.campaigns.changeIsLoading;
+export const selectCampaignById = (id) => (state) =>
+  state.campaigns.campaignsById[id];
 export const selectDates = (state) => state.campaigns.dates;
 
 export default campaignsSlice.reducer;

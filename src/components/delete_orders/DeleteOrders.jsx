@@ -51,7 +51,7 @@ export default function DeleteOrders({ existingOrders }) {
   return (
     <div>
       <button className={styles.actionButton} onClick={() => setIsOpen(true)}>
-        Удалить заказ
+        Удалить
       </button>
       {isOpen && (
         <div className={styles.modalOverlay}>

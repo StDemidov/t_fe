@@ -1,6 +1,7 @@
 import { calculateEbitdaWoAds, calculateEbitdaWoAdsRaw } from './calculations';
 
 const createVendorCodeMetrics = (vendorCodeMetrics) => {
+  console.log(vendorCodeMetrics);
   const vcMetrics = vendorCodeMetrics.map((item) => {
     return {
       id: item.id,

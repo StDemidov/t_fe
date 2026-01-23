@@ -1,0 +1,175 @@
+.campCard {
+  display: flex;
+  height: 6vw;
+  width: 99%;
+  box-shadow: 0px 0px 15px -3px rgba(83, 83, 83, 0.382);
+  margin-top: 50px;
+  border-radius: 25px;
+  padding: 0.7vw;
+  gap: 20px;
+  background: linear-gradient(
+    90deg,
+    rgba(136, 136, 136, 0.1) 0%,
+
+    rgba(227, 227, 227, 0.1) 49%,
+    rgba(255, 255, 255, 0.1) 100%
+  );
+  .photo {
+    min-width: 4.5vw;
+    max-width: 4.5vw;
+    max-height: 100%;
+    min-height: 100%;
+    background-size: cover; /* картинка заполняет div */
+    background-position: center; /* центрируем */
+    background-repeat: no-repeat;
+    height: 100%;
+    border-radius: 0.8vw;
+  }
+  .baseInfo {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3vw;
+    justify-content: center;
+    width: 100%;
+    .headerRow {
+      min-width: 100%;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      .campName {
+        font-size: 2.2vw;
+        font-family: 'BebasNeue', sans-serif;
+        color: rgb(93, 93, 93);
+      }
+    }
+
+    .ids {
+      display: flex;
+      flex-direction: row;
+      gap: 0.8vw;
+      .idTag {
+        padding: 0.4vw 0.6vw 0.4vw 0.6vw;
+        background: linear-gradient(
+          90deg,
+          rgba(85, 37, 134) 0%,
+          rgba(106, 53, 156) 49%,
+          rgba(128, 79, 179) 100%
+        );
+
+        border-radius: 0.9vw;
+        color: rgb(255, 255, 255);
+        font-size: 0.7vw;
+      }
+    }
+    .dates {
+      display: flex;
+      flex-direction: row;
+      gap: 0.8vw;
+      .date {
+        padding: 0.4vw 0.6vw 0.4vw 0.6vw;
+        background: linear-gradient(
+          90deg,
+          rgb(83, 83, 83) 0%,
+          rgb(112, 111, 111) 49%,
+          rgb(155, 155, 155) 100%
+        );
+        border-radius: 0.7vw;
+        color: rgb(255, 255, 255);
+        font-size: 0.5vw;
+      }
+    }
+  }
+
+  .statusTag {
+    display: flex;
+    align-items: center;
+    justify-items: center;
+    font-size: 1vw;
+    padding: 0.4vw 0.6vw 0.4vw 0.6vw;
+    border-radius: 0.7vw;
+    gap: 0.1vw;
+    background-color: #750bd1;
+    color: white;
+  }
+
+  .pausedStatus {
+    background-color: rgb(221, 134, 4);
+  }
+
+  .activeStatus {
+    background-color: rgb(78, 143, 78);
+  }
+
+  .waitingForLaunch {
+    background-color: rgb(3, 133, 232);
+  }
+
+  .errorStatus {
+    background-color: rgb(149, 10, 10);
+  }
+
+  .endedStatus {
+    background-color: rgb(91, 91, 91);
+  }
+}
+
+.statsSummary {
+  color: #750bd1;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  .statsRow {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+}
+
+.statsCard {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 24vw;
+  height: 10.5vw;
+  background: linear-gradient(
+    90deg,
+    rgba(136, 136, 136, 0.1) 0%,
+
+    rgba(227, 227, 227, 0.1) 49%,
+    rgba(255, 255, 255, 0.1) 100%
+  );
+  border-radius: 1vw;
+  box-shadow: 0px 0px 0.7vw -0.2vw rgba(83, 83, 83, 0.382);
+  .leftSide {
+    display: flex;
+    width: 17vw;
+    flex-direction: column;
+    .metricName {
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-start;
+      padding: 1vw;
+      font-size: 2.2vw;
+      font-family: 'BebasNeue', sans-serif;
+      color: rgb(93, 93, 93);
+    }
+  }
+  .rightSide {
+    width: 5vw;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: start;
+    padding: 1vw;
+    font-size: 2.2vw;
+    font-family: 'BebasNeue', sans-serif;
+  }
+}
+
+.barPlot {
+  height: 40%;
+  width: 15vw;
+  padding: 1vw;
+}

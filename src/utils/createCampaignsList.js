@@ -1,6 +1,7 @@
 const createCampaignsList = (campaigns) => {
   const campaignList = campaigns.map((camp) => {
     return {
+      id: camp.id,
       skuName: camp.sku_name,
       sku: camp.sku,
       campId: camp.camp_id,

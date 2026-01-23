@@ -36,6 +36,7 @@ import BarplotOrdersDouble from '../barplot_orders_double/BarplotOrdersDouble';
 
 import styles from './style.module.css';
 import LineplotBC from '../lineplot_bc/LineplotBC';
+import TablesPaginator from '../tables_paginator/TablesPaginator';
 
 const getUniqueOrderNames = (data) => {
   const namesSet = new Set();
@@ -310,22 +311,16 @@ const BarcodesTableNew = ({
             <UploadOrderBarcode existingOrders={uniqueOrders} />
             <DeleteOrders existingOrders={uniqueOrders} />
             <button className={styles.actionButton} onClick={generateXLS}>
-              Сформировать заказ
+              Сформировать
             </button>
           </div>
         </div>
         <div className={styles.paginator}>
-          {pagesArray.map((elem) => (
-            <div
-              className={`${styles.pageIcon} ${
-                elem == currentPage ? styles.currentPage : ''
-              }`}
-              onClick={handleClickOnPage}
-              data-value={elem}
-            >
-              {elem}
-            </div>
-          ))}
+          <TablesPaginator
+            currentPage={currentPage > pagesArray.length ? 1 : currentPage}
+            numOfPages={pagesArray.length}
+            setPageFunction={setPageBarcode}
+          />
         </div>
         <div className={styles.header}>
           <div className={styles.leftHeaderPart}>

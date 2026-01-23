@@ -107,8 +107,17 @@
   }
   .settingsButton {
   }
-  .pauseButton:hover {
+  .statsButton {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: inherit;
+  }
+  .statsButton:hover {
     color: #623fc0;
+  }
+  .pauseButton:hover {
+    color: #c0823f;
   }
   .launchButton:hover {
     color: #29642a;

@@ -47,6 +47,12 @@ const exportVCMetricsToExcel = (vendorCodeMetrics, startDate, endDate) => {
         '% Добавления в корзину': item.addToCart[idx] ?? 0,
         '% из корзины в заказ': item.cartToOrder[idx] ?? 0,
         '% из клика в заказ': item.clickToOrder[idx] ?? 0,
+        'Дедлайн (дни)': item.deadline,
+        'Дедлайн (дата)': addDays(item.deadline),
+        'Последнее обновление остатков (для ДЛ)': item.lastStockRefill,
+        Теги: item.tagsMain.join(','),
+        'Теги (ткань)': item.tagsCloth.join(','),
+        'Теги (другие)': item.tagsOthers.join(','),
       });
     });
   });
@@ -110,3 +116,14 @@ const ExportToXSLXButtonVC = ({ vendorCodeMetrics }) => {
 };
 
 export default ExportToXSLXButtonVC;
+
+function addDays(n) {
+  const date = new Date(); // Создаем объект с текущей датой
+  date.setDate(date.getDate() + n); // Устанавливаем дату на n дней вперед
+
+  const year = date.getFullYear(); // Получаем год
+  const month = String(date.getMonth() + 1).padStart(2, '0'); // Получаем месяц (начиная с 0, добавляем 1 и дополняем нулем)
+  const day = String(date.getDate()).padStart(2, '0'); // Получаем день (дополняем нулем)
+
+  return `${year}-${month}-${day}`; // Форматируем в год-месяц-число
+}

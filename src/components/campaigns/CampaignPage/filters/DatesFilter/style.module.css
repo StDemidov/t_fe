@@ -1,0 +1,166 @@
+.calendar :global(.react-datepicker) {
+  border-radius: 1vw;
+  /* box-shadow: 0px 0px 0.7vw -0.2vw rgba(83, 83, 83, 0.382); */
+  border: none;
+  width: 15vw;
+  height: 20vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.calendar :global(.react-datepicker__day--selected),
+.calendar :global(.react-datepicker__day--range-start),
+.calendar :global(.react-datepicker__day--range-end) {
+  background-color: rgba(85, 37, 134);
+  color: white;
+}
+
+.calendar :global(.react-datepicker__day--in-range) {
+  background-color: rgba(128, 79, 179);
+  border-radius: 0;
+}
+
+.calendar :global(.react-datepicker__day--in-selecting-range) {
+  background-color: rgb(145, 101, 192);
+  border-radius: 0;
+  color: white;
+}
+
+.calendar :global(.react-datepicker__day--selecting-range-start) {
+  background-color: rgb(145, 101, 192);
+  border-radius: 0.5vw 0 0 0.5vw;
+  color: white;
+}
+
+.calendar :global(.react-datepicker__header) {
+  width: 15vw;
+  height: 4vw;
+  border: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(136, 136, 136, 0.2) 0%,
+
+    rgba(227, 227, 227, 0.2) 49%,
+    rgba(255, 255, 255, 0.1) 100%
+  );
+  border-radius: 1vw 1vw 0 0;
+  color: rgb(65, 65, 65);
+  /* box-shadow: 0px 0px 15px -3px rgba(83, 83, 83, 0.382); */
+}
+
+.calendar :global(.react-datepicker__current-month) {
+  width: 15vw;
+  height: 15vw;
+}
+
+.calendar :global(.react-datepicker__day--range-end) {
+  border-radius: 0 0.5vw 0.5vw 0;
+  color: white;
+}
+
+.calendar :global(.react-datepicker__day--range-start) {
+  border-radius: 0.5vw 0 0 0.5vw;
+  color: white;
+}
+
+.calendar :global(.react-datepicker__day:hover) {
+  background-color: rgba(85, 37, 134);
+  border-radius: 0;
+  color: white;
+}
+
+.calendar :global(.react-datepicker__day),
+.calendar :global(.react-datepicker__day-name) {
+  width: 2vw;
+  height: 2vw;
+  margin: 0;
+  font-size: 0.9vw;
+  display: inline-flex; /* КЛЮЧЕВО */
+  align-items: center;
+  justify-content: center;
+
+  line-height: normal;
+}
+
+.calendar :global(.react-datepicker__day-name) {
+  color: rgb(65, 65, 65);
+  text-transform: capitalize;
+}
+
+.monthHeader {
+  width: 100%;
+  font-size: 0.9vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1vw;
+  text-transform: uppercase;
+}
+
+.monthButton {
+  width: 1.5vw;
+  height: 1.5vw;
+  font-size: 1vw;
+  border-radius: 50%;
+  border: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+}
+
+.monthButton:hover {
+  cursor: pointer;
+  background-color: rgb(145, 101, 192);
+  color: white;
+}
+
+.calendar :global(.react-datepicker__week) {
+  height: 2vw;
+  margin: 0.1vw 0 0.1vw 0;
+  width: 15vw;
+}
+
+.calendar :global(.react-datepicker__month) {
+  margin: 0;
+}
+
+.calendar :global(.react-datepicker__month-container) {
+  height: 20vw;
+  width: 15vw;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  box-shadow: 0px 0px 0.7vw -0.2vw rgba(83, 83, 83, 0.382);
+  border-radius: 1vw;
+}
+.calendar :global(react-datepicker__children-container) {
+  max-width: 15vw;
+  min-width: 15vw;
+  margin: 0;
+  padding: 0;
+}
+
+.calendar {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  .buttonAccept {
+    margin-top: 0.5vw;
+    width: 100%;
+    font-size: 0.8vw;
+    height: 2vw;
+    font-size: 1vw;
+    border: 0;
+    border-radius: 0.5vw;
+  }
+  .buttonAccept:hover {
+    background-color: ;
+    cursor: pointer;
+    background-color: rgb(145, 101, 192);
+    color: white;
+  }
+}

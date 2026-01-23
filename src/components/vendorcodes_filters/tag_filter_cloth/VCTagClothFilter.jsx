@@ -14,6 +14,8 @@ const VCTagClothFilter = ({ options }) => {
   const [selectedOptions, setSelectedOptions] = useState(
     useSelector(selectVCTagsClothFilter)
   );
+  const sortedOptions = options.slice();
+  sortedOptions.sort();
   const dispatch = useDispatch();
 
   const toggleDropdown = () => setIsOpen(!isOpen);
@@ -64,7 +66,7 @@ const VCTagClothFilter = ({ options }) => {
       </button>
       {isOpen && (
         <div className={`${styles.dropdownMenu} ${isOpen ? styles.show : ''}`}>
-          {options.map((option, index) => (
+          {sortedOptions.map((option, index) => (
             <label key={index} className={styles.dropdownItem}>
               <input
                 type="checkbox"

@@ -4,7 +4,7 @@ import { FaStoreAltSlash } from 'react-icons/fa';
 
 import styles from './style.module.css';
 
-const StatusTag = ({ camp }) => {
+const StatusTagFlexible = ({ camp }) => {
   var statusText = STATUSES[camp.status].text;
   var icon = '';
   if (camp.status === 11) {
@@ -83,4 +83,4 @@ const STATUSES = {
   },
 };
 
-export default StatusTag;
+export default StatusTagFlexible;

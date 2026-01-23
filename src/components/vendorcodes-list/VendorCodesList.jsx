@@ -66,7 +66,7 @@ const initialColumns = [
   { key: 'roi', label: 'ROI', hidden: false },
   { key: 'buyout', label: '% Выкупа', hidden: false },
   { key: 'priceBSPP', label: 'Цена до СПП', hidden: false },
-  { key: 'priceASPP', label: 'Цена после СПП', hidden: false },
+  // { key: 'priceASPP', label: 'Цена после СПП', hidden: false },
   { key: 'selfPrice', label: 'Себестоимость', hidden: false },
   // { key: 'selfPriceWONDS', label: 'Себестоимость без НДС', hidden: false },
 
@@ -274,6 +274,18 @@ const getSortedData = (data, selectedSorting) => {
       break;
     case 'Заказы ↑':
       data.sort((a, b) => (a.ordersSum > b.ordersSum ? 1 : -1));
+      break;
+    case 'Рекламные расходы ↓':
+      data.sort((a, b) => (a.adsCostsSum > b.adsCostsSum ? -1 : 1));
+      break;
+    case 'Рекламные расходы ↑':
+      data.sort((a, b) => (a.adsCostsSum > b.adsCostsSum ? 1 : -1));
+      break;
+    case 'ROI ↓':
+      data.sort((a, b) => (a.roi > b.roi ? -1 : 1));
+      break;
+    case 'ROI ↑':
+      data.sort((a, b) => (a.roi > b.roi ? 1 : -1));
       break;
     case 'ABC ↓':
       data.sort(function (a, b) {

@@ -6,8 +6,8 @@ const BodyCampaigns = ({ vc }) => {
       <div className={styles.campaignsStatuses}>
         <div
           className={`${styles.campaignDiv} ${
-            vc.advCampaigns.auto.is_exist
-              ? vc.advCampaigns.auto.is_active
+            vc.advCampaigns.unified.is_exist
+              ? vc.advCampaigns.unified.is_active
                 ? styles.campaignIsActive
                 : styles.campaignIsPaused
               : styles.campaignNotExist
@@ -17,8 +17,8 @@ const BodyCampaigns = ({ vc }) => {
         </div>
         <div
           className={`${styles.campaignDiv} ${
-            vc.advCampaigns.auc.is_exist
-              ? vc.advCampaigns.auc.is_active
+            vc.advCampaigns.manual.is_exist
+              ? vc.advCampaigns.manual.is_active
                 ? styles.campaignIsActive
                 : styles.campaignIsPaused
               : styles.campaignNotExist
