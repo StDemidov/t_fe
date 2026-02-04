@@ -1,12 +1,12 @@
 .campCard {
   display: flex;
   height: 6vw;
-  width: 99%;
+  /* width: 99%; */
   box-shadow: 0px 0px 15px -3px rgba(83, 83, 83, 0.382);
   margin-top: 50px;
-  border-radius: 25px;
+  border-radius: 1vw;
   padding: 0.7vw;
-  gap: 20px;
+  gap: 1vw;
   background: linear-gradient(
     90deg,
     rgba(136, 136, 136, 0.1) 0%,
@@ -169,7 +169,184 @@
 }
 
 .barPlot {
-  height: 40%;
+  height: 4vw;
   width: 15vw;
   padding: 1vw;
+}
+
+.mainPlotBox {
+  width: 60vw;
+  padding: 1.1vw;
+
+  background: linear-gradient(
+    90deg,
+    rgba(136, 136, 136, 0.1) 0%,
+
+    rgba(227, 227, 227, 0.1) 49%,
+    rgba(255, 255, 255, 0.1) 100%
+  );
+  border-radius: 1vw;
+  box-shadow: 0px 0px 15px -3px rgba(83, 83, 83, 0.382);
+}
+
+.changesLogs {
+  width: 30vw;
+
+  padding: 1.1vw;
+  background: linear-gradient(
+    90deg,
+    rgba(136, 136, 136, 0.1) 0%,
+
+    rgba(227, 227, 227, 0.1) 49%,
+    rgba(255, 255, 255, 0.1) 100%
+  );
+  border-radius: 1vw;
+  box-shadow: 0px 0px 15px -3px rgba(83, 83, 83, 0.382);
+  .logsHeader {
+    font-size: 1.6vw;
+    font-family: 'BebasNeue', sans-serif;
+    color: rgb(93, 93, 93);
+    margin-bottom: 1vw;
+  }
+  .logsList {
+    height: 90%;
+    font-size: 1vw;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0.1vw;
+    .logRow {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 0.5vw;
+      .logDate {
+        font-size: 0.5vw;
+        display: flex;
+        min-width: 5vw;
+        max-width: 5vw;
+        align-items: center;
+        justify-content: center;
+        border-radius: 0.5vw;
+        padding: 0.25vw 0.3vw 0.25vw 0.3vw;
+        color: white;
+        background: linear-gradient(
+          90deg,
+          rgb(83, 83, 83) 0%,
+          rgb(112, 111, 111) 49%,
+          rgb(155, 155, 155) 100%
+        );
+      }
+      .typeIcon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        /* background-color: #750bd1; */
+        height: 1vw;
+        width: 1vw;
+        font-size: 0.8vw;
+        padding: 0.05vw;
+        border-radius: 50%;
+        border: 0.01vw solid black;
+      }
+      .logText {
+        display: flex;
+        justify-content: flex-start;
+        min-width: 17vw;
+        max-width: 17vw;
+        font-size: 0.7vw;
+      }
+      .logAuthor {
+        border-radius: 0.5vw;
+        font-size: 0.5vw;
+        display: flex;
+        min-width: 2vw;
+        max-width: 2vw;
+        align-items: center;
+        justify-content: center;
+        border-radius: 0.5vw;
+        padding: 0.25vw 0.3vw 0.25vw 0.3vw;
+        color: white;
+        background: linear-gradient(
+          90deg,
+          rgba(85, 37, 134) 0%,
+          rgba(106, 53, 156) 49%,
+          rgba(128, 79, 179) 100%
+        );
+      }
+    }
+  }
+}
+
+.clustersBox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1.1vw;
+  height: 30vw;
+  border-radius: 1vw;
+  box-shadow: 0px 0px 0.7vw -0.2vw rgba(83, 83, 83, 0.382);
+  margin-bottom: 20px;
+  background: linear-gradient(
+    90deg,
+    rgba(136, 136, 136, 0.1) 0%,
+
+    rgba(227, 227, 227, 0.1) 49%,
+    rgba(255, 255, 255, 0.1) 100%
+  );
+
+  .emptyData {
+    font-size: 1.6vw;
+    font-family: 'BebasNeue', sans-serif;
+    color: rgb(93, 93, 93);
+  }
+}
+
+/* В вашем style.module.css добавьте/измените: */
+
+.chartContainer {
+  width: 100%;
+  height: 100%;
+  transition: opacity 0.3s ease;
+  position: relative; /* Добавьте это */
+}
+
+.dimmed {
+  opacity: 0.3;
+}
+
+.sumOverlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1000; /* Увеличьте z-index */
+  font-size: 22px;
+  font-weight: bold;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  font-family: 'BebasNeue', sans-serif;
+
+  /* Добавьте тень для лучшей читаемости */
+  text-shadow: 2px 2px 3px rgba(255, 255, 255, 0.8),
+    -1px -1px 2px rgba(255, 255, 255, 0.8),
+    1px -1px 2px rgba(255, 255, 255, 0.8), -1px 1px 2px rgba(255, 255, 255, 0.8);
+}
+
+.visible {
+  opacity: 1;
+}
+
+.hidden {
+  opacity: 0;
+}
+
+.sumPositive {
+  color: #462e88;
+}
+
+.sumNegative {
+  color: #c11414;
 }

@@ -30,3 +30,10 @@ export const calculateEbitdaWoAdsRaw = (
     });
   } else return [];
 };
+
+export const calculateArraySum = (data) => {
+  return data.reduce(
+    (accumulator, currentValue) => accumulator + currentValue,
+    0
+  );
+};

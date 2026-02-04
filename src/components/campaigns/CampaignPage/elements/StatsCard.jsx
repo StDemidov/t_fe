@@ -1,13 +1,25 @@
+import { calculateArraySum } from '../../../../utils/calculations';
 import AnimatedNumbers from './AnimatedNumbers';
 import BarplotCampaign from './BarplotCampaign';
+import LineplotCampaign from './LineplotCampaign';
+import StackedBarplotCampaign from './StackedBarplotCampaign';
 import styles from './style.module.css';
 
-const StatsCard = ({ metricArray, metricName, datesRange, lastUpdate }) => {
+const StatsCard = ({
+  metricArray,
+  assocMetricArray,
+  metricName,
+  datesRange,
+  lastUpdate,
+  percents = false,
+  percentsTotal = null,
+}) => {
   const startDate = startOfDay(toDate(datesRange.startDate));
   const endDate = startOfDay(toDate(datesRange.endDate));
   const lastDate = startOfDay(toDate(lastUpdate));
 
   const data = [];
+  const assocData = [];
   const dates = [];
 
   metricArray.forEach((value, index) => {
@@ -15,24 +27,36 @@ const StatsCard = ({ metricArray, metricName, datesRange, lastUpdate }) => {
     const currentDate = startOfDay(addDays(lastDate, offset));
 
     if (currentDate < startDate || currentDate > endDate) return;
-
+    if (assocMetricArray) {
+      assocData.push(assocMetricArray[index]);
+    }
     data.push(value);
     dates.push(currentDate);
   });
-  const total = data.reduce(
-    (accumulator, currentValue) => accumulator + currentValue,
-    0
-  );
+  const total = percents ? percentsTotal : calculateArraySum(data);
 
   return (
     <div className={styles.statsCard}>
       <div className={styles.leftSide}>
         <div className={styles.metricName}>{metricName}</div>
-        <BarplotCampaign data={data} dates={dates} />
+        <div className={styles.barPlot}>
+          {percents ? (
+            <LineplotCampaign data={data} dates={dates} />
+          ) : assocMetricArray ? (
+            <StackedBarplotCampaign
+              data={data}
+              totalData={data}
+              associatedData={assocData}
+              dates={dates}
+            />
+          ) : (
+            <BarplotCampaign data={data} dates={dates} />
+          )}
+        </div>
       </div>
       <div className={styles.rightSide}>
         <div className={styles.metricSummmary}>
-          <AnimatedNumbers total={total} />
+          {percents ? percentsTotal : <AnimatedNumbers total={total} />}
         </div>
       </div>
     </div>

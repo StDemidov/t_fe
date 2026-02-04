@@ -3,6 +3,7 @@ import styles from './style.module.css';
 import { setNotification } from '../../../../redux/slices/notificationSlice';
 import StatusTag from '../../CampaignsTable/elements/CampaignsBody/cells/elements/StatusTag';
 import StatusTagFlexible from './StatusTagFlexible';
+import { getDate } from '../../../../utils/beaty';
 
 const CampCard = ({ camp }) => {
   const dispatch = useDispatch();
@@ -17,6 +18,9 @@ const CampCard = ({ camp }) => {
   };
 
   const formattedDate = getDate(camp.stats.creationDate, true);
+  const formattedEndDate = camp.stats.creationDate
+    ? getDate(camp.stats.endDate, true)
+    : null;
 
   const formattedStatsUpdate = getDate(camp.lastUpdateStats);
 
@@ -66,12 +70,22 @@ const CampCard = ({ camp }) => {
           <div className={styles.date}>
             Дата создания: <b>{formattedDate}</b>
           </div>
-          <div className={styles.date}>
-            Статистика обновлена: <b>{formattedStatsUpdate}</b>
-          </div>
-          <div className={styles.date}>
-            Кластеры обновлены: <b>{formattedClustersUpdate}</b>
-          </div>
+          {camp.stats.endDate ? (
+            <>
+              <div className={styles.date}>
+                Дата завершения: <b>{formattedEndDate}</b>
+              </div>
+            </>
+          ) : (
+            <>
+              <div className={styles.date}>
+                Статистика обновлена: <b>{formattedStatsUpdate}</b>
+              </div>
+              <div className={styles.date}>
+                Кластеры обновлены: <b>{formattedClustersUpdate}</b>
+              </div>
+            </>
+          )}
         </div>
       </div>
     </div>
@@ -79,27 +93,3 @@ const CampCard = ({ camp }) => {
 };
 
 export default CampCard;
-
-const getDate = (date, time = false) => {
-  if (!time) {
-    return date
-      .toLocaleString('ru-RU', {
-        day: '2-digit',
-        month: '2-digit',
-        year: 'numeric',
-        hour12: false,
-      })
-      .replace(',', '');
-  } else {
-    return date
-      .toLocaleString('ru-RU', {
-        day: '2-digit',
-        month: '2-digit',
-        year: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit',
-        hour12: false,
-      })
-      .replace(',', '');
-  }
-};

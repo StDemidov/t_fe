@@ -6,17 +6,14 @@ import {
   Tooltip,
   Legend,
 } from 'chart.js';
-import { Bar } from 'react-chartjs-2';
+import { Bar, Line } from 'react-chartjs-2';
 import styles from './style.module.css';
-import { formatDate } from '../../../../utils/beaty';
 import { calculateArraySum } from '../../../../utils/calculations';
-import { useState } from 'react';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
 
-const BarplotCampaign = ({ data, dates, small = false }) => {
-  const total = calculateArraySum(data);
-  if (!data?.length || total === 0) return 'Нет данных';
+const LineplotCampaign = ({ data, dates, small = false }) => {
+  if (!data?.length || calculateArraySum(data) === 0) return 'Нет данных';
 
   const chartData = {
     labels: data.map((_, i) => i), // фиктивные labels
@@ -24,9 +21,9 @@ const BarplotCampaign = ({ data, dates, small = false }) => {
       {
         data,
         backgroundColor: createVerticalGradient,
-        hoverBackgroundColor: createVerticalGradientHover,
-        borderRadius: 6,
-        yAxisID: 'y-axis-1',
+        borderWidth: 1,
+        pointRadius: small ? 1 : 2,
+        borderColor: 'rgba(153, 102, 255, 1)',
       },
     ],
   };
@@ -40,14 +37,6 @@ const BarplotCampaign = ({ data, dates, small = false }) => {
       },
       y: {
         display: false,
-      },
-      'y-axis-1': {
-        type: 'logarithmic',
-        position: 'left',
-        display: false,
-        ticks: {
-          beginAtZero: true,
-        },
       },
     },
     plugins: {
@@ -77,32 +66,18 @@ const BarplotCampaign = ({ data, dates, small = false }) => {
     },
   };
 
-  return <Bar data={chartData} options={options} />;
+  return <Line data={chartData} options={options} />;
 };
 
-export default BarplotCampaign;
+export default LineplotCampaign;
+
+const formatDate = (date) =>
+  date.toLocaleDateString('ru-RU', {
+    day: '2-digit',
+    month: '2-digit',
+  });
 
 const createVerticalGradient = (context) => {
-  const { chart } = context;
-  const { ctx, chartArea } = chart;
-
-  if (!chartArea) return null; // важно для первого рендера
-
-  const gradient = ctx.createLinearGradient(
-    0,
-    chartArea.bottom,
-    0,
-    chartArea.top
-  );
-
-  gradient.addColorStop(0, 'rgba(85, 37, 134, 0.6)');
-  gradient.addColorStop(0.49, 'rgba(106, 53, 156, 0.6)');
-  gradient.addColorStop(1, 'rgba(128, 79, 179, 0.6)');
-
-  return gradient;
-};
-
-const createVerticalGradientHover = (context) => {
   const { chart } = context;
   const { ctx, chartArea } = chart;
 

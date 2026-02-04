@@ -31,7 +31,7 @@ const toCamel = (str) => str.replace(/_([a-z])/g, (_, c) => c.toUpperCase());
 
 // "1,2,3" -> [1,2,3]
 const csvToNumbers = (value) =>
-  typeof value === 'string' && /^-?\d+(,\s*-?\d+)*$/.test(value)
+  typeof value === 'string' && /^-?\d+(\.\d+)?(,\s*-?\d+(\.\d+)?)*$/.test(value)
     ? value.split(',').map(Number)
     : value;
 

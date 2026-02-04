@@ -1,4 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
+import { addDays } from 'date-fns'; // Для работы с датами
 import CampCard from './elements/CampCard';
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
@@ -11,6 +12,9 @@ import DatesFilter from './filters/DatesFilter/DatesFilter';
 
 import styles from './style.module.css';
 import StatsSummary from './elements/StatsSummary';
+import MainPlotBox from './elements/MainPlotBox';
+import ChangesLogs from './elements/ChangesLogs';
+import ClustersBox from './elements/ClustersBox';
 
 const CampaignPage = () => {
   const dispatch = useDispatch();
@@ -27,7 +31,9 @@ const CampaignPage = () => {
     if (campaign?.lastUpdateStats && campaign?.stats?.creationDate) {
       setDatesRange({
         startDate: campaign.stats.creationDate,
-        endDate: campaign.lastUpdateStats,
+        endDate: campaign.stats.endDate
+          ? campaign.stats.endDate
+          : campaign.lastUpdateStats,
       });
     }
   }, [campaign]);
@@ -39,7 +45,7 @@ const CampaignPage = () => {
   if (!campaign) {
     return <section>Загрузка...</section>;
   }
-  console.log(datesRange);
+  console.log(campaign.stats.bidType);
 
   return (
     <section className={styles.fullSection}>
@@ -48,13 +54,48 @@ const CampaignPage = () => {
         <DatesFilter
           datesRange={datesRange}
           setDatesRange={setDatesRange}
-          maxDate={campaign.lastUpdateStats}
+          maxDate={
+            campaign.stats.endDate
+              ? campaign.stats.endDate
+              : campaign.lastUpdateStats
+          }
           minDate={campaign.stats.creationDate}
         />
         <StatsSummary
           stats={campaign.stats}
           datesRange={datesRange}
-          lastUpdate={campaign.lastUpdateStats}
+          lastUpdate={
+            campaign.stats.endDate
+              ? campaign.stats.endDate
+              : campaign.lastUpdateStats
+          }
+        />
+      </div>
+      <div className={styles.thirdBlock}>
+        <MainPlotBox
+          stats={campaign.stats}
+          datesRange={datesRange}
+          lastUpdate={
+            campaign.stats.endDate
+              ? campaign.stats.endDate
+              : campaign.lastUpdateStats
+          }
+        />
+        <ChangesLogs logs={campaign.logs} dates={datesRange} />
+      </div>
+      <div className={styles.fourthBlock}>
+        <ClustersBox
+          unified={campaign.stats.bidType === 'unified'}
+          clusters={campaign.clusters}
+          dates={datesRange}
+          campId={id}
+          lastUpdateClusters={
+            campaign.stats.endDate
+              ? campaign.stats.endDate < campaign.lastUpdateClusters
+                ? addDays(campaign.stats.endDate, 1)
+                : campaign.lastUpdateClusters
+              : campaign.lastUpdateClusters
+          }
         />
       </div>
     </section>

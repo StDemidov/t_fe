@@ -1,0 +1,113 @@
+.clustersTable {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  .clustersRows {
+    height: 25vw;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    width: 100%;
+    gap: 0.5vw;
+  }
+  .clustersHeader {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 1vw;
+    font-size: 1.6vw;
+    font-family: 'BebasNeue', sans-serif;
+    color: rgb(93, 93, 93);
+  }
+}
+
+.clusterRow {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  height: 5vw;
+}
+
+.clusterName,
+.clusterActivity,
+.clusterBid,
+.clusterViews,
+.clusterClicks,
+.clusterOrders,
+.clusterToCarts,
+.clusterPosition,
+.clusterCTR {
+  min-width: 8vw;
+  max-width: 8vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 2.5vw;
+  font-family: 'BebasNeue', sans-serif;
+  color: rgb(109, 109, 109);
+  padding: 0.5vw;
+}
+
+.clusterBid input {
+  width: 50%;
+  height: 1.5vw;
+  text-align: center;
+  border-radius: 1vw;
+  border: 0.05vw solid gray;
+  font-size: 0.8vw;
+}
+
+.switch {
+  width: 2.7vw;
+  height: 1.25vw;
+  background-color: #ccc;
+  border-radius: 5vw;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  position: relative;
+  transition: background-color 0.2s ease;
+}
+
+.switch.on {
+  background: linear-gradient(
+    90deg,
+    rgba(85, 37, 134) 0%,
+    rgba(106, 53, 156) 49%,
+    rgba(128, 79, 179) 100%
+  );
+}
+
+.slider {
+  width: 1vw; /* было 1.25vw */
+  height: 1vw; /* было 1.25vw */
+  background-color: #fff;
+  border-radius: 50%;
+  position: absolute;
+  top: 0.12vw; /* центрируем вертикально */
+  left: 0.12vw;
+  transition: transform 0.2s ease;
+}
+
+.switch.on .slider {
+  transform: translateX(1.4vw);
+}
+
+.applyClusterChanges {
+  display: flex;
+  justify-content: end;
+  .applyButton,
+  .disabledButton {
+    min-width: 10vw;
+    max-width: 10vw;
+    height: 1.5vw;
+    border-radius: 1vw;
+    border: none;
+  }
+
+  .applyButton:hover {
+    background-color: rgb(130, 63, 192);
+    color: white;
+    cursor: pointer;
+  }
+}

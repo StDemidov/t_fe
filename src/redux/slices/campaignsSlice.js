@@ -28,6 +28,7 @@ const initialState = {
   last_update: '',
   skuData: [],
   isLoading: false,
+  clustersIsLoading: false,
   creatingIsLoading: false,
   cmpgnSingle: {},
   defaultSettings: {},
@@ -160,6 +161,24 @@ export const createCampaigns = createAsyncThunk(
   }
 );
 
+export const editClusters = createAsyncThunk(
+  'campaigns/editClusters',
+  async ({ data, url }, thunkAPI) => {
+    try {
+      const res = await api.post(url, data);
+      thunkAPI.dispatch(setNotification('Изменения применены!'));
+      return res.data;
+    } catch (error) {
+      if (error.request.status == 401) {
+        thunkAPI.dispatch(clearCredentials());
+        thunkAPI.dispatch(setError('Повторите вход!'));
+      } else {
+        thunkAPI.dispatch(setError(error.message));
+      }
+    }
+  }
+);
+
 export const editCampaigns = createAsyncThunk(
   'campaigns/editCampaigns',
   async ({ data, url }, thunkAPI) => {
@@ -250,6 +269,15 @@ const campaignsSlice = createSlice({
     builder.addCase(createCampaigns.fulfilled, (state) => {
       state.isLoading = false;
     });
+    builder.addCase(editClusters.pending, (state) => {
+      state.clustersIsLoading = true;
+    });
+    builder.addCase(editClusters.fulfilled, (state, action) => {
+      state.clustersIsLoading = false;
+      const newCamp = createCampaignSingle(action.payload);
+      const [id] = Object.keys(newCamp);
+      state.campaignsById[id] = newCamp[id];
+    });
     builder.addCase(editCampaigns.pending, (state) => {
       state.isLoading = true;
     });
@@ -279,6 +307,8 @@ export const selectCampaigns = (state) => state.campaigns.campaigns;
 export const selectCurrentPage = (state) => state.campaigns.currentPage;
 export const selectSkuData = (state) => state.campaigns.skuData;
 export const selectIsLoading = (state) => state.campaigns.isLoading;
+export const selectClustersIsLoading = (state) =>
+  state.campaigns.clustersIsLoading;
 export const selectChangeIsLoading = (state) => state.campaigns.changeIsLoading;
 export const selectCampaignById = (id) => (state) =>
   state.campaigns.campaignsById[id];

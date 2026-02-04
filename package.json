@@ -30,7 +30,7 @@
     "react-router-dom": "^6.4.1",
     "react-spring": "^9.7.4",
     "react-toastify": "^10.0.5",
-    "react-window": "^1.8.10",
+    "react-window": "^1.8.11",
     "redux-persist": "^6.0.0",
     "serve": "^14.2.4",
     "uuid": "^10.0.0",

@@ -73,13 +73,13 @@ const ActionButtons = ({ camp, cellStyle }) => {
           <TbLoaderQuarter />
         ) : (
           <>
-            {/* <Link
+            <Link
               to={`/tools/campaigns/${camp.id}`}
               target="_blank"
               className={styles.statsButton}
             >
               <MdOutlineQueryStats />
-            </Link> */}
+            </Link>
             {[9, 11].includes(camp.status) & !camp.pausedByUser ? (
               <BsPauseCircleFill
                 className={styles.pauseButton}
