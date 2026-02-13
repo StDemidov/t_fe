@@ -24,7 +24,9 @@ const StatusTag = ({ camp }) => {
   );
 };
 
-const STATUSES = {
+export default StatusTag;
+
+export const STATUSES = {
   11: {
     text: 'На паузе',
     className: styles.pausedStatus,
@@ -81,6 +83,16 @@ const STATUSES = {
     text: 'Ошибка ставок',
     className: styles.errorStatus,
   },
+  '-11': {
+    text: 'Ждет паузы',
+    className: styles.pausedStatus,
+  },
+  '-12': {
+    text: 'Ждет старта',
+    className: styles.waitingForLaunch,
+  },
+  '-13': {
+    text: 'Ждет завершения',
+    className: styles.waitingForLaunch,
+  },
 };
-
-export default StatusTag;

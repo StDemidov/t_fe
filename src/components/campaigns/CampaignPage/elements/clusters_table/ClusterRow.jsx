@@ -81,7 +81,6 @@ const ClusterRow = ({
   return (
     <div className={styles.clusterRow}>
       <div className={styles.clusterName}>{cluster.cluster}</div>
-
       <div className={styles.clusterActivity}>
         <SwitchActivity
           checked={!cluster.disabled}
@@ -106,16 +105,20 @@ const ClusterRow = ({
           />
         </div>
       )}
-
       <BarplotCell data={computedData.views} style={styles.clusterViews} />
       <BarplotCell data={computedData.clicks} style={styles.clusterClicks} />
       <BarplotCell data={computedData.orders} style={styles.clusterOrders} />
+      <BarplotCell data={computedData.toCart} style={styles.clusterToCarts} />
       <LineplotCell
         data={computedData.ctr}
         style={styles.clusterPosition}
         ctrTotal={computedData.ctrTotal}
       />
-      <BarplotCell data={computedData.toCart} style={styles.clusterToCarts} />
+      <LineplotCell
+        data={computedData.toCartCr}
+        style={styles.clusterPosition}
+        ctrTotal={computedData.toCartCrTotal}
+      />{' '}
       <LineplotCell data={computedData.pos} style={styles.clusterPosition} />
     </div>
   );
@@ -192,16 +195,32 @@ function computeAllData(cluster, lastUpdateClusters, dates) {
     return ((clck / vws) * 100).toFixed(2);
   });
 
+  const toCartCR = toCart.data.map((crt, index) => {
+    const vws = views.data[index];
+    if (vws === 0) {
+      return 0;
+    }
+    return ((crt / vws) * 100).toFixed(2);
+  });
+
   const ctr = {
     data: ctrCalc,
     dates: views.dates,
   };
 
+  const toCartCr = {
+    data: toCartCR,
+    dates: views.dates,
+  };
+
   const viewsTotal = calculateArraySum(views.data);
   const clickTotal = calculateArraySum(clicks.data);
+  const toCartTotal = calculateArraySum(toCart.data);
   const ctrTotal =
     viewsTotal === 0 ? 0 : ((clickTotal / viewsTotal) * 100).toFixed(2);
   const pos = getDataByDates(cluster.positionByDays, lastUpdateClusters, dates);
+  const toCartCrTotal =
+    viewsTotal === 0 ? 0 : ((toCartTotal / viewsTotal) * 100).toFixed(2);
 
   return {
     orders,
@@ -213,5 +232,7 @@ function computeAllData(cluster, lastUpdateClusters, dates) {
     viewsTotal,
     clickTotal,
     ctrTotal,
+    toCartCr,
+    toCartCrTotal,
   };
 }

@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { subDays, format } from 'date-fns'; // Для работы с датами
 
 import api, { hostName } from '../../utils/host';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
@@ -39,6 +40,24 @@ const initialState = {
     end: todayFormatted,
   },
   campaignsById: {},
+  filters: {
+    dates: {
+      start: format(subDays(new Date(), 14), 'MM-dd-yyyy'),
+      end: format(subDays(new Date(), 1), 'MM-dd-yyyy'),
+    },
+    ended: false,
+    status: [],
+    time: 'Все',
+    type: [],
+    categories: [],
+    tableDates: {
+      startDate: null,
+      endDate: null,
+      maxDate: null,
+    },
+    sortingType: 'Дата создания ↑',
+  },
+  sortingType: '',
 };
 
 export const fetchCampaigns = createAsyncThunk(
@@ -127,21 +146,41 @@ export const changeCampaignStatus = createAsyncThunk(
   }
 );
 
-// export const startTest = createAsyncThunk(
-//   'abTests/startTest',
-//   async ({ data, url }, thunkAPI) => {
-//     const state = store.getState();
-//     const token = state.auth.user?.token; // токен из Redux
-//     try {
-//       // шаг 1 — отправляем POST
-//       const response = await api.post(url, data);
-//       if (!response.data) {
-//         throw new Error('Ошибка запуска теста');
-//       }
-//     }
-//      catch (err) {
-//         return thunkAPI.rejectWithValue(err.message);
-//       }
+export const deleteCampaign = createAsyncThunk(
+  'campaigns/deleteCampaign',
+  async (url, thunkAPI) => {
+    try {
+      const res = await api.get(url);
+      thunkAPI.dispatch(setNotification('Кампания удалена!'));
+      return res.data;
+    } catch (error) {
+      if (error.request.status == 401) {
+        thunkAPI.dispatch(clearCredentials());
+        thunkAPI.dispatch(setError('Повторите вход!'));
+      } else {
+        thunkAPI.dispatch(setError(error.response.data.detail));
+      }
+    }
+  }
+);
+
+export const changeCampaignsStatuses = createAsyncThunk(
+  'campaigns/changeCampaignsStatuses',
+  async ({ data, url }, thunkAPI) => {
+    try {
+      const res = await api.post(url, data);
+      thunkAPI.dispatch(setNotification('Статус изменен!'));
+      return res.data;
+    } catch (error) {
+      if (error.request.status == 401) {
+        thunkAPI.dispatch(clearCredentials());
+        thunkAPI.dispatch(setError('Повторите вход!'));
+      } else {
+        thunkAPI.dispatch(setError(error.response.data.detail));
+      }
+    }
+  }
+);
 
 export const createCampaigns = createAsyncThunk(
   'campaigns/createCampaigns',
@@ -204,6 +243,39 @@ const campaignsSlice = createSlice({
     setCurrentPage: (state, action) => {
       state.currentPage = action.payload;
     },
+    setDatesFilter: (state, action) => {
+      state.vendorCode.dates = action.payload;
+    },
+    setFilterEnded: (state, action) => {
+      state.filters.ended = action.payload;
+    },
+    setFilterStatus: (state, action) => {
+      state.filters.status = [...action.payload];
+    },
+    resetFilterStatus: (state) => {
+      state.filters.status = [];
+    },
+    setFilterType: (state, action) => {
+      state.filters.type = [...action.payload];
+    },
+    resetFilterType: (state) => {
+      state.filters.type = [];
+    },
+    setFilterCategory: (state, action) => {
+      state.filters.categories = [...action.payload];
+    },
+    resetFilterCategory: (state) => {
+      state.filters.categories = [];
+    },
+    setFilterTableDates: (state, action) => {
+      state.filters.tableDates = action.payload;
+    },
+    setSortingType: (state, action) => {
+      state.filters.sortingType = action.payload;
+    },
+    resetSortingType: (state) => {
+      state.filters.sortingType = 'Дата создания ↑';
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(fetchCampaigns.fulfilled, (state, action) => {
@@ -226,12 +298,28 @@ const campaignsSlice = createSlice({
     });
     builder.addCase(fetchDates.fulfilled, (state, action) => {
       state.isLoading = false;
+
       if (action.payload) {
         state.dates.end = action.payload;
-        const date = new Date(action.payload);
-        date.setDate(date.getDate() - 13);
-        state.dates.start = date.toISOString().split('T')[0];
-        console.log(state.dates);
+
+        // Создаем новую дату для maxDate
+        const maxDate = new Date(action.payload);
+        state.filters.tableDates.maxDate = maxDate;
+
+        // Только если endDate не установлен
+        if (state.filters.tableDates.endDate === null) {
+          // Создаем новую дату для endDate
+          state.filters.tableDates.endDate = new Date(action.payload);
+          // Создаем новую дату для startDate
+          state.filters.tableDates.startDate = subDays(
+            new Date(action.payload),
+            14
+          );
+        }
+
+        // Создаем новую дату для start
+        const startDate = subDays(new Date(action.payload), 13);
+        state.dates.start = startDate.toISOString().split('T')[0];
       }
     });
     builder.addCase(changeCampaignStatus.pending, (state) => {
@@ -239,7 +327,6 @@ const campaignsSlice = createSlice({
     });
     builder.addCase(changeCampaignStatus.fulfilled, (state, action) => {
       state.changeIsLoading = false;
-      console.log(action);
       if (action.payload) {
         state.campaigns = state.campaigns.map((campaign) =>
           Number(campaign.campId) === Number(action.payload.camp_id)
@@ -255,6 +342,35 @@ const campaignsSlice = createSlice({
                     ? true
                     : false,
                 pausedByTurnover: false,
+              }
+            : campaign
+        );
+      }
+    });
+    builder.addCase(deleteCampaign.pending, (state) => {
+      state.changeIsLoading = true;
+    });
+    builder.addCase(deleteCampaign.fulfilled, (state, action) => {
+      state.changeIsLoading = false;
+      if (action.payload) {
+        state.campaigns = state.campaigns.filter(
+          (campaign) =>
+            Number(campaign.campId) !== Number(action.payload.camp_id)
+        );
+      }
+    });
+
+    builder.addCase(changeCampaignsStatuses.pending, (state) => {
+      state.changeIsLoading = true;
+    });
+    builder.addCase(changeCampaignsStatuses.fulfilled, (state, action) => {
+      state.changeIsLoading = false;
+      if (action.payload) {
+        state.campaigns = state.campaigns.map((campaign) =>
+          action.payload.camp_id.includes(Number(campaign.campId))
+            ? {
+                ...campaign,
+                status: action.payload.new_status,
               }
             : campaign
         );
@@ -301,7 +417,19 @@ const campaignsSlice = createSlice({
   },
 });
 
-export const { setCurrentPage } = campaignsSlice.actions;
+export const {
+  setCurrentPage,
+  setFilterEnded,
+  setFilterStatus,
+  resetFilterStatus,
+  setFilterType,
+  resetFilterType,
+  setFilterCategory,
+  resetFilterCategory,
+  setFilterTableDates,
+  setSortingType,
+  resetSortingType,
+} = campaignsSlice.actions;
 
 export const selectCampaigns = (state) => state.campaigns.campaigns;
 export const selectCurrentPage = (state) => state.campaigns.currentPage;
@@ -313,5 +441,12 @@ export const selectChangeIsLoading = (state) => state.campaigns.changeIsLoading;
 export const selectCampaignById = (id) => (state) =>
   state.campaigns.campaignsById[id];
 export const selectDates = (state) => state.campaigns.dates;
-
+export const selectFilterEnded = (state) => state.campaigns.filters.ended;
+export const selectFilterStatus = (state) => state.campaigns.filters.status;
+export const selectFilterType = (state) => state.campaigns.filters.type;
+export const selectFilterCategory = (state) =>
+  state.campaigns.filters.categories;
+export const selectFilterTableDates = (state) =>
+  state.campaigns.filters.tableDates;
+export const selectSortingType = (state) => state.campaigns.filters.sortingType;
 export default campaignsSlice.reducer;

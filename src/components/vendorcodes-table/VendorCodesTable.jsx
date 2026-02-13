@@ -106,6 +106,9 @@ import FooterDeadline from './cells/footer/FooterDeadline';
 import BodyROI from './cells/body/BodyROI';
 import HeaderROI from './cells/header/HeaderROI';
 import FooterROI from './cells/footer/FooterROI';
+import HeaderBarcodesOrdersSum from './cells/header/HeaderBarcodesOrdersSum';
+import BodyBarcodesOrdersSum from './cells/body/BodyBarcodesOrdersSum';
+import FooterBarcodesOrdersSum from './cells/footer/FooterBarcodesOrdersSum';
 
 const сolRender = {
   tags: {
@@ -178,6 +181,18 @@ const сolRender = {
     renderHeader: () => <HeaderEbitda key={uuidv4()} />,
     renderFooter: (avg_ebitda) => (
       <FooterEbitda key={uuidv4()} avg_ebitda={avg_ebitda} />
+    ),
+  },
+  barcodesOrdersSum: {
+    render: (vc, datesFilter) => (
+      <BodyBarcodesOrdersSum vc={vc} key={uuidv4()} />
+    ),
+    renderHeader: () => <HeaderBarcodesOrdersSum key={uuidv4()} />,
+    renderFooter: (sumBarcodesOrders) => (
+      <FooterBarcodesOrdersSum
+        key={uuidv4()}
+        sumBarcodesOrders={sumBarcodesOrders}
+      />
     ),
   },
   ebitdaDaily: {
@@ -404,6 +419,11 @@ const VendorCodesTable = ({ data, columns, dataSplitted }) => {
     data.reduce((total, next) => total + next.priceAVG, 0) / data.length
   );
 
+  const sumBarcodesOrders = data.reduce(
+    (total, next) => total + next.barcodesOrdersSum,
+    0
+  );
+
   const footerVars = {
     orders: data,
     sales: data,
@@ -413,6 +433,7 @@ const VendorCodesTable = ({ data, columns, dataSplitted }) => {
     ebitdaDaily: data,
     ebitdaDailyWOADS: data,
     adsCosts: data,
+    barcodesOrdersSum: sumBarcodesOrders,
     cpo: avgCostPerOrder,
     buyout: avg_buyout,
     priceBSPP: [avg_price_b_spp, avgPrice],

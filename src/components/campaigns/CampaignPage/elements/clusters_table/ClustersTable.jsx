@@ -92,8 +92,9 @@ const ClustersTable = ({
         <div className={styles.clusterViews}>Показы</div>
         <div className={styles.clusterClicks}>Клики</div>
         <div className={styles.clusterOrders}>Заказы</div>
-        <div className={styles.clusterCTR}>CTR</div>
         <div className={styles.clusterToCarts}>В корзину</div>
+        <div className={styles.clusterCTR}>CTR</div>
+        <div className={styles.clusterPosition}>CR в корзину</div>
         <div className={styles.clusterPosition}>Позиция</div>
       </div>
 

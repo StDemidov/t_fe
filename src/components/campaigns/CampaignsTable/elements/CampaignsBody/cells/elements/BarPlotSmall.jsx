@@ -21,7 +21,7 @@ const BarplotSmall = ({
   const [showSum, setShowSum] = useState(true);
   let total = 0;
 
-  var labels = getDatesBetween(dates.start, dates.end);
+  var labels = dates;
 
   if (last_item) {
     total = data.slice(-1);
@@ -65,9 +65,9 @@ const BarplotSmall = ({
   const borderColor = data.map(() => colors.positive.border);
   const hoverColor = data.map(() => colors.positive.hover);
 
-  backgroundColor[data.length - 1] = colors.last.fill;
-  borderColor[data.length - 1] = colors.last.border;
-  hoverColor[data.length - 1] = colors.last.hover;
+  // backgroundColor[data.length - 1] = colors.last.fill;
+  // borderColor[data.length - 1] = colors.last.border;
+  // hoverColor[data.length - 1] = colors.last.hover;
 
   const chartData = {
     labels,

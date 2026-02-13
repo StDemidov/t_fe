@@ -100,7 +100,7 @@ const bodyCellsRender = {
   views: (camp, style, dates) => (
     <ViewsCell
       views={camp.views}
-      dates={dates}
+      dates={camp.dates}
       cellStyle={style}
       ended={camp.endDate === '' ? false : true}
     />
@@ -108,7 +108,7 @@ const bodyCellsRender = {
   clicks: (camp, style, dates) => (
     <ClicksCell
       clicks={camp.clicks}
-      dates={dates}
+      dates={camp.dates}
       cellStyle={style}
       ended={camp.endDate === '' ? false : true}
     />
@@ -116,17 +116,17 @@ const bodyCellsRender = {
   spend: (camp, style, dates) => (
     <SpendCell
       spend={camp.spend}
-      dates={dates}
+      dates={camp.dates}
       cellStyle={style}
       ended={camp.endDate === '' ? false : true}
     />
   ),
-  ctr: (camp, style, dates) => (
+  ctr: (camp, style) => (
     <CtrCell
       ctr={camp.ctr}
-      dates={dates}
+      dates={camp.dates}
       cellStyle={style}
-      ctr14dTotal={camp.ctr14dTotal}
+      currentCtrTotal={camp.currentCtrTotal}
       ended={camp.endDate === '' ? false : true}
     />
   ),

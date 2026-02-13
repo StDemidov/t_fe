@@ -52,6 +52,7 @@ const initialColumns = [
   { key: 'orders', label: 'Заказы', hidden: false },
   { key: 'sales', label: 'Выкупы', hidden: false },
   { key: 'wbStocks', label: 'Остатки WB', hidden: false },
+  { key: 'barcodesOrdersSum', label: 'В заказе', hidden: false },
   // { key: 'msStocks', label: 'Остаток МС', hidden: false },
   { key: 'deadline', label: 'Дедлайн', hidden: false },
   { key: 'turnover', label: 'Оборачиваемость WB', hidden: false },
@@ -66,6 +67,7 @@ const initialColumns = [
   { key: 'roi', label: 'ROI', hidden: false },
   { key: 'buyout', label: '% Выкупа', hidden: false },
   { key: 'priceBSPP', label: 'Цена до СПП', hidden: false },
+
   // { key: 'priceASPP', label: 'Цена после СПП', hidden: false },
   { key: 'selfPrice', label: 'Себестоимость', hidden: false },
   // { key: 'selfPriceWONDS', label: 'Себестоимость без НДС', hidden: false },

@@ -17,6 +17,9 @@ const DatesFilter = ({ datesRange, setDatesRange, maxDate, minDate }) => {
     }
   }, [datesRange.startDate, datesRange.endDate]);
 
+  console.log(datesRange);
+  console.log(maxDate);
+
   const getMonthInNominative = (date) => {
     const months = [
       'Январь',

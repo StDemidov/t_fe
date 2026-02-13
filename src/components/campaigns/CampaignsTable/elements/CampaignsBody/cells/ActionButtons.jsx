@@ -1,16 +1,15 @@
-import {
-  BsPauseCircleFill,
-  BsFillPlayCircleFill,
-  BsFillXCircleFill,
-  BsFillWrenchAdjustableCircleFill,
-} from 'react-icons/bs';
+import { BsPauseCircleFill, BsFillPlayCircleFill } from 'react-icons/bs';
+import { MdDeleteForever } from 'react-icons/md';
+
 import { TbLoaderQuarter } from 'react-icons/tb';
 import { MdOutlineQueryStats } from 'react-icons/md';
+import { FaRegStopCircle } from 'react-icons/fa';
 
 import { useDispatch, useSelector } from 'react-redux';
 
 import {
   changeCampaignStatus,
+  deleteCampaign,
   selectChangeIsLoading,
 } from '../../../../../../redux/slices/campaignsSlice';
 
@@ -55,6 +54,17 @@ const ActionButtons = ({ camp, cellStyle }) => {
       }
     );
   };
+  const handleClickOnStop = (event) => {
+    const campId = Number(camp.campId);
+    openConfirmModal(
+      `Вы уверены, что хотите завершить кампанию ${camp.campId}?`,
+      (e) => {
+        dispatch(
+          changeCampaignStatus(`${hostName}/ad_camps/end_camp/${campId}`)
+        );
+      }
+    );
+  };
   const handleClickOnRun = (event) => {
     const campId = Number(camp.campId);
     openConfirmModal(
@@ -63,6 +73,15 @@ const ActionButtons = ({ camp, cellStyle }) => {
         dispatch(
           changeCampaignStatus(`${hostName}/ad_camps/launch_camp/${campId}`)
         );
+      }
+    );
+  };
+  const handleClickOnDelete = (event) => {
+    const campId = Number(camp.campId);
+    openConfirmModal(
+      `Вы уверены, что хотите безвозвратно удалить кампанию ${camp.campId}?`,
+      (e) => {
+        dispatch(deleteCampaign(`${hostName}/ad_camps/delete_camp/${campId}`));
       }
     );
   };
@@ -92,6 +111,22 @@ const ActionButtons = ({ camp, cellStyle }) => {
               <BsFillPlayCircleFill
                 className={styles.launchButton}
                 onClick={handleClickOnRun}
+              />
+            ) : (
+              <></>
+            )}
+            {camp.status == 12 ? (
+              <MdDeleteForever
+                className={styles.pauseButton}
+                onClick={handleClickOnDelete}
+              />
+            ) : (
+              <></>
+            )}
+            {[9, 11].includes(camp.status) ? (
+              <FaRegStopCircle
+                className={styles.pauseButton}
+                onClick={handleClickOnStop}
               />
             ) : (
               <></>

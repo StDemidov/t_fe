@@ -38,6 +38,8 @@ const exportVCMetricsToExcel = (vendorCodeMetrics, startDate, endDate) => {
         'EBITDA/День': dailyEbitda[idx] ?? 0,
         'EBITDA/День без РК': dailyEbitdaWOAds[idx] ?? 0,
         'Расходы на РК': item.adsCosts[idx] ?? 0,
+        ABC: item.abcFull[idx],
+        'ABC (Категория)': item.abcCtgryFull[idx],
         CPS: item.cps,
         ROI: item.roi,
         'Проценты выкупа': item.buyoutP,
@@ -53,6 +55,11 @@ const exportVCMetricsToExcel = (vendorCodeMetrics, startDate, endDate) => {
         Теги: item.tagsMain.join(','),
         'Теги (ткань)': item.tagsCloth.join(','),
         'Теги (другие)': item.tagsOthers.join(','),
+        Кампания: item.advCampaigns.manual.camp_id
+          ? item.advCampaigns.manual.camp_id
+          : item.advCampaigns.unified.camp_id
+          ? item.advCampaigns.unified.camp_id
+          : '',
       });
     });
   });

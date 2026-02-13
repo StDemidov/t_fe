@@ -30,3 +30,14 @@
 .pick:hover {
   cursor: pointer;
 }
+
+.excelUploadContainer {
+  display: inline-flex;
+  align-items: center;
+}
+
+.pick {
+  display: flex;
+  align-items: center;
+  gap: 0.05vw;
+}

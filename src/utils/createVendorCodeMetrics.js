@@ -1,7 +1,6 @@
 import { calculateEbitdaWoAds, calculateEbitdaWoAdsRaw } from './calculations';
 
 const createVendorCodeMetrics = (vendorCodeMetrics) => {
-  console.log(vendorCodeMetrics);
   const vcMetrics = vendorCodeMetrics.map((item) => {
     return {
       id: item.id,
@@ -19,6 +18,7 @@ const createVendorCodeMetrics = (vendorCodeMetrics) => {
       wbOrdersTotal: item.orders,
       wbStocksTotal: item.wb_stocks_daily,
       msTotal: item.ms_stocks_last,
+      barcodesOrdersSum: item.barcodes_orders_sum,
       turnoverWB: item.turnover_wb,
       turnoverWBBuyout:
         item.avg_buyout_perc > 0
@@ -50,6 +50,8 @@ const createVendorCodeMetrics = (vendorCodeMetrics) => {
       lastStockRefill: item.last_stock_refill,
       cps: item.cps,
       roi: item.roi,
+      abcFull: item.abc_full,
+      abcCtgryFull: item.abc_ctgry_full,
     };
   });
   return vcMetrics;

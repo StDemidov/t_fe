@@ -1,4 +1,7 @@
 const sizeOrder = [
+  'XXS-XS',
+  'S-M',
+  'L-XL',
   'XS',
   'S',
   'M',

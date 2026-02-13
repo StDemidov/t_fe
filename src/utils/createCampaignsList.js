@@ -1,5 +1,14 @@
+import { getDate } from './beaty';
+import { calculateArraySum } from './calculations';
+
 const createCampaignsList = (campaigns) => {
+  console.lo;
   const campaignList = campaigns.map((camp) => {
+    const sumViews = calculateArraySum(camp.views);
+    const sumClicks = calculateArraySum(camp.clicks);
+    const sumSpend = calculateArraySum(camp.spend);
+    const currentCtr = sumViews === 0 ? 0 : sumClicks / sumViews;
+
     return {
       id: camp.id,
       skuName: camp.sku_name,
@@ -7,6 +16,7 @@ const createCampaignsList = (campaigns) => {
       campId: camp.camp_id,
       bidType: camp.bid_type,
       creationDate: camp.creation_date,
+      creationDateDT: getDate(camp.creation_date, true),
       status: camp.status,
       searchPlacement: camp.search_placement,
       recPlacement: camp.rec_placement,
@@ -30,8 +40,14 @@ const createCampaignsList = (campaigns) => {
       totalSpend: camp.total_spend,
       totalCtr: camp.total_ctr,
       photo: camp.photo,
-      ctr14dTotal: camp.ctr_14d_total,
+      currentCtrTotal: camp.current_ctr_total,
+      dates: camp.dates,
       endDate: camp.end_date,
+      category: camp.category,
+      sumSpend: sumSpend,
+      sumViews: sumViews,
+      sumClicks: sumClicks,
+      currentCtr: currentCtr,
     };
   });
   return campaignList;

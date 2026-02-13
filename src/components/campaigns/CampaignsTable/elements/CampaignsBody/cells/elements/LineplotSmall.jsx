@@ -23,7 +23,7 @@ const LineplotSmall = ({
 }) => {
   const [showAvg, setShowAvg] = useState(true);
 
-  var labels = getDatesBetween(dates.start, dates.end);
+  var labels = dates;
 
   if (total == 0) {
     return <div className={styles.noData}>Нет данных</div>;
