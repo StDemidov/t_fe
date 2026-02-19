@@ -17,7 +17,6 @@ const CampaignsHeader = ({
       setSelectedCamps([]);
     }
   };
-  console.log(selectedCamps);
 
   const handleClickOnPick = () => {
     const newSelected = campaigns.map((camp) => {

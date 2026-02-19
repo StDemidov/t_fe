@@ -3,11 +3,15 @@ import { FcCancel } from 'react-icons/fc';
 import { FaRegEdit } from 'react-icons/fa';
 import { IoCheckmarkCircleSharp } from 'react-icons/io5';
 import { PiWarningCircleFill } from 'react-icons/pi';
+import { format } from 'date-fns';
 
 import styles from './style.module.css';
 import ConfirmModal from '../../confirm_modal/ConfirmModal';
-import { useDispatch } from 'react-redux';
-import { editCampaigns } from '../../../redux/slices/campaignsSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  editCampaigns,
+  selectFilterTableDates,
+} from '../../../redux/slices/campaignsSlice';
 import { hostName } from '../../../utils/host';
 import {
   hideTooltip,
@@ -42,6 +46,8 @@ const EditCampaignsModal = ({ selectedCamps, onClose }) => {
   const [pauseHour, setPauseHour] = useState(0);
 
   const [isCreateEnabled, setIsCreateEnabled] = useState(false);
+
+  const datesFilter = useSelector(selectFilterTableDates);
 
   const dispatch = useDispatch();
 
@@ -253,19 +259,21 @@ const EditCampaignsModal = ({ selectedCamps, onClose }) => {
   const handleClickOnEdit = (e) => {
     e.stopPropagation();
     e.preventDefault();
-    console.log('tut');
     openConfirmModal(`Вы подтверждаете изменения?`, (e) => {
       const data = buildChangedData();
+      const start = format(datesFilter.startDate, 'yyyy-MM-dd');
+      const end = format(datesFilter.endDate, 'yyyy-MM-dd');
       dispatch(
         editCampaigns({
           data: {
             camp_list: selectedCamps.map(Number),
             data: data,
+            start_date: start,
+            end_date: end,
           },
-          url: `${hostName}/ad_camps/edit`,
+          url: `${hostName}/ad_camps/edit/`,
         })
       );
-      console.log('Изменённые данные:', data);
       onClose();
     });
   };

@@ -38,17 +38,25 @@ const Menu = () => {
             Баркоды
           </NavLink>
         </li>
+        {/* <li>
+          <NavLink
+            className={styles.navLink}
+            to="prints"
+            content="База принтов"
+          >
+            База принтов
+          </NavLink>
+        </li> */}
         <li>
           <NavLink className={styles.navLink} to="tools" content="Инструменты">
             Инструменты
           </NavLink>
         </li>
-        <li className={styles.logoutBlock}>
-          <button className={styles.logoutButton} onClick={handleLogout}>
-            <MdLogout />
-          </button>
-        </li>
+        <li className={styles.logoutBlock}></li>
       </ul>
+      <button className={styles.logoutButton} onClick={handleLogout}>
+        <MdLogout />
+      </button>
     </nav>
   );
 };

@@ -2,15 +2,18 @@
   margin: 0px;
   background: #f9f9f9;
   padding: 5px;
+  display: flex;
+  align-items: center;
   .menuItems {
     list-style: none;
     display: flex;
-
+    justify-content: flex-start;
+    width: 100%;
     li {
       margin-left: 30px;
       margin-top: 20px;
       margin-bottom: 20px;
-
+      max-width: 100px;
       .navLink {
         text-decoration: none;
         font-family: 'BebasNeue', sans-serif;
@@ -25,7 +28,7 @@
           color: #8254ff;
         }
 
-        &::before {
+        /* &::before {
           content: attr(content);
           transition: 0.5s;
           color: #8254ff;
@@ -36,31 +39,34 @@
           right: 0;
           width: 0;
           overflow: hidden;
-        }
+        } */
 
         &:hover {
           &::before {
-            width: 100%;
+            /* width: 100px; */
             transition: all 0.5s ease-in-out;
           }
         }
+      }
+      .navLink:hover {
+        color: #8254ff;
       }
     }
   }
 }
 
-.logoutBlock {
-  width: 100%;
+.logoutButton {
+  /* width: 10px; */
   display: flex;
-  justify-content: end;
-  margin-right: 30px;
+  justify-self: flex-end;
+  margin-right: 40px;
 }
 
 .logoutButton {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 20px;
+  /* width: 20px; */
   height: 20px;
   border: none;
   background-color: transparent;
@@ -69,6 +75,6 @@
 
 .logoutButton:hover {
   cursor: pointer;
-  color: white;
-  background-color: #8254ff;
+  color: #8254ff;
+  scale: 1.2;
 }

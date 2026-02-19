@@ -35,7 +35,8 @@ const CampaignsBody = ({
                   col.cellStyle,
                   dates,
                   selectedCamps,
-                  setSelectedCamps
+                  setSelectedCamps,
+                  `${camp.campId}-${col.key}`
                 );
               }
             })}
@@ -47,8 +48,9 @@ const CampaignsBody = ({
 };
 
 const bodyCellsRender = {
-  skuBase: (camp, style, dates, selectedCamps, setSelectedCamps) => (
+  skuBase: (camp, style, dates, selectedCamps, setSelectedCamps, key) => (
     <SkuBaseCell
+      key={key}
       image={camp.photo}
       sku={camp.sku}
       skuName={camp.skuName}
@@ -59,70 +61,82 @@ const bodyCellsRender = {
       setSelectedCamps={setSelectedCamps}
     />
   ),
-  status: (camp, style) => <StatusCell camp={camp} cellStyle={style} />,
-  activeHours: (camp, style) => (
+  status: (camp, style, dates, selectedCamps, setSelectedCamps, key) => (
+    <StatusCell key={key} camp={camp} cellStyle={style} />
+  ),
+  activeHours: (camp, style, dates, selectedCamps, setSelectedCamps, key) => (
     <ActiveHoursCell
+      key={key}
       hasActiveHours={camp.hasActiveHours}
       startHour={camp.startHour}
       pauseHour={camp.pauseHour}
       cellStyle={style}
     />
   ),
-  bidType: (camp, style) => (
-    <BidTypeCell bidType={camp.bidType} cellStyle={style} />
+  bidType: (camp, style, dates, selectedCamps, setSelectedCamps, key) => (
+    <BidTypeCell key={key} bidType={camp.bidType} cellStyle={style} />
   ),
-  bids: (camp, style) => <BidsCell camp={camp} cellStyle={style} />,
-  ctrBench: (camp, style) => (
-    <CtrBenchCell ctrBench={camp.ctrBench} cellStyle={style} />
+  bids: (camp, style, dates, selectedCamps, setSelectedCamps, key) => (
+    <BidsCell key={key} camp={camp} cellStyle={style} />
   ),
-  turnover: (camp, style) => (
+  ctrBench: (camp, style, dates, selectedCamps, setSelectedCamps, key) => (
+    <CtrBenchCell key={key} ctrBench={camp.ctrBench} cellStyle={style} />
+  ),
+  turnover: (camp, style, dates, selectedCamps, setSelectedCamps, key) => (
     <TurnoverCell
+      key={key}
       lowerTurnoverThreshold={camp.lowerTurnoverThreshold}
       turnoverDays={camp.turnoverDays}
       turnoverByBarcodes={camp.turnoverByBarcodes}
       cellStyle={style}
     />
   ),
-  totalSpend: (camp, style) => (
+  totalSpend: (camp, style, dates, selectedCamps, setSelectedCamps, key) => (
     <TotalSpendCell
+      key={key}
       totalSpend={camp.totalSpend}
       cellStyle={style}
       ended={camp.endDate === '' ? false : true}
     />
   ),
-  totalCTR: (camp, style) => (
+  totalCTR: (camp, style, dates, selectedCamps, setSelectedCamps, key) => (
     <TotalCtrCell
+      key={key}
       totalCtr={camp.totalCtr}
       cellStyle={style}
       ended={camp.endDate === '' ? false : true}
     />
   ),
-  views: (camp, style, dates) => (
+  views: (camp, style, dates, selectedCamps, setSelectedCamps, key) => (
     <ViewsCell
+      key={key}
       views={camp.views}
       dates={camp.dates}
       cellStyle={style}
       ended={camp.endDate === '' ? false : true}
     />
   ),
-  clicks: (camp, style, dates) => (
+  clicks: (camp, style, dates, selectedCamps, setSelectedCamps, key) => (
     <ClicksCell
+      key={key}
       clicks={camp.clicks}
       dates={camp.dates}
       cellStyle={style}
       ended={camp.endDate === '' ? false : true}
     />
   ),
-  spend: (camp, style, dates) => (
+  spend: (camp, style, dates, selectedCamps, setSelectedCamps, key) => (
     <SpendCell
+      key={key}
       spend={camp.spend}
       dates={camp.dates}
       cellStyle={style}
       ended={camp.endDate === '' ? false : true}
     />
   ),
-  ctr: (camp, style) => (
+  ctr: (camp, style, dates, selectedCamps, setSelectedCamps, key) => (
     <CtrCell
+      key={key}
       ctr={camp.ctr}
       dates={camp.dates}
       cellStyle={style}
@@ -130,8 +144,8 @@ const bodyCellsRender = {
       ended={camp.endDate === '' ? false : true}
     />
   ),
-  actionButtons: (camp, style) => (
-    <ActionButtons camp={camp} cellStyle={style} />
+  actionButtons: (camp, style, dates, selectedCamps, setSelectedCamps, key) => (
+    <ActionButtons key={key} camp={camp} cellStyle={style} />
   ),
 };
 
