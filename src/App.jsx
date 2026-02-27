@@ -37,6 +37,7 @@ import AbTestsSingleTest from './components/ab_tests/ab_tests_single_test/AbTest
 import CampaignsList from './components/campaigns/CampaignsList';
 import CampaignsCreate from './components/campaigns/CampaignsCreate/CampaignsCreate';
 import CampaignPage from './components/campaigns/CampaignPage/CampaignPage';
+import PrintsBaseMain from './components/prints_base/PrintsBaseMain';
 
 function App() {
   const currentUser = useSelector(selectUser);
@@ -51,6 +52,7 @@ function App() {
                 <Route path="/" element={<MainLayout />}>
                   <Route index element={<Home />} />
                   <Route path="vendorcodes" element={<VendorCodesList />} />
+                  <Route path="prints" element={<PrintsBaseMain />} />
                   <Route
                     path="vendorcodes/:id"
                     element={<SingleVendorCode />}

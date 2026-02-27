@@ -1,0 +1,28 @@
+.choosePageButtons {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1vw;
+  button {
+    min-width: 10vw;
+    min-height: 2vw;
+    font-size: 1vw;
+    cursor: pointer;
+    border: none;
+    background-color: rgb(240, 240, 240);
+    transition: background-color 0.3s ease;
+  }
+  .buttonActivePage {
+    background-color: blueviolet;
+    color: white;
+  }
+}
+
+.choosePageButtons button:first-child {
+  border-radius: 1vw 0 0 1vw;
+}
+
+.choosePageButtons button:last-child {
+  border-radius: 0 1vw 1vw 0;
+}

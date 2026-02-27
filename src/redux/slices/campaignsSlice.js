@@ -6,11 +6,8 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import createCampaignsList from '../../utils/createCampaignsList';
 import createSkuDataForCamps from '../../utils/createSkuDataForCamps';
 
-import createSkuDataForAutoCampaigns from '../../utils/createSkuDataForAutoCampaigns';
-import createCmpgnSingle from '../../utils/createCmpgnSingle';
 import { setError } from './errorSlice';
 import { setNotification } from './notificationSlice';
-import createAutoCampDefaultSettings from '../../utils/createAutoCampDefaultSettings';
 
 import { clearCredentials } from './authSlice';
 import createCampaignSingle from '../../utils/createCampaignSingle';

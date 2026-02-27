@@ -38,7 +38,7 @@ const Menu = () => {
             Баркоды
           </NavLink>
         </li>
-        {/* <li>
+        <li>
           <NavLink
             className={styles.navLink}
             to="prints"
@@ -46,7 +46,7 @@ const Menu = () => {
           >
             База принтов
           </NavLink>
-        </li> */}
+        </li>
         <li>
           <NavLink className={styles.navLink} to="tools" content="Инструменты">
             Инструменты

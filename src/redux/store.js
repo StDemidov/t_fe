@@ -20,6 +20,7 @@ import ordersReducer from './slices/ordersSlice';
 import systemReducer from './slices/systemSlice';
 import abTestReducer from './slices/abTestsSlice';
 import campaignsReducer from './slices/campaignsSlice';
+import upcomingReducer from './slices/basePrints';
 
 import { persistReducer, persistStore } from 'redux-persist';
 import { combineReducers } from '@reduxjs/toolkit';
@@ -60,6 +61,7 @@ const rootReducer = combineReducers({
   system: systemReducer,
   abTests: abTestReducer,
   campaigns: campaignsReducer,
+  upcoming: upcomingReducer,
 });
 
 const store = configureStore({

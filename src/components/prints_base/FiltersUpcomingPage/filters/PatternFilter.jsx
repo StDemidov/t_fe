@@ -4,13 +4,19 @@ import { useDispatch, useSelector } from 'react-redux';
 import styles from './style.module.css';
 import DropdownFilter from './DropdownFilter';
 import {
-  resetFilterCategory,
-  selectFilterCategory,
-  setFilterCategory,
-} from '../../../../redux/slices/campaignsSlice';
+  resetFilterPattern,
+  resetOrdersFilterPattern,
+  selectOrdersPatternFilter,
+  selectUpcomingPatternFilter,
+  setFilterPattern,
+  setOrdersFilterPattern,
+} from '../../../../redux/slices/basePrints';
 
-const CategoryFilter = ({ options }) => {
-  const reduxSelectedOptions = useSelector(selectFilterCategory);
+const PatternFilter = ({ options, forOrders = false }) => {
+  let reduxSelectedOptions = useSelector(selectUpcomingPatternFilter);
+  if (forOrders) {
+    reduxSelectedOptions = useSelector(selectOrdersPatternFilter);
+  }
   const [localSelectedOptions, setLocalSelectedOptions] =
     useState(reduxSelectedOptions);
   const dispatch = useDispatch();
@@ -22,14 +28,23 @@ const CategoryFilter = ({ options }) => {
 
   const handleFilterApply = () => {
     // Сохраняем выбранные опции в Redux
-    dispatch(setFilterCategory(localSelectedOptions));
+    dispatch(setFilterPattern(localSelectedOptions));
+    if (forOrders) {
+      dispatch(setOrdersFilterPattern(localSelectedOptions));
+    } else {
+      dispatch(setFilterPattern(localSelectedOptions));
+    }
   };
 
   const handleFilterReset = () => {
     setLocalSelectedOptions([]);
-    dispatch(resetFilterCategory());
+    dispatch(resetFilterPattern());
+    if (forOrders) {
+      dispatch(resetOrdersFilterPattern());
+    } else {
+      dispatch(resetFilterPattern());
+    }
   };
-  console.log(options);
 
   return (
     <>
@@ -39,10 +54,10 @@ const CategoryFilter = ({ options }) => {
         setSelectedOptions={setLocalSelectedOptions}
         handleFilterApply={handleFilterApply}
         handleFilterReset={handleFilterReset}
-        title={'Категория'}
+        title={'Лекала'}
       />
     </>
   );
 };
 
-export default CategoryFilter;
+export default PatternFilter;

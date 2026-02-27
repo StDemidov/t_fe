@@ -5,12 +5,20 @@ import styles from './style.module.css';
 import DropdownFilter from './DropdownFilter';
 import {
   resetFilterCategory,
-  selectFilterCategory,
+  resetFilterPattern,
+  resetOrdersFilterCategory,
+  resetOrdersFilterPattern,
+  selectOrdersCategoryFilter,
+  selectUpcomingCategoryFilter,
   setFilterCategory,
-} from '../../../../redux/slices/campaignsSlice';
+  setOrdersFilterCategory,
+} from '../../../../redux/slices/basePrints';
 
-const CategoryFilter = ({ options }) => {
-  const reduxSelectedOptions = useSelector(selectFilterCategory);
+const CategoryFilter = ({ options, forOrders = false }) => {
+  let reduxSelectedOptions = useSelector(selectUpcomingCategoryFilter);
+  if (forOrders) {
+    reduxSelectedOptions = useSelector(selectOrdersCategoryFilter);
+  }
   const [localSelectedOptions, setLocalSelectedOptions] =
     useState(reduxSelectedOptions);
   const dispatch = useDispatch();
@@ -22,14 +30,25 @@ const CategoryFilter = ({ options }) => {
 
   const handleFilterApply = () => {
     // Сохраняем выбранные опции в Redux
-    dispatch(setFilterCategory(localSelectedOptions));
+
+    if (forOrders) {
+      dispatch(resetOrdersFilterPattern());
+      dispatch(setOrdersFilterCategory(localSelectedOptions));
+    } else {
+      dispatch(resetFilterPattern());
+      dispatch(setFilterCategory(localSelectedOptions));
+    }
   };
 
   const handleFilterReset = () => {
     setLocalSelectedOptions([]);
-    dispatch(resetFilterCategory());
+    dispatch(resetSortingType());
+    if (forOrders) {
+      dispatch(resetOrdersFilterCategory);
+    } else {
+      dispatch(resetFilterCategory());
+    }
   };
-  console.log(options);
 
   return (
     <>

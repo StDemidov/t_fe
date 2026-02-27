@@ -1,0 +1,161 @@
+.itemsGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  min-height: 40vw;
+  max-height: 40vw;
+  overflow-y: auto;
+}
+
+.filtersWButtons {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5vw;
+  .buttonXLSX,
+  .buttonDisabled {
+    height: 2vw;
+    min-width: 8vw;
+    border-radius: 1vw;
+    border: 0.05vw solid gray;
+    cursor: pointer;
+    font-size: 0.8vw;
+  }
+  .buttonDisabled {
+    cursor: default;
+  }
+  .buttonXLSX {
+    background-color: blueviolet;
+    color: white;
+    border: 0.05vw solid blueviolet;
+  }
+}
+
+.orderCard {
+  display: flex;
+  flex-direction: column;
+  /* justify-content: space-between; */
+  align-items: center;
+  border: 0.05vw solid #e5e5e5;
+  border-radius: 1vw;
+  padding: 1vw;
+  background: #fff;
+
+  .topSide {
+  }
+
+  .bottomSide {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+  }
+}
+
+.left {
+  display: flex;
+  flex-direction: column;
+  width: 20vw;
+}
+
+.photo {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.meta {
+  margin-top: 1vw;
+  font-size: 1vw;
+  font-family: 'BebasNeue', sans-serif;
+  display: flex;
+  gap: 0.2vw;
+  flex-direction: column;
+}
+
+.vendor {
+  font-weight: 600;
+}
+
+.date {
+  color: #777;
+}
+
+.sizes {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-family: 'BebasNeue', sans-serif;
+}
+
+.sizeRow {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.sizeRow label {
+  width: 36px;
+  font-size: 1vw;
+  min-width: 3vw;
+}
+
+.sizeRow input {
+  width: 60px;
+  padding: 4px;
+  height: 1.5vw;
+  text-align: center;
+  border-radius: 0.5vw;
+  border: 0.01vw solid gray;
+}
+
+.right {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1vw;
+}
+
+.radio {
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+}
+
+.radio input[type='checkbox'] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #ccc;
+  border-radius: 50%;
+  margin-right: 8px;
+  position: relative;
+  outline: none;
+  cursor: pointer;
+  transition: border-color 0.2s ease;
+}
+
+.radio input[type='checkbox']::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: #8b5cf6;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.radio input[type='checkbox']:checked {
+  border-color: #8b5cf6;
+}
+
+.radio input[type='checkbox']:checked::before {
+  opacity: 1;
+}
