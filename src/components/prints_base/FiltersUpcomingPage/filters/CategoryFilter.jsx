@@ -59,6 +59,7 @@ const CategoryFilter = ({ options, forOrders = false }) => {
         handleFilterApply={handleFilterApply}
         handleFilterReset={handleFilterReset}
         title={'Категория'}
+        searchable={true}
       />
     </>
   );

@@ -9,11 +9,17 @@ const DropdownFilter = ({
   handleFilterReset,
   title,
   sorting = false,
+  searchable = false,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [menuStyle, setMenuStyle] = useState({});
   const dropdownRef = useRef(null);
   const toggleRef = useRef(null);
+  const [searchTerm, setSearchTerm] = useState(''); // 👈 состояние поиска
+
+  const filteredOptions = options.filter((option) =>
+    option.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   const toggleDropdown = () => {
     if (!isOpen && toggleRef.current) {
@@ -113,19 +119,34 @@ const DropdownFilter = ({
           className={`${styles.dropdownMenu} ${styles.show} ${styles.fixed}`}
           style={menuStyle}
         >
-          {options.map((option, index) => (
-            <label key={index} className={styles.dropdownItem}>
+          {searchable && (
+            <div className={styles.searchWrapper}>
               <input
-                type={sorting ? 'radio' : 'checkbox'}
-                name={sorting ? 'sorting-option' : undefined}
-                value={option.key}
-                checked={isOptionSelected(option.key)}
-                onChange={handleChange}
+                type="text"
+                placeholder="Поиск..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className={styles.searchInput}
               />
-              <span className={styles.customCheckbox}></span>
-              {option.name}
-            </label>
-          ))}
+            </div>
+          )}
+          {filteredOptions.length > 0 ? (
+            filteredOptions.map((option, index) => (
+              <label key={index} className={styles.dropdownItem}>
+                <input
+                  type={sorting ? 'radio' : 'checkbox'}
+                  name={sorting ? 'sorting-option' : undefined}
+                  value={option.key}
+                  checked={isOptionSelected(option.key)}
+                  onChange={handleChange}
+                />
+                <span className={styles.customCheckbox}></span>
+                {option.name}
+              </label>
+            ))
+          ) : (
+            <div className={styles.empty}>Пусто</div>
+          )}
           <div className={styles.dropdownActions}>
             <button
               className={styles.dropdownReset}

@@ -1,4 +1,5 @@
 import { Line } from 'react-chartjs-2';
+import React from 'react';
 import { PiEmptyDuotone } from 'react-icons/pi';
 import styles from './style.module.css';
 import {

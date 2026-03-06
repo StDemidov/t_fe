@@ -89,6 +89,7 @@ const BarcodesTableNew = ({
   const dispatch = useDispatch();
   const currentPage = useSelector(selectPage);
   const datesFilter = useSelector(selectBarcodeDatesFilter);
+  const inputRefs = useRef({});
 
   const uniqueOrders = getUniqueOrderNames(orders);
 
@@ -110,9 +111,15 @@ const BarcodesTableNew = ({
 
   useEffect(() => {
     dispatch(saveOrders(extraStock));
+  }, [extraStock]);
+
+  useEffect(() => {
     dispatch(saveColors(selectedColors));
+  }, [selectedColors]);
+
+  useEffect(() => {
     dispatch(saveOrdersDates(ordersDates));
-  }, [selectedColors, extraStock, ordersDates]);
+  }, [ordersDates]);
 
   useEffect(() => {
     const today = new Date();
@@ -174,7 +181,23 @@ const BarcodesTableNew = ({
       const newTmpDates = { ...tmpDates };
       delete newTmpDates[data[index].vcName];
       setTmpDates(newTmpDates);
+      dispatch(saveOrdersDates(ordersDates));
     }
+  };
+
+  const handleOrdersDatesApplyToAll = (vcName) => {
+    const dateToApply = ordersDates[vcName];
+    const newDates = Object.fromEntries(
+      fullData.map((vc) => [vc.vcName, dateToApply])
+    );
+    setOrdersDates({ ...newDates });
+    const newTmpDates = {};
+    setTmpDates(newTmpDates);
+    Object.keys(inputRefs.current).forEach((key) => {
+      if (inputRefs.current[key]) {
+        inputRefs.current[key].value = dateToApply || '';
+      }
+    });
   };
   const handleTmpOrdersDatesChange = (index, value) => {
     setTmpDates((prev) => ({ ...prev, [data[index].vcName]: value || 0 }));
@@ -231,11 +254,11 @@ const BarcodesTableNew = ({
     setExtraStock({});
     setSelectedColors({});
     setOrdersDates({});
-  };
-
-  const handleClickOnPage = (event) => {
-    const id = event.currentTarget.getAttribute('data-value');
-    dispatch(setPageBarcode(id));
+    Object.keys(inputRefs.current).forEach((key) => {
+      if (inputRefs.current[key]) {
+        inputRefs.current[key].value = '';
+      }
+    });
   };
 
   const handleDeleteOrders = (event) => {
@@ -292,8 +315,6 @@ const BarcodesTableNew = ({
     return vendorcode.category;
   });
   categories = [...new Set(categories)];
-
-  console.log(categories);
 
   return (
     <div>
@@ -416,16 +437,23 @@ const BarcodesTableNew = ({
                   <input
                     type="text"
                     placeholder="ГГГГ-ММ-ДД"
-                    value={ordersDates[vc.vcName] || tmpDates[vc.vcName] || ''}
+                    defaultValue={ordersDates[vc.vcName] || ''}
+                    ref={(el) => (inputRefs.current[vc.vcName] = el)}
                     onChange={(e) => {
-                      if (e.target.value.length === 10) {
-                        handleOrdersDatesChange(index, e.target.value);
-                      } else {
-                        handleTmpOrdersDatesChange(index, e.target.value);
+                      const value = e.target.value;
+
+                      if (value.length === 10 && validateDate(value)) {
+                        handleOrdersDatesChange(index, value);
                       }
                     }}
                     className={styles.disabledScroll}
                   />
+                  <button
+                    onClick={() => handleOrdersDatesApplyToAll(vc.vcName)}
+                    disabled={!ordersDates[vc.vcName]}
+                  >
+                    Для всех
+                  </button>
                 </div>
                 <div className={styles.metrics}>
                   <div className={styles.metricBox}>
@@ -439,6 +467,12 @@ const BarcodesTableNew = ({
                   <div className={styles.metricBox}>
                     <div className={styles.metricName}>Себес. без НДС</div>{' '}
                     <div className={styles.metricValue}>{vc.selfPrice} ₽</div>
+                  </div>
+                  <div className={styles.metricBox}>
+                    <div className={styles.metricName}>ROI % (~)</div>{' '}
+                    <div className={styles.metricValue}>
+                      {((vc.ebitda / vc.selfPrice) * 100).toFixed()} %
+                    </div>
                   </div>
                 </div>
                 <div className={styles.plotBlock}>

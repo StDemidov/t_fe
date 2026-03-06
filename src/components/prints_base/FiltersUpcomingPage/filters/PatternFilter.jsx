@@ -55,6 +55,7 @@ const PatternFilter = ({ options, forOrders = false }) => {
         handleFilterApply={handleFilterApply}
         handleFilterReset={handleFilterReset}
         title={'Лекала'}
+        searchable={true}
       />
     </>
   );

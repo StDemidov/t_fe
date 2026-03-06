@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, createSelector } from '@reduxjs/toolkit';
 import { subDays, format } from 'date-fns'; // Для работы с датами
 
 const initialState = {
@@ -373,6 +373,10 @@ export const selectSkuOrNameTasksFilter = (state) =>
 export const selectVCDatesFilter = (state) => state.filter.vendorCode.dates;
 export const selectSingleVCDatesFilter = (state) => state.filter.singleVC.dates;
 export const selectBarcodeDatesFilter = (state) => state.filter.barcode.dates;
+// export const selectBarcodeDatesFilter = createSelector(
+//   (state) => state.filter.barcode.dates,
+//   (dates) => dates
+// );
 export const selectVCTagsFilter = (state) => state.filter.vendorCode.tagsMain;
 export const selectVCTagsClothFilter = (state) =>
   state.filter.vendorCode.tagsCloth;
