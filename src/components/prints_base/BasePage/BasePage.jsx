@@ -6,6 +6,7 @@ import styles from './style.module.css';
 import {
   createOrders,
   selectUpcomingCategoryFilter,
+  selectUpcomingCountryFilter,
   selectUpcomingPatternFilter,
   selectUpcomingSortingType,
   updatePatterns,
@@ -16,6 +17,7 @@ import { useRef, useState } from 'react';
 const BasePage = ({ items, sizesStorage, setSizesStorage }) => {
   const categoryFilter = useSelector(selectUpcomingCategoryFilter);
   const patternFilter = useSelector(selectUpcomingPatternFilter);
+  const countryFilter = useSelector(selectUpcomingCountryFilter);
   const selectedSorting = useSelector(selectUpcomingSortingType);
   const [draftStorage, setDraftStorage] = useState({});
 
@@ -162,10 +164,20 @@ const BasePage = ({ items, sizesStorage, setSizesStorage }) => {
   });
   const filteredItems = filteredItemsCategory.filter((item) => {
     let patternMatch = true;
+    let countryMatch = true;
     if (patternFilter.length) {
       patternMatch = patternFilter.includes(item.pattern_data.pattern_name);
     }
-    return patternMatch;
+    if (countryFilter.length) {
+      countryFilter.forEach((cntry, i) => {
+        if (cntry === 'uz') {
+          countryMatch = item.vendorcode.toLowerCase().includes('.uz.');
+        } else {
+          countryMatch = !item.vendorcode.toLowerCase().includes('.uz.');
+        }
+      });
+    }
+    return patternMatch && countryMatch;
   });
 
   getSortedData(filteredItems, selectedSorting);

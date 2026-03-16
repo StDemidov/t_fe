@@ -3,8 +3,8 @@ import { calculateArraySum } from '../../../../utils/calculations';
 import BarplotCampaign from './BarplotCampaign';
 import styles from './style.module.css';
 
-const BarplotCell = ({ data, style }) => {
-  const total = calculateArraySum(data.data);
+const BarplotCell = ({ data, style, ratio = false }) => {
+  const total = data.total;
   const [showSum, setShowSum] = useState(true);
   return (
     <div
@@ -14,7 +14,7 @@ const BarplotCell = ({ data, style }) => {
       style={{ position: 'relative' }}
     >
       <div
-        className={`${styles.sumOverlay} ${
+        className={`${ratio ? styles.sumOverlayRatio : styles.sumOverlay} ${
           showSum ? styles.visible : styles.hidden
         }`}
         style={{
@@ -25,7 +25,7 @@ const BarplotCell = ({ data, style }) => {
           zIndex: 1000,
         }}
       >
-        {total === 0 ? '' : total}
+        {total === 0 ? '' : `${total}${ratio ? `  |  ${ratio} %` : ''}`}
       </div>
       <div
         className={`${styles.chartContainer} ${

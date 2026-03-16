@@ -21,6 +21,7 @@ const OrderCard = ({ item }) => {
     'XXS-XS',
     'S-M',
     'L-XL',
+    'XXS',
     'XS',
     'S',
     'M',

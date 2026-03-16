@@ -55,6 +55,8 @@ const initialState = {
     sortingType: 'Дата создания ↑',
   },
   sortingType: '',
+  clustersSorting: 'views desc',
+  showClustersDisabled: false,
 };
 
 export const fetchCampaigns = createAsyncThunk(
@@ -246,6 +248,9 @@ const campaignsSlice = createSlice({
     setFilterEnded: (state, action) => {
       state.filters.ended = action.payload;
     },
+    setShowClustersDisabled: (state, action) => {
+      state.showClustersDisabled = action.payload;
+    },
     setFilterStatus: (state, action) => {
       state.filters.status = [...action.payload];
     },
@@ -272,6 +277,9 @@ const campaignsSlice = createSlice({
     },
     resetSortingType: (state) => {
       state.filters.sortingType = 'Дата создания ↑';
+    },
+    setClusterSortingType: (state, action) => {
+      state.clustersSorting = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -426,6 +434,8 @@ export const {
   setFilterTableDates,
   setSortingType,
   resetSortingType,
+  setClusterSortingType,
+  setShowClustersDisabled,
 } = campaignsSlice.actions;
 
 export const selectCampaigns = (state) => state.campaigns.campaigns;
@@ -446,4 +456,8 @@ export const selectFilterCategory = (state) =>
 export const selectFilterTableDates = (state) =>
   state.campaigns.filters.tableDates;
 export const selectSortingType = (state) => state.campaigns.filters.sortingType;
+export const selectClustersSortingType = (state) =>
+  state.campaigns.clustersSorting;
+export const selectShowClustersDisabled = (state) =>
+  state.campaigns.showClustersDisabled;
 export default campaignsSlice.reducer;

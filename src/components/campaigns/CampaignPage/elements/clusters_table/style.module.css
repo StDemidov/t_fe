@@ -111,3 +111,79 @@
     cursor: pointer;
   }
 }
+
+.totalMetric {
+  font-size: 0.9vw;
+  color: rgb(130, 63, 192);
+}
+
+.sortingButtons {
+  font-size: 1vw;
+  height: 1.5vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  line-height: 0; /* убирает лишнее пространство */
+
+  .activeSorting {
+    color: rgb(130, 63, 192);
+    cursor: pointer;
+  }
+  .inactiveSorting {
+    color: #b6b6b6;
+    cursor: pointer;
+  }
+}
+
+.sortingButtons svg {
+  display: block; /* убирает лишнее пространство под иконками */
+  margin: -0.2vw 0; /* регулируйте это значение для точной настройки */
+}
+
+.headerCell {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.showDisabledFilter {
+  font-size: 0.7vw;
+  margin-right: 1vw;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  .slider {
+    width: 0.7vw; /* было 1.25vw */
+    height: 0.7vw; /* было 1.25vw */
+    background-color: #fff;
+    border-radius: 50%;
+    position: absolute;
+    top: 0.08vw; /* центрируем вертикально */
+    left: 0.08vw;
+    transition: transform 0.2s ease;
+  }
+  .switch {
+    width: 1.8vw;
+    height: 0.875vw;
+    background-color: #ccc;
+    border-radius: 5vw;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    position: relative;
+    transition: background-color 0.2s ease;
+    margin-right: 0.5vw;
+  }
+  .switch.on {
+    background: linear-gradient(
+      90deg,
+      rgba(85, 37, 134) 0%,
+      rgba(106, 53, 156) 49%,
+      rgba(128, 79, 179) 100%
+    );
+  }
+  .switch.on .slider {
+    transform: translateX(0.875vw);
+  }
+}

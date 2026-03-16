@@ -3,6 +3,7 @@ import {
   selectOrdersCategoryFilter,
   selectOrdersPatternFilter,
   selectOrdersSortingType,
+  selectOrdersCountryFilter,
 } from '../../../redux/slices/basePrints';
 import FiltersUpcomingPage from '../FiltersUpcomingPage/FiltersUpcomingPage';
 import OrderCard from './OrderCard';
@@ -12,6 +13,7 @@ import styles from './style.module.css';
 const UpcomingPage = ({ orders }) => {
   const categoryFilter = useSelector(selectOrdersCategoryFilter);
   const patternFilter = useSelector(selectOrdersPatternFilter);
+  const countryFilter = useSelector(selectOrdersCountryFilter);
   const selectedSorting = useSelector(selectOrdersSortingType);
 
   const filteredOrdersCategory = orders.filter((item) => {
@@ -24,10 +26,20 @@ const UpcomingPage = ({ orders }) => {
   });
   const filteredOrders = filteredOrdersCategory.filter((item) => {
     let patternMatch = true;
+    let countryMatch = true;
     if (patternFilter.length) {
       patternMatch = patternFilter.includes(item.pattern_name);
     }
-    return patternMatch;
+    if (countryFilter.length) {
+      countryFilter.forEach((cntry, i) => {
+        if (cntry === 'uz') {
+          countryMatch = item.vendorcode.toLowerCase().includes('.uz.');
+        } else {
+          countryMatch = !item.vendorcode.toLowerCase().includes('.uz.');
+        }
+      });
+    }
+    return patternMatch && countryMatch;
   });
 
   getSortedData(filteredOrders, selectedSorting);

@@ -4,6 +4,11 @@ import styles from './style.module.css';
 
 const ClustersBox = ({
   clusters,
+  totalViews,
+  totalClicks,
+  totalOrders,
+  totalAddToCart,
+  totalSpend,
   dates,
   lastUpdateClusters,
   campId,
@@ -14,6 +19,11 @@ const ClustersBox = ({
       {clusters.length > 0 ? (
         <ClustersTable
           clusters={clusters}
+          totalViews={totalViews}
+          totalClicks={totalClicks}
+          totalOrders={totalOrders}
+          totalAddToCart={totalAddToCart}
+          totalSpend={totalSpend}
           dates={dates}
           lastUpdateClusters={lastUpdateClusters}
           campId={campId}

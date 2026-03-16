@@ -16,11 +16,13 @@ const initialState = {
   filters: {
     categories: [],
     patterns: [],
+    country: [],
     sorting: 'От старых к новым',
   },
   filtersOrders: {
     categories: [],
     patterns: [],
+    country: [],
     sorting: 'От старых к новым',
   },
   isLoading: false,
@@ -130,12 +132,19 @@ const upcomingSlice = createSlice({
     resetFilterPattern: (state) => {
       state.filters.patterns = [];
     },
+    setFilterCountry: (state, action) => {
+      state.filters.country = [...action.payload];
+    },
+    resetFilterCountry: (state) => {
+      state.filters.country = [];
+    },
     setSortingType: (state, action) => {
       state.filters.sorting = action.payload;
     },
     resetSortingType: (state) => {
       state.filters.sorting = 'От старых к новым';
     },
+
     setOrdersFilterCategory: (state, action) => {
       state.filtersOrders.categories = [...action.payload];
     },
@@ -147,6 +156,12 @@ const upcomingSlice = createSlice({
     },
     resetOrdersFilterPattern: (state) => {
       state.filtersOrders.patterns = [];
+    },
+    setOrdersFilterCountry: (state, action) => {
+      state.filtersOrders.country = [...action.payload];
+    },
+    resetOrdersFilterCountry: (state) => {
+      state.filtersOrders.country = [];
     },
     setOrdersSortingType: (state, action) => {
       state.filtersOrders.sorting = action.payload;
@@ -221,6 +236,10 @@ export const {
   resetOrdersSortingType,
   setOrdersFilterPattern,
   resetOrdersFilterPattern,
+  setFilterCountry,
+  resetFilterCountry,
+  setOrdersFilterCountry,
+  resetOrdersFilterCountry,
 } = upcomingSlice.actions;
 
 export const selectItems = (state) => state.upcoming.upcomingItems;
@@ -230,12 +249,16 @@ export const selectUpcomingCategoryFilter = (state) =>
   state.upcoming.filters.categories;
 export const selectUpcomingPatternFilter = (state) =>
   state.upcoming.filters.patterns;
+export const selectUpcomingCountryFilter = (state) =>
+  state.upcoming.filters.country;
 export const selectUpcomingSortingType = (state) =>
   state.upcoming.filters.sorting;
 export const selectOrdersCategoryFilter = (state) =>
   state.upcoming.filtersOrders.categories;
 export const selectOrdersPatternFilter = (state) =>
   state.upcoming.filtersOrders.patterns;
+export const selectOrdersCountryFilter = (state) =>
+  state.upcoming.filtersOrders.country;
 export const selectOrdersSortingType = (state) =>
   state.upcoming.filtersOrders.sorting;
 

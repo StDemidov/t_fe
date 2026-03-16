@@ -1,4 +1,5 @@
 import CategoryFilter from './filters/CategoryFilter';
+import CountryFilter from './filters/CountryFilter';
 import PatternFilter from './filters/PatternFilter';
 import PrintsBaseSorting from './filters/PrintsBaseSorting';
 import styles from './style.module.css';
@@ -11,6 +12,16 @@ const FiltersUpcomingPage = ({
 }) => {
   let categoryOptions = [];
   let patternOptions = [];
+  const countryOptions = [
+    {
+      key: 'uz',
+      name: 'Узбекистан',
+    },
+    {
+      key: 'ru',
+      name: 'Россия',
+    },
+  ];
   if (!forOrders) {
     let categoryOptionsRaw = items.map((item) => {
       return item.category_name;
@@ -50,6 +61,7 @@ const FiltersUpcomingPage = ({
       <div className={styles.count}>Артикулов: {count}</div>
       <CategoryFilter options={categoryOptions} forOrders={forOrders} />
       <PatternFilter options={patternOptions} forOrders={forOrders} />
+      <CountryFilter options={countryOptions} forOrders={forOrders} />
       <PrintsBaseSorting forOrders={forOrders} />
     </div>
   );
