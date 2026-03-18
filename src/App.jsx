@@ -38,6 +38,7 @@ import CampaignsList from './components/campaigns/CampaignsList';
 import CampaignsCreate from './components/campaigns/CampaignsCreate/CampaignsCreate';
 import CampaignPage from './components/campaigns/CampaignPage/CampaignPage';
 import PrintsBaseMain from './components/prints_base/PrintsBaseMain';
+import MainRegroupPage from './components/regroup_tool/MainRegroupPage';
 
 function App() {
   const currentUser = useSelector(selectUser);
@@ -87,6 +88,7 @@ function App() {
                     path="tools/ebitda_settings"
                     element={<EbitdaSettings />}
                   />
+                  <Route path="tools/regroup" element={<MainRegroupPage />} />
                   <Route
                     path="tools/tasks_hold_stocks"
                     element={<TasksHoldStocks />}

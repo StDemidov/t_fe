@@ -30,6 +30,7 @@ const exportVCMetricsToExcel = (vendorCodeMetrics, startDate, endDate) => {
         Заказы: item.wbOrdersTotal[idx] ?? 0,
         Выкупы: sales[idx] ?? 0,
         Остатки: item.wbStocksTotal[idx] ?? 0,
+        'Товара в заказе': item.barcodesOrdersSum ?? 0,
         'Оборачиваемость (заказы)': item.turnoverWB,
         'Оборачиваемость (выкупы)': item.turnoverWBBuyout
           ? item.turnoverWBBuyout

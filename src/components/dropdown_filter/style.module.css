@@ -1,0 +1,317 @@
+.dropdown {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  max-width: 13vw;
+}
+
+.dropdownToggle {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 1vw;
+  height: 2vw;
+  background-color: white;
+  border: 0.01vw solid #e0e0e0;
+  border-radius: 1vw;
+  font-size: 0.8vw;
+  color: #333;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  outline: none;
+  font-weight: 500;
+  position: relative;
+  z-index: 2;
+}
+
+.dropdownToggle:hover {
+  border-color: #750bd1;
+  background-color: #f8f9fa;
+}
+
+.dropdownToggle.open {
+  border-color: #750bd1;
+  box-shadow: 0 0 0 3px rgba(184, 184, 184, 0.1);
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.arrow {
+  display: flex;
+  align-items: center;
+  gap: 0.5vw;
+  font-size: 0.6vw;
+  color: #666;
+  transition: transform 0.3s ease;
+}
+
+.dropdownToggle.open .arrow {
+  color: #750bd1;
+}
+
+.circle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1vw;
+  height: 1vw;
+  background-color: #750bd1;
+  color: white;
+  border-radius: 50%;
+  font-size: 0.6vw;
+  font-weight: 600;
+  /* padding: 0 4px; */
+}
+
+.dropdownMenu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background-color: white;
+  border: 0.01vw solid #e0e0e0;
+  border-top: none;
+  border-radius: 0 0 1vw 1vw;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow-y: auto;
+  /* Исправление: убеждаемся, что меню поверх других элементов */
+  will-change: transform, opacity, max-height;
+}
+
+.dropdownMenu.show {
+  max-height: 20vw;
+  opacity: 1;
+  transform: translateY(0);
+  /* overflow-y: auto; */
+  /* Исправление: делаем меню видимым за пределами родителя */
+
+  max-width: 13vw;
+  /* Обеспечиваем, чтобы меню не обрезалось */
+  z-index: 9999;
+}
+
+.dropdownItem {
+  display: flex;
+  align-items: center;
+  gap: 0.3vw;
+  padding: 0.7vw 1vw;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  font-size: 0.7vw;
+  color: #333;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.dropdownItem:last-child {
+  border-bottom: none;
+}
+
+.dropdownItem:hover {
+  background-color: #f8f9fa;
+}
+
+.dropdownItem input[type='checkbox'] {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  width: 0.3vw;
+  height: 0.3vw;
+}
+
+.dropdownItem input[type='radio'] {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  width: 0.3vw;
+  height: 0.3vw;
+}
+
+.customCheckbox {
+  position: relative;
+  width: 0.5vw;
+  height: 0.5vw;
+  border: 2px solid #ddd;
+  border-radius: 0.2vw;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dropdownItem input[type='checkbox']:checked + .customCheckbox {
+  background-color: #750bd1;
+  border-color: #750bd1;
+}
+
+.dropdownItem input[type='checkbox']:checked + .customCheckbox::after {
+  opacity: 1;
+}
+
+.dropdownItem input[type='checkbox']:focus + .customCheckbox {
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+}
+
+.dropdownItem input[type='radio']:checked + .customCheckbox {
+  background-color: #750bd1;
+  border-color: #750bd1;
+}
+
+.dropdownItem input[type='radio']:checked + .customCheckbox::after {
+  opacity: 1;
+}
+
+.dropdownItem input[type='radio']:focus + .customCheckbox {
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+}
+
+.dropdownActions {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5vw 1vw;
+  background-color: #f8f9fa;
+  border-top: 1px solid #e0e0e0;
+  gap: 1vw;
+  position: sticky;
+  bottom: 0;
+  width: 11vw;
+}
+
+.dropdownReset,
+.dropdownClose {
+  padding: 0.3vw;
+  border-radius: 0.5vw;
+  font-size: 0.6vw;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+  flex: 1;
+}
+
+.dropdownReset {
+  background-color: #f8f9fa;
+  color: #666;
+  border: 1px solid #ddd;
+}
+
+.dropdownReset:hover {
+  background-color: #e9ecef;
+  color: #333;
+}
+
+.dropdownClose {
+  background-color: #9a41e7;
+  color: white;
+}
+
+.dropdownClose:hover {
+  background-color: #750bd1;
+}
+
+/* Стили для скроллбара в выпадающем меню */
+.dropdownMenu::-webkit-scrollbar {
+  width: 6px;
+}
+
+.dropdownMenu::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 3px;
+}
+
+.dropdownMenu::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 3px;
+}
+
+.dropdownMenu::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+/* Анимация появления/скрытия пунктов */
+.dropdownItem {
+  animation: slideIn 0.3s ease forwards;
+  opacity: 0;
+  transform: translateX(-10px);
+}
+
+.dropdownMenu.show .dropdownItem {
+  animation: slideIn 0.3s ease forwards;
+}
+
+@keyframes slideIn {
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Задержка анимации для каждого пункта */
+.dropdownItem:nth-child(1) {
+  animation-delay: 0.05s;
+}
+.dropdownItem:nth-child(2) {
+  animation-delay: 0.1s;
+}
+.dropdownItem:nth-child(3) {
+  animation-delay: 0.15s;
+}
+.dropdownItem:nth-child(4) {
+  animation-delay: 0.2s;
+}
+.dropdownItem:nth-child(5) {
+  animation-delay: 0.25s;
+}
+.dropdownItem:nth-child(6) {
+  animation-delay: 0.3s;
+}
+.dropdownItem:nth-child(7) {
+  animation-delay: 0.35s;
+}
+.dropdownItem:nth-child(8) {
+  animation-delay: 0.4s;
+}
+.dropdownItem:nth-child(9) {
+  animation-delay: 0.45s;
+}
+.dropdownItem:nth-child(10) {
+  animation-delay: 0.5s;
+}
+
+.searchWrapper {
+  position: sticky;
+  top: 0;
+  background: white;
+  padding: 0.7vw 1vw;
+  border-bottom: 1px solid #e0e0e0;
+  z-index: 5;
+}
+
+.searchInput {
+  width: 80%;
+  padding: 0.4vw 0.6vw;
+  font-size: 0.7vw;
+  border-radius: 0.5vw;
+  border: 1px solid #ddd;
+  outline: none;
+}
+
+.searchInput:focus {
+  border-color: #750bd1;
+  box-shadow: 0 0 0 2px rgba(117, 11, 209, 0.1);
+}
+
+/* Пусто */
+.empty {
+  padding: 1vw;
+  text-align: center;
+  font-size: 0.7vw;
+  color: #999;
+}

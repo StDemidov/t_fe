@@ -5,7 +5,7 @@ import styles from './style.module.css';
 const Tools = () => {
   return (
     <section>
-      <h2 className={styles.blockName}>Настройки</h2>
+      <h2 className={styles.blockName}>Товары</h2>
       <hr className={styles.line} />
       <div className={styles.tasksBox}>
         {/* <NavLink to="abc_page" className={styles.link}>
@@ -18,7 +18,7 @@ const Tools = () => {
             </div>
           </div>
         </NavLink> */}
-
+        {/* 
         <NavLink to="ebitda_settings" className={styles.link}>
           <div className={styles.card}>
             <div className={styles.cardContent}>
@@ -28,7 +28,7 @@ const Tools = () => {
               </p>
             </div>
           </div>
-        </NavLink>
+        </NavLink> */}
         <NavLink to="tags_setup" className={styles.link}>
           <div className={styles.card}>
             <div className={styles.cardContent}>
@@ -50,6 +50,17 @@ const Tools = () => {
             </div>
           </div>
         </NavLink>
+        {/* <NavLink to="regroup" className={styles.link}>
+          <div className={styles.card}>
+            <div className={styles.cardContent}>
+              <p className={styles.cardTitle}>Перераспределение карточек</p>
+              <p className={styles.cardPara}>
+                Перераспределяет товары в карточках по принципу "сильные со
+                слабыми" по кликабельности
+              </p>
+            </div>
+          </div>
+        </NavLink> */}
       </div>
       <h2 className={styles.blockName}>Управление ценами</h2>
       <hr className={styles.line} />
