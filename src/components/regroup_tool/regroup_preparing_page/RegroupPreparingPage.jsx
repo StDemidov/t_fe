@@ -58,9 +58,9 @@ const RegroupPreparingPage = ({ allItems }) => {
     <div>
       <InfoMessage />
       <div className={styles.filtersAndSettings}>
-        <RegroupFiltersBox />
-        allItems={allItems}
-        filteredByCategory={filteredItemsByCategory}
+        <RegroupFiltersBox
+          allItems={allItems}
+          filteredByCategory={filteredItemsByCategory}
         />
         <FinalSettings />
       </div>
