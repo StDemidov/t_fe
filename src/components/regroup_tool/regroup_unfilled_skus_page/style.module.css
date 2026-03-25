@@ -1,0 +1,99 @@
+.tabsContainer {
+  display: flex;
+  gap: 8px;
+  padding: 16px 16px 0 16px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.tabButton {
+  padding: 12px 24px;
+  font-size: 14px;
+  font-weight: 500;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #666;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.tabButton:hover {
+  color: blueviolet;
+}
+
+.activeTab {
+  color: blueviolet;
+}
+
+.activeTab::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background-color: blueviolet;
+}
+
+.buttonContainer {
+  display: flex;
+  gap: 16px;
+  padding: 16px;
+}
+
+.exportButton,
+.uploadButton {
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: 500;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.exportButton {
+  background-color: blueviolet;
+  color: white;
+}
+
+.exportButton:hover:not(:disabled) {
+  background-color: blueviolet;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(76, 175, 80, 0.3);
+}
+
+.exportButton:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.uploadButton {
+  background-color: rgb(99, 30, 163);
+  color: white;
+}
+
+.uploadButton:hover {
+  /* background-color: #0b7dda; */
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(33, 150, 243, 0.3);
+}
+
+.exportButton:active,
+.uploadButton:active {
+  transform: translateY(0);
+}
+
+.infoContainer {
+  padding: 0 16px 16px 16px;
+}
+
+.infoText {
+  font-size: 14px;
+  color: #666;
+  background-color: #f9f9f9;
+  padding: 8px 12px;
+  border-radius: 6px;
+  display: inline-block;
+}

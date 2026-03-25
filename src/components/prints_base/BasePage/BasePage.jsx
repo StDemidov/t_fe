@@ -68,17 +68,6 @@ const BasePage = ({ items, sizesStorage, setSizesStorage }) => {
     setSizesStorage({});
   };
 
-  // const updatePatterns = () => {
-  //   const data = {};
-  //   dispatch(
-  //     c({
-  //       data: data,
-  //       url: `${hostName}/prints_base/update_patterns_default_sizes_counts`,
-  //     })
-  //   );
-  //   setSizesStorage({});
-  // };
-
   const handleFileUpload = (event) => {
     const file = event.target.files[0];
     if (!file) return;
@@ -105,11 +94,6 @@ const BasePage = ({ items, sizesStorage, setSizesStorage }) => {
           // Улучшенная очистка строк
           const patternName = String(row[0]).trim();
 
-          // Более тщательная очистка названия размера:
-          // 1. Преобразуем в строку
-          // 2. Удаляем все пробелы в начале и конце (trim)
-          // 3. Удаляем все лишние пробелы внутри (заменяем множественные пробелы на один)
-          // 4. Приводим к верхнему регистру
           let sizeName = String(row[1])
             .trim() // Удаляем пробелы в начале и конце
             .replace(/\s+/g, '') // Удаляем ВСЕ пробелы внутри строки
@@ -179,6 +163,7 @@ const BasePage = ({ items, sizesStorage, setSizesStorage }) => {
     }
     return patternMatch && countryMatch;
   });
+  console.log(sizesStorage);
 
   getSortedData(filteredItems, selectedSorting);
   return (
@@ -222,7 +207,7 @@ const BasePage = ({ items, sizesStorage, setSizesStorage }) => {
           }`}
           disabled={Object.entries(sizesStorage).length === 0}
         >
-          Сохранить
+          Сохранить {`(${Object.keys(sizesStorage).length})`}
         </button>
       </div>
       {items.length === 0 ? (

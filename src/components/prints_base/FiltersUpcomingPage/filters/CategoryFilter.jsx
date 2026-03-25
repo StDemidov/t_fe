@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import styles from './style.module.css';
 import DropdownFilter from './DropdownFilter';
 import {
   resetFilterCategory,
@@ -44,7 +43,7 @@ const CategoryFilter = ({ options, forOrders = false }) => {
     setLocalSelectedOptions([]);
     dispatch(resetSortingType());
     if (forOrders) {
-      dispatch(resetOrdersFilterCategory);
+      dispatch(resetOrdersFilterCategory());
     } else {
       dispatch(resetFilterCategory());
     }

@@ -42,6 +42,8 @@ const VCSorting = () => {
     'Рекламные расходы ↑',
     'ROI ↓',
     'ROI ↑',
+    'CPS ↓',
+    'CPS ↑',
   ];
 
   return (

@@ -50,7 +50,7 @@ const Tools = () => {
             </div>
           </div>
         </NavLink>
-        {/* <NavLink to="regroup" className={styles.link}>
+        <NavLink to="regroup" className={styles.link}>
           <div className={styles.card}>
             <div className={styles.cardContent}>
               <p className={styles.cardTitle}>Перераспределение карточек</p>
@@ -60,7 +60,7 @@ const Tools = () => {
               </p>
             </div>
           </div>
-        </NavLink> */}
+        </NavLink>
       </div>
       <h2 className={styles.blockName}>Управление ценами</h2>
       <hr className={styles.line} />

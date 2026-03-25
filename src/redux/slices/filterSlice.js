@@ -10,6 +10,7 @@ const initialState = {
     },
     sortingType: 'EBITDA (сред) ↓',
     vCName: '',
+    orderName: '',
     color: [],
     tagsMain: [],
     tagsCloth: [],
@@ -124,6 +125,12 @@ const filterSlice = createSlice({
     },
     resetSkuOrNameTasksFilter: (state) => {
       state.tasks.skuOrName = '';
+    },
+    setBarcodeOrderNameFilter: (state, action) => {
+      state.tasks.orderName = action.payload;
+    },
+    resetBarcodeOrderNameFilter: (state) => {
+      state.tasks.orderName = '';
     },
     setVCSortingType: (state, action) => {
       state.vendorCode.sortingType = action.payload;
@@ -333,10 +340,15 @@ export const {
   setABTestsActiveVCNameFilter,
   setABTestsCompletedVCNameFilter,
   setCampaignsFilterSKU,
+  setBarcodeOrderNameFilter,
+  resetBarcodeOrderNameFilter,
 } = filterSlice.actions;
 
 export const selectBarcodeCategoryFilter = (state) =>
   state.filter.barcode.category;
+
+export const selectBarcodeOrderNameFilter = (state) =>
+  state.filter.barcode.orderName;
 
 export const selectBarcodeDeadline = (state) => state.filter.barcode.deadline;
 

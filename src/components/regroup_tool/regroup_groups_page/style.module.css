@@ -1,0 +1,488 @@
+.inputGroups {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
+  gap: 20px;
+  padding: 20px;
+  max-height: calc(100vh - 100px);
+  overflow-y: auto;
+}
+
+.groupCard {
+  background: linear-gradient(135deg, #f0f0f0 0%, #f3f4f6 100%);
+  border-radius: 16px;
+  padding: 16px;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  min-height: 200px;
+  cursor: default;
+  position: relative;
+}
+
+.groupCardOver {
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  box-shadow: 0 0 0 2px #4f46e5, 0 4px 6px rgba(0, 0, 0, 0.1);
+  transform: scale(1.01);
+}
+
+.groupTitle {
+  width: 100%;
+  font-weight: 600;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #e5e7eb;
+  font-size: 14px;
+  color: #374151;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  pointer-events: none;
+}
+
+.groupCount {
+  font-size: 12px;
+  font-weight: normal;
+  color: #9100a4;
+  background: #ffffff;
+  padding: 2px 8px;
+  border-radius: 12px;
+}
+
+.itemsRowWrapper {
+  flex: 1;
+  overflow-x: auto;
+  overflow-y: hidden;
+  position: relative;
+  min-height: 132px;
+  cursor: grab;
+  user-select: none;
+}
+
+.itemsRowWrapper:active {
+  cursor: grabbing;
+}
+
+.itemsRow {
+  display: flex;
+  gap: 12px;
+  padding: 4px;
+  min-width: min-content;
+  height: 100%;
+  align-items: center;
+}
+
+.item {
+  min-width: 120px;
+  width: 120px;
+  height: 120px;
+  border-radius: 12px;
+  background-size: cover !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+  cursor: grab;
+  flex-shrink: 0;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  position: relative;
+}
+
+.item:active {
+  cursor: grabbing;
+}
+
+.item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.dragOverlay {
+  width: 120px;
+  height: 120px;
+  border-radius: 12px;
+  background-size: cover !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+  opacity: 0.9;
+  cursor: grabbing;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
+  transform: rotate(3deg) scale(1.05);
+  position: relative;
+  pointer-events: none;
+}
+
+.dragOverlayInfo {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.7);
+  color: white;
+  font-size: 10px;
+  padding: 4px;
+  text-align: center;
+  border-radius: 0 0 12px 12px;
+  backdrop-filter: blur(4px);
+}
+
+.emptyState {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 400px;
+  color: #6b7280;
+  font-size: 16px;
+  background: #f9fafb;
+  border-radius: 12px;
+  margin: 20px;
+}
+
+/* Увеличиваем зону для дропа */
+.groupCard::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  border-radius: 16px;
+}
+
+/* Кастомизация скроллбара */
+.itemsRowWrapper::-webkit-scrollbar {
+  height: 6px;
+}
+
+.itemsRowWrapper::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 3px;
+}
+
+.itemsRowWrapper::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 3px;
+}
+
+.itemsRowWrapper::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+.inputGroups::-webkit-scrollbar {
+  width: 8px;
+}
+
+.inputGroups::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.inputGroups::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+.inputGroups::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Анимации */
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+.groupCardOver {
+  animation: pulse 0.3s ease-in-out;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+  .inputGroups {
+    grid-template-columns: 1fr;
+    padding: 12px;
+    gap: 16px;
+  }
+
+  .item {
+    min-width: 100px;
+    width: 100px;
+    height: 100px;
+  }
+
+  .dragOverlay {
+    width: 100px;
+    height: 100px;
+  }
+
+  .groupCard {
+    padding: 12px;
+  }
+}
+
+/* Для тач-устройств */
+@media (hover: none) {
+  .item:hover {
+    transform: none;
+  }
+
+  .itemsRowWrapper {
+    cursor: auto;
+  }
+}
+
+/* Добавьте эти стили к существующим */
+
+.emptyGroupCard {
+  background: linear-gradient(135deg, #f0f0f0 0%, #f3f4f6 100%);
+  border: 2px dashed #cbd5e1;
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  cursor: default;
+  transition: all 0.3s ease;
+}
+
+.emptyGroupCard:hover {
+  border-color: #9ca3af;
+  background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+}
+
+.emptyGroupCard.groupCardOver {
+  background: linear-gradient(135deg, #eef2ff 0%, #e0e7ff 100%);
+  border-color: #4f46e5;
+  transform: scale(1.02);
+}
+
+.emptyGroupContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 24px;
+  color: #9ca3af;
+  text-align: center;
+  flex: 1;
+}
+
+.emptyGroupContent svg {
+  color: #9ca3af;
+  transition: all 0.3s ease;
+}
+
+.emptyGroupCard:hover .emptyGroupContent svg {
+  color: #6b7280;
+  transform: scale(1.1);
+}
+
+.emptyGroupCard.groupCardOver .emptyGroupContent svg {
+  color: #4f46e5;
+}
+
+.emptyGroupContent p {
+  margin: 0;
+  font-size: 14px;
+  color: #6b7280;
+  line-height: 1.4;
+}
+
+.emptyGroupCard.groupCardOver .emptyGroupContent p {
+  color: #4f46e5;
+  font-weight: 500;
+}
+
+/* Улучшаем анимацию дропа */
+.dragOverlay {
+  animation: subtlePulse 0.3s ease-in-out;
+}
+
+@keyframes subtlePulse {
+  0% {
+    transform: rotate(0deg) scale(1);
+    opacity: 0.8;
+  }
+  100% {
+    transform: rotate(3deg) scale(1.05);
+    opacity: 0.9;
+  }
+}
+
+/* Оптимизация производительности */
+.item {
+  will-change: transform;
+  backface-visibility: hidden;
+}
+
+.groupCard {
+  will-change: transform;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Стили для карточки с информацией */
+.item {
+  min-width: 120px;
+  width: 120px;
+  height: 120px;
+  border-radius: 12px;
+  background-size: cover !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+  cursor: grab;
+  flex-shrink: 0;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Количество кликов - сверху слева */
+.clicksCount {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(4px);
+  color: white;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 8px;
+  border-radius: 20px;
+  z-index: 2;
+  font-family: monospace;
+  letter-spacing: 0.5px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Контейнер для артикула - снизу */
+.vendorCodeContainer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(4px);
+  padding: 6px 8px;
+  z-index: 2;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Базовые стили для артикула */
+.vendorCode {
+  color: white;
+  font-size: 11px;
+  font-weight: 500;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-family: monospace;
+  letter-spacing: 0.3px;
+}
+
+/* Стили для бегущей строки при наведении */
+.vendorCodeMarquee {
+  animation: marquee 8s linear infinite;
+  white-space: nowrap;
+  overflow: visible;
+  display: inline-block;
+  width: auto;
+  padding-left: 100%;
+  transform: translateX(0);
+}
+
+/* Контейнер для анимации бегущей строки */
+.vendorCodeContainer:hover .vendorCodeMarquee {
+  animation: marquee 5s linear infinite;
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(-20%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+/* Улучшаем анимацию при наведении */
+.vendorCodeContainer {
+  transition: all 0.2s ease;
+}
+
+.vendorCodeContainer:hover {
+  background: rgba(0, 0, 0, 0.85);
+}
+
+/* Для длинных артикулов делаем более медленную анимацию */
+.vendorCode[data-long='true'] {
+  animation-duration: 12s;
+}
+
+/* Добавляем затемнение при наведении на карточку */
+.item:hover::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.1);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Стили для DragOverlay - скрываем информацию */
+.dragOverlay .clicksCount,
+.dragOverlay .vendorCodeContainer {
+  display: none;
+}
+
+/* Адаптивность для мобильных устройств */
+@media (max-width: 768px) {
+  .clicksCount {
+    font-size: 10px;
+    padding: 3px 6px;
+    top: 6px;
+    left: 6px;
+  }
+
+  .vendorCode {
+    font-size: 9px;
+  }
+
+  .vendorCodeContainer {
+    padding: 4px 6px;
+  }
+
+  /* На мобильных устройствах отключаем бегущую строку, просто обрезаем */
+  .vendorCodeMarquee {
+    animation: none;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding-left: 0;
+  }
+}
+
+/* Для устройств с touch-экраном */
+@media (hover: none) {
+  .vendorCodeMarquee {
+    animation: none;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .vendorCodeContainer:hover {
+    background: rgba(0, 0, 0, 0.7);
+  }
+}

@@ -12,24 +12,24 @@ import BarcodeTagClothFilter from './barcode_tag_filter_cloth/BarcodeTagClothFil
 import BarcodeTagFilter from './barcode_tag_filter/BarcodeTagFilter';
 import BarcodeTagOthersFilter from './barcode_tag_filter_others/BarcodeTagOthersFilter';
 import BarcodeCategoryFilter from './barcode_category_filter/BarcodeCategoryFilter';
+import BarcodesOrderNameFilter from './barcodes_order_name_filter/BarcodesOrderNameFilter';
 
 const BarcodeFilters = ({ tagsMain, tagsCloth, tagsOthers, categories }) => {
   // const barcodes = useSelector(selectBarcodes);
 
   return (
-    <div>
-      <div className={styles.filterSection}>
-        <BarcodesDateFilter />
-        <BarcodesSorting />
-        <BarcodeCategoryFilter options={categories} />
+    <div className={styles.filterSection}>
+      <BarcodesDateFilter />
+      <BarcodesSorting />
+      <BarcodeCategoryFilter options={categories} />
 
-        <BarcodesColorFilter />
+      <BarcodesColorFilter />
 
-        <BarcodeTagFilter options={tagsMain} />
-        <BarcodeTagClothFilter options={tagsCloth} />
-        <BarcodeTagOthersFilter options={tagsOthers} />
-        <BarcodesVCNameFilter />
-      </div>
+      <BarcodeTagFilter options={tagsMain} />
+      <BarcodeTagClothFilter options={tagsCloth} />
+      <BarcodeTagOthersFilter options={tagsOthers} />
+      <BarcodesVCNameFilter />
+      {/* <BarcodesOrderNameFilter /> */}
     </div>
   );
 };

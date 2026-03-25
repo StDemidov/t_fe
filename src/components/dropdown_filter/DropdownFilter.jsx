@@ -161,7 +161,10 @@ const DropdownFilter = ({
             </button>
             <button
               className={styles.dropdownClose}
-              onClick={handleFilterApply}
+              onClick={() => {
+                handleFilterApply();
+                setIsOpen(!isOpen);
+              }}
             >
               Применить
             </button>

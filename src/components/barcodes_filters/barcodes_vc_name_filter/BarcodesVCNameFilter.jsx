@@ -28,7 +28,7 @@ const BarcodesVCNameFilter = () => {
           }
         }}
         type="text"
-        placeholder="Отфильтровать по артикулу или SKU..."
+        placeholder="Отфильтровать по артикулу..."
       />
     </div>
   );

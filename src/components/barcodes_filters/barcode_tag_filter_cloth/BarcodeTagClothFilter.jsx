@@ -10,6 +10,8 @@ import {
 import styles from './style.module.css';
 
 const BarcodeTagClothFilter = ({ options }) => {
+  const sortedOptions = options.slice();
+  sortedOptions.sort();
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOptions, setSelectedOptions] = useState(
     useSelector(selectBarcodeTagsClothFilter)
@@ -64,7 +66,7 @@ const BarcodeTagClothFilter = ({ options }) => {
       </button>
       {isOpen && (
         <div className={`${styles.dropdownMenu} ${isOpen ? styles.show : ''}`}>
-          {options.map((option, index) => (
+          {sortedOptions.map((option, index) => (
             <label key={index} className={styles.dropdownItem}>
               <input
                 type="checkbox"

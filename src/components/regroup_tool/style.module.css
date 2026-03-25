@@ -1,0 +1,23 @@
+.header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  .headerButton {
+    padding: 0.2vw 0.4vw;
+    height: 2vw;
+    font-size: 0.8vw;
+    font-weight: 500;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background-color: blueviolet;
+    color: white;
+  }
+  .headerButton:hover {
+    /* background-color: #0b7dda; */
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(33, 150, 243, 0.3);
+  }
+}

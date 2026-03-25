@@ -2,11 +2,6 @@ import { FaSpinner } from 'react-icons/fa';
 import { useState, useRef, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useSpring, animated } from '@react-spring/web';
-import { DndContext, closestCenter } from '@dnd-kit/core';
-import { SortableContext, arrayMove, useSortable } from '@dnd-kit/sortable';
-import { CSS } from '@dnd-kit/utilities';
-import { FaGripVertical } from 'react-icons/fa';
-import { TbListDetails } from 'react-icons/tb';
 import { LuColumns3 } from 'react-icons/lu';
 
 import styles from './style.module.css';
@@ -18,7 +13,6 @@ import {
   selectVendorCodeMetrics,
   selectIsLoading,
   selectTagsIsLoading,
-  selectPageVendorcodes,
   selectVCsPerPageVendorcodes,
 } from '../../redux/slices/vendorCodeSlice';
 import VendorCodesTable from '../vendorcodes-table/VendorCodesTable';
@@ -288,6 +282,12 @@ const getSortedData = (data, selectedSorting) => {
       break;
     case 'ROI ↑':
       data.sort((a, b) => (a.roi > b.roi ? 1 : -1));
+      break;
+    case 'CPS ↓':
+      data.sort((a, b) => (a.cps > b.cps ? -1 : 1));
+      break;
+    case 'CPS ↑':
+      data.sort((a, b) => (a.cps > b.cps ? 1 : -1));
       break;
     case 'ABC ↓':
       data.sort(function (a, b) {

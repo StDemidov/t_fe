@@ -1,0 +1,6 @@
+.filtersBox {
+  display: flex;
+  gap: 1vw;
+
+  width: 50%;
+}
