@@ -7,12 +7,12 @@ import {
   selectRegroupFilterStyle,
   setSelectedSkus,
 } from '../../../redux/slices/regroupSlice';
-import RegroupFiltersBox from './regroup_filters/RegroupFIltersBox';
 import InfoMessage from './elements/InfoMessage';
 import ItemList from './elements/ItemList';
 import FinalSettings from './elements/FinalSettings';
 
 import styles from './style.module.css';
+import RegroupFiltersBox from './regroup_filters/RegroupFiltersBox';
 
 const RegroupPreparingPage = ({ allItems }) => {
   const categoryFilter = useSelector(selectRegroupFilterCategory);
@@ -58,9 +58,9 @@ const RegroupPreparingPage = ({ allItems }) => {
     <div>
       <InfoMessage />
       <div className={styles.filtersAndSettings}>
-        <RegroupFiltersBox
-          allItems={allItems}
-          filteredByCategory={filteredItemsByCategory}
+        <RegroupFiltersBox />
+        allItems={allItems}
+        filteredByCategory={filteredItemsByCategory}
         />
         <FinalSettings />
       </div>
