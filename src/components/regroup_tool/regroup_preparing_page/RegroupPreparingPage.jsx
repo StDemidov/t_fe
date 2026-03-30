@@ -36,8 +36,11 @@ const RegroupPreparingPage = ({ allItems }) => {
     let patternMatch = true;
     let styleMatch = true;
 
-    if (styleFilter !== '') {
-      styleMatch = item.style.toLowerCase() == styleFilter.toLowerCase();
+    if (styleFilter.length !== 0) {
+      let lowerStyleFilter = styleFilter.map((style) => {
+        return style.toLowerCase();
+      });
+      styleMatch = lowerStyleFilter.includes(item.style.toLowerCase());
     }
     if (patternFilter.length !== 0) {
       patternMatch = patternFilter.includes(item.pattern);
@@ -46,7 +49,7 @@ const RegroupPreparingPage = ({ allItems }) => {
   });
 
   useEffect(() => {
-    if (categoryFilter !== '' && styleFilter !== '') {
+    if (categoryFilter !== '' && styleFilter.length != 0) {
       const skus = fullFilteredItems.map((item) => item.sku);
       dispatch(setSelectedSkus(skus));
     } else {

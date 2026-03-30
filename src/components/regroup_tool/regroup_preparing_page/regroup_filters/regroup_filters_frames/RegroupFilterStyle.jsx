@@ -33,9 +33,9 @@ const RegroupFilterStyle = ({ options }) => {
         setSelectedOptions={setLocalSelectedOptions}
         handleFilterApply={handleFilterApply}
         handleFilterReset={handleFilterReset}
-        title={reduxSelectedOptions !== '' ? reduxSelectedOptions : 'Стиль'}
+        title={'Стиль'}
         searchable={true}
-        singleChoice={true}
+        singleChoice={false}
       />
     </>
   );

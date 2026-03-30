@@ -25,7 +25,7 @@ const initialState = {
   filters: {
     category: '',
     patterns: [],
-    style: '',
+    style: [],
   },
 };
 
@@ -126,7 +126,7 @@ const regroupSlice = createSlice({
       state.filters.style = action.payload;
     },
     resetRegroupFilterStyle: (state) => {
-      state.filters.style = '';
+      state.filters.style = [];
     },
     setSelectedSkus: (state, action) => {
       state.selectedSkus = action.payload;
