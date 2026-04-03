@@ -72,7 +72,6 @@ const ClustersTable = ({
   const handleClickOnApply = (e) => {
     e.stopPropagation();
     e.preventDefault();
-    // console.log(changes);
 
     dispatch(
       editClusters({
@@ -115,8 +114,8 @@ const ClustersTable = ({
     }
     return disabledMatch;
   });
-
-  getSortedData(filteredClusters, clustersSortingType);
+  const sortedClusters = [...filteredClusters];
+  getSortedData(sortedClusters, clustersSortingType);
 
   return (
     <div className={styles.clustersTable}>
@@ -254,9 +253,8 @@ const ClustersTable = ({
       </div>
 
       <div ref={containerRef} className={styles.clustersRows}>
-        {filteredClusters.slice(0, visibleCount).map((item) => {
+        {sortedClusters.slice(0, visibleCount).map((item) => {
           const patch = changes[item.id] || {};
-
           return (
             <ClusterRow
               key={item.id}

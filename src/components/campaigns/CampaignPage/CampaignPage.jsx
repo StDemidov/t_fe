@@ -64,7 +64,7 @@ const CampaignPage = () => {
       totalAddToCart += data.toCart.total;
       totalSpend += data.spend.total;
       return {
-        id: idx,
+        id: item.id,
         cluster: item.cluster,
         disabled: item.disabled,
         bid: item.bid,
