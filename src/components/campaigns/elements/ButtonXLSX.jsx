@@ -23,6 +23,9 @@ const exportCampsMetricsToExcel = (camps) => {
         Клики: camp.clicks[idx],
         Траты: camp.spend[idx],
         CTR: camp.ctr[idx],
+        Лимит: camp.hasActiveHours
+          ? `${camp.startHour}:00 - ${camp.pauseHour}:00`
+          : 'Круглосуточно',
       });
     });
   });

@@ -13,6 +13,8 @@ import {
 } from '../../../redux/slices/basePrints';
 import { hostName } from '../../../utils/host';
 import { useRef, useState } from 'react';
+import JSZip from 'jszip';
+import { saveAs } from 'file-saver';
 
 const BasePage = ({ items, sizesStorage, setSizesStorage }) => {
   const categoryFilter = useSelector(selectUpcomingCategoryFilter);
@@ -24,32 +26,65 @@ const BasePage = ({ items, sizesStorage, setSizesStorage }) => {
   const dispatch = useDispatch();
   const fileInputRef = useRef(null);
 
-  const exportToExcel = () => {
-    // Создаем массив для данных Excel
-    const excelData = [];
+  const getPatternMap = () => {
+    const map = {};
 
-    // Проходим по каждому артикулу в sizesStorage
+    items.forEach((item) => {
+      map[item.vendorcode] = item.pattern_data?.pattern_name;
+    });
+
+    return map;
+  };
+
+  const exportToExcel = async () => {
+    const patternMap = getPatternMap();
+
+    // Группировка по лекалам
+    const grouped = {};
+
     Object.entries(sizesStorage).forEach(([article, barcodes]) => {
-      // Проходим по каждому баркоду внутри артикула
+      const patternName = patternMap[article] || 'unknown';
+
+      if (!grouped[patternName]) {
+        grouped[patternName] = [];
+      }
+
       Object.entries(barcodes).forEach(([barcode, value]) => {
-        excelData.push([
-          barcode, // 1 колонка - баркод
-          value, // 2 колонка - значение
-          '', // 3 колонка - пустая
-          article, // 4 колонка - артикул
-        ]);
+        grouped[patternName].push([barcode, value, '', article]);
       });
     });
 
-    // Создаем рабочий лист
-    const ws = XLSX.utils.aoa_to_sheet(excelData);
+    const patternNames = Object.keys(grouped);
 
-    // Создаем рабочую книгу
-    const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+    // Если только одно лекало → обычный Excel
+    if (patternNames.length === 1) {
+      const ws = XLSX.utils.aoa_to_sheet(grouped[patternNames[0]]);
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
 
-    // Сохраняем файл
-    XLSX.writeFile(wb, 'sizes_export.xlsx');
+      XLSX.writeFile(wb, `${patternNames[0]}.xlsx`);
+      return;
+    }
+
+    // Если несколько → ZIP
+    const zip = new JSZip();
+
+    patternNames.forEach((patternName) => {
+      const ws = XLSX.utils.aoa_to_sheet(grouped[patternName]);
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+
+      const excelBuffer = XLSX.write(wb, {
+        bookType: 'xlsx',
+        type: 'array',
+      });
+
+      zip.file(`${patternName}.xlsx`, excelBuffer);
+    });
+
+    const content = await zip.generateAsync({ type: 'blob' });
+
+    saveAs(content, 'patterns_export.zip');
   };
 
   const saveOrders = () => {
@@ -163,9 +198,9 @@ const BasePage = ({ items, sizesStorage, setSizesStorage }) => {
     }
     return patternMatch && countryMatch;
   });
-  console.log(sizesStorage);
 
-  getSortedData(filteredItems, selectedSorting);
+  const sortedItems = [...filteredItems];
+  getSortedData(sortedItems, selectedSorting);
   return (
     <div>
       <input
@@ -214,7 +249,7 @@ const BasePage = ({ items, sizesStorage, setSizesStorage }) => {
         <div>Пусто</div>
       ) : (
         <div className={styles.itemsGrid}>
-          {filteredItems.map((item, idx) => (
+          {sortedItems.map((item, idx) => (
             <ItemCard
               key={idx}
               item={item}

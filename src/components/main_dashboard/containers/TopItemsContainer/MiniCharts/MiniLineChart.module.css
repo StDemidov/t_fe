@@ -1,0 +1,75 @@
+.wrap {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+  cursor: crosshair;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  color: #534ab7;
+  pointer-events: none;
+  transition: opacity 0.15s;
+  text-shadow: 0 0 6px #fff, 0 0 10px #fff;
+}
+
+.hidden {
+  opacity: 0;
+}
+
+.tooltip {
+  position: absolute;
+  pointer-events: none;
+  background: rgba(26, 23, 51, 0.9);
+  border-radius: 6px;
+  padding: 4px 8px 5px;
+  white-space: nowrap;
+  transform: translate(-50%, calc(-100% - 6px));
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+  animation: fadeIn 0.1s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translate(-50%, calc(-100% - 2px)); }
+  to   { opacity: 1; transform: translate(-50%, calc(-100% - 6px)); }
+}
+
+.tooltip::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 4px solid transparent;
+  border-top-color: rgba(26, 23, 51, 0.9);
+}
+
+.ttDate {
+  font-size: 9.5px;
+  color: rgba(255,255,255,0.6);
+  font-weight: 400;
+}
+
+.ttVal {
+  font-size: 11px;
+  color: #fff;
+  font-weight: 600;
+}

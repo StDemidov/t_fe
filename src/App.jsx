@@ -39,6 +39,7 @@ import CampaignsCreate from './components/campaigns/CampaignsCreate/CampaignsCre
 import CampaignPage from './components/campaigns/CampaignPage/CampaignPage';
 import PrintsBaseMain from './components/prints_base/PrintsBaseMain';
 import MainRegroupPage from './components/regroup_tool/MainRegroupPage';
+import MainDashboardContainer from './components/main_dashboard/MainDashboardContainer';
 
 function App() {
   const currentUser = useSelector(selectUser);
@@ -51,7 +52,7 @@ function App() {
             {currentUser.username ? (
               <Routes>
                 <Route path="/" element={<MainLayout />}>
-                  <Route index element={<Home />} />
+                  <Route index element={<MainDashboardContainer />} />
                   <Route path="vendorcodes" element={<VendorCodesList />} />
                   <Route path="prints" element={<PrintsBaseMain />} />
                   <Route

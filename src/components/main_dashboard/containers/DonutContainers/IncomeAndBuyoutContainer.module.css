@@ -1,0 +1,44 @@
+.row {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  gap: 12px;
+  flex-wrap: nowrap;
+  height: 280px;
+}
+
+/* Ячейки графиков — равномерно делят оставшееся место */
+.chartCell {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.chartCell > * {
+  flex: 1;
+}
+
+/* ── Адаптивность ── */
+
+/* Планшет: уменьшаем высоту, донаты чуть теснее */
+@media (max-width: 900px) {
+  .row {
+    height: 240px;
+    gap: 8px;
+  }
+}
+
+/* Мобильный: складываем в колонку, отдаём каждому блоку нормальную высоту */
+@media (max-width: 640px) {
+  .row {
+    flex-direction: column;
+    height: auto;
+    gap: 10px;
+  }
+
+  .chartCell {
+    height: 260px;
+    flex: none;
+  }
+}

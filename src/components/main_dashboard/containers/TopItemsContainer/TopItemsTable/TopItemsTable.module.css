@@ -1,0 +1,249 @@
+/* ── Карточка-обёртка ── */
+.card {
+  background: #fff;
+  border: 1px solid rgba(127, 119, 221, 0.22);
+  border-radius: 10px;
+  padding: 14px 16px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  box-sizing: border-box;
+  box-shadow: 0 2px 12px rgba(83, 74, 183, 0.1);
+  overflow: visible;
+}
+
+/* ── Шапка ── */
+.cardHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+  padding-bottom: 2px;
+}
+
+.cardTitle {
+  font-size: 11px;
+  font-weight: 500;
+  color: #534ab7;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  opacity: 0.85;
+}
+
+/* ── Выпадающий список ── */
+.select {
+  font-size: 11px;
+  font-weight: 500;
+  color: #534ab7;
+  background: rgba(127, 119, 221, 0.08);
+  border: 1px solid rgba(127, 119, 221, 0.25);
+  border-radius: 6px;
+  padding: 4px 24px 4px 8px;
+  cursor: pointer;
+  outline: none;
+  transition: border-color 0.15s, background 0.15s;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%237f77dd'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+}
+
+.select:hover {
+  border-color: #7f77dd;
+  background-color: rgba(127, 119, 221, 0.13);
+}
+
+/* ── Таблица-обёртка ── */
+.tableWrap {
+  overflow-x: auto;
+  overflow-y: visible;
+  margin: 0 -16px;
+  border-radius: 0 0 10px 10px;
+}
+
+.tableWrap::-webkit-scrollbar { height: 4px; }
+.tableWrap::-webkit-scrollbar-thumb {
+  background: rgba(127, 119, 221, 0.3);
+  border-radius: 2px;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+  overflow: visible;
+}
+
+/* ── Заголовок ── */
+.thead { background: rgba(127, 119, 221, 0.06); }
+
+/* Скругление первой строки заголовка */
+.thead .th:first-child { border-radius: 0; }
+.thead .th:last-child  { border-radius: 0; }
+
+.th {
+  font-size: 10.5px;
+  font-weight: 600;
+  color: #534ab7;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 8px 10px;
+  text-align: left;
+  border-bottom: 1px solid rgba(127, 119, 221, 0.18);
+  white-space: nowrap;
+  opacity: 0.8;
+  vertical-align: middle;
+}
+
+/* ── Строки ── */
+.tr { transition: background 0.1s; }
+.tr:hover { background: rgba(127, 119, 221, 0.05); }
+.trEven { background: rgba(127, 119, 221, 0.025); }
+.trEven:hover { background: rgba(127, 119, 221, 0.06); }
+
+/* Последняя строка — скругление нижних углов */
+.tr:last-child .td:first-child { border-radius: 0 0 0 10px; }
+.tr:last-child .td:last-child  { border-radius: 0 0 10px 0; }
+.tr:last-child .td { border-bottom: none; }
+
+.td {
+  padding: 6px 10px;
+  border-bottom: 1px solid rgba(127, 119, 221, 0.08);
+  vertical-align: middle;
+}
+
+/* ── Ширины колонок ── */
+.colPhoto  { width: 58px; text-align: center; padding: 4px 8px; position: relative; }
+.colSku    { width: 110px; text-align: left; }
+.colChart  { width: 130px; }
+.colBadge  { width: 88px; text-align: center; }
+.colRoi    { width: 76px; text-align: center; }
+
+/* ── Фото с увеличением при ховере ── */
+.photoWrap {
+  position: relative;
+  display: inline-block;
+  overflow: visible;
+}
+
+.photo {
+  width: 36px;
+  height: 48px;
+  object-fit: cover;
+  border-radius: 4px;
+  display: block;
+  border: 1px solid rgba(127, 119, 221, 0.15);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  cursor: zoom-in;
+  position: relative;
+  z-index: 1;
+  /* transform-origin задаётся динамически через inline style в JSX */
+}
+
+/* Увеличение: поднимаем и масштабируем */
+.photo:hover {
+  transform: scale(3.2);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  z-index: 100;
+  border-radius: 5px;
+}
+
+.photoPlaceholder {
+  width: 36px;
+  height: 48px;
+  border-radius: 4px;
+  background: rgba(127, 119, 221, 0.1);
+  margin: 0 auto;
+}
+
+/* ── Артикул: фиксированная ширина + бегущая строка ── */
+.skuCell {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  /* Маска для плавного исчезания текста по краям */
+  mask-image: linear-gradient(to right, black 80%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to right, black 80%, transparent 100%);
+}
+
+.skuText {
+  display: inline-block;
+  font-size: 10.5px;
+  color: #444;
+  white-space: nowrap;
+  cursor: default;
+  /* В покое — просто обрезан маской */
+  transform: translateX(0);
+}
+
+/* При ховере — бегущая строка */
+.skuCell:hover {
+  mask-image: none;
+  -webkit-mask-image: none;
+}
+
+.skuCell:hover .skuText {
+  animation: marquee var(--marquee-dur, 5s) linear infinite;
+}
+
+@keyframes marquee {
+  0%   { transform: translateX(0); }
+  15%  { transform: translateX(0); }        /* пауза в начале */
+  85%  { transform: translateX(var(--marquee-offset, -60%)); }
+  100% { transform: translateX(var(--marquee-offset, -60%)); } /* пауза в конце */
+}
+
+/* ── Ячейка мини-графика ── */
+.chartCell {
+  width: 100%;
+  height: 52px;
+  display: block;
+  position: relative;
+}
+
+/* ── ROI-плашка ── */
+.roiBadge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px 7px;
+  border-radius: 5px;
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.roiPos { color: #1a7a4a; background: #d6f5e5; }
+.roiNeg { color: #9b2335; background: #fce4e8; }
+
+/* ── Скелетон ── */
+@keyframes shimmer {
+  0%, 100% { opacity: 0.35; }
+  50%       { opacity: 0.75; }
+}
+
+.skeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-bottom: 12px;
+}
+
+.skRow {
+  height: 62px;
+  border-radius: 6px;
+  background: rgba(127, 119, 221, 0.1);
+  animation: shimmer 1.4s ease-in-out infinite;
+}
+
+/* ── Адаптивность ── */
+@media (max-width: 900px) {
+  .colChart { width: 100px; }
+  .colSku   { width: 90px; }
+}
+
+/* JS-управляемая бегущая строка (класс добавляется через ref) */
+.marqueeActive {
+  animation: marquee var(--marquee-dur, 5s) linear infinite !important;
+}

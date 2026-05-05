@@ -1,0 +1,270 @@
+:root {
+  --d-accent: #7f77dd;
+  --d-accent-deep: #534ab7;
+  --d-accent-soft: rgba(127, 119, 221, 0.12);
+}
+
+/* Карточка */
+.card {
+  background: #fff;
+  border: 1px solid rgba(127, 119, 221, 0.22);
+  border-radius: 10px;
+  padding: 14px 16px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  box-shadow: 0 2px 12px rgba(83, 74, 183, 0.1);
+}
+
+.cardTitle {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--d-accent-deep);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  opacity: 0.85;
+  flex-shrink: 0;
+}
+
+/* Основная строка */
+.body {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 16px;
+  flex: 1;
+  min-height: 0;
+}
+
+/* Canvas-область */
+.chartWrap {
+  position: relative;
+  flex-shrink: 0;
+  aspect-ratio: 1;
+  height: 100%;
+  max-height: 210px;
+  max-width: 210px;
+}
+
+.canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+  cursor: crosshair;
+}
+
+/* Центральный лейбл */
+.center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  text-align: center;
+  pointer-events: none;
+  width: 84px;
+}
+
+.cName {
+  font-size: 11px;
+  font-weight: 500;
+  color: #333;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 84px;
+}
+
+.cVal {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--d-accent);
+  white-space: nowrap;
+}
+
+.cSub {
+  font-size: 10px;
+  color: #888;
+  white-space: nowrap;
+}
+
+/* ── Правая колонка: шапка + список ── */
+.legendWrap {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  max-height: 210px;
+  gap: 0;
+}
+
+/* Шапка "Всего" — не прокручивается */
+.legendHeader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 3px 5px 6px;
+  border-bottom: 1px solid rgba(127, 119, 221, 0.15);
+  flex-shrink: 0;
+}
+
+.legendHeaderLabel {
+  font-size: 10.5px;
+  font-weight: 600;
+  color: #555;
+  background: #f0f0f0;
+  border-radius: 4px;
+  padding: 1px 7px;
+  white-space: nowrap;
+}
+
+.legendHeaderBadge {
+  font-size: 10.5px;
+  font-weight: 600;
+  color: #1a7a4a;
+  background: #d6f5e5;
+  border-radius: 4px;
+  padding: 1px 7px;
+  white-space: nowrap;
+}
+
+.legendHeaderBadgeSec {
+  color: var(--d-accent-deep);
+  background: var(--d-accent-soft);
+}
+
+/* Список категорий — прокручивается */
+.legend {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding-right: 2px;
+  padding-top: 4px;
+}
+
+.legend::-webkit-scrollbar {
+  width: 3px;
+}
+.legend::-webkit-scrollbar-thumb {
+  background: rgba(127, 119, 221, 0.3);
+  border-radius: 2px;
+}
+
+.legRow {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 3px 5px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.13s;
+  min-width: 0;
+}
+
+.legRow:hover,
+.legActive {
+  background: var(--d-accent-soft);
+}
+
+.legDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.legName {
+  font-size: 11px;
+  color: #333;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.legPct {
+  font-size: 11px;
+  color: var(--d-accent-deep);
+  opacity: 0.75;
+  flex-shrink: 0;
+}
+
+/* ── Скелетон ── */
+@keyframes shimmer {
+  0%,
+  100% {
+    opacity: 0.35;
+  }
+  50% {
+    opacity: 0.75;
+  }
+}
+
+.skeleton {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 16px;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.skCircle {
+  aspect-ratio: 1;
+  height: 100%;
+  max-height: 150px;
+  max-width: 150px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--d-accent-soft);
+  animation: shimmer 1.4s ease-in-out infinite;
+  border: 20px solid rgba(127, 119, 221, 0.06);
+  box-sizing: border-box;
+}
+
+.skLines {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.skRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.skDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(127, 119, 221, 0.2);
+  animation: shimmer 1.4s ease-in-out infinite;
+  flex-shrink: 0;
+}
+
+.skLine {
+  height: 10px;
+  border-radius: 4px;
+  background: rgba(127, 119, 221, 0.13);
+  animation: shimmer 1.4s ease-in-out infinite;
+  max-width: 100%;
+  min-width: 0;
+}

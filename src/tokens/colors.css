@@ -1,0 +1,46 @@
+:root {
+  /* Основной акцент */
+  --color-main-50: #f5f2ff;
+  --color-main-100: #ede5ff;
+  --color-main-200: #d8caff;
+  --color-main-300: #bfaaff;
+  --color-main-400: #a385ff;
+  --color-main-500: #7c5ce8;
+  --color-main-600: #6240cc;
+  --color-main-700: #4b2ea8;
+  --color-main-800: #341f80;
+  --color-main-900: #1e1152;
+
+  /* Нейтральный серый - текст, фон, рамки */
+  --color-neutral-50: #f8f8fc;
+  --color-neutral-100: #f0eef8;
+  --color-neutral-200: #e2dff0;
+  --color-neutral-300: #c8c4dc;
+  --color-neutral-400: #9b97b2;
+  --color-neutral-500: #6e6a86;
+  --color-neutral-600: #524f67;
+  --color-neutral-700: #3a3850;
+  --color-neutral-800: #25233a;
+  --color-neutral-900: #14122a;
+
+  /* Функциональные цвета */
+  --color-status-success-primary: #1a7a55;
+  --color-status-success-secondary: #e8f8f2;
+
+  --color-status-error-primary: #c0392b;
+  --color-status-error-secondary: #fdecea;
+
+  --color-status-attention-primary: #b35c00;
+  --color-status-attention-secondary: #fff5e6;
+
+  --color-status-info-primary: #2a52be;
+  --color-status-info-secondary: #edf2ff;
+
+  /* Цвета графиков */
+  --color-plot-violet: #7c5ce8;
+  --color-plot-teal: #00bfa6;
+  --color-plot-orange: #ff8c42;
+  --color-plot-pink: #e84393;
+  --color-plot-blue: #2a9fd6;
+  --color-plot-slate: #a3b0c0;
+}

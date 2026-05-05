@@ -25,7 +25,9 @@ const BarplotCell = ({ data, style, ratio = false }) => {
           zIndex: 1000,
         }}
       >
-        {total === 0 ? '' : `${total}${ratio ? `  |  ${ratio} %` : ''}`}
+        {total === 0
+          ? ''
+          : `${total.toFixed(0)}${ratio ? `  |  ${ratio} %` : ''}`}
       </div>
       <div
         className={`${styles.chartContainer} ${

@@ -22,6 +22,7 @@ import abTestReducer from './slices/abTestsSlice';
 import campaignsReducer from './slices/campaignsSlice';
 import upcomingReducer from './slices/basePrints';
 import regorupReducer from './slices/regroupSlice';
+import mainDashboardReducer from './slices/mainDashboardSlice';
 
 import { persistReducer, persistStore } from 'redux-persist';
 import { combineReducers } from '@reduxjs/toolkit';
@@ -64,6 +65,7 @@ const rootReducer = combineReducers({
   campaigns: campaignsReducer,
   upcoming: upcomingReducer,
   regroup: regorupReducer,
+  mainDashboard: mainDashboardReducer,
 });
 
 const store = configureStore({
