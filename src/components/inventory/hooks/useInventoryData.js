@@ -24,7 +24,6 @@ import {
 import {
   sumTimeSeries,
   averageTimeSeries,
-  calcCostPerOrder,
   filterSkuList,
   sortSkuList,
   paginateList,
@@ -67,7 +66,6 @@ export const useInventoryData = () => {
       ordersSum: sumTimeSeries(sku.ordersTimeSeries, startDate, endDate),
       ebitdaAvg: averageTimeSeries(sku.ebitdaTimeSeries, startDate, endDate),
       ebitdaDailyAvg: averageTimeSeries(sku.ebitdaDailyTimeSeries, startDate, endDate),
-      cpoTimeSeries: calcCostPerOrder(sku.ordersTimeSeries, sku.adsCostsTimeSeries),
     }));
   }, [rawSkuList, startDate, endDate]);
 

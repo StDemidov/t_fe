@@ -1,12 +1,41 @@
 // ─── Size ordering for sorting barcodes ──────────────────────────────────────
 
 const SIZE_ORDER = [
-  'XXS-XS', 'S-M', 'L-XL',
-  'XXS', 'XS', 'S', 'M', 'L', 'XL', 'XXL', '4XL',
-  'XS/155', 'S/155', 'M/155', 'L/155', 'XL/155', 'XXL/155',
-  'XS/175', 'S/175', 'M/175', 'L/175', 'XL/175', 'XXL/175',
-  'XS РОСТ 1', 'S РОСТ 1', 'M РОСТ 1', 'L РОСТ 1', 'XL РОСТ 1', 'XXL РОСТ 1',
-  'XS РОСТ 2', 'S РОСТ 2', 'M РОСТ 2', 'L РОСТ 2', 'XL РОСТ 2', 'XXL РОСТ 2',
+  'XXS-XS',
+  'S-M',
+  'L-XL',
+  'XXS',
+  'XS',
+  'S',
+  'M',
+  'L',
+  'XL',
+  'XXL',
+  '4XL',
+  'XS/155',
+  'S/155',
+  'M/155',
+  'L/155',
+  'XL/155',
+  'XXL/155',
+  'XS/175',
+  'S/175',
+  'M/175',
+  'L/175',
+  'XL/175',
+  'XXL/175',
+  'XS РОСТ 1',
+  'S РОСТ 1',
+  'M РОСТ 1',
+  'L РОСТ 1',
+  'XL РОСТ 1',
+  'XXL РОСТ 1',
+  'XS РОСТ 2',
+  'S РОСТ 2',
+  'M РОСТ 2',
+  'L РОСТ 2',
+  'XL РОСТ 2',
+  'XXL РОСТ 2',
 ];
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
@@ -33,7 +62,7 @@ const mapSkuItem = (raw) => ({
   ebitdaTimeSeries: parseNumberArray(raw.ebitda),
   ebitdaDailyTimeSeries: parseNumberArray(raw.daily_ebitda),
   pricesTimeSeries: parseNumberArray(raw.prices),
-  adsCostsTimeSeries: parseNumberArray(raw.ads_costs),
+  cpoTimeSeries: parseNumberArray(raw.cpo),
 
   // Классификация
   abc: raw.abc,
@@ -53,9 +82,12 @@ const mapSkuItem = (raw) => ({
 
   // Новые поля
   pattern: raw.pattern ?? '',
-  buyout: raw.barcodes?.[0]?.buyout != null
-    ? Math.round(raw.barcodes[0].buyout * 100)
-    : raw.buyout != null ? Math.round(raw.buyout * 100) : null,
+  buyout:
+    raw.barcodes?.[0]?.buyout != null
+      ? Math.round(raw.barcodes[0].buyout * 100)
+      : raw.buyout != null
+      ? Math.round(raw.buyout * 100)
+      : null,
   ordersNames: Array.isArray(raw.orders_names) ? raw.orders_names : [],
 
   // Баркоды, отсортированные по размеру

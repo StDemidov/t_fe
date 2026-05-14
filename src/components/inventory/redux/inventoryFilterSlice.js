@@ -16,7 +16,7 @@ const initialState = {
   dateRange: defaultDateRange(),
 
   /** Тип сортировки артикулов */
-  sortingType: 'EBITDA (сред) ↓',
+  sortingType: 'EBITDA/день (сред) ↓',
 
   /** Текстовый поиск по имени артикула или SKU */
   vcNameQuery: '',
@@ -150,15 +150,25 @@ export const {
 
 // ─── Selectors ────────────────────────────────────────────────────────────────
 
-export const selectInventoryDateRange = (state) => state.inventoryFilter.dateRange;
-export const selectInventorySortingType = (state) => state.inventoryFilter.sortingType;
-export const selectInventoryVcNameQuery = (state) => state.inventoryFilter.vcNameQuery;
-export const selectInventoryCategories = (state) => state.inventoryFilter.categories;
-export const selectInventoryTagsMain = (state) => state.inventoryFilter.tagsMain;
-export const selectInventoryTagsCloth = (state) => state.inventoryFilter.tagsCloth;
-export const selectInventoryTagsOthers = (state) => state.inventoryFilter.tagsOthers;
-export const selectInventoryPatterns = (state) => state.inventoryFilter.patterns;
-export const selectInventoryOrderNames = (state) => state.inventoryFilter.orderNames;
-export const selectInventoryGanttDeadline = (state) => state.inventoryFilter.ganttDeadline;
+export const selectInventoryDateRange = (state) =>
+  state.inventoryFilter.dateRange;
+export const selectInventorySortingType = (state) =>
+  state.inventoryFilter.sortingType;
+export const selectInventoryVcNameQuery = (state) =>
+  state.inventoryFilter.vcNameQuery;
+export const selectInventoryCategories = (state) =>
+  state.inventoryFilter.categories;
+export const selectInventoryTagsMain = (state) =>
+  state.inventoryFilter.tagsMain;
+export const selectInventoryTagsCloth = (state) =>
+  state.inventoryFilter.tagsCloth;
+export const selectInventoryTagsOthers = (state) =>
+  state.inventoryFilter.tagsOthers;
+export const selectInventoryPatterns = (state) =>
+  state.inventoryFilter.patterns;
+export const selectInventoryOrderNames = (state) =>
+  state.inventoryFilter.orderNames;
+export const selectInventoryGanttDeadline = (state) =>
+  state.inventoryFilter.ganttDeadline;
 
 export default inventoryFilterSlice.reducer;

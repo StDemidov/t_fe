@@ -4,15 +4,28 @@ import { subDays, addDays, format } from 'date-fns';
 import { IoIosArrowForward, IoIosArrowBack } from 'react-icons/io';
 import ru from 'date-fns/locale/ru';
 import { useDispatch, useSelector } from 'react-redux';
-import { setInventoryDateRange, selectInventoryDateRange } from '../../redux/inventoryFilterSlice';
+import {
+  setInventoryDateRange,
+  selectInventoryDateRange,
+} from '../../redux/inventoryFilterSlice';
 import 'react-datepicker/dist/react-datepicker.css';
 import styles from './InventoryDateFilter.module.css';
 import filterStyles from './filters.module.css';
 
 // Nominative case month names (react-datepicker uses genitive by default)
 const MONTHS_NOM = [
-  'Январь','Февраль','Март','Апрель','Май','Июнь',
-  'Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь',
+  'Январь',
+  'Февраль',
+  'Март',
+  'Апрель',
+  'Май',
+  'Июнь',
+  'Июль',
+  'Август',
+  'Сентябрь',
+  'Октябрь',
+  'Ноябрь',
+  'Декабрь',
 ];
 
 const InventoryDateFilter = () => {
@@ -20,7 +33,10 @@ const InventoryDateFilter = () => {
   const saved = useSelector(selectInventoryDateRange);
 
   const [calendarOpen, setCalendarOpen] = useState(false);
-  const [range, setRange] = useState([new Date(saved.start), new Date(saved.end)]);
+  const [range, setRange] = useState([
+    new Date(saved.start),
+    new Date(saved.end),
+  ]);
   const [startDate, endDate] = range;
   const [menuStyle, setMenuStyle] = useState({});
   const btnRef = useRef(null);
@@ -52,8 +68,12 @@ const InventoryDateFilter = () => {
   useEffect(() => {
     if (!calendarOpen) return;
     const handler = (e) => {
-      if (wrapRef.current && !wrapRef.current.contains(e.target) &&
-          btnRef.current && !btnRef.current.contains(e.target)) {
+      if (
+        wrapRef.current &&
+        !wrapRef.current.contains(e.target) &&
+        btnRef.current &&
+        !btnRef.current.contains(e.target)
+      ) {
         setCalendarOpen(false);
       }
     };
@@ -68,26 +88,47 @@ const InventoryDateFilter = () => {
 
   const handleCommit = () => {
     if (startDate && endDate && startDate < endDate) {
-      dispatch(setInventoryDateRange({
-        start: format(startDate, 'MM-dd-yyyy'),
-        end: format(endDate, 'MM-dd-yyyy'),
-      }));
+      dispatch(
+        setInventoryDateRange({
+          start: format(startDate, 'MM-dd-yyyy'),
+          end: format(endDate, 'MM-dd-yyyy'),
+        })
+      );
       setCalendarOpen(false);
     }
   };
 
-  const label = startDate && endDate
-    ? `${format(startDate, 'dd.MM.yy')} – ${format(endDate, 'dd.MM.yy')}`
-    : 'Период';
+  const label =
+    startDate && endDate
+      ? `${format(startDate, 'dd.MM.yy')} – ${format(endDate, 'dd.MM.yy')}`
+      : 'Период';
 
   // Custom header matching FlexCalendar style
   const renderHeader = ({ date, decreaseMonth, increaseMonth }) => (
     <>
       {/* Quick buttons above the month nav */}
       <div className={styles.quickBtns}>
-        <button type="button" className={styles.quickBtn} onClick={() => quickSet(7)}>Неделя</button>
-        <button type="button" className={styles.quickBtn} onClick={() => quickSet(14)}>2 нед.</button>
-        <button type="button" className={styles.quickBtn} onClick={() => quickSet(30)}>Месяц</button>
+        <button
+          type="button"
+          className={styles.quickBtn}
+          onClick={() => quickSet(7)}
+        >
+          Неделя
+        </button>
+        <button
+          type="button"
+          className={styles.quickBtn}
+          onClick={() => quickSet(14)}
+        >
+          2 нед.
+        </button>
+        <button
+          type="button"
+          className={styles.quickBtn}
+          onClick={() => quickSet(30)}
+        >
+          Месяц
+        </button>
       </div>
       <div className={styles.monthNav}>
         <button type="button" className={styles.navBtn} onClick={decreaseMonth}>
@@ -110,11 +151,19 @@ const InventoryDateFilter = () => {
       <button
         ref={btnRef}
         type="button"
-        className={`${filterStyles.toggleBtn} ${calendarOpen ? filterStyles.toggleBtnActive : ''}`}
-        onClick={() => calendarOpen ? setCalendarOpen(false) : openCalendar()}
+        className={`${filterStyles.toggleBtn} ${
+          calendarOpen ? filterStyles.toggleBtnActive : ''
+        }`}
+        onClick={() => (calendarOpen ? setCalendarOpen(false) : openCalendar())}
       >
         {label}
-        <span className={`${filterStyles.chevron} ${calendarOpen ? filterStyles.chevronOpen : ''}`}>▼</span>
+        <span
+          className={`${filterStyles.chevron} ${
+            calendarOpen ? filterStyles.chevronOpen : ''
+          }`}
+        >
+          ▼
+        </span>
       </button>
 
       {calendarOpen && (
@@ -127,7 +176,7 @@ const InventoryDateFilter = () => {
             onChange={(u) => setRange(u)}
             isClearable={false}
             maxDate={subDays(new Date(), 1)}
-            minDate={new Date('2024-07-01')}
+            minDate={subDays(new Date(), 180)}
             renderCustomHeader={renderHeader}
             locale={ru}
             onKeyDown={(e) => e.preventDefault()}
