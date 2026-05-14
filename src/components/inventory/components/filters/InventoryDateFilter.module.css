@@ -1,0 +1,152 @@
+/* ── Tokens (mirror FlexCalendar) ── */
+:root {
+  --cal-accent: #7f77dd;
+  --cal-accent-deep: #534ab7;
+  --cal-accent-soft: rgba(127, 119, 221, 0.14);
+  --cal-cell: 30px;
+  --cal-cols: 7;
+  --cal-w: calc(var(--cal-cell) * var(--cal-cols));
+  --cal-radius: 10px;
+}
+
+.wrapper { position: relative; }
+
+/* Calendar popup — fixed to escape overflow */
+.calendarWrap {
+  position: fixed;
+  z-index: 9999;
+  /* Matches FlexCalendar border/shadow */
+  border: 1px solid rgba(127, 119, 221, 0.22);
+  border-radius: var(--cal-radius);
+  box-shadow: 0 2px 12px rgba(83, 74, 183, 0.12);
+  background: #fff;
+  overflow: hidden;
+  width: var(--cal-w);
+}
+
+/* Quick range buttons — above calendar */
+.quickBtns {
+  display: flex; gap: 5px; justify-content: center;
+  padding: 7px 8px 5px;
+  background: rgba(127, 119, 221, 0.06);
+  border-bottom: 1px solid rgba(127, 119, 221, 0.12);
+}
+.quickBtn {
+  height: 22px; padding: 0 10px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 11px; font-weight: 500;
+  background: rgba(127, 119, 221, 0.1);
+  border: none; border-radius: 6px; cursor: pointer;
+  color: var(--cal-accent-deep); transition: background 0.15s, color 0.15s;
+}
+.quickBtn:hover { background: var(--cal-accent-deep); color: #fff; }
+
+/* Custom header — month nav */
+.monthNav {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 8px 6px 6px;
+  background: rgba(127, 119, 221, 0.08);
+  border-bottom: 1px solid rgba(127, 119, 221, 0.15);
+  width: 100%;
+  box-sizing: border-box;
+}
+.monthLabel {
+  font-size: 11px; font-weight: 500;
+  color: var(--cal-accent-deep);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  flex: 1; text-align: center;
+}
+.navBtn {
+  width: 22px; height: 22px;
+  border-radius: 50%; border: none; background: transparent;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; color: var(--cal-accent);
+  transition: background 0.15s, color 0.15s; flex-shrink: 0;
+  font-size: 14px; line-height: 1;
+}
+.navBtn:hover { background: var(--cal-accent); color: #fff; }
+
+/* Commit row */
+.commitRow {
+  display: flex; justify-content: center;
+  padding: 6px 8px 8px;
+  border-top: 1px solid rgba(127, 119, 221, 0.12);
+  background: rgba(127, 119, 221, 0.04);
+}
+.commitBtn {
+  width: 80%;
+  padding: 6px 0;
+  border-radius: 7px; border: none; cursor: pointer;
+  font-size: 11px; font-weight: 500;
+  background: var(--cal-accent-deep); color: #fff;
+  letter-spacing: 0.04em;
+  transition: background 0.15s, opacity 0.15s;
+}
+.commitBtn:hover { background: var(--cal-accent); }
+.commitBtn:disabled { opacity: 0.35; cursor: not-allowed; }
+
+/* Override react-datepicker — FlexCalendar style */
+.calendarWrap :global(.react-datepicker) {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  border: none; border-radius: 0; box-shadow: none;
+  width: var(--cal-w); background: #fff;
+}
+.calendarWrap :global(.react-datepicker__month-container) {
+  width: var(--cal-w); float: none;
+}
+.calendarWrap :global(.react-datepicker__header) {
+  background: transparent; border-bottom: none; padding: 0;
+}
+.calendarWrap :global(.react-datepicker__day-names) {
+  display: flex; width: var(--cal-w); margin: 0; padding: 2px 0;
+}
+.calendarWrap :global(.react-datepicker__day-name) {
+  width: var(--cal-cell); height: 22px; margin: 0;
+  font-size: 10px; font-weight: 500; color: var(--cal-accent);
+  display: inline-flex; align-items: center; justify-content: center;
+  text-transform: capitalize; opacity: 0.7;
+}
+.calendarWrap :global(.react-datepicker__month) {
+  margin: 0; padding: 2px 0; width: var(--cal-w);
+}
+.calendarWrap :global(.react-datepicker__week) {
+  display: flex; width: var(--cal-w);
+}
+.calendarWrap :global(.react-datepicker__day) {
+  width: var(--cal-cell); height: var(--cal-cell); margin: 0;
+  font-size: 11px;
+  display: inline-flex; align-items: center; justify-content: center;
+  border-radius: 0; transition: background 0.1s, color 0.1s; color: #333;
+}
+.calendarWrap :global(.react-datepicker__day:hover) {
+  background: var(--cal-accent); color: #fff; border-radius: 0;
+}
+.calendarWrap :global(.react-datepicker__day--selected),
+.calendarWrap :global(.react-datepicker__day--range-start),
+.calendarWrap :global(.react-datepicker__day--range-end) {
+  background: var(--cal-accent-deep) !important; color: #fff !important;
+}
+.calendarWrap :global(.react-datepicker__day--range-start) {
+  border-radius: 6px 0 0 6px !important;
+}
+.calendarWrap :global(.react-datepicker__day--range-end) {
+  border-radius: 0 6px 6px 0 !important;
+}
+.calendarWrap :global(.react-datepicker__day--in-range) {
+  background: var(--cal-accent-soft); color: var(--cal-accent-deep); border-radius: 0;
+}
+.calendarWrap :global(.react-datepicker__day--in-selecting-range) {
+  background: rgba(127, 119, 221, 0.2); color: var(--cal-accent-deep); border-radius: 0;
+}
+.calendarWrap :global(.react-datepicker__day--selecting-range-start) {
+  background: var(--cal-accent) !important;
+  border-radius: 6px 0 0 6px !important; color: #fff !important;
+}
+.calendarWrap :global(.react-datepicker__day--outside-month) { opacity: 0.25; }
+.calendarWrap :global(.react-datepicker__day--disabled) {
+  opacity: 0.2; cursor: not-allowed;
+}
+.calendarWrap :global(.react-datepicker__day--disabled:hover) {
+  background: transparent; color: #333;
+}

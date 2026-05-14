@@ -23,6 +23,8 @@ import campaignsReducer from './slices/campaignsSlice';
 import upcomingReducer from './slices/basePrints';
 import regorupReducer from './slices/regroupSlice';
 import mainDashboardReducer from './slices/mainDashboardSlice';
+import inventoryReducer from '../components/inventory/redux/inventorySlice';
+import inventoryFilterReducer from '../components/inventory/redux/inventoryFilterSlice';
 
 import { persistReducer, persistStore } from 'redux-persist';
 import { combineReducers } from '@reduxjs/toolkit';
@@ -30,7 +32,7 @@ import { combineReducers } from '@reduxjs/toolkit';
 const authPersistConfig = {
   key: 'auth',
   storage,
-  whitelist: ['user'], // Сохраняйте только нужные данные из state.auth
+  whitelist: ['user'],
 };
 
 const ordersPersistConfig = {
@@ -39,8 +41,35 @@ const ordersPersistConfig = {
   whitelist: ['orders', 'colors', 'ordersDates'],
 };
 
+const inventoryPersistConfig = {
+  key: 'inventory',
+  storage,
+  // Only persist user inputs — NOT skuList/ordersMap (too large, causes QuotaExceededError)
+  // Server data is re-fetched on mount via fetchInventory
+  whitelist: ['extraStock', 'startCalcDates'],
+};
+
+const inventoryFilterPersistConfig = {
+  key: 'inventoryFilter',
+  storage,
+  whitelist: [
+    'dateRange',
+    'sortingType',
+    'vcNameQuery',
+    'categories',
+    'tagsMain',
+    'tagsCloth',
+    'tagsOthers',
+    'patterns',
+    'orderNames',
+    'ganttDeadline',
+  ],
+};
+
 const authReducer = persistReducer(authPersistConfig, userReducer);
 const orderBCReducer = persistReducer(ordersPersistConfig, ordersReducer);
+const persistedInventoryReducer = persistReducer(inventoryPersistConfig, inventoryReducer);
+const persistedInventoryFilterReducer = persistReducer(inventoryFilterPersistConfig, inventoryFilterReducer);
 
 const rootReducer = combineReducers({
   category: categoryReducer,
@@ -53,7 +82,7 @@ const rootReducer = combineReducers({
   tasksA28: tasksA28Reducer,
   abc: abcReducer,
   tasksDrain: tasksDrainReducer,
-  auth: authReducer, // Обернули auth
+  auth: authReducer,
   orders: orderBCReducer,
   ebitdaSettings: ebitdaSettingsReducer,
   autoCampaigns: autoCampaignsReducer,
@@ -66,6 +95,8 @@ const rootReducer = combineReducers({
   upcoming: upcomingReducer,
   regroup: regorupReducer,
   mainDashboard: mainDashboardReducer,
+  inventory: persistedInventoryReducer,
+  inventoryFilter: persistedInventoryFilterReducer,
 });
 
 const store = configureStore({

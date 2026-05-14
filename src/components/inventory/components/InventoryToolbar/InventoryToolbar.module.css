@@ -1,0 +1,98 @@
+/* ─── InventoryToolbar ────────────────────────────────────────────────────── */
+
+.toolbar {
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  border-bottom: 1px solid #F3F4F6;
+}
+
+.filtersRow {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  height: 52px;
+  padding: 0 20px;
+  gap: 8px;
+}
+
+.filtersGroup {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex: 1;
+  overflow-x: auto;
+  min-width: 0;
+}
+.filtersGroup::-webkit-scrollbar { height: 0; }
+
+.actionsGroup {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.actionBtn {
+  height: 30px; padding: 0 16px;
+  background: #6C63FF; color: #fff;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 12px; font-weight: 600;
+  border: none; border-radius: 8px;
+  cursor: pointer; transition: opacity 0.15s;
+  white-space: nowrap;
+}
+.actionBtn:hover { opacity: 0.85; }
+
+.actionBtnSecondary {
+  height: 30px; padding: 0 16px;
+  background: #fff; color: #374151;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 12px; font-weight: 500;
+  border: 1.5px solid #E5E7EB; border-radius: 8px;
+  cursor: pointer; transition: border-color 0.15s, color 0.15s;
+  white-space: nowrap;
+}
+.actionBtnSecondary:hover { border-color: #6C63FF; color: #6C63FF; }
+
+.paginatorRow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 36px;
+  background: #FAFAFA;
+  border-top: 1px solid #F3F4F6;
+}
+
+.pageLabel {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 12px; font-weight: 500;
+  color: #6B7280;
+  padding: 3px 16px;
+  background: #F3F4F6;
+  border-radius: 20px;
+  min-width: 80px;
+  text-align: center;
+}
+
+.arrow { color: #6C63FF; cursor: pointer; font-size: 12px; transition: opacity 0.15s; }
+.arrow:hover { opacity: 0.6; }
+.arrowDisabled { color: #D1D5DB; cursor: default; font-size: 12px; }
+
+/* Reset orders button */
+.actionBtnReset {
+  height: 30px; padding: 0 14px;
+  background: #FEF2F2; color: #EF4444;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 12px; font-weight: 600;
+  border: 1.5px solid #FECACA; border-radius: 8px;
+  cursor: pointer; transition: background 0.15s, color 0.15s, opacity 0.15s;
+  white-space: nowrap;
+}
+.actionBtnReset:hover:not(:disabled) { background: #EF4444; color: #fff; border-color: #EF4444; }
+.actionBtnReset:disabled { opacity: 0.35; cursor: default; }

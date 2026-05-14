@@ -1,0 +1,203 @@
+/* ─── Modal shell ──────────────────────────────────────────────────────────── */
+.overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.35);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(4px);
+  /* Prevent scroll bleed-through on iOS/desktop */
+  overscroll-behavior: contain;
+}
+.modal {
+  background: #fff;
+  border-radius: 16px;
+  padding: 28px 28px 22px;
+  display: flex; flex-direction: column; gap: 12px; align-items: center;
+  box-shadow: 0 20px 60px rgba(108,99,255,0.15), 0 4px 16px rgba(0,0,0,0.08);
+  min-width: 360px; max-width: 440px; width: 90vw;
+  max-height: 86vh; overflow-y: auto;
+  border: 1.5px solid #EDE9FE;
+  /* Scroll is contained inside modal — doesn't bleed to page */
+  overscroll-behavior: contain;
+}
+
+/* Delete modal: fixed size so it doesn't jump when search filters results */
+.modalDelete {
+  background: #fff;
+  border-radius: 16px;
+  padding: 24px 24px 20px;
+  display: flex; flex-direction: column; gap: 10px; align-items: center;
+  box-shadow: 0 20px 60px rgba(108,99,255,0.15), 0 4px 16px rgba(0,0,0,0.08);
+  border: 1.5px solid #EDE9FE;
+  overscroll-behavior: contain;
+  /* Fixed dimensions — never jumps */
+  width: min(480px, 92vw);
+  height: min(520px, 88vh);
+  overflow: hidden;  /* clips border-radius, NOT children scroll */
+  box-sizing: border-box;
+}
+
+/* The inner scroll area MUST have overflow-y:auto — this is set inline in JSX */
+.modalTitle {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 17px; font-weight: 700;
+  margin: 0; color: #111827; align-self: flex-start;
+}
+
+/* ─── Drop zone ────────────────────────────────────────────────────────────── */
+.dropZone {
+  width: 100%; padding: 22px 16px;
+  border: 2px dashed #DDD6FE;
+  border-radius: 12px;
+  background: #FAFAFF;
+  display: flex; flex-direction: column; align-items: center; gap: 5px;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+  box-sizing: border-box;
+}
+.dropZone:hover { border-color: #6C63FF; background: #F5F3FF; }
+.dropZoneSuccess { border-color: #059669; background: #F0FDF4; border-style: solid; }
+
+.hiddenInput { display: none; }
+
+.dropZoneIcon { font-size: 26px; line-height: 1; }
+.dropZoneText {
+  font-size: 13px; font-weight: 600; color: #4C1D95;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+.dropZoneHint {
+  font-size: 11px; color: #9CA3AF;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+.dropZoneFilename {
+  font-size: 13px; font-weight: 600; color: #059669;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  word-break: break-all; text-align: center;
+}
+.dropZoneCount {
+  font-size: 11px; color: #6B7280;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+/* ─── Form inputs ──────────────────────────────────────────────────────────── */
+.textInput {
+  width: 100%; height: 36px;
+  border: 1.5px solid #E5E7EB; border-radius: 8px;
+  padding: 0 12px; font-size: 13px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: #F9FAFB; box-sizing: border-box;
+  transition: border-color 0.15s;
+}
+.textInput:focus { outline: none; border-color: #6C63FF; background: #fff; }
+
+/* ─── Status ───────────────────────────────────────────────────────────────── */
+.ok { color: #059669; font-size: 12px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+.err { color: #EF4444; font-size: 12px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; text-align: center; }
+
+.confirmText {
+  font-size: 13px; color: #6B7280; margin: 0; text-align: center;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+/* ─── Buttons ──────────────────────────────────────────────────────────────── */
+.btnRow {
+  display: flex; gap: 8px; justify-content: center; width: 100%; margin-top: 2px;
+}
+.triggerBtn {
+  height: 30px; padding: 0 14px;
+  background: #fff; color: #374151;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 12px; font-weight: 500;
+  border: 1.5px solid #E5E7EB; border-radius: 8px;
+  cursor: pointer; transition: border-color 0.15s, color 0.15s; white-space: nowrap;
+}
+.triggerBtn:hover { border-color: #6C63FF; color: #6C63FF; }
+.actionBtn {
+  height: 36px; padding: 0 22px;
+  background: #6C63FF; color: #fff;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 13px; font-weight: 600;
+  border: none; border-radius: 8px; cursor: pointer; transition: opacity 0.15s;
+}
+.actionBtn:hover { opacity: 0.85; }
+.cancelBtn {
+  height: 36px; padding: 0 18px;
+  background: transparent; color: #9CA3AF;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 13px;
+  border: 1.5px solid #E5E7EB; border-radius: 8px;
+  cursor: pointer; transition: color 0.15s;
+}
+.cancelBtn:hover { color: #374151; border-color: #D1D5DB; }
+
+/* ─── Delete modal orders grid ─────────────────────────────────────────────── */
+.sectionLabel {
+  font-size: 11px; font-weight: 700; color: #9CA3AF;
+  text-transform: uppercase; letter-spacing: 0.5px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  align-self: flex-start; margin-top: 4px;
+}
+.sectionLabelExpired { color: #EF4444; }
+.ordersGrid {
+  display: flex; flex-wrap: wrap; gap: 7px; align-content: flex-start;
+  width: 100%;
+  /* No overflow here — scroll is on the parent wrapper div */
+}
+.orderChip {
+  display: flex; align-items: center; justify-content: center;
+  height: 28px; padding: 0 12px;
+  border: 1.5px solid #E5E7EB; border-radius: 20px;
+  font-size: 12px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  cursor: pointer; transition: background 0.15s; white-space: nowrap; color: #374151;
+}
+.orderChip:hover { border-color: #6C63FF; color: #6C63FF; background: #F5F3FF; }
+/* Expired chips override the base hover — must come AFTER .orderChip:hover */
+.orderChipExpired:hover { border-color: #EF4444 !important; color: #EF4444 !important; background: #FEF2F2 !important; }
+.orderChipExpiredSelected:hover { background: #EF4444 !important; color: #fff !important; border-color: #EF4444 !important; }
+.orderChipSelected { background: #6C63FF; color: #fff !important; border-color: #6C63FF; }
+.orderChipExpired { border-color: #FECACA; color: #EF4444; }
+.orderChipExpired:hover { border-color: #EF4444; background: #FEF2F2; color: #EF4444; }
+.orderChipExpiredSelected { background: #EF4444 !important; color: #fff !important; border-color: #EF4444 !important; }
+
+/* Search input for delete modal */
+.searchInput {
+  width: 100%; height: 32px; box-sizing: border-box;
+  border: 1.5px solid #E5E7EB; border-radius: 8px;
+  padding: 0 12px; font-size: 12px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: #F9FAFB;
+  transition: border-color 0.15s;
+}
+.searchInput:focus { outline: none; border-color: #6C63FF; background: #fff; }
+.searchInput::placeholder { color: #9CA3AF; }
+
+/* ─── Upload modal additions ───────────────────────────────────────────────── */
+.hintBox {
+  display: flex; align-items: flex-start; gap: 8px;
+  width: 100%; padding: 10px 12px; box-sizing: border-box;
+  background: #F5F3FF; border-radius: 8px;
+  border: 1px solid #DDD6FE;
+}
+.hintIcon { font-size: 14px; flex-shrink: 0; margin-top: 1px; }
+.hintText {
+  font-size: 12px; color: #4C1D95; line-height: 1.5;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+.hintText code {
+  background: rgba(108,99,255,0.1); border-radius: 4px;
+  padding: 1px 5px; font-size: 11px; color: #5B21B6;
+}
+
+.dropZoneDragging { border-color: #6C63FF !important; background: #F5F3FF !important; }
+
+.filesList {
+  width: 100%; display: flex; flex-direction: column; gap: 4px; max-height: 140px; overflow-y: auto;
+}
+.fileItem {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 5px 10px; background: #F9FAFB; border-radius: 6px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+.fileOrderName { font-size: 12px; color: #374151; font-weight: 500; }
+.fileRowCount { font-size: 11px; color: #9CA3AF; }

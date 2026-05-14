@@ -40,6 +40,7 @@ import CampaignPage from './components/campaigns/CampaignPage/CampaignPage';
 import PrintsBaseMain from './components/prints_base/PrintsBaseMain';
 import MainRegroupPage from './components/regroup_tool/MainRegroupPage';
 import MainDashboardContainer from './components/main_dashboard/MainDashboardContainer';
+import InventoryPage from './components/inventory/components/InventoryPage';
 
 function App() {
   const currentUser = useSelector(selectUser);
@@ -60,7 +61,7 @@ function App() {
                     element={<SingleVendorCode />}
                   />
                   x
-                  <Route path="barcodes" element={<BarcodesListNew />} />
+                  <Route path="barcodes" element={<InventoryPage />} />
                   <Route path="tools/ab_tests" element={<AbTestsMainPage />} />
                   <Route
                     path="tools/ab_tests/create"

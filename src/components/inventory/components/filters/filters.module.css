@@ -1,0 +1,178 @@
+/* ─── Shared filters ──────────────────────────────────────────────────────── */
+
+.dropdown {
+  position: relative;
+  z-index: 50;
+}
+
+.toggleBtn {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  height: 32px;
+  padding: 0 12px;
+  background: #fff;
+  border: 1.5px solid #E5E7EB;
+  border-radius: 8px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  color: #374151;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: border-color 0.15s, background 0.15s, color 0.15s;
+  user-select: none;
+}
+.toggleBtn:hover {
+  border-color: #6C63FF;
+  color: #6C63FF;
+}
+
+/* Active = open OR has selections */
+.toggleBtnActive {
+  background: #6C63FF !important;
+  color: #fff !important;
+  border-color: #6C63FF !important;
+}
+/* CRITICAL: when active, hover must NOT change text color */
+.toggleBtnActive:hover {
+  background: #5A52E0 !important;
+  color: #fff !important;
+  border-color: #5A52E0 !important;
+}
+.toggleBtnActive .chevron { color: rgba(255,255,255,0.7) !important; }
+.toggleBtnActive .badge { background: rgba(255,255,255,0.25); color: #fff; }
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 16px; height: 16px;
+  padding: 0 4px;
+  background: #6C63FF;
+  color: #fff;
+  border-radius: 20px;
+  font-size: 9px; font-weight: 700;
+}
+
+.chevron {
+  font-size: 8px; color: #9CA3AF;
+  transition: transform 0.18s;
+  display: inline-block;
+}
+.chevronOpen { transform: rotate(180deg); }
+
+/* ── Dropdown menu ────────────────────────────────────────────────────────── */
+
+.menu {
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  max-height: min(360px, calc(100vh - 100px));
+  background: #fff;
+  border: 1.5px solid #E5E7EB;
+  border-radius: 12px;
+  box-shadow: 0 10px 40px rgba(108,99,255,0.12), 0 2px 8px rgba(0,0,0,0.06);
+  z-index: 9999;
+  overflow: hidden;
+}
+
+.menuSearch {
+  padding: 8px 10px 6px;
+  border-bottom: 1px solid #F3F4F6;
+  flex-shrink: 0;
+}
+.menuSearchInput {
+  width: 100%; height: 30px;
+  border: 1.5px solid #E5E7EB;
+  border-radius: 7px;
+  padding: 0 10px;
+  font-size: 13px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  color: #374151;
+  background: #F9FAFB;
+  box-sizing: border-box;
+  transition: border-color 0.15s;
+}
+.menuSearchInput:focus { outline: none; border-color: #6C63FF; background: #fff; }
+.menuSearchInput::placeholder { color: #9CA3AF; }
+
+.menuScroll {
+  overflow-y: auto;
+  flex: 1;
+  padding: 4px 0;
+}
+.menuScroll::-webkit-scrollbar { width: 4px; }
+.menuScroll::-webkit-scrollbar-thumb { background: #E5E7EB; border-radius: 2px; }
+
+.menuEmpty {
+  padding: 14px; font-size: 13px; color: #9CA3AF;
+  text-align: center;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.menuItem {
+  display: flex; align-items: center; gap: 9px;
+  padding: 7px 14px;
+  font-size: 13px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  cursor: pointer; transition: background 0.1s; color: #374151;
+}
+.menuItem:hover { background: #F5F3FF; }
+.menuItem span { line-height: 1.3; }
+.menuItem input[type='checkbox'] {
+  accent-color: #6C63FF;
+  width: 14px; height: 14px;
+  flex-shrink: 0; cursor: pointer;
+}
+
+/* Footer — always shows both buttons */
+.menuActions {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  padding: 8px 12px;
+  border-top: 1px solid #F3F4F6;
+  flex-shrink: 0;
+}
+
+/* Reset: always rendered, disabled when nothing selected */
+.resetBtn {
+  height: 28px; padding: 0 14px;
+  background: transparent; color: #EF4444;
+  border: 1px solid #FECACA; border-radius: 6px;
+  font-size: 12px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-weight: 500;
+  cursor: pointer; transition: background 0.15s, opacity 0.15s;
+}
+.resetBtn:hover:not(:disabled) { background: #FEF2F2; }
+.resetBtn:disabled { opacity: 0.35; cursor: default; }
+
+.applyBtn {
+  height: 28px; padding: 0 18px;
+  background: #6C63FF; color: #fff;
+  border: none; border-radius: 6px;
+  font-size: 12px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-weight: 600;
+  cursor: pointer; transition: opacity 0.15s;
+}
+.applyBtn:hover { opacity: 0.85; }
+
+/* Text search (vcName filter) */
+.searchInput {
+  /* Match exact height of toggleBtn */
+  height: 32px; padding: 0 12px;
+  background: #fff;
+  border: 1.5px solid #E5E7EB; border-radius: 8px;
+  font-size: 13px; font-weight: 500;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  color: #374151;
+  /* Wider than before */
+  min-width: 200px;
+  transition: border-color 0.15s, color 0.15s;
+  box-sizing: border-box;
+}
+.searchInput:focus { outline: none; border-color: #6C63FF; }
+.searchInput::placeholder { color: #9CA3AF; }

@@ -1,0 +1,251 @@
+/* ─── SkuGanttRow ─────────────────────────────────────────────────────────── */
+
+.tableWrapper {
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: auto;
+  max-height: 310px;
+  background: #fff;
+}
+.tableWrapper::-webkit-scrollbar {
+  height: 0;
+  width: 0;
+}
+
+/* V6 approach: border-collapse:collapse + padding:2px 1px on all cells */
+.ganttTable {
+  border-collapse: collapse;
+  font-family: 'BebasNeue', sans-serif;
+}
+
+/* Same padding as header th — this is what makes alignment work */
+.ganttTable td {
+  text-align: center;
+  font-size: 13px;
+  vertical-align: middle;
+  height: 30px;
+  padding: 2px 1px;
+}
+
+/* ── Sticky columns ─────────────────────────────────────────────────────────
+   border-collapse:collapse + padding:2px 1px = each cell takes (width + 2px)
+   Size=54:     left=0
+   Orders=64:   left=56   (54+2)
+   Deficit=70:  left=122  (56+64+2)
+   NewOrder=120:left=194  (122+70+2)
+   ──────────────────────────────────────────────────────────────────────────── */
+
+.colSize {
+  width: 54px;
+  min-width: 54px;
+  max-width: 54px;
+  position: sticky;
+  left: 0;
+  z-index: 3;
+  font-weight: 700;
+  background: #fff;
+  font-size: 13px;
+  color: #374151;
+}
+.colOrders {
+  width: 64px;
+  min-width: 64px;
+  max-width: 64px;
+  position: sticky;
+  left: 56px;
+  z-index: 3;
+  background: #fff;
+  color: #374151;
+}
+.colDeficit {
+  width: 70px;
+  min-width: 70px;
+  max-width: 70px;
+  position: sticky;
+  left: 122px;
+  z-index: 3;
+  background: #fff;
+  color: #374151;
+}
+.colTurnover {
+  width: 60px;
+  min-width: 60px;
+  max-width: 60px;
+  position: sticky;
+  left: 194px;
+  z-index: 3;
+  background: #fff;
+  color: #374151;
+}
+.colNewOrder {
+  width: 120px;
+  min-width: 120px;
+  max-width: 120px;
+  position: sticky;
+  left: 256px;
+  z-index: 3;
+  background: #fff;
+  border-right: 1px solid #e5e7eb;
+}
+
+.extraStockInput {
+  width: 88px;
+  height: 24px;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 6px;
+  text-align: center;
+  font-size: 13px;
+  background: #fafafa;
+  -moz-appearance: textfield;
+  font-family: 'BebasNeue', sans-serif;
+  transition: border-color 0.15s;
+}
+.extraStockInput:focus {
+  outline: none;
+  border-color: #6c63ff;
+  background: #fff;
+}
+.extraStockInput::-webkit-inner-spin-button {
+  display: none;
+}
+
+/* ── Gantt cells ─────────────────────────────────────────────────────────── */
+
+/* Same padding as td — width stays 42px, padding 2px 1px adds gap */
+.ganttCell {
+  width: 42px;
+  min-width: 42px;
+  max-width: 42px;
+  padding: 2px 1px;
+}
+
+/* cellInner: the colored box inside — uses full remaining height */
+.cellInner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 26px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+/* Colors — background on cellInner, NOT on td */
+.cellGreen .cellInner {
+  background: #dcfce7;
+  color: #166534;
+}
+.cellYellow .cellInner {
+  background: #fef9c3;
+  color: #854d0e;
+}
+.cellRed .cellInner {
+  background: #ffe4e6;
+  color: #9f1239;
+}
+.cellGray .cellInner {
+  background: #f3f4f6;
+  color: #6b7280;
+}
+.cellBlue .cellInner {
+  background: #dbeafe;
+  color: #1e40af;
+}
+.cellPurple .cellInner {
+  background: #ede9fe;
+  color: #5b21b6;
+}
+
+/* Month separator — thin, subtle purple (v6 style) */
+.monthSep {
+  border-left: 1px solid #e5e7eb !important;
+}
+/* Week separator — barely visible */
+.weekSep {
+  border-left: 1px solid #f3f4f6 !important;
+}
+
+.orderName {
+  font-size: 11px;
+  line-height: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 40px;
+}
+
+/* ── Summary row ─────────────────────────────────────────────────────────── */
+
+.summaryRow {
+  position: sticky;
+  bottom: 0;
+  z-index: 3;
+}
+.summaryRow td {
+  background: #fafafa;
+  font-size: 13px;
+  color: #6b7280;
+  border-top: 1px solid #f3f4f6;
+  height: 28px;
+  padding: 2px 1px;
+}
+
+.colSizeSum {
+  position: sticky;
+  left: 0;
+  z-index: 4;
+  background: #fafafa;
+}
+.colOrdersSum {
+  position: sticky;
+  left: 56px;
+  z-index: 4;
+  background: #fafafa;
+}
+.colDeficitSum {
+  position: sticky;
+  left: 122px;
+  z-index: 4;
+  background: #fafafa;
+}
+.colTurnoverSum {
+  position: sticky;
+  left: 194px;
+  z-index: 4;
+  background: #fafafa;
+}
+.colNewOrderSum {
+  position: sticky;
+  left: 256px;
+  z-index: 4;
+  background: #fafafa;
+  border-right: 1px solid #e5e7eb;
+}
+
+.summaryBlank {
+  background: #fafafa !important;
+}
+.summaryExtra {
+  text-align: center;
+  font-weight: 700;
+  color: #5b21b6;
+}
+
+/* Monthly deficit in summary row — spans month columns */
+.monthlyDeficitCell {
+  text-align: center;
+  font-size: 12px;
+  font-weight: 600;
+  color: #9ca3af;
+  background: #fafafa;
+}
+
+.dash { color: #D1D5DB; font-size: 11px; }
+
+/* Hoverable gantt cell — cursor help + subtle darken */
+.cellHoverable {
+  cursor: help;
+}
+.cellHoverable:hover .cellInner {
+  filter: brightness(0.88);
+  transition: filter 0.1s;
+}
