@@ -16,6 +16,7 @@ import {
   selectInventoryTagsMain,
   selectInventoryTagsCloth,
   selectInventoryTagsOthers,
+  selectInventoryCountries,
   selectInventoryPatterns,
   selectInventoryOrderNames,
   selectInventoryGanttDeadline,
@@ -52,6 +53,7 @@ export const useInventoryData = () => {
   const tagsMain = useSelector(selectInventoryTagsMain);
   const tagsCloth = useSelector(selectInventoryTagsCloth);
   const tagsOthers = useSelector(selectInventoryTagsOthers);
+  const countries = useSelector(selectInventoryCountries);
   const patterns = useSelector(selectInventoryPatterns);
   const orderNames = useSelector(selectInventoryOrderNames);
   const ganttDeadline = useSelector(selectInventoryGanttDeadline);
@@ -79,8 +81,9 @@ export const useInventoryData = () => {
       tagsOthers,
       patterns,
       orderNames,
+      countries,
     });
-  }, [augmentedSkuList, vcNameQuery, categories, tagsMain, tagsCloth, tagsOthers, patterns, orderNames]);
+  }, [augmentedSkuList, vcNameQuery, categories, tagsMain, tagsCloth, tagsOthers, patterns, orderNames, countries]);
 
   // ── Sorted ──
   const sortedSkuList = useMemo(() => {
@@ -100,6 +103,10 @@ export const useInventoryData = () => {
   // ── Meta for filters (unique values from raw data) ──
   const allCategories = useMemo(() => {
     return [...new Set(rawSkuList.map((s) => s.category))];
+  }, [rawSkuList]);
+
+  const allCountries = useMemo(() => {
+    return [...new Set(rawSkuList.map(s => s.country).filter(Boolean))].sort();
   }, [rawSkuList]);
 
   const allPatterns = useMemo(() => {
@@ -147,6 +154,7 @@ export const useInventoryData = () => {
 
     // Filters meta
     allCategories,
+    allCountries,
     allPatterns,
     allOrderNames,
     allTagsMain,

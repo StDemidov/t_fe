@@ -8,6 +8,7 @@ import InventoryTagsMainFilter from '../filters/InventoryTagsMainFilter';
 import InventoryTagsClothFilter from '../filters/InventoryTagsClothFilter';
 import InventoryTagsOthersFilter from '../filters/InventoryTagsOthersFilter';
 import InventoryVcNameFilter from '../filters/InventoryVcNameFilter';
+import InventoryCountryFilter from '../filters/InventoryCountryFilter';
 import InventoryPatternFilter from '../filters/InventoryPatternFilter';
 import InventoryOrderNameFilter from '../filters/InventoryOrderNameFilter';
 import UploadOrderModal from '../UploadOrderModal/UploadOrderModal';
@@ -19,7 +20,7 @@ import { FaAngleLeft, FaAnglesLeft, FaAngleRight, FaAnglesRight } from 'react-ic
 
 const InventoryToolbar = ({
   allCategories, allTagsMain, allTagsCloth, allTagsOthers,
-  allPatterns, allOrderNames,
+  allCountries, allPatterns, allOrderNames,
   uniqueOrderNames, ordersWithDates, currentPage, totalPages, onExportXls,
   onResetAllOrders, hasChanges,
 }) => {
@@ -36,6 +37,7 @@ const InventoryToolbar = ({
           <InventoryTagsMainFilter options={allTagsMain} />
           <InventoryTagsClothFilter options={allTagsCloth} />
           <InventoryTagsOthersFilter options={allTagsOthers} />
+          <InventoryCountryFilter options={allCountries} />
           <InventoryPatternFilter options={allPatterns} />
           <InventoryOrderNameFilter options={allOrderNames} />
           <InventoryVcNameFilter />

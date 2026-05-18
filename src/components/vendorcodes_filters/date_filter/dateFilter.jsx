@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import DatePicker from 'react-datepicker';
-import { subDays, addDays, format } from 'date-fns'; // Для работы с датами
+import { subDays, addDays, format, parse } from 'date-fns'; // Для работы с датами
 import ru from 'date-fns/locale/ru';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -14,7 +14,10 @@ import { setError } from '../../../redux/slices/errorSlice';
 
 const DateFilter = () => {
   const dates = useSelector(selectVCDatesFilter);
-  const [dateRange, setDateRange] = useState([dates.start, dates.end]);
+  const [dateRange, setDateRange] = useState([
+    parse(dates.start, 'MM-dd-yyyy', new Date()),
+    parse(dates.end, 'MM-dd-yyyy', new Date()),
+  ]);
   const [calendarOpen, setCalendarOpen] = useState(false);
   const [startDate, endDate] = dateRange;
 

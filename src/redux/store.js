@@ -54,7 +54,6 @@ const inventoryFilterPersistConfig = {
   storage,
   whitelist: [
     'dateRange',
-    'sortingType',
     'vcNameQuery',
     'categories',
     'tagsMain',
@@ -68,8 +67,14 @@ const inventoryFilterPersistConfig = {
 
 const authReducer = persistReducer(authPersistConfig, userReducer);
 const orderBCReducer = persistReducer(ordersPersistConfig, ordersReducer);
-const persistedInventoryReducer = persistReducer(inventoryPersistConfig, inventoryReducer);
-const persistedInventoryFilterReducer = persistReducer(inventoryFilterPersistConfig, inventoryFilterReducer);
+const persistedInventoryReducer = persistReducer(
+  inventoryPersistConfig,
+  inventoryReducer
+);
+const persistedInventoryFilterReducer = persistReducer(
+  inventoryFilterPersistConfig,
+  inventoryFilterReducer
+);
 
 const rootReducer = combineReducers({
   category: categoryReducer,

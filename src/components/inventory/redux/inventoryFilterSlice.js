@@ -16,7 +16,7 @@ const initialState = {
   dateRange: defaultDateRange(),
 
   /** Тип сортировки артикулов */
-  sortingType: 'EBITDA/день (сред) ↓',
+  sortingType: 'EBITDA (сред) ↓',
 
   /** Текстовый поиск по имени артикула или SKU */
   vcNameQuery: '',
@@ -32,6 +32,9 @@ const initialState = {
 
   /** Прочие теги */
   tagsOthers: [],
+
+  /** Страна */
+  countries: [],
 
   /** Лекало */
   patterns: [],
@@ -93,6 +96,13 @@ const inventoryFilterSlice = createSlice({
       state.tagsCloth = [];
     },
 
+    setInventoryCountries(state, action) {
+      state.countries = [...action.payload];
+    },
+    resetInventoryCountries(state) {
+      state.countries = [];
+    },
+
     setInventoryPatterns(state, action) {
       state.patterns = [...action.payload];
     },
@@ -138,6 +148,8 @@ export const {
   resetInventoryTagsMain,
   setInventoryTagsCloth,
   resetInventoryTagsCloth,
+  setInventoryCountries,
+  resetInventoryCountries,
   setInventoryPatterns,
   resetInventoryPatterns,
   setInventoryOrderNames,
@@ -150,25 +162,16 @@ export const {
 
 // ─── Selectors ────────────────────────────────────────────────────────────────
 
-export const selectInventoryDateRange = (state) =>
-  state.inventoryFilter.dateRange;
-export const selectInventorySortingType = (state) =>
-  state.inventoryFilter.sortingType;
-export const selectInventoryVcNameQuery = (state) =>
-  state.inventoryFilter.vcNameQuery;
-export const selectInventoryCategories = (state) =>
-  state.inventoryFilter.categories;
-export const selectInventoryTagsMain = (state) =>
-  state.inventoryFilter.tagsMain;
-export const selectInventoryTagsCloth = (state) =>
-  state.inventoryFilter.tagsCloth;
-export const selectInventoryTagsOthers = (state) =>
-  state.inventoryFilter.tagsOthers;
-export const selectInventoryPatterns = (state) =>
-  state.inventoryFilter.patterns;
-export const selectInventoryOrderNames = (state) =>
-  state.inventoryFilter.orderNames;
-export const selectInventoryGanttDeadline = (state) =>
-  state.inventoryFilter.ganttDeadline;
+export const selectInventoryDateRange = (state) => state.inventoryFilter.dateRange;
+export const selectInventorySortingType = (state) => state.inventoryFilter.sortingType;
+export const selectInventoryVcNameQuery = (state) => state.inventoryFilter.vcNameQuery;
+export const selectInventoryCategories = (state) => state.inventoryFilter.categories;
+export const selectInventoryTagsMain = (state) => state.inventoryFilter.tagsMain;
+export const selectInventoryTagsCloth = (state) => state.inventoryFilter.tagsCloth;
+export const selectInventoryTagsOthers = (state) => state.inventoryFilter.tagsOthers;
+export const selectInventoryCountries = (state) => state.inventoryFilter.countries;
+export const selectInventoryPatterns = (state) => state.inventoryFilter.patterns;
+export const selectInventoryOrderNames = (state) => state.inventoryFilter.orderNames;
+export const selectInventoryGanttDeadline = (state) => state.inventoryFilter.ganttDeadline;
 
 export default inventoryFilterSlice.reducer;

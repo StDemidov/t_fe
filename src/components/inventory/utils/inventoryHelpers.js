@@ -95,7 +95,7 @@ export const buildGanttWeeks = (deadlineDate) => {
 const includesAny = (haystack, needles) => needles.some((n) => haystack.includes(n));
 
 export const filterSkuList = (skuList, filters) => {
-  const { vcNameQuery, categories, tagsMain, tagsCloth, tagsOthers, patterns, orderNames } = filters;
+  const { vcNameQuery, categories, tagsMain, tagsCloth, tagsOthers, patterns, orderNames, countries } = filters;
   return skuList.filter((sku) => {
     if (vcNameQuery.length > 0) {
       const isNumeric = !isNaN(vcNameQuery);
@@ -111,6 +111,7 @@ export const filterSkuList = (skuList, filters) => {
     // Новые фильтры
     if (patterns?.length > 0 && !patterns.includes(sku.pattern)) return false;
     if (orderNames?.length > 0 && !(sku.ordersNames ?? []).some(n => orderNames.includes(n))) return false;
+    if (countries?.length > 0 && !countries.includes(sku.country)) return false;
     return true;
   });
 };

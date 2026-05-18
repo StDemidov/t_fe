@@ -3,6 +3,7 @@ import { useState, useRef, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useSpring, animated } from '@react-spring/web';
 import { LuColumns3 } from 'react-icons/lu';
+import { parse } from 'date-fns';
 
 import styles from './style.module.css';
 
@@ -83,8 +84,9 @@ const VendorCodesList = () => {
   const tagsFilter = useSelector(selectVCTagsFilter);
   const tagsClothFilter = useSelector(selectVCTagsClothFilter);
   const tagsOthersFilter = useSelector(selectVCTagsOthersFilter);
-  const startDate = new Date(dateFilter.start);
-  const endDate = new Date(dateFilter.end);
+  const startDate = parse(dateFilter.start, 'MM-dd-yyyy', new Date());
+  const endDate = parse(dateFilter.end, 'MM-dd-yyyy', new Date());
+
   const notificationMessage = useSelector(selectNotificationMessage);
   const vcsPerPage = useSelector(selectVCsPerPageVendorcodes);
   const [isModalOpen, setIsModalOpen] = useState(false);

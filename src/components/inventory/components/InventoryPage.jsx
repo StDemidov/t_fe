@@ -32,7 +32,7 @@ const InventoryPage = () => {
     currentPageData, filteredSkuList, allSkuList,
     totalPages, currentPage, ordersMap, isLoading,
     weeks, months, allCategories, allTagsMain, allTagsCloth,
-    allTagsOthers, allPatterns, allOrderNames, uniqueOrderNames, ordersWithDates, dateRange,
+    allTagsOthers, allCountries, allPatterns, allOrderNames, uniqueOrderNames, ordersWithDates, dateRange,
   } = useInventoryData();
 
   // Persisted in Redux — survive page navigation
@@ -65,7 +65,8 @@ const InventoryPage = () => {
   }, [dispatch]);
 
   const handleResetAllOrders = useCallback(() => {
-    // Values intentionally NOT cleared after export
+    dispatch(clearExtraStock());
+    dispatch(clearStartCalcDates());
   }, [dispatch]);
 
   const handleDeleteSingleOrder = useCallback((sku) => {
@@ -188,6 +189,7 @@ const InventoryPage = () => {
         allTagsMain={allTagsMain}
         allTagsCloth={allTagsCloth}
         allTagsOthers={allTagsOthers}
+        allCountries={allCountries}
         allPatterns={allPatterns}
         allOrderNames={allOrderNames}
         uniqueOrderNames={uniqueOrderNames}
