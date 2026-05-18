@@ -1,10 +1,4 @@
-import {
-  format,
-  startOfWeek,
-  addWeeks,
-  endOfWeek,
-  isBefore,
-} from 'date-fns';
+import { format, startOfWeek, addWeeks, endOfWeek, isBefore } from 'date-fns';
 import { ru } from 'date-fns/locale';
 
 // ─── Date range slicing ──────────────────────────────────────────────────────
@@ -13,7 +7,8 @@ export const sliceTimeSeriesForRange = (series, startDate, endDate) => {
   const today = new Date();
   const startIndex = Math.ceil((today - startDate) / (1000 * 60 * 60 * 24));
   const endIndex = Math.floor((today - endDate) / (1000 * 60 * 60 * 24));
-  if (startIndex < 0 || endIndex >= series.length || startIndex < endIndex) return [];
+  if (startIndex < 0 || endIndex >= series.length || startIndex < endIndex)
+    return [];
   return endIndex === 1
     ? series.slice(-startIndex + 1)
     : series.slice(-startIndex + 1, -endIndex + 1);
@@ -34,7 +29,11 @@ export const calcCostPerOrder = (ordersTimeSeries, adsCostsTimeSeries) => {
   const len = Math.min(ordersTimeSeries.length, adsCostsTimeSeries.length);
   const result = [];
   for (let i = 0; i < len; i++) {
-    result.push(ordersTimeSeries[i] > 0 ? Math.round(adsCostsTimeSeries[i] / ordersTimeSeries[i]) : 0);
+    result.push(
+      ordersTimeSeries[i] > 0
+        ? Math.round(adsCostsTimeSeries[i] / ordersTimeSeries[i])
+        : 0
+    );
   }
   return result;
 };
@@ -43,10 +42,18 @@ export const calcCostPerOrder = (ordersTimeSeries, adsCostsTimeSeries) => {
 
 // Месяцы в именительном падеже (ru date-fns даёт родительный)
 const MONTHS_NOMINATIVE = {
-  'января': 'Январь', 'февраля': 'Февраль', 'марта': 'Март',
-  'апреля': 'Апрель', 'мая': 'Май', 'июня': 'Июнь',
-  'июля': 'Июль', 'августа': 'Август', 'сентября': 'Сентябрь',
-  'октября': 'Октябрь', 'ноября': 'Ноябрь', 'декабря': 'Декабрь',
+  января: 'Январь',
+  февраля: 'Февраль',
+  марта: 'Март',
+  апреля: 'Апрель',
+  мая: 'Май',
+  июня: 'Июнь',
+  июля: 'Июль',
+  августа: 'Август',
+  сентября: 'Сентябрь',
+  октября: 'Октябрь',
+  ноября: 'Ноябрь',
+  декабря: 'Декабрь',
 };
 
 const toNominative = (genitiveName) =>
@@ -68,7 +75,10 @@ export const buildGanttWeeks = (deadlineDate) => {
 
     if (monthName !== currentMonth) {
       if (currentMonth !== null) {
-        months.push({ name: currentMonth, span: weeks.length - monthStartIndex });
+        months.push({
+          name: currentMonth,
+          span: weeks.length - monthStartIndex,
+        });
       }
       currentMonth = monthName;
       monthStartIndex = weeks.length;
@@ -92,10 +102,20 @@ export const buildGanttWeeks = (deadlineDate) => {
 
 // ─── Filtering ───────────────────────────────────────────────────────────────
 
-const includesAny = (haystack, needles) => needles.some((n) => haystack.includes(n));
+const includesAny = (haystack, needles) =>
+  needles.some((n) => haystack.includes(n));
 
 export const filterSkuList = (skuList, filters) => {
-  const { vcNameQuery, categories, tagsMain, tagsCloth, tagsOthers, patterns, orderNames, countries } = filters;
+  const {
+    vcNameQuery,
+    categories,
+    tagsMain,
+    tagsCloth,
+    tagsOthers,
+    patterns,
+    orderNames,
+    countries,
+  } = filters;
   return skuList.filter((sku) => {
     if (vcNameQuery.length > 0) {
       const isNumeric = !isNaN(vcNameQuery);
@@ -104,13 +124,21 @@ export const filterSkuList = (skuList, filters) => {
         : sku.vcName.toLowerCase().includes(vcNameQuery.toLowerCase());
       if (!matches) return false;
     }
-    if (categories.length > 0 && !categories.includes(sku.category)) return false;
-    if (tagsMain.length > 0 && !includesAny(sku.tagsMain, tagsMain)) return false;
-    if (tagsCloth.length > 0 && !includesAny(sku.tagsCloth, tagsCloth)) return false;
-    if (tagsOthers.length > 0 && !includesAny(sku.tagsOthers, tagsOthers)) return false;
+    if (categories.length > 0 && !categories.includes(sku.category))
+      return false;
+    if (tagsMain.length > 0 && !includesAny(sku.tagsMain, tagsMain))
+      return false;
+    if (tagsCloth.length > 0 && !includesAny(sku.tagsCloth, tagsCloth))
+      return false;
+    if (tagsOthers.length > 0 && !includesAny(sku.tagsOthers, tagsOthers))
+      return false;
     // Новые фильтры
     if (patterns?.length > 0 && !patterns.includes(sku.pattern)) return false;
-    if (orderNames?.length > 0 && !(sku.ordersNames ?? []).some(n => orderNames.includes(n))) return false;
+    if (
+      orderNames?.length > 0 &&
+      !(sku.ordersNames ?? []).some((n) => orderNames.includes(n))
+    )
+      return false;
     if (countries?.length > 0 && !countries.includes(sku.country)) return false;
     return true;
   });
@@ -119,24 +147,37 @@ export const filterSkuList = (skuList, filters) => {
 // ─── Sorting ─────────────────────────────────────────────────────────────────
 
 export const SORTING_OPTIONS = [
-  'EBITDA (сред) ↓', 'EBITDA (сред) ↑',
-  'EBITDA/день (сред) ↓', 'EBITDA/день (сред) ↑',
-  'Заказы ↓', 'Заказы ↑',
-  'От новых к старым', 'От старых к новым',
+  'EBITDA (сред) ↓',
+  'EBITDA (сред) ↑',
+  'EBITDA/день (сред) ↓',
+  'EBITDA/день (сред) ↑',
+  'Заказы ↓',
+  'Заказы ↑',
+  'От новых к старым',
+  'От старых к новым',
 ];
 
 export const sortSkuList = (list, sortingType) => {
   const sorted = [...list];
   switch (sortingType) {
-    case 'EBITDA (сред) ↓': return sorted.sort((a, b) => b.ebitdaAvg - a.ebitdaAvg);
-    case 'EBITDA (сред) ↑': return sorted.sort((a, b) => a.ebitdaAvg - b.ebitdaAvg);
-    case 'EBITDA/день (сред) ↓': return sorted.sort((a, b) => b.ebitdaDailyAvg - a.ebitdaDailyAvg);
-    case 'EBITDA/день (сред) ↑': return sorted.sort((a, b) => a.ebitdaDailyAvg - b.ebitdaDailyAvg);
-    case 'Заказы ↓': return sorted.sort((a, b) => b.ordersSum - a.ordersSum);
-    case 'Заказы ↑': return sorted.sort((a, b) => a.ordersSum - b.ordersSum);
-    case 'От новых к старым': return sorted.sort((a, b) => b.startDate - a.startDate);
-    case 'От старых к новым': return sorted.sort((a, b) => a.startDate - b.startDate);
-    default: return sorted.sort((a, b) => b.ebitdaAvg - a.ebitdaAvg);
+    case 'EBITDA (сред) ↓':
+      return sorted.sort((a, b) => b.ebitdaAvg - a.ebitdaAvg);
+    case 'EBITDA (сред) ↑':
+      return sorted.sort((a, b) => a.ebitdaAvg - b.ebitdaAvg);
+    case 'EBITDA/день (сред) ↓':
+      return sorted.sort((a, b) => b.ebitdaDailyAvg - a.ebitdaDailyAvg);
+    case 'EBITDA/день (сред) ↑':
+      return sorted.sort((a, b) => a.ebitdaDailyAvg - b.ebitdaDailyAvg);
+    case 'Заказы ↓':
+      return sorted.sort((a, b) => b.ordersSum - a.ordersSum);
+    case 'Заказы ↑':
+      return sorted.sort((a, b) => a.ordersSum - b.ordersSum);
+    case 'От новых к старым':
+      return sorted.sort((a, b) => (a.startDate > b.startDate ? 1 : -1));
+    case 'От старых к новым':
+      return sorted.sort((a, b) => (a.startDate > b.startDate ? -1 : 1));
+    default:
+      return sorted.sort((a, b) => b.ebitdaAvg - a.ebitdaAvg);
   }
 };
 
@@ -146,24 +187,36 @@ const PAGE_SIZE = 25;
 
 export const paginateList = (list, page) => {
   const pages = [];
-  for (let i = 0; i < list.length; i += PAGE_SIZE) pages.push(list.slice(i, i + PAGE_SIZE));
-  if (pages.length === 0) return { pages: [[]], totalPages: 1, currentPageData: [] };
+  for (let i = 0; i < list.length; i += PAGE_SIZE)
+    pages.push(list.slice(i, i + PAGE_SIZE));
+  if (pages.length === 0)
+    return { pages: [[]], totalPages: 1, currentPageData: [] };
   const safePage = Math.min(Math.max(page, 1), pages.length);
-  return { pages, totalPages: pages.length, currentPageData: pages[safePage - 1] };
+  return {
+    pages,
+    totalPages: pages.length,
+    currentPageData: pages[safePage - 1],
+  };
 };
 
 // ─── Gantt cell statuses ──────────────────────────────────────────────────────
 
 export const CELL_STATUS = {
-  GREEN: 'green', YELLOW: 'yellow', RED: 'red',
-  GRAY: 'gray', BLUE: 'blue', PURPLE: 'purple',
+  GREEN: 'green',
+  YELLOW: 'yellow',
+  RED: 'red',
+  GRAY: 'gray',
+  BLUE: 'blue',
+  PURPLE: 'purple',
 };
 
 // ─── XLS ─────────────────────────────────────────────────────────────────────
 
 export const extractUniqueOrderNames = (ordersMap) => {
   const names = new Set();
-  Object.values(ordersMap).forEach((orders) => orders.forEach((o) => names.add(o.name)));
+  Object.values(ordersMap).forEach((orders) =>
+    orders.forEach((o) => names.add(o.name))
+  );
   return Array.from(names);
 };
 
