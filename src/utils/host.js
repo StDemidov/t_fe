@@ -5,7 +5,7 @@ export const hostName = 'https://t-prjct.ru';
 // export const hostName = 'http://localhost:8000';
 
 const api = axios.create({
-  baseURL: hostName,
+  baseURL: hostName, // твой бекенд
 });
 
 // перехватчик добавляет токен во все запросы

@@ -173,9 +173,9 @@ export const sortSkuList = (list, sortingType) => {
     case 'Заказы ↑':
       return sorted.sort((a, b) => a.ordersSum - b.ordersSum);
     case 'От новых к старым':
-      return sorted.sort((a, b) => (a.startDate > b.startDate ? 1 : -1));
+      return sorted.sort((a, b) => b.startDate - a.startDate);
     case 'От старых к новым':
-      return sorted.sort((a, b) => (a.startDate > b.startDate ? -1 : 1));
+      return sorted.sort((a, b) => a.startDate - b.startDate);
     default:
       return sorted.sort((a, b) => b.ebitdaAvg - a.ebitdaAvg);
   }
