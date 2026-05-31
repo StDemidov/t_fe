@@ -1,5 +1,7 @@
 import { useMemo } from 'react';
 import styles from './style.module.css';
+import { useSelector } from 'react-redux';
+import { selectUser } from '../../../redux/slices/authSlice';
 
 const ItemCard = ({
   item,
@@ -12,6 +14,7 @@ const ItemCard = ({
 
   const defaultCounts = pattern_data?.default_sizes_counts || {};
   const isSelected = !!sizesStorage[vendorcode];
+  const currentUser = useSelector(selectUser);
 
   // порядок сортировки размеров
   const sizeOrder = [
@@ -152,15 +155,17 @@ const ItemCard = ({
               </div>
             ))}
           </div>
-
-          <label className={styles.radio}>
-            <input
-              type="checkbox"
-              checked={isSelected}
-              onChange={handleSelect}
-            />
-            В заказ
-          </label>
+          {(currentUser.permissions.is_admin ||
+            currentUser.permissions.prints_base_manage) && (
+            <label className={styles.radio}>
+              <input
+                type="checkbox"
+                checked={isSelected}
+                onChange={handleSelect}
+              />
+              В заказ
+            </label>
+          )}
         </div>
       </div>
     </div>

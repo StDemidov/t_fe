@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
+import api from '../../utils/host';
 import { setError } from './errorSlice';
 import { setNotification } from './notificationSlice';
 
@@ -9,7 +9,7 @@ export const uploadPhoto = createAsyncThunk(
   'system/uploadPhoto',
   async ({ data, url }, thunkAPI) => {
     try {
-      const res = await axios.post(url, data);
+      const res = await api.post(url, data);
       const failedSkus = res.data;
 
       if (Array.isArray(failedSkus) && failedSkus.length > 0) {

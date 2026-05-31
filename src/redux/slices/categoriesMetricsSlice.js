@@ -4,6 +4,8 @@ import axios from 'axios';
 import createCategoriesMetricsList from '../../utils/createCategoriesMetricsList';
 import { setError } from './errorSlice';
 
+import api from '../../utils/host';
+
 const initialState = {
   categoriesMetricsData: [],
   isLoading: false,
@@ -13,10 +15,15 @@ export const fetchCategoriesMetrics = createAsyncThunk(
   'category/fetchCategoriesMetrics',
   async (url, thunkAPI) => {
     try {
-      const res = await axios.get(url);
+      const res = await api.get(url);
       return res.data;
     } catch (error) {
-      thunkAPI.dispatch(setError(error.message));
+      if (error.request.status == 401) {
+        thunkAPI.dispatch(clearCredentials());
+        thunkAPI.dispatch(setError('Повторите вход!'));
+      } else {
+        thunkAPI.dispatch(setError('Ошибка на сервере'));
+      }
     }
   }
 );

@@ -6,6 +6,8 @@ import LineplotCell from '../LineplotCell';
 import styles from './style.module.css';
 import SwitchActivity from './SwitchActivity';
 import React from 'react';
+import { useSelector } from 'react-redux';
+import { selectUser } from '../../../../../redux/slices/authSlice';
 
 const ClusterRow = ({
   cluster,
@@ -17,6 +19,7 @@ const ClusterRow = ({
   const [localBid, setLocalBid] = useState(
     cluster.bid == -1 ? '' : cluster.bid.toString()
   );
+  const currentUser = useSelector(selectUser);
 
   // Используем useCallback для создания стабильной функции debounce
   const debouncedOnChangeBid = useMemo(
@@ -33,7 +36,11 @@ const ClusterRow = ({
 
       // Разрешаем только цифры
       const regex = /^[0-9]*$/;
-      if (regex.test(value)) {
+      if (
+        (currentUser.permissions.ad_camps_manage ||
+          currentUser.permissions.is_admin) &&
+        regex.test(value)
+      ) {
         setLocalBid(value);
 
         // Преобразуем в число при отправке (пустая строка = 0)
@@ -77,10 +84,16 @@ const ClusterRow = ({
     <div className={styles.clusterRow}>
       <div className={styles.clusterName}>{cluster.cluster}</div>
       <div className={styles.clusterActivity}>
-        <SwitchActivity
-          checked={!cluster.disabled}
-          onChange={(checked) => onToggleDisabled(!checked)}
-        />
+        {(currentUser.permissions.ad_camps_manage ||
+          currentUser.permissions.is_admin) && (
+          <SwitchActivity
+            checked={!cluster.disabled}
+            onChange={(checked) => onToggleDisabled(!checked)}
+          />
+        )}
+        {!currentUser.permissions.ad_camps_manage && (
+          <>{!cluster.disabled ? 'Активен' : 'Выключен'}</>
+        )}
       </div>
       {unified ? (
         <></>

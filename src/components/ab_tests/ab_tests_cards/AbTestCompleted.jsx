@@ -5,14 +5,16 @@ import { v4 as uuidv4 } from 'uuid';
 
 import styles from './style.module.css';
 import { Link } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useState } from 'react';
 import { deleteABTest } from '../../../redux/slices/abTestsSlice';
 import ConfirmModal from '../../confirm_modal/ConfirmModal';
 import { hostName } from '../../../utils/host';
+import { selectUser } from '../../../redux/slices/authSlice';
 
 const AbTestCompleted = ({ test }) => {
   const dispatch = useDispatch();
+  const currentUser = useSelector(selectUser);
 
   const [modalData, setModalData] = useState({
     isOpen: false,
@@ -107,17 +109,20 @@ const AbTestCompleted = ({ test }) => {
             <div>{test.startDate}</div>
           </div>
         </div>
-        <div className={styles.buttons}>
-          <button
-            className={styles.buttonDelete}
-            onClick={(e) => {
-              e.stopPropagation();
-              handleClickOnDelete(e);
-            }}
-          >
-            <RiDeleteBin2Fill />
-          </button>
-        </div>
+        {(currentUser.permissions.is_admin ||
+          currentUser.permissions.prints_base_manage) && (
+          <div className={styles.buttons}>
+            <button
+              className={styles.buttonDelete}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleClickOnDelete(e);
+              }}
+            >
+              <RiDeleteBin2Fill />
+            </button>
+          </div>
+        )}
       </Link>
       <ConfirmModal
         isOpen={modalData.isOpen}

@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { createPortal } from 'react-dom';
 import { FaSave } from 'react-icons/fa';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { setError } from '../../../../redux/slices/errorSlice';
 
@@ -10,6 +10,7 @@ import {
   setNewSkusTagsCloth,
   setNewAvailableTagCloth,
 } from '../../../../redux/slices/vendorCodeSlice';
+import { selectUser } from '../../../../redux/slices/authSlice';
 
 const BodyTagsCloth = ({ tags, availableTagsCloth, skuId, tableRef }) => {
   const [selectedTags, setSelectedTags] = useState(tags);
@@ -17,6 +18,7 @@ const BodyTagsCloth = ({ tags, availableTagsCloth, skuId, tableRef }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [dropdownPosition, setDropdownPosition] = useState({ top: 0, left: 0 });
   const dispatch = useDispatch();
+  const currentUser = useSelector(selectUser);
 
   const newTagRef = useRef(null);
   const dropdownRef = useRef(null);
@@ -115,13 +117,16 @@ const BodyTagsCloth = ({ tags, availableTagsCloth, skuId, tableRef }) => {
   return (
     <div className={styles.cell}>
       <div className={styles.tagsContainer}>
-        <button
-          ref={buttonRef}
-          className={styles.addButton}
-          onClick={() => toggleDropdown(true)}
-        >
-          +
-        </button>
+        {(currentUser.permissions.tags_create ||
+          currentUser.permissions.is_admin) && (
+          <button
+            ref={buttonRef}
+            className={styles.addButton}
+            onClick={() => toggleDropdown(true)}
+          >
+            +
+          </button>
+        )}
         {selectedTags.map((tag, index) => (
           <span key={index} className={styles.tag}>
             {tag}

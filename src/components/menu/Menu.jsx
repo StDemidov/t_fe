@@ -1,12 +1,13 @@
 import { NavLink } from 'react-router-dom';
 import { MdLogout } from 'react-icons/md';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { clearCredentials } from '../../redux/slices/authSlice';
+import { clearCredentials, selectUser } from '../../redux/slices/authSlice';
 import styles from './style.module.css';
 
 const Menu = () => {
   const dispatch = useDispatch();
+  const currentUser = useSelector(selectUser);
 
   const handleLogout = (e) => {
     dispatch(clearCredentials());
@@ -19,34 +20,50 @@ const Menu = () => {
             Главная
           </NavLink>
         </li>
-        <li>
-          <NavLink className={styles.navLink} to="vendorcodes" content="Товары">
-            Товары
-          </NavLink>
-        </li>
-        <li>
-          <NavLink
-            className={styles.navLink}
-            to="categories"
-            content="Категории"
-          >
-            Категории
-          </NavLink>
-        </li>
-        <li>
-          <NavLink className={styles.navLink} to="barcodes" content="Баркоды">
-            Баркоды
-          </NavLink>
-        </li>
-        <li>
-          <NavLink
-            className={styles.navLink}
-            to="prints"
-            content="База принтов"
-          >
-            База принтов
-          </NavLink>
-        </li>
+        {(currentUser.permissions.vendorcodes ||
+          currentUser.permissions.is_admin) && (
+          <li>
+            <NavLink
+              className={styles.navLink}
+              to="vendorcodes"
+              content="Товары"
+            >
+              Товары
+            </NavLink>
+          </li>
+        )}
+        {(currentUser.permissions.category_metrics ||
+          currentUser.permissions.is_admin) && (
+          <li>
+            <NavLink
+              className={styles.navLink}
+              to="categories"
+              content="Категории"
+            >
+              Категории
+            </NavLink>
+          </li>
+        )}
+        {(currentUser.permissions.barcodes_predicts ||
+          currentUser.permissions.is_admin) && (
+          <li>
+            <NavLink className={styles.navLink} to="barcodes" content="Баркоды">
+              Баркоды
+            </NavLink>
+          </li>
+        )}
+        {(currentUser.permissions.prints_base_view ||
+          currentUser.permissions.is_admin) && (
+          <li>
+            <NavLink
+              className={styles.navLink}
+              to="prints"
+              content="База принтов"
+            >
+              База принтов
+            </NavLink>
+          </li>
+        )}
         <li>
           <NavLink className={styles.navLink} to="tools" content="Инструменты">
             Инструменты

@@ -3,10 +3,9 @@ import { subDays, format } from 'date-fns';
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
-const today = () => new Date();
 const defaultDateRange = () => ({
-  start: format(subDays(today(), 14), 'MM-dd-yyyy'),
-  end: format(subDays(today(), 1), 'MM-dd-yyyy'),
+  start: format(subDays(new Date(), 14), 'yyyy-MM-dd'),
+  end: format(subDays(new Date(), 1), 'yyyy-MM-dd'),
 });
 
 // ─── Initial State ────────────────────────────────────────────────────────────
@@ -162,16 +161,27 @@ export const {
 
 // ─── Selectors ────────────────────────────────────────────────────────────────
 
-export const selectInventoryDateRange = (state) => state.inventoryFilter.dateRange;
-export const selectInventorySortingType = (state) => state.inventoryFilter.sortingType;
-export const selectInventoryVcNameQuery = (state) => state.inventoryFilter.vcNameQuery;
-export const selectInventoryCategories = (state) => state.inventoryFilter.categories;
-export const selectInventoryTagsMain = (state) => state.inventoryFilter.tagsMain;
-export const selectInventoryTagsCloth = (state) => state.inventoryFilter.tagsCloth;
-export const selectInventoryTagsOthers = (state) => state.inventoryFilter.tagsOthers;
-export const selectInventoryCountries = (state) => state.inventoryFilter.countries;
-export const selectInventoryPatterns = (state) => state.inventoryFilter.patterns;
-export const selectInventoryOrderNames = (state) => state.inventoryFilter.orderNames;
-export const selectInventoryGanttDeadline = (state) => state.inventoryFilter.ganttDeadline;
+export const selectInventoryDateRange = (state) =>
+  state.inventoryFilter.dateRange;
+export const selectInventorySortingType = (state) =>
+  state.inventoryFilter.sortingType;
+export const selectInventoryVcNameQuery = (state) =>
+  state.inventoryFilter.vcNameQuery;
+export const selectInventoryCategories = (state) =>
+  state.inventoryFilter.categories;
+export const selectInventoryTagsMain = (state) =>
+  state.inventoryFilter.tagsMain;
+export const selectInventoryTagsCloth = (state) =>
+  state.inventoryFilter.tagsCloth;
+export const selectInventoryTagsOthers = (state) =>
+  state.inventoryFilter.tagsOthers;
+export const selectInventoryCountries = (state) =>
+  state.inventoryFilter.countries;
+export const selectInventoryPatterns = (state) =>
+  state.inventoryFilter.patterns;
+export const selectInventoryOrderNames = (state) =>
+  state.inventoryFilter.orderNames;
+export const selectInventoryGanttDeadline = (state) =>
+  state.inventoryFilter.ganttDeadline;
 
 export default inventoryFilterSlice.reducer;

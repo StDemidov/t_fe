@@ -1,7 +1,6 @@
-import axios from 'axios';
 import { subDays, format } from 'date-fns'; // Для работы с датами
 
-import api, { hostName } from '../../utils/host';
+import api from '../../utils/host';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import createCampaignsList from '../../utils/createCampaignsList';
 import createSkuDataForCamps from '../../utils/createSkuDataForCamps';

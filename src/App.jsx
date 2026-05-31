@@ -41,6 +41,7 @@ import PrintsBaseMain from './components/prints_base/PrintsBaseMain';
 import MainRegroupPage from './components/regroup_tool/MainRegroupPage';
 import MainDashboardContainer from './components/main_dashboard/MainDashboardContainer';
 import InventoryPage from './components/inventory/components/InventoryPage';
+import ForbiddenPage from './components/forbidden/ForbiddenPage';
 
 function App() {
   const currentUser = useSelector(selectUser);
@@ -50,17 +51,17 @@ function App() {
       <PersistGate loading={null} persistor={persistor}>
         <BrowserRouter>
           <div className="App">
-            {currentUser.username ? (
+            {currentUser.token ? (
               <Routes>
                 <Route path="/" element={<MainLayout />}>
                   <Route index element={<MainDashboardContainer />} />
+                  <Route path="forbidden" element={<ForbiddenPage />} />
                   <Route path="vendorcodes" element={<VendorCodesList />} />
                   <Route path="prints" element={<PrintsBaseMain />} />
                   <Route
                     path="vendorcodes/:id"
                     element={<SingleVendorCode />}
                   />
-                  x
                   <Route path="barcodes" element={<InventoryPage />} />
                   <Route path="tools/ab_tests" element={<AbTestsMainPage />} />
                   <Route

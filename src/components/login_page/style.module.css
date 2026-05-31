@@ -1,70 +1,338 @@
-.formMain {
-  background-color: #fff;
-  display: block;
-  padding: 1rem;
-  min-width: 300px;
-  border-radius: 0.5rem;
-  background: linear-gradient(#ffffff, #ffffff) padding-box,
-    linear-gradient(145deg, transparent 35%, #8254ff, #3908c1) border-box;
-  border: 2px solid transparent;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.15); /* Легкая черная тень */
-}
-
-.formTitle {
-  font-size: 1.25rem;
-  line-height: 1.75rem;
-  font-weight: 600;
-  text-align: center;
-  color: #000;
-}
-
-.inputContainer {
-  position: relative;
-}
-
-.inputContainer input,
-.formMain button {
-  outline: none;
-  border: 1px solid #e5e7eb;
-  margin: 8px 0;
-}
-
-.inputContainer input {
-  background-color: #fff;
-  padding: 1rem;
-  padding-right: 3rem;
-  font-size: 0.875rem;
-  line-height: 1.25rem;
-  width: 280px;
-  border-radius: 0.5rem;
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-}
-
-.submitButton {
-  display: block;
-  padding-top: 0.75rem;
-  padding-bottom: 0.75rem;
-  padding-left: 1.25rem;
-  padding-right: 1.25rem;
-  background-color: #8254ff;
-  color: #ffffff;
-  font-size: 0.875rem;
-  line-height: 1.25rem;
-  font-weight: 500;
-  width: 100%;
-  border-radius: 0.5rem;
-  text-transform: uppercase;
-}
-
-.submitButton:hover {
-  background-color: #6c46d6;
-  cursor: pointer;
+:root {
+  --c-card: rgba(255, 255, 255, 0.72);
+  --c-card-border: rgba(139, 92, 246, 0.18);
+  --c-input-bg: rgba(255, 255, 255, 0.60);
+  --c-input-border: rgba(139, 92, 246, 0.20);
+  --c-input-focus: rgba(124, 58, 237, 0.55);
+  --c-text: #1a1523;
+  --c-text-sub: #6b5f8a;
+  --c-placeholder: #b0a8c8;
+  --c-accent: #7c3aed;
+  --c-accent-hover: #6d28d9;
+  --c-error: #dc2626;
+  --c-error-light: rgba(220, 38, 38, 0.08);
+  --c-separator: rgba(139, 92, 246, 0.13);
+  --r-card: 20px;
+  --r-input: 12px;
+  --r-btn: 12px;
+  --font: -apple-system, 'SF Pro Text', BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 
 .loginSection {
-  height: 100vh;
+  min-height: 100vh;
   margin: 0;
   display: flex;
   justify-content: center;
   align-items: center;
+  font-family: var(--font);
+  position: relative;
+  overflow: hidden;
+  background: url('./login_bg.jpg') center center / cover no-repeat fixed;
+}
+
+/* dark overlay so card reads well over any photo */
+.loginSection::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 8, 30, 0.38);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── Card ── */
+.formMain {
+  position: relative;
+  z-index: 1;
+  background: var(--c-card);
+  backdrop-filter: blur(28px) saturate(150%);
+  -webkit-backdrop-filter: blur(28px) saturate(150%);
+  border: 1px solid var(--c-card-border);
+  border-radius: var(--r-card);
+  padding: 40px 36px 36px;
+  width: 360px;
+  box-sizing: border-box;
+  box-shadow:
+    0 0 0 0.5px rgba(255,255,255,0.70) inset,
+    0 24px 64px rgba(0, 0, 0, 0.28),
+    0 4px 16px rgba(0, 0, 0, 0.12);
+  animation: cardIn 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(20px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0)    scale(1);    }
+}
+
+/* ── Titles ── */
+.formTitle {
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: -0.4px;
+  text-align: center;
+  color: var(--c-text);
+  margin: 0 0 6px;
+}
+
+.formSubtitle {
+  font-size: 13.5px;
+  color: var(--c-text-sub);
+  text-align: center;
+  line-height: 1.55;
+  margin: 0 0 24px;
+}
+
+/* ── Input group ── */
+.inputGroup {
+  border: 1.5px solid var(--c-input-border);
+  border-radius: var(--r-input);
+  overflow: hidden;
+  margin-bottom: 6px;
+  background: var(--c-input-bg);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.inputGroup:focus-within {
+  border-color: var(--c-input-focus);
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.10);
+}
+.inputGroupError {
+  border-color: var(--c-error) !important;
+  box-shadow: 0 0 0 3px var(--c-error-light) !important;
+}
+
+.inputRow {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.inputRow + .inputRow {
+  border-top: 1px solid var(--c-separator);
+}
+.inputRow input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  padding: 14px 16px;
+  font-size: 15px;
+  font-family: var(--font);
+  font-weight: 400;
+  color: var(--c-text);
+  width: 100%;
+  box-sizing: border-box;
+  caret-color: transparent;
+}
+.inputRow input::placeholder {
+  color: var(--c-placeholder);
+}
+
+/* ── Phone field ── */
+/* phoneRow is the flex container for +7 prefix + mask display */
+.phoneRow {
+  display: flex;
+  align-items: center;
+  padding: 14px 16px;
+  gap: 4px;
+  flex: 1;
+  position: relative;
+  cursor: text;
+}
+
+.phonePrefix {
+  font-size: 15px;
+  font-family: var(--font);
+  font-weight: 500;
+  color: var(--c-accent);
+  user-select: none;
+  white-space: nowrap;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+/* Per-character mask display — sits inline next to +7 */
+.phoneDisplay {
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex: 1;
+  font-size: 15px;
+  font-family: var(--font);
+  letter-spacing: 0.8px;
+  white-space: pre;
+  user-select: none;
+  line-height: 1;
+}
+
+.phoneCharTyped {
+  color: var(--c-text);
+}
+
+.phoneCharPlaceholder {
+  color: var(--c-placeholder);
+}
+
+/* invisible input stretched over the entire phoneRow */
+.phoneHiddenInput {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  width: 100%;
+  border: none;
+  outline: none;
+  cursor: text;
+  font-size: 15px;
+}
+
+/* ── Eye toggle ── */
+.eyeButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0 14px;
+  color: var(--c-text-sub);
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  transition: color 0.15s;
+}
+.eyeButton:hover { color: var(--c-accent); }
+
+/* regular visible input (password) */
+.inputRow input.visibleInput {
+  caret-color: var(--c-accent);
+}
+
+/* ── Error ── */
+.errorMessage {
+  font-size: 12.5px;
+  color: var(--c-error);
+  text-align: center;
+  margin: 2px 0 12px;
+}
+
+/* ── Shake ── */
+@keyframes shake {
+  0%   { transform: translateX(0);   }
+  15%  { transform: translateX(-7px);}
+  35%  { transform: translateX(7px); }
+  55%  { transform: translateX(-4px);}
+  75%  { transform: translateX(4px); }
+  90%  { transform: translateX(-2px);}
+  100% { transform: translateX(0);   }
+}
+.shake { animation: shake 0.38s ease-in-out; }
+
+/* ── Submit button ── */
+.submitButton {
+  display: block;
+  width: 100%;
+  padding: 14px;
+  background: var(--c-accent);
+  color: #fff;
+  font-size: 15px;
+  font-family: var(--font);
+  font-weight: 500;
+  letter-spacing: 0.1px;
+  border: none;
+  border-radius: var(--r-btn);
+  cursor: pointer;
+  margin-top: 6px;
+  transition: background 0.18s, transform 0.1s, box-shadow 0.18s;
+  box-shadow: 0 4px 14px rgba(124, 58, 237, 0.30);
+}
+.submitButton:hover:not(:disabled) {
+  background: var(--c-accent-hover);
+  box-shadow: 0 6px 20px rgba(109, 40, 217, 0.40);
+}
+.submitButton:active:not(:disabled) { transform: scale(0.98); }
+.submitButton:disabled { opacity: 0.45; cursor: not-allowed; }
+
+/* ── Ghost link button ── */
+.ghostButton {
+  background: none;
+  border: none;
+  color: var(--c-text-sub);
+  font-size: 12.5px;
+  font-family: var(--font);
+  cursor: pointer;
+  padding: 0;
+  margin-top: 18px;
+  display: block;
+  width: 100%;
+  text-align: center;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: rgba(107, 95, 138, 0.35);
+  transition: color 0.15s;
+}
+.ghostButton:hover { color: var(--c-accent); }
+
+/* ── QR ── */
+.qrWrapper {
+  display: flex;
+  justify-content: center;
+  margin: 4px 0 22px;
+}
+.qrCanvas {
+  border-radius: 14px;
+  background: #fff;
+  padding: 10px;
+  box-shadow: 0 2px 12px rgba(109, 40, 217, 0.10);
+}
+
+/* ── OTP ── */
+.otpContainer {
+  display: flex;
+  gap: 9px;
+  justify-content: center;
+  margin: 8px 0 16px;
+}
+.otpInput {
+  width: 44px;
+  height: 52px;
+  text-align: center;
+  font-size: 22px;
+  font-weight: 500;
+  font-family: var(--font);
+  color: var(--c-text);
+  background: var(--c-input-bg);
+  border: 1.5px solid var(--c-input-border);
+  border-radius: 11px;
+  outline: none;
+  transition: border-color 0.18s, box-shadow 0.18s, background 0.18s;
+  caret-color: var(--c-accent);
+}
+.otpInput:focus {
+  border-color: var(--c-accent);
+  background: rgba(124, 58, 237, 0.05);
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.10);
+}
+.otpError {
+  border-color: var(--c-error) !important;
+  background: var(--c-error-light) !important;
+}
+
+/* ── Recovery ── */
+.recoveryInput {
+  width: 100%;
+  box-sizing: border-box;
+  background: var(--c-input-bg);
+  border: 1.5px solid var(--c-input-border);
+  border-radius: var(--r-input);
+  padding: 14px 16px;
+  font-size: 15px;
+  font-family: var(--font);
+  color: var(--c-text);
+  outline: none;
+  margin-bottom: 4px;
+  caret-color: var(--c-accent);
+  transition: border-color 0.18s, box-shadow 0.18s;
+}
+.recoveryInput:focus {
+  border-color: var(--c-input-focus);
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.10);
+}
+.inputError {
+  border-color: var(--c-error) !important;
+  box-shadow: 0 0 0 3px var(--c-error-light) !important;
 }

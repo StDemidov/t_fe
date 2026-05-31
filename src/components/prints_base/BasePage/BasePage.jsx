@@ -15,12 +15,14 @@ import { hostName } from '../../../utils/host';
 import { useRef, useState } from 'react';
 import JSZip from 'jszip';
 import { saveAs } from 'file-saver';
+import { selectUser } from '../../../redux/slices/authSlice';
 
 const BasePage = ({ items, sizesStorage, setSizesStorage }) => {
   const categoryFilter = useSelector(selectUpcomingCategoryFilter);
   const patternFilter = useSelector(selectUpcomingPatternFilter);
   const countryFilter = useSelector(selectUpcomingCountryFilter);
   const selectedSorting = useSelector(selectUpcomingSortingType);
+  const currentUser = useSelector(selectUser);
   const [draftStorage, setDraftStorage] = useState({});
 
   const dispatch = useDispatch();
@@ -216,34 +218,39 @@ const BasePage = ({ items, sizesStorage, setSizesStorage }) => {
           filteredItems={filteredItemsCategory}
           count={filteredItems.length}
         />
-        <button
-          onClick={handleUpdatePatterns}
-          className={`${styles.buttonXLSX}`}
-        >
-          Обновить лекала
-        </button>
-        <button
-          onClick={exportToExcel}
-          className={`${
-            Object.entries(sizesStorage).length === 0
-              ? styles.buttonDisabled
-              : styles.buttonXLSX
-          }`}
-          disabled={Object.entries(sizesStorage).length === 0}
-        >
-          Экспорт в Excel
-        </button>
-        <button
-          onClick={saveOrders}
-          className={`${
-            Object.entries(sizesStorage).length === 0
-              ? styles.buttonDisabled
-              : styles.buttonXLSX
-          }`}
-          disabled={Object.entries(sizesStorage).length === 0}
-        >
-          Сохранить {`(${Object.keys(sizesStorage).length})`}
-        </button>
+        {(currentUser.permissions.is_admin ||
+          currentUser.permissions.prints_base_manage) && (
+          <>
+            <button
+              onClick={handleUpdatePatterns}
+              className={`${styles.buttonXLSX}`}
+            >
+              Обновить лекала
+            </button>
+            <button
+              onClick={exportToExcel}
+              className={`${
+                Object.entries(sizesStorage).length === 0
+                  ? styles.buttonDisabled
+                  : styles.buttonXLSX
+              }`}
+              disabled={Object.entries(sizesStorage).length === 0}
+            >
+              Экспорт в Excel
+            </button>
+            <button
+              onClick={saveOrders}
+              className={`${
+                Object.entries(sizesStorage).length === 0
+                  ? styles.buttonDisabled
+                  : styles.buttonXLSX
+              }`}
+              disabled={Object.entries(sizesStorage).length === 0}
+            >
+              Сохранить {`(${Object.keys(sizesStorage).length})`}
+            </button>
+          </>
+        )}
       </div>
       {items.length === 0 ? (
         <div>Пусто</div>

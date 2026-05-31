@@ -18,10 +18,12 @@ import styles from './style.module.css';
 import ConfirmModal from '../../../../../confirm_modal/ConfirmModal';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { selectUser } from '../../../../../../redux/slices/authSlice';
 
 const ActionButtons = ({ camp, cellStyle }) => {
   const dispatch = useDispatch();
   const changeIsLoading = useSelector(selectChangeIsLoading);
+  const currentUser = useSelector(selectUser);
   const [modalData, setModalData] = useState({
     isOpen: false,
     text: '',
@@ -99,7 +101,9 @@ const ActionButtons = ({ camp, cellStyle }) => {
             >
               <MdOutlineQueryStats />
             </Link>
-            {[9, 11].includes(camp.status) & !camp.pausedByUser ? (
+            {(currentUser.permissions.ad_camps_manage ||
+              currentUser.permissions.is_admin) &&
+            [9, 11].includes(camp.status) & !camp.pausedByUser ? (
               <BsPauseCircleFill
                 className={styles.pauseButton}
                 onClick={handleClickOnPause}
@@ -107,7 +111,9 @@ const ActionButtons = ({ camp, cellStyle }) => {
             ) : (
               <></>
             )}
-            {(camp.status == 11) & camp.pausedByUser ? (
+            {(currentUser.permissions.ad_camps_manage ||
+              currentUser.permissions.is_admin) &&
+            (camp.status == 11) & camp.pausedByUser ? (
               <BsFillPlayCircleFill
                 className={styles.launchButton}
                 onClick={handleClickOnRun}
@@ -115,7 +121,9 @@ const ActionButtons = ({ camp, cellStyle }) => {
             ) : (
               <></>
             )}
-            {camp.status == 12 ? (
+            {(currentUser.permissions.ad_camps_manage ||
+              currentUser.permissions.is_admin) &&
+            camp.status == 12 ? (
               <MdDeleteForever
                 className={styles.pauseButton}
                 onClick={handleClickOnDelete}
@@ -123,7 +131,9 @@ const ActionButtons = ({ camp, cellStyle }) => {
             ) : (
               <></>
             )}
-            {[9, 11].includes(camp.status) ? (
+            {(currentUser.permissions.ad_camps_manage ||
+              currentUser.permissions.is_admin) &&
+            [9, 11].includes(camp.status) ? (
               <FaRegStopCircle
                 className={styles.pauseButton}
                 onClick={handleClickOnStop}

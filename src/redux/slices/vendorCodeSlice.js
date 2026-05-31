@@ -10,6 +10,7 @@ import {
 } from '../../utils/createTagsList';
 import { setError } from './errorSlice';
 import { setNotification } from './notificationSlice';
+import api from '../../utils/host';
 
 const initialState = {
   vendorCodeMetrics: [],
@@ -50,7 +51,7 @@ export const fetchVendorCodeMetrics = createAsyncThunk(
   'vendorCode/fetchVendorCodeMetrics',
   async (url, thunkAPI) => {
     try {
-      const res = await axios.get(url);
+      const res = await api.get(url);
       return res.data;
     } catch (error) {
       thunkAPI.dispatch(setError(error.message));
@@ -62,7 +63,7 @@ export const fetchAvailableTags = createAsyncThunk(
   'vendorCode/fetchAvailableTags',
   async (url, thunkAPI) => {
     try {
-      const res = await axios.get(url);
+      const res = await api.get(url);
       return res.data;
     } catch (error) {
       thunkAPI.dispatch(setError(error.message));
@@ -74,7 +75,7 @@ export const uploadNewTags = createAsyncThunk(
   'tags/uploadNewTAgs',
   async ({ data, url }, thunkAPI) => {
     try {
-      const res = await axios.post(url, data);
+      const res = await api.post(url, data);
       thunkAPI.dispatch(setNotification('Теги созданы'));
       return res.data;
     } catch (error) {
@@ -87,7 +88,7 @@ export const deleteTags = createAsyncThunk(
   'tags/deleteTags',
   async ({ data, url }, thunkAPI) => {
     try {
-      const res = await axios.post(url, data);
+      const res = await api.post(url, data);
       thunkAPI.dispatch(setNotification('Теги удалены!'));
       return res.data;
     } catch (error) {
@@ -100,7 +101,7 @@ export const fetchVendorCodeMetricsSingle = createAsyncThunk(
   'vendorCode/fetchVendorCodeMetricsSingle',
   async (url, thunkAPI) => {
     try {
-      const res = await axios.get(url);
+      const res = await api.get(url);
       return res.data;
     } catch (error) {
       thunkAPI.dispatch(setError(error.message));
@@ -112,7 +113,7 @@ export const setVendorCodeDate = createAsyncThunk(
   'vendorCode/setVendorCodeDate',
   async (url, thunkAPI) => {
     try {
-      const res = await axios.post(url);
+      const res = await api.post(url);
       thunkAPI.dispatch(setNotification('Дата успешно обновлена'));
       return res.data;
     } catch (error) {
@@ -125,7 +126,7 @@ export const createNewTag = createAsyncThunk(
   'vendorCode/createNewTag',
   async ({ data, url }, thunkAPI) => {
     try {
-      const res = await axios.post(url, data);
+      const res = await api.post(url, data);
       thunkAPI.dispatch(setNotification('Теги созданы'));
       return res.data;
     } catch (error) {

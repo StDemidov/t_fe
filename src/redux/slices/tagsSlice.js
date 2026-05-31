@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
+import api from '../../utils/host';
 import createTagsList from '../../utils/createTagsList';
 import { setError } from './errorSlice';
 
@@ -9,7 +9,7 @@ export const fetchTags = createAsyncThunk(
   'tags/fetchTags',
   async (url, thunkAPI) => {
     try {
-      const res = await axios.get(url);
+      const res = await api.get(url);
       return res.data;
     } catch (error) {
       thunkAPI.dispatch(setError(error.message));

@@ -3,14 +3,16 @@ import { useEffect, useState } from 'react';
 import { RiDeleteBinLine } from 'react-icons/ri';
 
 import styles from './style.module.css';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { deleteOrder } from '../../../redux/slices/basePrints';
 import { hostName } from '../../../utils/host';
+import { selectUser } from '../../../redux/slices/authSlice';
 
 const OrderCard = ({ item }) => {
   const { image, vendorcode, created_at, orders_data } = item;
   const order = orders_data[0];
   const orders_count = order.sizes_counts_data;
+  const currentUser = useSelector(selectUser);
 
   const dispatch = useDispatch();
 
@@ -130,10 +132,13 @@ const OrderCard = ({ item }) => {
               </div>
             ))}
           </div>
-          <RiDeleteBinLine
-            className={styles.deleteButton}
-            onClick={handleDelete}
-          />
+          {(currentUser.permissions.is_admin ||
+            currentUser.permissions.prints_base_manage) && (
+            <RiDeleteBinLine
+              className={styles.deleteButton}
+              onClick={handleDelete}
+            />
+          )}
         </div>
       </div>
     </div>

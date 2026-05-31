@@ -53,7 +53,6 @@ const inventoryFilterPersistConfig = {
   key: 'inventoryFilter',
   storage,
   whitelist: [
-    'dateRange',
     'vcNameQuery',
     'categories',
     'tagsMain',

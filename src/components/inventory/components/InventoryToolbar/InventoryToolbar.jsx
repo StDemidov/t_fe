@@ -14,18 +14,35 @@ import InventoryOrderNameFilter from '../filters/InventoryOrderNameFilter';
 import UploadOrderModal from '../UploadOrderModal/UploadOrderModal';
 import DeleteOrderModal from '../DeleteOrderModal/DeleteOrderModal';
 
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setInventoryPage } from '../../redux/inventorySlice';
-import { FaAngleLeft, FaAnglesLeft, FaAngleRight, FaAnglesRight } from 'react-icons/fa6';
+import {
+  FaAngleLeft,
+  FaAnglesLeft,
+  FaAngleRight,
+  FaAnglesRight,
+} from 'react-icons/fa6';
+import { selectUser } from '../../../../redux/slices/authSlice';
 
 const InventoryToolbar = ({
-  allCategories, allTagsMain, allTagsCloth, allTagsOthers,
-  allCountries, allPatterns, allOrderNames,
-  uniqueOrderNames, ordersWithDates, currentPage, totalPages, onExportXls,
-  onResetAllOrders, hasChanges,
+  allCategories,
+  allTagsMain,
+  allTagsCloth,
+  allTagsOthers,
+  allCountries,
+  allPatterns,
+  allOrderNames,
+  uniqueOrderNames,
+  ordersWithDates,
+  currentPage,
+  totalPages,
+  onExportXls,
+  onResetAllOrders,
+  hasChanges,
 }) => {
   const dispatch = useDispatch();
   const go = (page) => dispatch(setInventoryPage(page));
+  const currentUser = useSelector(selectUser);
 
   return (
     <div className={styles.toolbar}>
@@ -52,8 +69,17 @@ const InventoryToolbar = ({
           >
             Сбросить изменения
           </button>
-          <UploadOrderModal existingOrders={uniqueOrderNames} />
-          <DeleteOrderModal existingOrders={uniqueOrderNames} ordersWithDates={ordersWithDates ?? []} />
+          {(currentUser.permissions.barcodes_orders ||
+            currentUser.permissions.is_admin) && (
+            <>
+              <UploadOrderModal existingOrders={uniqueOrderNames} />
+              <DeleteOrderModal
+                existingOrders={uniqueOrderNames}
+                ordersWithDates={ordersWithDates ?? []}
+              />
+            </>
+          )}
+
           <button className={styles.actionBtnSecondary} onClick={onExportXls}>
             Сформировать
           </button>
@@ -69,13 +95,19 @@ const InventoryToolbar = ({
           className={currentPage > 1 ? styles.arrow : styles.arrowDisabled}
           onClick={() => currentPage > 1 && go(currentPage - 1)}
         />
-        <span className={styles.pageLabel}>{currentPage} / {totalPages}</span>
+        <span className={styles.pageLabel}>
+          {currentPage} / {totalPages}
+        </span>
         <FaAngleRight
-          className={currentPage < totalPages ? styles.arrow : styles.arrowDisabled}
+          className={
+            currentPage < totalPages ? styles.arrow : styles.arrowDisabled
+          }
           onClick={() => currentPage < totalPages && go(currentPage + 1)}
         />
         <FaAnglesRight
-          className={currentPage < totalPages ? styles.arrow : styles.arrowDisabled}
+          className={
+            currentPage < totalPages ? styles.arrow : styles.arrowDisabled
+          }
           onClick={() => currentPage < totalPages && go(totalPages)}
         />
       </div>

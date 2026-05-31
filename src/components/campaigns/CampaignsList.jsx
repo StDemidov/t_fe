@@ -32,6 +32,7 @@ import ButtonXLSX from './elements/ButtonXLSX';
 import ButtonPauseCamps from './elements/ButtonPauseCamps';
 import ButtonRestartCamps from './elements/ButtonRestartCamps';
 import ButtonEndCamps from './elements/ButtonEndCamps';
+import { selectUser } from '../../redux/slices/authSlice';
 
 const CampaignsList = () => {
   const campaignsOnPage = 50;
@@ -49,6 +50,7 @@ const CampaignsList = () => {
   const typeFilter = useSelector(selectFilterType);
   const categoryFilter = useSelector(selectFilterCategory);
   const selectedSorting = useSelector(selectSortingType);
+  const currentUser = useSelector(selectUser);
 
   useEffect(() => {
     dispatch(fetchDates(`${hostName}/ad_camps/dates`));
@@ -112,12 +114,18 @@ const CampaignsList = () => {
           <ButtonXLSX camps={filteredCampaigns} />
           <div className={styles.lastUpdate}>Обновлено: {dates.end}</div>
         </div>
+
         <div className={styles.buttonsGroup}>
-          <ButtonRestartCamps selectedCamps={selectedCamps} />
-          <ButtonPauseCamps selectedCamps={selectedCamps} />
-          <ButtonEndCamps selectedCamps={selectedCamps} />
-          <ButtonEditCamps selectedCamps={selectedCamps} />
-          <ButtonCreateCamps />
+          {(currentUser.permissions.ad_camps_manage ||
+            currentUser.permissions.is_admin) && (
+            <>
+              <ButtonRestartCamps selectedCamps={selectedCamps} />
+              <ButtonPauseCamps selectedCamps={selectedCamps} />
+              <ButtonEndCamps selectedCamps={selectedCamps} />
+              <ButtonEditCamps selectedCamps={selectedCamps} />
+              <ButtonCreateCamps />
+            </>
+          )}
         </div>
       </div>
       {isLoading ? (

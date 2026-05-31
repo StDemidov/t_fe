@@ -14,7 +14,6 @@ const DropdownFilter = ({
   const [menuStyle, setMenuStyle] = useState({});
   const dropdownRef = useRef(null);
   const toggleRef = useRef(null);
-  console.log(selectedOptions);
 
   const toggleDropdown = () => {
     if (!isOpen && toggleRef.current) {

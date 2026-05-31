@@ -113,7 +113,6 @@ const Step2SkuSelect = ({
         .filter((value) => value && value.toString().trim() !== '') // Убираем пустые значения
         .map((value) => value.toString().trim()); // Убираем пробелы в начале и конце
 
-      console.log(skuListFromFile);
       if (skuListFromFile.length === 0) {
         dispatch(
           setError(

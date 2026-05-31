@@ -17,6 +17,7 @@ import { hostName } from '../../../../../utils/host';
 import { selectNotificationMessage } from '../../../../../redux/slices/notificationSlice';
 import SortingButtons from './SortingButtons';
 import DisabledFilter from './DisabledFilter';
+import { selectUser } from '../../../../../redux/slices/authSlice';
 
 const ClustersTable = ({
   clusters,
@@ -35,6 +36,7 @@ const ClustersTable = ({
   const notificationMessage = useSelector(selectNotificationMessage);
   const clustersSortingType = useSelector(selectClustersSortingType);
   const showDisabled = useSelector(selectShowClustersDisabled);
+  const currentUser = useSelector(selectUser);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -121,21 +123,24 @@ const ClustersTable = ({
     <div className={styles.clustersTable}>
       <div className={styles.applyClusterChanges}>
         <DisabledFilter />
-        <button
-          className={
-            Object.keys(changes).length === 0 || clustersIsLoading
-              ? styles.disabledButton
-              : styles.applyButton
-          }
-          disabled={
-            Object.keys(changes).length === 0 || clustersIsLoading
-              ? true
-              : false
-          }
-          onClick={handleClickOnApply}
-        >
-          {clustersIsLoading ? 'В процессе' : 'Применить изменения'}
-        </button>
+        {(currentUser.permissions.ad_camps_manage ||
+          currentUser.permissions.is_admin) && (
+          <button
+            className={
+              Object.keys(changes).length === 0 || clustersIsLoading
+                ? styles.disabledButton
+                : styles.applyButton
+            }
+            disabled={
+              Object.keys(changes).length === 0 || clustersIsLoading
+                ? true
+                : false
+            }
+            onClick={handleClickOnApply}
+          >
+            {clustersIsLoading ? 'В процессе' : 'Применить изменения'}
+          </button>
+        )}
       </div>
 
       <div className={styles.clustersHeader}>

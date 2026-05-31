@@ -1,0 +1,22 @@
+/* ForbiddenPage.module.css */
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 80vh;
+  gap: 8px;
+}
+
+.code {
+  font-size: 120px;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -4px;
+  color: #111;
+}
+
+.message {
+  font-size: 18px;
+  color: #888;
+}

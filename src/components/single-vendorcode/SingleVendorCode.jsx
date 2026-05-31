@@ -6,6 +6,7 @@ import { FaSpinner, FaEdit } from 'react-icons/fa';
 import { PiEmptyDuotone } from 'react-icons/pi';
 import { ImCross } from 'react-icons/im';
 import { useSpring, animated } from '@react-spring/web';
+import * as XLSX from 'xlsx';
 import { setError } from '../../redux/slices/errorSlice';
 import {
   fetchVendorCodeMetricsSingle,
@@ -34,6 +35,30 @@ import {
 import { calculateCostPerOrder } from '../../utils/calculations';
 import BarplotVCSingle from '../barplot_vc_single/BarplotVCSingle';
 
+// SVG-иконка Excel
+const ExcelIcon = ({ size = 22 }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 48 48"
+    width={size}
+    height={size}
+    style={{ display: 'block' }}
+  >
+    <rect x="6" y="6" width="36" height="36" rx="4" fill="#1D6F42" />
+    <text
+      x="24"
+      y="32"
+      textAnchor="middle"
+      fill="white"
+      fontSize="20"
+      fontWeight="bold"
+      fontFamily="Arial, sans-serif"
+    >
+      X
+    </text>
+  </svg>
+);
+
 const SingleVendorCode = () => {
   const dispatch = useDispatch();
   const isLoading = useSelector(selectIsLoading);
@@ -43,6 +68,7 @@ const SingleVendorCode = () => {
   const startDate = new Date(datesFilter.start);
   const endDate = new Date(datesFilter.end);
   let { id } = useParams();
+
   useEffect(() => {
     if (notificationMessage == '') {
       dispatch(fetchVendorCodeMetricsSingle(`${hostName}/vendorcode/${id}`));
@@ -58,9 +84,8 @@ const SingleVendorCode = () => {
     sortedBarcodes = [...vcData?.barcodes];
     sortedBarcodes = sortBarcodesBySize(sortedBarcodes);
   }
-  //
 
-  const [date, setDate] = useState(''); // начальная дата
+  const [date, setDate] = useState('');
   const [isEditing, setIsEditing] = useState(false);
 
   const animStyles = useSpring({
@@ -72,7 +97,7 @@ const SingleVendorCode = () => {
 
   const handleDateChange = (event) => {
     const newDate = event.target.value;
-    const isValidDate = /^\d{4}-\d{2}-\d{2}$/.test(newDate); // проверка формата ГГГГ-ММ-ДД
+    const isValidDate = /^\d{4}-\d{2}-\d{2}$/.test(newDate);
     if (isValidDate) {
       setDate(newDate);
       setIsEditing(false);
@@ -86,7 +111,6 @@ const SingleVendorCode = () => {
     }
   };
 
-  // Функция для переключения режима редактирования
   const handleEditClick = () => {
     setDate(vcData?.dateOfAppearance);
     setIsEditing(true);
@@ -95,6 +119,70 @@ const SingleVendorCode = () => {
   const handleCancel = () => {
     setIsEditing(false);
   };
+
+  // Парсим дату как локальную (без смещения UTC)
+  const parseLocalDate = (date) => {
+    const d = new Date(date);
+    return new Date(d.getFullYear(), d.getMonth(), d.getDate());
+  };
+
+  // Форматируем дату в YYYY-MM-DD по локальному времени
+  const formatLocalDate = (date) => {
+    const y = date.getFullYear();
+    const m = String(date.getMonth() + 1).padStart(2, '0');
+    const d = String(date.getDate()).padStart(2, '0');
+    return `${y}-${m}-${d}`;
+  };
+
+  // Генерация дат между startDate и endDate включительно (локальное время)
+  const getDatesInRange = (start, end) => {
+    const dates = [];
+    const cur = parseLocalDate(start);
+    const endNorm = parseLocalDate(end);
+    while (cur <= endNorm) {
+      dates.push(new Date(cur));
+      cur.setDate(cur.getDate() + 1);
+    }
+    return dates;
+  };
+
+  // Получение значения из строки данных по дате.
+  // Последнее значение в массиве соответствует endDate.
+  const getValueForDate = (dataStr, targetDate, refEndDate) => {
+    if (!dataStr) return '';
+    const arr = dataStr.split(',').map(Number);
+    const refEnd = parseLocalDate(refEndDate);
+    const target = parseLocalDate(targetDate);
+    const diffDays = Math.round((refEnd - target) / (1000 * 60 * 60 * 24));
+    const idx = arr.length - 1 - diffDays;
+    if (idx < 0 || idx >= arr.length) return '';
+    return arr[idx];
+  };
+
+  const handleExportXlsx = () => {
+    if (!sortedBarcodes || !vcData) return;
+
+    const dates = getDatesInRange(startDate, endDate);
+    const rows = [];
+
+    for (const barcode of sortedBarcodes) {
+      for (const d of dates) {
+        const dateStr = formatLocalDate(d);
+        rows.push({
+          Размер: barcode.size,
+          Дата: dateStr,
+          Остаток: getValueForDate(barcode.wb_stocks_daily, d, endDate),
+          Заказы: getValueForDate(barcode.wb_orders_daily, d, endDate),
+        });
+      }
+    }
+
+    const ws = XLSX.utils.json_to_sheet(rows);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Данные');
+    XLSX.writeFile(wb, `${vcData?.vendorCode}.xlsx`);
+  };
+
   return (
     <>
       {isLoading || !vcData ? (
@@ -126,7 +214,6 @@ const SingleVendorCode = () => {
                       className={styles.linkA}
                       width="20px"
                       alt="wb"
-                      href={`https://www.wildberries.ru/catalog/${vcData?.sku}/detail.aspx`}
                     />
                   </a>
                   <a
@@ -138,7 +225,7 @@ const SingleVendorCode = () => {
                       className={`${styles.linkA} ${styles.linkMP}`}
                       src={mpStatsLogo}
                       width="20px"
-                      alt="wb"
+                      alt="mpstats"
                     />
                   </a>
                 </div>
@@ -172,7 +259,7 @@ const SingleVendorCode = () => {
                 </div>
                 <div className={styles.vcInfoContainer}>
                   <div className={styles.vcInfo}>
-                    <div className={styles.vcInfoLabel}> Дата появления</div>
+                    <div className={styles.vcInfoLabel}>Дата появления</div>
                     <div className={styles.vcInfoItem}>
                       {isEditing ? (
                         <div className={styles.dateChangeBlock}>
@@ -180,12 +267,12 @@ const SingleVendorCode = () => {
                             className={styles.dateInput}
                             type="text"
                             defaultValue={date}
-                            onBlur={handleCancel} // отмена при выходе из поля ввода
+                            onBlur={handleCancel}
                             onKeyDown={(e) => {
                               if (e.key === 'Enter') {
-                                handleDateChange(e); // сохранение при нажатии Enter
+                                handleDateChange(e);
                               } else if (e.key === 'Escape') {
-                                handleCancel(); // отмена при нажатии Escape
+                                handleCancel();
                               }
                             }}
                             pattern="\d{4}-\d{2}-\d{2}"
@@ -209,12 +296,11 @@ const SingleVendorCode = () => {
                     </div>
                   </div>
                   <div className={styles.vcInfo}>
-                    <div className={styles.vcInfoLabel}> Цена после СПП</div>
+                    <div className={styles.vcInfoLabel}>Цена после СПП</div>
                     <div className={styles.vcInfoItem}>
                       ₽ {vcData?.lastPriceASpp}
                     </div>
                   </div>
-
                   <div className={styles.vcInfo}>
                     <div className={styles.vcInfoLabel}>Остатки WB</div>
                     <div className={styles.vcInfoItem}>
@@ -295,7 +381,6 @@ const SingleVendorCode = () => {
                       )}
                     </div>
                   </div>
-
                   <div className={styles.vcInfo}>
                     <div className={styles.vcInfoLabel}>
                       Себестоимость с НДС
@@ -332,6 +417,15 @@ const SingleVendorCode = () => {
                 <div className={styles.headerCell}>Остаток МС</div>
                 <div className={styles.headerCell}>Обор-ть WB</div>
                 <div className={styles.headerCell}>Обор-ть общая</div>
+                <div className={styles.headerCellIcon}>
+                  <button
+                    onClick={handleExportXlsx}
+                    title="Выгрузить в Excel"
+                    className={styles.excelButton}
+                  >
+                    <ExcelIcon size={22} />
+                  </button>
+                </div>
               </div>
               <div className={styles.tblContent}>
                 {sortedBarcodes ? (
@@ -418,6 +512,7 @@ const SingleVendorCode = () => {
                         <div className={styles.barcodeCell}>
                           {barcode.turnover_total ? barcode.turnover_total : 0}
                         </div>
+                        <div className={styles.barcodeCellIcon} />
                       </div>
                     );
                   })
@@ -482,66 +577,6 @@ const getStyle = (category) => {
   }
 };
 
-// const getSum = (data, startDate, endDate) => {
-//   const currData = getDataForPeriod(data, startDate, endDate);
-//   var sumData = currData.reduce((accumulator, currentValue) => {
-//     return accumulator + currentValue;
-//   }, 0);
-//   return sumData;
-// };
-
-// const getSumRaw = (data, raw_data, startDate, endDate) => {
-//   const currData = getDataForPeriodRaw(data, raw_data, startDate, endDate);
-//   var sumData = currData.reduce((accumulator, currentValue) => {
-//     return accumulator + currentValue;
-//   }, 0);
-//   return sumData;
-// };
-
-// const getDataForPeriod = (data, startDate, endDate) => {
-//   const todayDate = new Date();
-//   const startIndex = Math.ceil((todayDate - startDate) / (1000 * 60 * 60 * 24)); // Индекс начала
-//   const endIndex = Math.floor((todayDate - endDate) / (1000 * 60 * 60 * 24)); // Индекс конца
-//   // Проверяем, что индексы в пределах массива
-//   if (startIndex < 0 || endIndex >= data.length || startIndex < endIndex) {
-//     throw new Error('Период выходит за пределы массива');
-//   }
-//   // Извлекаем данные за указанный период
-//   if (endIndex === 1) {
-//     return data.slice(-startIndex + 1);
-//   }
-//   return data.slice(-startIndex + 1, -endIndex + 1);
-// };
-// const getDataForPeriodRaw = (data, raw_data, startDate, endDate) => {
-//   const todayDate = new Date();
-//   const startIndex = Math.ceil((todayDate - startDate) / (1000 * 60 * 60 * 24)); // Индекс начала
-//   const endIndex = Math.floor((todayDate - endDate) / (1000 * 60 * 60 * 24)); // Индекс конца
-//   if (startIndex <= raw_data.length + 1 && endIndex <= raw_data.length + 1) {
-//     if (endIndex === 1) {
-//       return raw_data.slice(-startIndex + 1);
-//     }
-//     return raw_data.slice(-startIndex + 1, -endIndex + 1);
-//   } else if (
-//     startIndex > raw_data.length + 1 &&
-//     endIndex > raw_data.length + 1
-//   ) {
-//     return data.slice(
-//       -startIndex + raw_data.length + 1,
-//       -endIndex + raw_data.length + 1
-//     ); // Используем reverse(), чтобы вернуть порядок
-//   } else if (
-//     startIndex > raw_data.length + 1 &&
-//     endIndex <= raw_data.length + 1
-//   ) {
-//     if (endIndex === 1) {
-//       return data.slice(-startIndex + raw_data.length + 1).concat(raw_data);
-//     }
-//   }
-//   return data
-//     .slice(-startIndex + raw_data.length + 1)
-//     .concat(raw_data.slice(0, -endIndex + 1));
-// };
-
 function sortBarcodesBySize(barcodes) {
   const sizeOrder = [
     'XS',
@@ -565,8 +600,6 @@ function sortBarcodesBySize(barcodes) {
   return barcodes.sort((a, b) => {
     const indexA = sizeOrder.indexOf(a.size);
     const indexB = sizeOrder.indexOf(b.size);
-
-    // Если размер не найден в sizeOrder, помещаем его в конец
     return (
       (indexA === -1 ? Infinity : indexA) - (indexB === -1 ? Infinity : indexB)
     );

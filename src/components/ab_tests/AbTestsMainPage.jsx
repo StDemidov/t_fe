@@ -4,8 +4,6 @@ import { RiTestTubeFill } from 'react-icons/ri';
 import { IoWarning, IoSearch } from 'react-icons/io5';
 import { TbMoodPuzzled, TbMoodCheck } from 'react-icons/tb';
 
-import TestingAnimation from '../testing_animation/TestingAnimation';
-
 import styles from './style.module.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
@@ -19,6 +17,7 @@ import {
   selectAbTestCompletedVCNameFilter,
 } from '../../redux/slices/filterSlice';
 import VCNameFilter from './filters/vc_name_filter/VCNameFilter';
+import { selectUser } from '../../redux/slices/authSlice';
 
 const AbTestsMainPage = () => {
   const navigation = useNavigate();
@@ -26,6 +25,7 @@ const AbTestsMainPage = () => {
   const abTests = useSelector(selectABTests);
   const activeVCNameFilter = useSelector(selectAbTestActiveVCNameFilter);
   const completedVCNameFilter = useSelector(selectAbTestCompletedVCNameFilter);
+  const currentUser = useSelector(selectUser);
 
   useEffect(() => {
     dispatch(fetchABTests(`${hostName}/ab_tests/all_tests`));
@@ -67,9 +67,15 @@ const AbTestsMainPage = () => {
     <section>
       <div className={styles.headerRow}>
         <h1>A/B тесты</h1>
-        <button className={styles.newTestButton} onClick={handleClickOnCreate}>
-          Создать новый тест
-        </button>
+        {(currentUser.permissions.is_admin ||
+          currentUser.permissions.prints_base_manage) && (
+          <button
+            className={styles.newTestButton}
+            onClick={handleClickOnCreate}
+          >
+            Создать новый тест
+          </button>
+        )}
       </div>
       <div className={styles.mainBodyBlock}>
         <div className={styles.rightPart}>

@@ -1,4 +1,5 @@
 import axios from 'axios';
+import api from '../../../utils/host';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { mapInventoryApiResponse } from '../utils/inventoryDataMapper';
 import { setError } from '../../../redux/slices/errorSlice';
@@ -10,7 +11,7 @@ export const fetchInventory = createAsyncThunk(
   'inventory/fetchInventory',
   async (url, thunkAPI) => {
     try {
-      const res = await axios.get(url);
+      const res = await api.get(url);
       return res.data;
     } catch (error) {
       thunkAPI.dispatch(setError(error.message));
@@ -22,7 +23,7 @@ export const createInventoryOrder = createAsyncThunk(
   'inventory/createOrder',
   async ({ data, url }, thunkAPI) => {
     try {
-      const res = await axios.post(url, data);
+      const res = await api.post(url, data);
       thunkAPI.dispatch(setNotification('Заказ успешно создан!'));
       return res.data;
     } catch (error) {
@@ -35,7 +36,7 @@ export const deleteInventoryOrders = createAsyncThunk(
   'inventory/deleteOrders',
   async ({ data, url }, thunkAPI) => {
     try {
-      const res = await axios.post(url, data);
+      const res = await api.post(url, data);
       thunkAPI.dispatch(setNotification('Заказы успешно удалены!'));
       return res.data;
     } catch (error) {
@@ -114,7 +115,15 @@ const inventorySlice = createSlice({
   },
 });
 
-export const { setInventoryPage, setExtraStock, updateExtraStockItem, clearExtraStock, setStartCalcDates, updateStartCalcDate, clearStartCalcDates } = inventorySlice.actions;
+export const {
+  setInventoryPage,
+  setExtraStock,
+  updateExtraStockItem,
+  clearExtraStock,
+  setStartCalcDates,
+  updateStartCalcDate,
+  clearStartCalcDates,
+} = inventorySlice.actions;
 
 // ─── Selectors ────────────────────────────────────────────────────────────────
 
@@ -124,6 +133,7 @@ export const selectInventoryIsLoading = (state) => state.inventory.isLoading;
 export const selectInventoryCurrentPage = (state) =>
   state.inventory.currentPage;
 export const selectExtraStock = (state) => state.inventory.extraStock ?? {};
-export const selectStartCalcDates = (state) => state.inventory.startCalcDates ?? {};
+export const selectStartCalcDates = (state) =>
+  state.inventory.startCalcDates ?? {};
 
 export default inventorySlice.reducer;

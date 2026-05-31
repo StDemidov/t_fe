@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { FaPlay } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useState } from 'react';
 
 import styles from './style.module.css';
@@ -16,10 +16,11 @@ import {
 } from '../../../redux/slices/abTestsSlice';
 import ConfirmModal from '../../confirm_modal/ConfirmModal';
 import { hostName } from '../../../utils/host';
+import { selectUser } from '../../../redux/slices/authSlice';
 
 const AbTestActive = ({ test }) => {
   const dispatch = useDispatch();
-
+  const currentUser = useSelector(selectUser);
   const [modalData, setModalData] = useState({
     isOpen: false,
     text: '',
@@ -145,40 +146,43 @@ const AbTestActive = ({ test }) => {
             <div>{test.startDate}</div>
           </div>
         </div>
-        <div className={styles.buttons}>
-          {test.isOnPause ? (
-            test.pauseReason == 'Приостановлено вручную.' && (
+        {(currentUser.permissions.is_admin ||
+          currentUser.permissions.prints_base_manage) && (
+          <div className={styles.buttons}>
+            {test.isOnPause ? (
+              test.pauseReason == 'Приостановлено вручную.' && (
+                <button
+                  className={styles.buttonContinue}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleClickOnStart(e);
+                  }}
+                >
+                  <FaPlay />
+                </button>
+              )
+            ) : (
               <button
-                className={styles.buttonContinue}
+                className={styles.buttonPause}
                 onClick={(e) => {
                   e.stopPropagation();
-                  handleClickOnStart(e);
+                  handleClickOnPause(e);
                 }}
               >
-                <FaPlay />
+                <MdPauseCircleFilled />
               </button>
-            )
-          ) : (
+            )}
             <button
-              className={styles.buttonPause}
+              className={styles.buttonDelete}
               onClick={(e) => {
                 e.stopPropagation();
-                handleClickOnPause(e);
+                handleClickOnDelete(e);
               }}
             >
-              <MdPauseCircleFilled />
+              <RiDeleteBin2Fill />
             </button>
-          )}
-          <button
-            className={styles.buttonDelete}
-            onClick={(e) => {
-              e.stopPropagation();
-              handleClickOnDelete(e);
-            }}
-          >
-            <RiDeleteBin2Fill />
-          </button>
-        </div>
+          </div>
+        )}
       </Link>
       <ConfirmModal
         isOpen={modalData.isOpen}

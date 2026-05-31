@@ -29,7 +29,6 @@ const CategoryFilter = ({ options }) => {
     setLocalSelectedOptions([]);
     dispatch(resetFilterCategory());
   };
-  console.log(options);
 
   return (
     <>
