@@ -80,6 +80,8 @@ const ClusterRow = ({
     };
   }, [debouncedOnChangeBid]);
 
+  console.log(currentUser.permissions);
+
   return (
     <div className={styles.clusterRow}>
       <div className={styles.clusterName}>{cluster.cluster}</div>
@@ -91,9 +93,10 @@ const ClusterRow = ({
             onChange={(checked) => onToggleDisabled(!checked)}
           />
         )}
-        {!currentUser.permissions.ad_camps_manage && (
-          <>{!cluster.disabled ? 'Активен' : 'Выключен'}</>
-        )}
+        {!currentUser.permissions.ad_camps_manage ||
+          (!currentUser.permissions.is_admin && (
+            <>{!cluster.disabled ? 'Активен' : 'Выключен'}</>
+          ))}
       </div>
       {unified ? (
         <></>

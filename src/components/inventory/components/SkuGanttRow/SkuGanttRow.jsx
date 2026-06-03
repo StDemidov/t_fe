@@ -7,25 +7,49 @@ const GanttTooltip = ({ tooltip }) => {
   if (!tooltip) return null;
   const { x, y, weekLabel, lines } = tooltip;
   return (
-    <div style={{
-      position: 'fixed', zIndex: 9999, pointerEvents: 'none',
-      left: x, top: y,
-      transform: 'translate(-50%, calc(-100% - 6px))',
-      background: 'rgba(17,24,39,0.88)',
-      borderRadius: 6, padding: '5px 9px',
-      minWidth: 100, maxWidth: 180,
-      boxShadow: '0 2px 10px rgba(0,0,0,0.22)',
-      fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
-    }}>
+    <div
+      style={{
+        position: 'fixed',
+        zIndex: 9999,
+        pointerEvents: 'none',
+        left: x,
+        top: y,
+        transform: 'translate(-50%, calc(-100% - 6px))',
+        background: 'rgba(17,24,39,0.88)',
+        borderRadius: 6,
+        padding: '5px 9px',
+        minWidth: 100,
+        maxWidth: 180,
+        boxShadow: '0 2px 10px rgba(0,0,0,0.22)',
+        fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+      }}
+    >
       {/* Week label — white, slightly bold */}
       {weekLabel && (
-        <div style={{ fontSize: 10, fontWeight: 600, color: '#fff', lineHeight: 1.5, marginBottom: 2 }}>
+        <div
+          style={{
+            fontSize: 10,
+            fontWeight: 600,
+            color: '#fff',
+            lineHeight: 1.5,
+            marginBottom: 2,
+          }}
+        >
           {weekLabel}
         </div>
       )}
       {/* Content lines — grayish */}
       {lines.map((line, i) => (
-        <div key={i} style={{ fontSize: 11, fontWeight: 400, color: '#B0B7C3', lineHeight: 1.5, whiteSpace: 'nowrap' }}>
+        <div
+          key={i}
+          style={{
+            fontSize: 11,
+            fontWeight: 400,
+            color: '#B0B7C3',
+            lineHeight: 1.5,
+            whiteSpace: 'nowrap',
+          }}
+        >
           {line}
         </div>
       ))}
@@ -37,8 +61,11 @@ const GanttTooltip = ({ tooltip }) => {
 const buildCells = (barcode, weeks, ordersMap, extraStock, startCalcDate) => {
   const barcodeOrders = ordersMap[barcode.barcode] || [];
   const dateFrom = startCalcDate ? new Date(startCalcDate) : null;
-  let stock = barcode.stock, extra = extraStock[barcode.barcode] || 0;
-  let oi = 0, stockUsed = false, extraUsed = false;
+  let stock = barcode.stock,
+    extra = extraStock[barcode.barcode] || 0;
+  let oi = 0,
+    stockUsed = false,
+    extraUsed = false;
   // Track the most recent order name AND amount for carry-over display
   let prevOrderName = null;
   let prevOrderAmount = null;
@@ -69,21 +96,40 @@ const buildCells = (barcode, weeks, ordersMap, extraStock, startCalcDate) => {
     }
 
     // Base status: purple only if new orders were added THIS week
-    let status = names.length > 0 ? CELL_STATUS.PURPLE
-      : stock >= forecast ? CELL_STATUS.GREEN
-      : stock > 0 ? CELL_STATUS.YELLOW
-      : CELL_STATUS.RED;
+    let status =
+      names.length > 0
+        ? CELL_STATUS.PURPLE
+        : stock >= forecast
+        ? CELL_STATUS.GREEN
+        : stock > 0
+        ? CELL_STATUS.YELLOW
+        : CELL_STATUS.RED;
 
-    const waitFuture = stock < forecast && oi < barcodeOrders.length && barcodeOrders[oi].date > week.endDate;
-    const waitStart = dateFrom && stock <= 0 && stock < forecast && oi >= barcodeOrders.length && week.endDate < dateFrom;
+    const waitFuture =
+      stock < forecast &&
+      oi < barcodeOrders.length &&
+      barcodeOrders[oi].date > week.endDate;
+    const waitStart =
+      dateFrom &&
+      stock <= 0 &&
+      stock < forecast &&
+      oi >= barcodeOrders.length &&
+      week.endDate < dateFrom;
 
     if (waitFuture || waitStart) {
       stock = 0;
       status = CELL_STATUS.GRAY;
     } else {
-      if (stock < forecast && extra > 0 && (!dateFrom || week.endDate >= dateFrom)) {
+      if (
+        stock < forecast &&
+        extra > 0 &&
+        (!dateFrom || week.endDate >= dateFrom)
+      ) {
         const add = Math.min(extra, forecast - stock);
-        extraUsed = true; stock += add; extra -= add; status = CELL_STATUS.BLUE;
+        extraUsed = true;
+        stock += add;
+        extra -= add;
+        status = CELL_STATUS.BLUE;
       }
       // Carry-over purple: prev order still covers this week's need
       // Only purple if stock STILL adequate (not in deficit) — mirrors old code exactly
@@ -95,16 +141,19 @@ const buildCells = (barcode, weeks, ordersMap, extraStock, startCalcDate) => {
     }
 
     if (status === CELL_STATUS.YELLOW && dateFrom) {
-      if (dateFrom > week.endDate) { stock = 0; status = CELL_STATUS.GRAY; }
-      else status = CELL_STATUS.RED;
+      if (dateFrom > week.endDate) {
+        stock = 0;
+        status = CELL_STATUS.GRAY;
+      } else status = CELL_STATUS.RED;
     }
 
     // Tooltip: for purple cells — show only current week's orders (or prevOrder for carry-over)
-    const tooltipOrders = status === CELL_STATUS.PURPLE
-      ? (newlyAdded.length > 0
+    const tooltipOrders =
+      status === CELL_STATUS.PURPLE
+        ? newlyAdded.length > 0
           ? newlyAdded
-          : [{ name: prevOrderName, amount: prevOrderAmount }])
-      : [];
+          : [{ name: prevOrderName, amount: prevOrderAmount }]
+        : [];
 
     return { status, names, stock, forecast, tooltipOrders };
   });
@@ -120,11 +169,22 @@ const CSS = {
 };
 
 // ─── SkuGanttRow ──────────────────────────────────────────────────────────────
-const SkuGanttRow = ({ sku, weeks, months, ordersMap, extraStock, startCalcDate, tableRef, onScroll, onExtraStockChange }) => {
+const SkuGanttRow = ({
+  sku,
+  weeks,
+  months,
+  ordersMap,
+  extraStock,
+  startCalcDate,
+  tableRef,
+  onScroll,
+  onExtraStockChange,
+}) => {
   const [tooltip, setTooltip] = useState(null);
 
   const { monthStartSet, weekStartSet } = useMemo(() => {
-    const mSet = new Set(), wSet = new Set();
+    const mSet = new Set(),
+      wSet = new Set();
     let idx = 0;
     months.forEach((m, mi) => {
       if (mi > 0) mSet.add(idx);
@@ -134,21 +194,36 @@ const SkuGanttRow = ({ sku, weeks, months, ordersMap, extraStock, startCalcDate,
     return { monthStartSet: mSet, weekStartSet: wSet };
   }, [months]);
 
-  const barcodeRows = useMemo(() => sku.barcodes.map(bc => {
-    const cells = buildCells(bc, weeks, ordersMap, extraStock, startCalcDate);
-    const ordersInBD = ordersMap[bc.barcode]
-      ? Math.round(ordersMap[bc.barcode].reduce((a, o) => a + o.amount, 0)) : 0;
+  const barcodeRows = useMemo(
+    () =>
+      sku.barcodes.map((bc) => {
+        const cells = buildCells(
+          bc,
+          weeks,
+          ordersMap,
+          extraStock,
+          startCalcDate
+        );
+        const ordersInBD = ordersMap[bc.barcode]
+          ? Math.round(ordersMap[bc.barcode].reduce((a, o) => a + o.amount, 0))
+          : 0;
 
-    const extraInput = extraStock[bc.barcode] || 0;
-    const avgOrders = bc.avgOrders > 0 ? bc.avgOrders : 1;
-    const buyout = bc.buyout > 0 ? bc.buyout : 1;
-    const turnover = Math.round((bc.stock + ordersInBD + extraInput) / avgOrders / buyout);
+        const extraInput = extraStock[bc.barcode] || 0;
+        const avgOrders = bc.avgOrders > 0 ? bc.avgOrders : 1;
+        const buyout = bc.buyout > 0 ? bc.buyout : 1;
+        const turnover = Math.round(
+          (bc.stock + ordersInBD + extraInput) / avgOrders / buyout
+        );
 
-    return { bc, cells, ordersInBD, turnover };
-  }), [sku.barcodes, weeks, ordersMap, extraStock, startCalcDate]);
+        return { bc, cells, ordersInBD, turnover };
+      }),
+    [sku.barcodes, weeks, ordersMap, extraStock, startCalcDate]
+  );
 
   const totals = useMemo(() => {
-    let sO = 0, sD = 0, sE = 0;
+    let sO = 0,
+      sD = 0,
+      sE = 0;
     barcodeRows.forEach(({ bc, cells, ordersInBD }) => {
       sO += ordersInBD;
       sE += extraStock[bc.barcode] || 0;
@@ -161,7 +236,7 @@ const SkuGanttRow = ({ sku, weeks, months, ordersMap, extraStock, startCalcDate,
   const monthlyDeficits = useMemo(() => {
     const result = [];
     let weekIdx = 0;
-    months.forEach(month => {
+    months.forEach((month) => {
       const lastWeekIdx = weekIdx + month.span - 1;
       let monthDeficit = 0;
       barcodeRows.forEach(({ cells }) => {
@@ -185,7 +260,7 @@ const SkuGanttRow = ({ sku, weeks, months, ordersMap, extraStock, startCalcDate,
 
     if (status === CELL_STATUS.PURPLE) {
       // Show orders: if amount known show it, otherwise just name (carry-over)
-      tooltipOrders.forEach(od => {
+      tooltipOrders.forEach((od) => {
         if (od.amount != null) {
           lines.push(`${od.name}: ${od.amount} шт.`);
         } else {
@@ -209,17 +284,20 @@ const SkuGanttRow = ({ sku, weeks, months, ordersMap, extraStock, startCalcDate,
     return lines.length > 0 ? lines : null;
   }, []);
 
-  const handleCellMouseEnter = useCallback((e, cell, weekLabel) => {
-    const lines = buildTooltipLines(cell);
-    if (!lines) return; // no tooltip for RED
-    const r = e.currentTarget.getBoundingClientRect();
-    setTooltip({
-      x: r.left + r.width / 2,
-      y: r.top,
-      weekLabel,
-      lines,
-    });
-  }, [buildTooltipLines]);
+  const handleCellMouseEnter = useCallback(
+    (e, cell, weekLabel) => {
+      const lines = buildTooltipLines(cell);
+      if (!lines) return; // no tooltip for RED
+      const r = e.currentTarget.getBoundingClientRect();
+      setTooltip({
+        x: r.left + r.width / 2,
+        y: r.top,
+        weekLabel,
+        lines,
+      });
+    },
+    [buildTooltipLines]
+  );
 
   const handleCellMouseLeave = useCallback(() => setTooltip(null), []);
 
@@ -234,36 +312,62 @@ const SkuGanttRow = ({ sku, weeks, months, ordersMap, extraStock, startCalcDate,
             return (
               <tr key={bc.barcode}>
                 <td className={styles.colSize}>{bc.size}</td>
-                <td className={styles.colOrders}>{ordersInBD || <span className={styles.dash}>—</span>}</td>
-                <td className={styles.colDeficit}>{deficit || <span className={styles.dash}>—</span>}</td>
-                <td className={styles.colTurnover}>{turnover || <span className={styles.dash}>—</span>}</td>
+                <td className={styles.colOrders}>
+                  {ordersInBD || <span className={styles.dash}>—</span>}
+                </td>
+                <td className={styles.colDeficit}>
+                  {deficit || <span className={styles.dash}>—</span>}
+                </td>
+                <td className={styles.colTurnover}>
+                  {turnover || <span className={styles.dash}>—</span>}
+                </td>
                 <td className={styles.colNewOrder}>
                   <input
                     type="number"
                     value={extraStock[bc.barcode] || ''}
-                    onChange={e => onExtraStockChange(bc.barcode, e.target.value)}
+                    onChange={(e) =>
+                      onExtraStockChange(bc.barcode, e.target.value)
+                    }
                     className={styles.extraStockInput}
                   />
                 </td>
                 {cells.map((cell, i) => {
                   const hasNames = cell.names.length > 0;
                   const hasNeg = !hasNames && cell.stock < 0;
+
                   const isMonth = monthStartSet.has(i);
                   const isWeek = !isMonth && weekStartSet.has(i);
                   return (
                     <td
                       key={i}
-                      className={`${styles.ganttCell} ${CSS[cell.status]} ${isMonth ? styles.monthSep : ''} ${isWeek ? styles.weekSep : ''} ${styles.cellHoverable}`}
-                      onMouseEnter={e => handleCellMouseEnter(e, cell, `${weeks[i].start}–${weeks[i].end}`)}
+                      className={`${styles.ganttCell} ${CSS[cell.status]} ${
+                        isMonth ? styles.monthSep : ''
+                      } ${isWeek ? styles.weekSep : ''} ${
+                        styles.cellHoverable
+                      } ${monthStartSet.has(i + 1) ? styles.backMonthSep : ''}`}
+                      onMouseEnter={(e) =>
+                        handleCellMouseEnter(
+                          e,
+                          cell,
+                          `${weeks[i].start}–${weeks[i].end}`
+                        )
+                      }
                       onMouseLeave={handleCellMouseLeave}
                     >
                       <div className={styles.cellInner}>
-                        {cell.status === CELL_STATUS.PURPLE && cell.tooltipOrders.map((od, idx) => (
-                          <div key={idx} className={styles.orderName}>{od.name}</div>
-                        ))}
-                        {cell.status !== CELL_STATUS.PURPLE && hasNames && cell.names.map((n, idx) => (
-                          <div key={idx} className={styles.orderName}>{n}</div>
-                        ))}
+                        {cell.status === CELL_STATUS.PURPLE &&
+                          cell.tooltipOrders.map((od, idx) => (
+                            <div key={idx} className={styles.orderName}>
+                              {od.name}
+                            </div>
+                          ))}
+                        {cell.status !== CELL_STATUS.PURPLE &&
+                          hasNames &&
+                          cell.names.map((n, idx) => (
+                            <div key={idx} className={styles.orderName}>
+                              {n}
+                            </div>
+                          ))}
                         {hasNeg && <div>{cell.stock}</div>}
                       </div>
                     </td>
@@ -288,7 +392,9 @@ const SkuGanttRow = ({ sku, weeks, months, ordersMap, extraStock, startCalcDate,
                 <td
                   key={mi}
                   colSpan={month.span}
-                  className={`${styles.monthlyDeficitCell} ${mi > 0 ? styles.monthSep : ''}`}
+                  className={`${styles.monthlyDeficitCell} ${
+                    mi > 0 ? styles.monthSep : ''
+                  }`}
                 >
                   {deficit > 0 ? `-${deficit}` : ''}
                 </td>

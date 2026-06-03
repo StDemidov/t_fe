@@ -116,7 +116,15 @@
   width: 42px;
   min-width: 42px;
   max-width: 42px;
-  padding: 2px 1px;
+  padding: 1px 1px;
+}
+
+.ganttCell.monthSep {
+  padding: 2px 1px 2px 4px;
+}
+
+.ganttCell.backMonthSep {
+  padding: 2px 4px 2px 1px;
 }
 
 /* cellInner: the colored box inside — uses full remaining height */
@@ -124,35 +132,35 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 26px;
+  height: 30px;
   font-size: 12px;
   font-weight: 700;
 }
 
 /* Colors — background on cellInner, NOT on td */
 .cellGreen .cellInner {
-  background: #229f52;
+  background: #72d399;
   color: white;
 }
 .cellYellow .cellInner {
-  background: #eeda07;
+  background: #fbf183;
   color: #000000;
 }
 .cellRed .cellInner {
-  background: #f11e5a;
+  background: #ff7c90;
   color: #ffffff;
 }
 .cellGray .cellInner {
-  background: #6b7280;
+  background: #99999a;
   color: white;
 }
 .cellBlue .cellInner {
-  background: #2855e9;
+  background: #67abef;
   color: white;
 }
 .cellPurple .cellInner {
-  background: #5b21b6;
-  color: white;
+  background: #965bf5;
+  color: rgb(255, 255, 255);
 }
 
 /* Month separator — thin, subtle purple (v6 style) */

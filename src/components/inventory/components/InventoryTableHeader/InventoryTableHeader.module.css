@@ -91,9 +91,16 @@
   padding: 2px 4px;
 }
 .colTurnover {
-  width: 60px; min-width: 60px; max-width: 60px;
-  position: sticky; left: 194px; z-index: 5; background: #fff;
-  font-size: 12px; color: #9CA3AF; padding: 2px 4px;
+  width: 60px;
+  min-width: 60px;
+  max-width: 60px;
+  position: sticky;
+  left: 194px;
+  z-index: 5;
+  background: #fff;
+  font-size: 12px;
+  color: #9ca3af;
+  padding: 2px 4px;
 }
 
 .colNewOrder {
@@ -170,6 +177,15 @@
   height: 30px;
   padding: 2px 1px;
 }
+
+.weekCell.weekMonthSep {
+  padding: 2px 1px 2px 4px;
+}
+
+.weekCell.backWeekMonthSep {
+  padding: 2px 4px 2px 1px;
+}
+
 /* Week month separator — matches gantt monthSep */
 .weekMonthSep {
   border-left: 1px solid #e5e7eb !important;
