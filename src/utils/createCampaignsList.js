@@ -2,7 +2,6 @@ import { getDate } from './beaty';
 import { calculateArraySum } from './calculations';
 
 const createCampaignsList = (campaigns) => {
-  console.lo;
   const campaignList = campaigns.map((camp) => {
     const sumViews = calculateArraySum(camp.views);
     const sumClicks = calculateArraySum(camp.clicks);
@@ -48,6 +47,9 @@ const createCampaignsList = (campaigns) => {
       sumViews: sumViews,
       sumClicks: sumClicks,
       currentCtr: currentCtr,
+      fixed: camp.fixed,
+      fixedCtr: camp.fixed_ctr,
+      fixedAtc: camp.fixed_atc,
     };
   });
   return campaignList;

@@ -13,6 +13,9 @@ const ClustersBox = ({
   lastUpdateClusters,
   campId,
   unified = false,
+  fixed,
+  fixedCtr,
+  fixedAtc,
 }) => {
   return (
     <div className={styles.clustersBox}>
@@ -28,6 +31,9 @@ const ClustersBox = ({
           lastUpdateClusters={lastUpdateClusters}
           campId={campId}
           unified={unified}
+          fixed={fixed}
+          fixedCtr={fixedCtr}
+          fixedAtc={fixedAtc}
         />
       ) : (
         <div className={styles.emptyData}>Данных по кластерам пока нет</div>

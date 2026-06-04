@@ -80,8 +80,6 @@ const ClusterRow = ({
     };
   }, [debouncedOnChangeBid]);
 
-  console.log(currentUser.permissions);
-
   return (
     <div className={styles.clusterRow}>
       <div className={styles.clusterName}>{cluster.cluster}</div>

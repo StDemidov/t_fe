@@ -92,6 +92,24 @@ export const fetchCampaign = createAsyncThunk(
   }
 );
 
+export const fixCampaign = createAsyncThunk(
+  'campaigns/fixCampaign',
+  async (url, thunkAPI) => {
+    try {
+      const res = await api.get(url);
+      thunkAPI.dispatch(setNotification('Изменения применены!'));
+      return res.data;
+    } catch (error) {
+      if (error.request.status == 401) {
+        thunkAPI.dispatch(clearCredentials());
+        thunkAPI.dispatch(setError('Повторите вход!'));
+      } else {
+        thunkAPI.dispatch(setError('Ошибка на сервере'));
+      }
+    }
+  }
+);
+
 export const fetchDates = createAsyncThunk(
   'campaigns/fetchDates',
   async (url, thunkAPI) => {
@@ -398,6 +416,15 @@ const campaignsSlice = createSlice({
       const [id] = Object.keys(newCamp);
       state.campaignsById[id] = newCamp[id];
     });
+    builder.addCase(fixCampaign.pending, (state) => {
+      state.clustersIsLoading = true;
+    });
+    builder.addCase(fixCampaign.fulfilled, (state, action) => {
+      state.clustersIsLoading = false;
+      const newCamp = createCampaignSingle(action.payload);
+      const [id] = Object.keys(newCamp);
+      state.campaignsById[id] = newCamp[id];
+    });
     builder.addCase(editCampaigns.pending, (state) => {
       state.isLoading = true;
     });
@@ -459,4 +486,5 @@ export const selectClustersSortingType = (state) =>
   state.campaigns.clustersSorting;
 export const selectShowClustersDisabled = (state) =>
   state.campaigns.showClustersDisabled;
+export const selectCampById = (state) => state.campaignsById;
 export default campaignsSlice.reducer;

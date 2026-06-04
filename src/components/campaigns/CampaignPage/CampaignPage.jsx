@@ -140,6 +140,9 @@ const CampaignPage = () => {
                 : campaign.lastUpdateClusters
               : campaign.lastUpdateClusters
           }
+          fixed={campaign.stats.fixed}
+          fixedCtr={campaign.stats.fixedCtr}
+          fixedAtc={campaign.stats.fixedAtc}
         />
       </div>
     </section>

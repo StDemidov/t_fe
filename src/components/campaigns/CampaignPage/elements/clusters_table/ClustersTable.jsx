@@ -8,6 +8,8 @@ import { TiArrowSortedDown } from 'react-icons/ti';
 
 import {
   editClusters,
+  fixCampaign,
+  selectCampById,
   selectClustersIsLoading,
   selectClustersSortingType,
   selectShowClustersDisabled,
@@ -18,6 +20,7 @@ import { selectNotificationMessage } from '../../../../../redux/slices/notificat
 import SortingButtons from './SortingButtons';
 import DisabledFilter from './DisabledFilter';
 import { selectUser } from '../../../../../redux/slices/authSlice';
+import ConfirmModal from '../../../../confirm_modal/ConfirmModal';
 
 const ClustersTable = ({
   clusters,
@@ -27,6 +30,9 @@ const ClustersTable = ({
   totalAddToCart,
   totalSpend,
   campId,
+  fixedCtr,
+  fixedAtc,
+  fixed,
   unified = false,
 }) => {
   const [changes, setChanges] = useState({});
@@ -37,7 +43,28 @@ const ClustersTable = ({
   const clustersSortingType = useSelector(selectClustersSortingType);
   const showDisabled = useSelector(selectShowClustersDisabled);
   const currentUser = useSelector(selectUser);
+  const [modalData, setModalData] = useState({
+    isOpen: false,
+    text: '',
+    onConfirm: null,
+  });
+  const [newFixed, setNewFixed] = useState(fixed);
   const dispatch = useDispatch();
+
+  const openConfirmModal = (text, onConfirm) => {
+    setModalData({
+      isOpen: true,
+      text,
+      onConfirm: () => {
+        onConfirm();
+        setModalData({ ...modalData, isOpen: false });
+      },
+    });
+  };
+
+  const closeModal = () => {
+    setModalData({ ...modalData, isOpen: false });
+  };
 
   useEffect(() => {
     if (notificationMessage === 'Изменения применены!') {
@@ -83,6 +110,21 @@ const ClustersTable = ({
     );
   };
 
+  const handleClickOnFix = (e) => {
+    e.stopPropagation();
+    e.preventDefault();
+
+    openConfirmModal(
+      !fixed
+        ? `Вы уверены, что хотите зафиксировать кластера?`
+        : `Вы уверены, что хотите cнять фиксацию кластеров?`,
+      (e) => {
+        dispatch(fixCampaign(`${hostName}/ad_camps/fix/${campId}`));
+        setNewFixed(!newFixed);
+      }
+    );
+  };
+
   const handleClickOnApplyClusterSorting = (e) => {
     e.stopPropagation();
     e.preventDefault();
@@ -121,26 +163,52 @@ const ClustersTable = ({
 
   return (
     <div className={styles.clustersTable}>
-      <div className={styles.applyClusterChanges}>
-        <DisabledFilter />
-        {(currentUser.permissions.ad_camps_manage ||
-          currentUser.permissions.is_admin) && (
-          <button
-            className={
-              Object.keys(changes).length === 0 || clustersIsLoading
-                ? styles.disabledButton
-                : styles.applyButton
-            }
-            disabled={
-              Object.keys(changes).length === 0 || clustersIsLoading
-                ? true
-                : false
-            }
-            onClick={handleClickOnApply}
-          >
-            {clustersIsLoading ? 'В процессе' : 'Применить изменения'}
-          </button>
-        )}
+      <div className={styles.preHeader}>
+        <div className={styles.fixedMetricsBox}>
+          {fixedCtr && (
+            <div className={styles.fixedMetric}>
+              Фикс. CTR {(fixedCtr * 100).toFixed(2)} %
+            </div>
+          )}
+          {fixedAtc && (
+            <div className={styles.fixedMetric}>
+              Фикс. CR {(fixedAtc * 100).toFixed(2)} %
+            </div>
+          )}
+        </div>
+        <div className={styles.applyClusterChanges}>
+           
+          <DisabledFilter />
+          {(currentUser.permissions.ad_camps_manage ||
+            currentUser.permissions.is_admin) &&
+            !unified && (
+              <button
+                className={styles.fixButton}
+                disabled={clustersIsLoading ? true : false}
+                onClick={handleClickOnFix}
+              >
+                {newFixed ? 'Снять фиксацию' : 'Зафиксировать'}
+              </button>
+            )}
+          {(currentUser.permissions.ad_camps_manage ||
+            currentUser.permissions.is_admin) && (
+            <button
+              className={
+                Object.keys(changes).length === 0 || clustersIsLoading
+                  ? styles.disabledButton
+                  : styles.applyButton
+              }
+              disabled={
+                Object.keys(changes).length === 0 || clustersIsLoading
+                  ? true
+                  : false
+              }
+              onClick={handleClickOnApply}
+            >
+              {clustersIsLoading ? 'В процессе' : 'Применить изменения'}
+            </button>
+          )}
+        </div>
       </div>
 
       <div className={styles.clustersHeader}>
@@ -275,6 +343,12 @@ const ClustersTable = ({
         })}
         <div id="clusters-loader" style={{ height: 20 }} />
       </div>
+      <ConfirmModal
+        isOpen={modalData.isOpen}
+        text={modalData.text}
+        onConfirm={modalData.onConfirm}
+        onCancel={closeModal}
+      />
     </div>
   );
 };

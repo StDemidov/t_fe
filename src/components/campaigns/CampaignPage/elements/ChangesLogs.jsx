@@ -1,7 +1,11 @@
 import { getDate } from '../../../../utils/beaty';
 import { PiCoinsBold } from 'react-icons/pi';
 
-import { MdRocketLaunch } from 'react-icons/md';
+import {
+  MdRocketLaunch,
+  MdOutlineGpsNotFixed,
+  MdGpsFixed,
+} from 'react-icons/md';
 import { HiPauseCircle } from 'react-icons/hi2';
 import { BsSignStopFill } from 'react-icons/bs';
 
@@ -44,6 +48,8 @@ const ICONS = {
   STARTED: <MdRocketLaunch />,
   PAUSED: <HiPauseCircle />,
   ENDED: <BsSignStopFill />,
+  UNFIXED: <MdOutlineGpsNotFixed />,
+  FIXED: <MdGpsFixed />,
 };
 
 export default ChangesLogs;
