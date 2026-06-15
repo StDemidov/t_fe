@@ -67,6 +67,7 @@ const CampaignPage = () => {
         id: item.id,
         cluster: item.cluster,
         disabled: item.disabled,
+        fixedByUser: item.fixedByUser,
         bid: item.bid,
         views: data.views,
         clicks: data.clicks,

@@ -3,8 +3,9 @@ import ClusterRow from './ClusterRow';
 import styles from './style.module.css';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { TiArrowSortedUp } from 'react-icons/ti';
-import { TiArrowSortedDown } from 'react-icons/ti';
+import { TbProgressCheck } from 'react-icons/tb';
+
+import { TbProgressX } from 'react-icons/tb';
 
 import {
   editClusters,
@@ -125,6 +126,14 @@ const ClustersTable = ({
     );
   };
 
+  const disableAllActivity = (clusters) => {
+    clusters.map((item) => updateField(item.id, 'disabled', true));
+  };
+
+  const enableAllActivity = (clusters) => {
+    clusters.map((item) => updateField(item.id, 'disabled', false));
+  };
+
   const handleClickOnApplyClusterSorting = (e) => {
     e.stopPropagation();
     e.preventDefault();
@@ -213,7 +222,23 @@ const ClustersTable = ({
 
       <div className={styles.clustersHeader}>
         <div className={styles.clusterName}>Кластер</div>
-        <div className={styles.clusterActivity}>Активность</div>
+        <div className={styles.clusterActivity}>
+          Активность
+          {!unified ? (
+            <div className={styles.onOffActivity}>
+              <TbProgressCheck
+                className={styles.onOffActivityButton}
+                onClick={() => enableAllActivity(sortedClusters)}
+              />
+              <TbProgressX
+                className={styles.onOffActivityButton}
+                onClick={() => disableAllActivity(sortedClusters)}
+              />
+            </div>
+          ) : (
+            <></>
+          )}
+        </div>
         {unified ? <></> : <div className={styles.clusterBid}>Ставка</div>}
         <div className={styles.clusterViews}>
           <div>

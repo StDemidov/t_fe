@@ -1,6 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { calculateArraySum } from '../../../../../utils/calculations';
-import BarplotCampaign from '../BarplotCampaign';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import BarplotCell from '../BarplotCell';
 import LineplotCell from '../LineplotCell';
 import styles from './style.module.css';
@@ -8,6 +6,7 @@ import SwitchActivity from './SwitchActivity';
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { selectUser } from '../../../../../redux/slices/authSlice';
+import { FaUserEdit } from 'react-icons/fa';
 
 const ClusterRow = ({
   cluster,
@@ -82,7 +81,14 @@ const ClusterRow = ({
 
   return (
     <div className={styles.clusterRow}>
-      <div className={styles.clusterName}>{cluster.cluster}</div>
+      <div className={styles.clusterName}>
+        {cluster.cluster}{' '}
+        {cluster.fixedByUser && unified ? (
+          <FaUserEdit className={styles.userEdited} />
+        ) : (
+          ''
+        )}
+      </div>
       <div className={styles.clusterActivity}>
         {(currentUser.permissions.ad_camps_manage ||
           currentUser.permissions.is_admin) && (

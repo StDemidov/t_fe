@@ -48,6 +48,29 @@
   padding: 0.5vw;
 }
 
+.clusterName {
+  display: flex;
+  gap: 0.3vw;
+  align-items: center;
+  justify-content: center;
+  .userEdited {
+    color: green;
+    font-size: 0.7vw;
+  }
+}
+
+.onOffActivity {
+  display: flex;
+  flex-direction: row;
+  font-size: 1vw;
+  margin-bottom: 0.3vw;
+  margin-left: 0.3vw;
+  .onOffActivityButton:hover {
+    color: green;
+    cursor: pointer;
+  }
+}
+
 .clusterBid input {
   width: 50%;
   height: 1.5vw;
