@@ -1,0 +1,5 @@
+/**
+ * Design tokens для новой структуры.
+ * Пока re-export из legacy tokens/colors.css — единый источник цветов.
+ */
+@import '../../../tokens/colors.css';

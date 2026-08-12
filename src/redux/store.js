@@ -25,6 +25,7 @@ import regorupReducer from './slices/regroupSlice';
 import mainDashboardReducer from './slices/mainDashboardSlice';
 import inventoryReducer from '../components/inventory/redux/inventorySlice';
 import inventoryFilterReducer from '../components/inventory/redux/inventoryFilterSlice';
+import productCardsReducer from '../entities/product-card/model/productCardsSlice';
 
 import { persistReducer, persistStore } from 'redux-persist';
 import { combineReducers } from '@reduxjs/toolkit';
@@ -101,6 +102,7 @@ const rootReducer = combineReducers({
   mainDashboard: mainDashboardReducer,
   inventory: persistedInventoryReducer,
   inventoryFilter: persistedInventoryFilterReducer,
+  productCards: productCardsReducer,
 });
 
 const store = configureStore({

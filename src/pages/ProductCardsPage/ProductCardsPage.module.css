@@ -1,0 +1,89 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  height: calc(100vh - 150px);
+}
+
+.forbidden {
+  color: var(--color-neutral-500);
+}
+
+.canvasArea {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+}
+
+.filtersRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.sorters {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-left: auto;
+}
+
+.sorterCaption {
+  display: inline-flex;
+  align-items: center;
+  color: var(--color-main-500);
+}
+
+.sorterCaption svg {
+  font-size: 18px;
+}
+
+.skeleton {
+  flex: 1;
+  min-height: 0;
+  position: relative;
+  overflow: hidden;
+  background: var(--color-neutral-200);
+  border-radius: 10px;
+}
+
+.skeleton::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.6),
+    transparent
+  );
+  animation: shimmer 1.4s infinite;
+}
+
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.emptyState {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  color: var(--color-neutral-500);
+}
+
+.emptyIcon {
+  font-size: 56px;
+}
+
+.emptyText {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+}

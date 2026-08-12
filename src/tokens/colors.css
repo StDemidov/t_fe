@@ -43,4 +43,8 @@
   --color-plot-pink: #e84393;
   --color-plot-blue: #2a9fd6;
   --color-plot-slate: #a3b0c0;
+
+  /* Плашка номера карточки */
+  --color-card-id-bg: #6d28d9;
+  --color-card-id-text: #d7ff00;
 }

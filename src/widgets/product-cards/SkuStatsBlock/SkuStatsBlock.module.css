@@ -1,0 +1,79 @@
+.block {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  padding: 3px 4px;
+  border-radius: 6px;
+  font-size: 8px;
+  overflow: hidden;
+  box-sizing: border-box;
+  max-height: 0;
+  opacity: 0;
+  pointer-events: none;
+  transition: max-height 0.12s ease-in, opacity 0.12s ease-in;
+}
+
+.open {
+  max-height: 90px;
+  opacity: 1;
+  pointer-events: auto;
+  transition: max-height 0.18s ease-out, opacity 0.18s ease-out;
+}
+
+.badges {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 2px;
+}
+
+.badge {
+  flex: 1;
+  display: block;
+  text-align: center;
+  font-size: 8px;
+  font-weight: 600;
+  line-height: 1.6;
+  border-radius: 4px;
+}
+
+.badgeLink {
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.badgeLink:hover {
+  filter: brightness(0.95);
+}
+
+.statusActive {
+  background: var(--color-status-success-secondary);
+  color: var(--color-status-success-primary);
+}
+
+.statusPaused {
+  background: var(--color-status-attention-secondary);
+  color: var(--color-status-attention-primary);
+}
+
+.statusNone {
+  background: var(--color-status-error-secondary);
+  color: var(--color-status-error-primary);
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 4px;
+  line-height: 1.4;
+}
+
+.label {
+  color: var(--color-neutral-500);
+}
+
+.value {
+  font-weight: 600;
+  color: var(--color-neutral-900);
+  white-space: nowrap;
+}

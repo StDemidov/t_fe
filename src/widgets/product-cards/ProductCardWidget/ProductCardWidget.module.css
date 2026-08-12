@@ -1,0 +1,277 @@
+.root {
+  width: 240px;
+  background: var(--color-neutral-50);
+  border: 1px solid var(--color-neutral-200);
+  border-radius: 10px;
+  padding: 12px;
+  contain: layout style paint;
+  /* За кадр раскрытия flex-ряд раскладывает только видимые карточки,
+     остальные учитываются по последнему реальному размеру. */
+  content-visibility: auto;
+  contain-intrinsic-size: auto 440px;
+  /* Своя текстура слоя: при раскрытии/схлопывании статы перерисовывается
+     только эта карточка, а не весь слой холста со всеми фотками. */
+  will-change: transform;
+}
+
+.outOfStock .grid {
+  filter: grayscale(1);
+}
+
+.outOfStock .info {
+  opacity: 0.65;
+}
+
+.outOfStock .badge {
+  background: var(--color-neutral-300);
+  color: var(--color-neutral-600);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.headerLeft,
+.headerRight {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.headerRight {
+  flex-shrink: 0;
+}
+
+.badge {
+  flex-shrink: 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-card-id-text);
+  background: var(--color-card-id-bg);
+  border-radius: 999px;
+  padding: 2px 10px;
+}
+
+.wbLink {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--color-neutral-50);
+  line-height: 0;
+  transition: background 0.15s ease;
+}
+
+.wbLink:hover {
+  background: var(--color-neutral-100);
+}
+
+.wbLogo {
+  width: 16px;
+  height: 16px;
+  object-fit: contain;
+}
+
+.moreButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: none;
+  border-radius: 50%;
+  background: var(--color-neutral-50);
+  color: var(--color-main-600);
+  cursor: pointer;
+  transition: color 0.15s ease, background 0.15s ease;
+}
+
+.moreButton:hover {
+  background: var(--color-neutral-100);
+}
+
+.moreButtonActive,
+.moreButtonActive:hover {
+  background: var(--color-card-id-bg);
+  color: var(--color-card-id-text);
+}
+
+.refreshingIcon {
+  animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.badge {
+  flex-shrink: 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-card-id-text);
+  background: var(--color-card-id-bg);
+  border-radius: 999px;
+  padding: 2px 10px;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 8px;
+  margin-bottom: 10px;
+  background: var(--color-main-50);
+  border: 1px solid var(--color-neutral-200);
+  border-radius: 8px;
+}
+
+.abcRow {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 4px;
+}
+
+.abcChip {
+  font-size: 10px;
+  font-weight: 600;
+  border-radius: 4px;
+  padding: 1px 5px;
+  background: var(--color-neutral-100);
+  color: var(--color-neutral-600);
+}
+
+.abc_a {
+  background: var(--color-status-success-secondary);
+  color: var(--color-status-success-primary);
+}
+
+.abc_b {
+  background: var(--color-status-attention-secondary);
+  color: var(--color-status-attention-primary);
+}
+
+.abc_c {
+  background: var(--color-status-error-secondary);
+  color: var(--color-status-error-primary);
+}
+
+.abc_new {
+  background: var(--color-status-info-secondary);
+  color: var(--color-status-info-primary);
+}
+
+.abc_aaa {
+  background: var(--color-main-100);
+  color: var(--color-main-700);
+}
+
+.metric {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+  font-size: 12px;
+}
+
+.chartBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.chartBlock .metricLabel {
+  font-size: 11px;
+}
+
+.statsArea {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Панель и краткие метрики всегда в DOM: высота блока статы меняется
+   единым непрерывным движением (сумма высот монотонна), без размонтирования
+   и скачков в конце анимации. Открытие 0.18s ease-out, закрытие 0.12s ease-in. */
+.statsArea {
+  display: flex;
+  flex-direction: column;
+}
+
+.chartsPanel {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 0;
+  opacity: 0;
+  pointer-events: none;
+  overflow: hidden;
+  box-sizing: border-box;
+  transition: max-height 0.12s ease-in, opacity 0.12s ease-in;
+}
+
+.infoOpen .chartsPanel {
+  max-height: 240px;
+  opacity: 1;
+  pointer-events: auto;
+  transition: max-height 0.18s ease-out, opacity 0.18s ease-out;
+}
+
+.brief {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-height: 62px;
+  opacity: 1;
+  overflow: hidden;
+  transition: max-height 0.12s ease-in, opacity 0.12s ease-in;
+}
+
+.infoOpen .brief {
+  max-height: 0;
+  opacity: 0;
+  pointer-events: none;
+  transition: max-height 0.18s ease-out, opacity 0.18s ease-out;
+}
+
+.metricLabel {
+  color: var(--color-neutral-500);
+}
+
+.metricValue {
+  font-weight: 600;
+  color: var(--color-neutral-900);
+  white-space: nowrap;
+}
+
+.metricCategory {
+  font-weight: 600;
+  color: var(--color-neutral-900);
+  text-align: right;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 60%;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(64px, 1fr));
+  gap: 8px;
+}
+
+.skuCell {
+  display: flex;
+  flex-direction: column;
+}
+
+.skuImageWrap {
+  margin-bottom: 4px;
+}
+

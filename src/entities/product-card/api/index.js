@@ -1,0 +1,1 @@
+export { fetchProductCards } from './fetchProductCards';

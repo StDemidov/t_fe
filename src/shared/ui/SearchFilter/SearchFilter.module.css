@@ -1,0 +1,54 @@
+.root {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.input {
+  width: 220px;
+  height: 34px;
+  box-sizing: border-box;
+  padding: 0 36px 0 10px;
+  border: 1px solid var(--color-neutral-300);
+  border-radius: 8px;
+  background: var(--color-neutral-50);
+  font-size: 13px;
+  color: var(--color-neutral-900);
+  outline: none;
+}
+
+.input:focus {
+  border-color: var(--color-main-500);
+}
+
+.input:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.submit {
+  position: absolute;
+  right: 4px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 26px;
+  height: 26px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--color-neutral-600);
+  cursor: pointer;
+}
+
+.submit:hover {
+  background: var(--color-main-100);
+  color: var(--color-main-700);
+}
+
+.submit:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

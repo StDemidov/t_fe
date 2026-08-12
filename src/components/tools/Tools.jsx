@@ -81,6 +81,19 @@ const Tools = () => {
                 </div>
               </NavLink>
             )}
+            {(currentUser.permissions.is_admin ||
+              currentUser.permissions.vendorcodes) && (
+              <NavLink to="cards" className={styles.link}>
+                <div className={styles.card}>
+                  <div className={styles.cardContent}>
+                    <p className={styles.cardTitle}>Карточки товаров</p>
+                    <p className={styles.cardPara}>
+                      Холст с карточками товаров и свободными товарами
+                    </p>
+                  </div>
+                </div>
+              </NavLink>
+            )}
           </div>
         </>
       )}

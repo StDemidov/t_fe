@@ -414,9 +414,8 @@ const SingleVendorCode = () => {
                 <div className={styles.headerCell}>Размер</div>
                 <div className={styles.headerCell}>Заказы</div>
                 <div className={styles.headerCell}>Остатки</div>
-                <div className={styles.headerCell}>Остаток МС</div>
                 <div className={styles.headerCell}>Обор-ть WB</div>
-                <div className={styles.headerCell}>Обор-ть общая</div>
+                <div className={styles.headerCell}>Обор-ть (Выкупы)</div>
                 <div className={styles.headerCellIcon}>
                   <button
                     onClick={handleExportXlsx}
@@ -499,19 +498,19 @@ const SingleVendorCode = () => {
                             </div>
                           </div>
                         </div>
-                        <div className={styles.barcodeCell}>
-                          {barcode.ms_stocks_last === 0 ? (
-                            <PiEmptyDuotone color="red" />
-                          ) : (
-                            `${barcode.ms_stocks_last}`
-                          )}
-                        </div>
+
                         <div className={styles.barcodeCell}>
                           {barcode.turnover_wb ? barcode.turnover_wb : 0}
                         </div>
                         <div className={styles.barcodeCell}>
-                          {barcode.turnover_total ? barcode.turnover_total : 0}
+                          {barcode.turnover_total
+                            ? (
+                                (barcode.turnover_wb / vcData?.buyoutP) *
+                                100
+                              ).toFixed(0)
+                            : 0}
                         </div>
+
                         <div className={styles.barcodeCellIcon} />
                       </div>
                     );

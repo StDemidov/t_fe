@@ -112,8 +112,6 @@
 
 .headerRow {
   margin: 20px 20px 10px 20px;
-  display: flex;
-  flex-direction: row;
   font-weight: bold;
   border-radius: 8px;
   background-color: #f9f9f9;
@@ -121,6 +119,9 @@
   color: #8254ff;
   font-family: 'BebasNeue', sans-serif;
   text-transform: uppercase;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
   align-items: center;
 }
 
@@ -151,9 +152,12 @@
 }
 
 .headerCell {
-  padding: 15px;
+  padding: 5px;
+  display: flex;
+  justify-content: center;
   text-align: center;
   width: 17%;
+  vertical-align: center;
   min-width: 100px;
 }
 

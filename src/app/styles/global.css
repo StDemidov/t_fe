@@ -1,0 +1,39 @@
+@import './tokens/index.css';
+
+/**
+ * Глобальные утилитарные классы для новых страниц.
+ * Подключайте в новых page-компонентах при необходимости.
+ */
+
+.page {
+  padding: 24px;
+}
+
+.pageHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.pageTitle {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--color-neutral-900);
+}
+
+.filtersRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.card {
+  background: var(--color-neutral-50);
+  border: 1px solid var(--color-neutral-200);
+  border-radius: 8px;
+  padding: 16px;
+}

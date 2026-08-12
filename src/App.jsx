@@ -42,6 +42,7 @@ import MainRegroupPage from './components/regroup_tool/MainRegroupPage';
 import MainDashboardContainer from './components/main_dashboard/MainDashboardContainer';
 import InventoryPage from './components/inventory/components/InventoryPage';
 import ForbiddenPage from './components/forbidden/ForbiddenPage';
+import { NewAppRoutes } from './app/router';
 
 function App() {
   const currentUser = useSelector(selectUser);
@@ -130,6 +131,7 @@ function App() {
                     path="tools/tasks_drain/edit/:id"
                     element={<TaskEditDrain />}
                   />
+                  {NewAppRoutes()}
                   <Route path="*" element={<NotFound />} />
                 </Route>
               </Routes>

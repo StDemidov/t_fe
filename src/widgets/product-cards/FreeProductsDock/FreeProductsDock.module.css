@@ -1,0 +1,87 @@
+.root {
+  width: 100%;
+  background: var(--color-neutral-50);
+  border: 1px dashed var(--color-main-300);
+  border-radius: 10px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  contain: layout style paint;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.headerRight {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-main-700);
+}
+
+.count {
+  flex-shrink: 0;
+  font-size: 12px;
+  color: var(--color-neutral-500);
+  background: var(--color-neutral-100);
+  border-radius: 999px;
+  padding: 2px 8px;
+}
+
+.moreButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: none;
+  border-radius: 50%;
+  background: var(--color-neutral-50);
+  color: var(--color-main-600);
+  cursor: pointer;
+  transition: color 0.15s ease, background 0.15s ease;
+}
+
+.moreButton:hover {
+  background: var(--color-neutral-100);
+}
+
+.moreButtonActive,
+.moreButtonActive:hover {
+  background: var(--color-card-id-bg);
+  color: var(--color-card-id-text);
+}
+
+.abcRow {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.abcLabel {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-neutral-500);
+}
+
+.abcThumbs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.thumb {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
