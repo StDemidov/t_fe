@@ -207,7 +207,8 @@ const enrichItem = (item) => {
     salesSum: sumDaily(item.salesFbs) + sumDaily(item.salesFbw),
     ebitdaDayFbs: avgDaily(item.totalEbitdaFbs),
     ebitdaDayFbw: avgDaily(item.totalEbitdaFbw),
-    ebitdaDay: avgDaily(item.ebitda),
+    ebitdaDay:
+      sumDaily(item.totalEbitdaFbs) + sumDaily(item.totalEbitdaFbw),
     // Среднее значение EBITDA по дням — база для ROI.
     avgEbitda: avgDaily(item.ebitda),
     // ROI: (avgEbitda − avgCps) / себестоимость без НДС, в долях.

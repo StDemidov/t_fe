@@ -42,6 +42,16 @@ const FIELD_LABELS = {
 /** Поля, которые выводятся плашками (в нужном порядке: категория, лекало, стиль). */
 const BADGE_FIELDS = ['category', 'pattern', 'style'];
 
+/** Порядок размеров для таблицы размеров/баркодов. */
+const SIZE_ORDER = [
+  'XXS-XS', 'S-M', 'L-XL',
+  'XXS', 'XS', 'S', 'M', 'L', 'XL', 'XXL', '4XL',
+  'XS/155', 'S/155', 'M/155', 'L/155', 'XL/155', 'XXL/155',
+  'XS/175', 'S/175', 'M/175', 'L/175', 'XL/175', 'XXL/175',
+  'XS РОСТ 1', 'S РОСТ 1', 'M РОСТ 1', 'L РОСТ 1', 'XL РОСТ 1', 'XXL РОСТ 1',
+  'XS РОСТ 2', 'S РОСТ 2', 'M РОСТ 2', 'L РОСТ 2', 'XL РОСТ 2', 'XXL РОСТ 2',
+];
+
 const normKey = (key) => String(key).toLowerCase();
 
 /** Даты YYYY-mm-dd приводим к виду dd-mm-YYYY. */
@@ -870,6 +880,14 @@ const SkuDetailPage = () => {
 
   // Список размеров с их метриками (из skuMetrics, с фолбэком на верхний уровень).
   const chrtIdsMetrics = data?.skuMetrics?.chrtIdsMetrics ?? data?.chrtIdsMetrics ?? [];
+  // Располагаем размеры в порядке SIZE_ORDER; неизвестные — в конце прежним порядком.
+  const sizeRank = (size) => {
+    const idx = SIZE_ORDER.indexOf(String(size));
+    return idx === -1 ? SIZE_ORDER.length : idx;
+  };
+  const sizesSorted = [...chrtIdsMetrics].sort(
+    (a, b) => sizeRank(a.size) - sizeRank(b.size)
+  );
 
   // Сезонные коэффициенты по неделям года: бэкенд может отдавать их как
   // массив, строку через запятую или объект { неделя: значение }, а ключи —
@@ -1240,7 +1258,7 @@ const SkuDetailPage = () => {
         </div>
       )}
 
-      {chrtIdsMetrics.length > 0 && (
+      {sizesSorted.length > 0 && (
         <div className={`card ${styles.sizesCard}`}>
           <div className={styles.sizesScroll}>
           <table className={styles.sizesTable}>
@@ -1260,7 +1278,7 @@ const SkuDetailPage = () => {
               </tr>
             </thead>
             <tbody>
-              {chrtIdsMetrics.map((row, idx) => {
+              {sizesSorted.map((row, idx) => {
                 const rowSalesDatasets = [
                   {
                     name: 'FBW',
