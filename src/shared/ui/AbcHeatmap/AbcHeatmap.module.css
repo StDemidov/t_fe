@@ -1,0 +1,112 @@
+.root {
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+/* При переполнении (много дней) сетка скроллится по горизонтали. */
+.scroll {
+  overflow-x: auto;
+}
+
+.body {
+  display: flex;
+  align-items: flex-start;
+  width: max-content;
+  margin: 0 auto;
+}
+
+/* Подписи уровней слева (AAA…NEW сверху вниз). Колонка фиксируется
+   (липкая) при горизонтальной прокрутке дней: текст остаётся на месте,
+   а дни прокручиваются под ним. */
+.axis {
+  position: sticky;
+  left: 0;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-right: 8px;
+  background: var(--color-neutral-50);
+}
+
+.levelLabel {
+  height: var(--cell-size);
+  line-height: var(--cell-size);
+  font-size: 9px;
+  font-weight: 600;
+  color: var(--color-neutral-400);
+  white-space: nowrap;
+}
+
+/* Колонки дней: одна колонка = одна дата. */
+.days {
+  display: flex;
+}
+
+.day {
+  display: flex;
+  flex-direction: column;
+  width: var(--cell-width);
+}
+
+.cellColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+/* Квадратик: либо цвет уровня ABC, либо пустой (фон карточки). */
+.cell {
+  width: var(--cell-size);
+  height: var(--cell-size);
+  border-radius: 3px;
+  flex-shrink: 0;
+  cursor: default;
+}
+
+.cell_aaa {
+  background: var(--color-main-500);
+}
+
+.cell_a {
+  background: var(--color-status-success-primary);
+}
+
+.cell_b {
+  background: var(--color-status-attention-primary);
+}
+
+.cell_c {
+  background: var(--color-status-error-primary);
+}
+
+.cell_new {
+  background: var(--color-status-info-primary);
+}
+
+/* Пустая ячейка — почти белая: виден фон карточки, лёгкая рамка для сетки. */
+.cellEmpty {
+  background: transparent;
+  box-shadow: inset 0 0 0 1px rgba(20, 18, 42, 0.06);
+}
+
+.dateLabel {
+  margin-top: 3px;
+  height: 12px;
+  line-height: 10px;
+  font-size: 5px;
+  color: var(--color-neutral-400);
+  white-space: nowrap;
+  text-align: center;
+  overflow: hidden;
+}
+
+.noData {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 88px;
+  font-size: 16px;
+  color: var(--color-neutral-400);
+}

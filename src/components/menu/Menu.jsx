@@ -15,19 +15,15 @@ const Menu = () => {
   return (
     <nav className={styles.navMenu}>
       <ul className={styles.menuItems}>
-        <li>
+        {/* <li>
           <NavLink className={styles.navLink} to="." end content="Главная">
             Главная
           </NavLink>
-        </li>
+        </li> */}
         {(currentUser.permissions.vendorcodes ||
           currentUser.permissions.is_admin) && (
           <li>
-            <NavLink
-              className={styles.navLink}
-              to="vendorcodes"
-              content="Товары"
-            >
+            <NavLink className={styles.navLink} to="skus" content="Товары">
               Товары
             </NavLink>
           </li>
@@ -44,15 +40,15 @@ const Menu = () => {
             </NavLink>
           </li>
         )}
-        {(currentUser.permissions.barcodes_predicts ||
+        {/* {(currentUser.permissions.barcodes_predicts ||
           currentUser.permissions.is_admin) && (
           <li>
             <NavLink className={styles.navLink} to="barcodes" content="Баркоды">
               Баркоды
             </NavLink>
           </li>
-        )}
-        {(currentUser.permissions.prints_base_view ||
+        )} */}
+        {/* {(currentUser.permissions.prints_base_view ||
           currentUser.permissions.is_admin) && (
           <li>
             <NavLink
@@ -63,7 +59,7 @@ const Menu = () => {
               База принтов
             </NavLink>
           </li>
-        )}
+        )} */}
         <li>
           <NavLink className={styles.navLink} to="tools" content="Инструменты">
             Инструменты

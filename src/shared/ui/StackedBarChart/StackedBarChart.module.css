@@ -1,0 +1,147 @@
+.root {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  gap: 3px;
+  padding: 0 2px;
+  box-sizing: border-box;
+  cursor: default;
+  width: 100%;
+  min-width: 0;
+  flex: 1 1 0;
+}
+
+.barCell {
+  position: relative;
+  flex: 1 1 0;
+  min-width: 0;
+  height: 100%;
+  cursor: default;
+}
+
+.segment {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  box-sizing: border-box;
+  opacity: 0.35;
+  transition: opacity 0.3s ease, filter 0.3s ease;
+}
+
+.root:hover .segment {
+  opacity: 0.55;
+}
+
+.barCell:hover .segment {
+  opacity: 1;
+  filter: brightness(0.45) saturate(1.2);
+}
+
+.zeroLine {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 50%;
+  height: 1px;
+  background: rgba(0, 0, 0, 0.12);
+  pointer-events: none;
+}
+
+.tooltip {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 2px;
+  background: rgba(0, 0, 0, 0.75);
+  color: #ffffff;
+  border-radius: 4px;
+  padding: 4px 6px;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+
+.barCell:hover .tooltip {
+  opacity: 1;
+}
+
+.tooltipTitle {
+  font-size: 8px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.tooltipLine {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 9px;
+}
+
+.tooltipName {
+  font-weight: 600;
+}
+
+.tooltipBody {
+  margin-left: auto;
+}
+
+.sumOverlay {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1px;
+  pointer-events: none;
+  font-family: 'BebasNeue', sans-serif;
+  color: #623fc0;
+  text-shadow: 0 0 4px rgba(255, 255, 255, 0.9), 0 0 2px #ffffff,
+    0 0 1px #ffffff;
+  opacity: 1;
+  transition: opacity 0.3s ease;
+}
+
+.root:hover .sumOverlay {
+  opacity: 0;
+}
+
+.sumLine {
+  display: flex;
+  align-items: baseline;
+  gap: 5px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.sumName {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.sumValue {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.sumTotal {
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.noData {
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  color: var(--color-neutral-400);
+}

@@ -37,19 +37,6 @@ const Tools = () => {
             </div>
           </div>
         </NavLink> */}
-            {(currentUser.permissions.tags_create ||
-              currentUser.permissions.is_admin) && (
-              <NavLink to="tags_setup" className={styles.link}>
-                <div className={styles.card}>
-                  <div className={styles.cardContent}>
-                    <p className={styles.cardTitle}>Работа с Тегами</p>
-                    <p className={styles.cardPara}>
-                      Массовое добавление тегов, удаление
-                    </p>
-                  </div>
-                </div>
-              </NavLink>
-            )}
 
             {(currentUser.permissions.images_upload ||
               currentUser.permissions.is_admin) && (
@@ -65,7 +52,7 @@ const Tools = () => {
                 </div>
               </NavLink>
             )}
-            {(currentUser.permissions.regroup ||
+            {/* {(currentUser.permissions.regroup ||
               currentUser.permissions.is_admin) && (
               <NavLink to="regroup" className={styles.link}>
                 <div className={styles.card}>
@@ -80,8 +67,8 @@ const Tools = () => {
                   </div>
                 </div>
               </NavLink>
-            )}
-            {(currentUser.permissions.is_admin ||
+            )} */}
+            {/* {(currentUser.permissions.is_admin ||
               currentUser.permissions.vendorcodes) && (
               <NavLink to="cards" className={styles.link}>
                 <div className={styles.card}>
@@ -93,7 +80,7 @@ const Tools = () => {
                   </div>
                 </div>
               </NavLink>
-            )}
+            )} */}
           </div>
         </>
       )}
@@ -148,7 +135,7 @@ const Tools = () => {
           </div>
         </NavLink>
       </div> */}
-      {(currentUser.permissions.ad_camps_view ||
+      {/* {(currentUser.permissions.ad_camps_view ||
         currentUser.permissions.ab_tests_view ||
         currentUser.permissions.is_admin) && (
         <>
@@ -168,8 +155,8 @@ const Tools = () => {
                   </div>
                 </div>
               </NavLink>
-            )}
-            {/* <NavLink to="auto_campaigns" className={styles.link}>
+            )} */}
+      {/* <NavLink to="auto_campaigns" className={styles.link}>
           <div className={styles.card}>
             <div className={styles.cardContent}>
               <p className={styles.cardTitle}>Автоматические кампании</p>
@@ -190,7 +177,7 @@ const Tools = () => {
             </div>
           </div>
         </NavLink> */}
-            {(currentUser.permissions.ad_camps_view ||
+      {/* {(currentUser.permissions.ad_camps_view ||
               currentUser.permissions.is_admin) && (
               <NavLink to="campaigns" className={styles.link}>
                 <div className={styles.card}>
@@ -205,7 +192,7 @@ const Tools = () => {
             )}
           </div>
         </>
-      )}
+      )} */}
     </section>
   );
 };

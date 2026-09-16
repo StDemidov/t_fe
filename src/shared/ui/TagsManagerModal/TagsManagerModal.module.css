@@ -1,0 +1,713 @@
+/* Оверлей: затемняет фон, центрирует окно. */
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.4);
+}
+
+/* Окно модалки. Высота фиксированная, чтобы окно не меняло размер
+   при переключении вкладок, поиске и изменении списков тегов. */
+.modal {
+  width: 560px;
+  max-width: calc(100vw - 32px);
+  height: min(620px, calc(100vh - 64px));
+  display: flex;
+  flex-direction: column;
+  background: var(--color-neutral-50);
+  border-radius: 12px;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+}
+
+/* Шапка с кнопкой закрытия (справа). */
+.header {
+  display: flex;
+  justify-content: flex-end;
+  padding: 12px;
+}
+
+.closeBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--color-neutral-500);
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.closeBtn:hover {
+  background: var(--color-neutral-200);
+  color: var(--color-neutral-800);
+}
+
+/* Вкладки разделов. */
+.tabs {
+  display: flex;
+  gap: 4px;
+  padding: 0 16px;
+  border-bottom: 1px solid var(--color-neutral-200);
+}
+
+.tab {
+  padding: 10px 14px;
+  border: none;
+  background: transparent;
+  font-family: 'Garet Book', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-neutral-500);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+}
+
+.tab:hover {
+  color: var(--color-neutral-800);
+}
+
+.tabActive {
+  color: var(--color-main-600);
+  border-bottom-color: var(--color-main-500);
+}
+
+/* Наполнение раздела. Формы растягиваются на всю высоту, чтобы кнопки
+   действия всегда были прижаты к нижней границе. */
+.content {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  padding: 24px 16px;
+  font-size: 14px;
+  color: var(--color-neutral-700);
+}
+
+/* Форма создания тегов. */
+.createForm {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.instructions {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--color-neutral-500);
+  background: var(--color-neutral-100);
+  border-radius: 8px;
+  padding: 10px 12px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.fieldLabel {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-neutral-600);
+}
+
+/* Тосты об успехе/ошибке удаления тегов. Выползают снизу (слева/справа)
+   и уползают обратно; позиционируются поверх всего. */
+.toast {
+  position: fixed;
+  bottom: 24px;
+  z-index: 1300;
+  padding: 12px 20px;
+  border-radius: 10px;
+  font-family: 'Garet Book', sans-serif;
+  font-size: 14px;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.2);
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 0.35s ease, opacity 0.35s ease;
+}
+
+.toastLeft {
+  left: 24px;
+  transform: translateX(-140%);
+}
+
+.toastRight {
+  right: 24px;
+  transform: translateX(140%);
+}
+
+.toastVisible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.toastSuccess {
+  background: var(--color-status-success-primary);
+  color: #fff;
+}
+
+.toastError {
+  background: #fff;
+  color: var(--color-status-attention-primary);
+  border: 1px solid var(--color-status-attention-primary);
+}
+
+/* Строка с подписью поля и кнопкой справа (ластик). */
+.fieldHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+/* Кнопка-ластик: очистка поля / снятие отметок. */
+.clearBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 24px;
+  padding: 0;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--color-neutral-500);
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.clearBtn:hover:not(:disabled) {
+  background: var(--color-neutral-100);
+  color: var(--color-status-error-primary);
+}
+
+.clearBtn:disabled {
+  color: var(--color-neutral-300);
+  cursor: not-allowed;
+}
+
+/* Выпадающий список типа тега. */
+.typeRoot {
+  position: relative;
+}
+
+.typeTrigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  width: 100%;
+  height: 36px;
+  padding: 0 12px;
+  background: #fff;
+  border: 1px solid var(--color-neutral-300);
+  border-radius: 8px;
+  font-size: 13px;
+  color: var(--color-neutral-900);
+  cursor: pointer;
+}
+
+.typeTrigger:hover {
+  border-color: var(--color-main-400);
+}
+
+.typeChevron {
+  font-size: 10px;
+  color: var(--color-neutral-500);
+  transition: transform 0.15s ease;
+}
+
+.typeChevronOpen {
+  transform: rotate(180deg);
+}
+
+.typeList {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  z-index: 10;
+  background: #fff;
+  border: 1px solid var(--color-neutral-300);
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  overflow: hidden;
+}
+
+.typeOption {
+  display: block;
+  width: 100%;
+  padding: 8px 12px;
+  border: none;
+  background: transparent;
+  text-align: left;
+  font-size: 13px;
+  color: var(--color-neutral-900);
+  cursor: pointer;
+}
+
+.typeOption:hover {
+  background: var(--color-main-100);
+}
+
+.typeOptionActive {
+  background: var(--color-main-100);
+  color: var(--color-main-600);
+}
+
+/* Поле ввода названия: контейнер с плашками тегов и инлайновым инпутом.
+   Растягивается на свободное место — кнопка «Создать» прижата к нижней
+   границе, лишние плашки уходят в прокрутку. */
+.tagInput {
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  align-items: center;
+  gap: 6px;
+  flex: 1;
+  min-height: 200px;
+  overflow-y: auto;
+  padding: 6px 8px;
+  background: #fff;
+  border: 1px solid var(--color-neutral-300);
+  border-radius: 8px;
+  cursor: text;
+}
+
+.tagInput:focus-within {
+  border-color: var(--color-main-500);
+}
+
+.tagChip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 6px;
+  border-radius: 3px;
+  background: var(--color-tag-bg);
+  color: var(--color-tag-text);
+  font-size: 10px;
+  max-width: 100%;
+}
+
+.tagChipLabel {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tagRemove {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 12px;
+  height: 12px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--color-tag-text);
+  opacity: 0.85;
+  font-size: 10px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.tagRemove:hover {
+  color: var(--color-status-error-primary);
+  opacity: 1;
+}
+
+.tagTextInput {
+  flex: 1;
+  min-width: 120px;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 13px;
+  color: var(--color-neutral-900);
+}
+
+/* Подвал с кнопкой действия — всегда виден, кнопка прижата к правому краю. */
+.footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 12px 16px;
+  border-top: 1px solid var(--color-neutral-200);
+  background: var(--color-neutral-50);
+}
+
+/* Кнопка «Создать». */
+.createBtn {
+  height: 36px;
+  padding: 0 24px;
+  border: none;
+  border-radius: 8px;
+  background: var(--color-main-500);
+  color: #fff;
+  font-family: 'Garet Book', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.createBtn:hover {
+  background: var(--color-main-600);
+}
+
+.createBtn:disabled {
+  background: var(--color-neutral-200);
+  color: var(--color-neutral-400);
+  cursor: not-allowed;
+}
+
+/* Форма удаления тегов. */
+.removeForm {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Форма привязки тегов через XLSX. */
+.xlsxForm {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Ссылка-кнопка «шаблон» внутри инструкции. */
+.linkBtn {
+  display: inline;
+  padding: 0;
+  border: none;
+  background: transparent;
+  font: inherit;
+  color: var(--color-main-600);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.linkBtn:hover {
+  color: var(--color-main-700);
+}
+
+/* Область выбора файла XLSX: скрытый инпут поверх стилизованной кнопки. */
+.fileDrop {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 48px;
+  border: 1px dashed var(--color-main-400);
+  border-radius: 8px;
+  background: var(--color-main-50, #f5f9ff);
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.fileDrop:hover {
+  background: var(--color-main-100);
+  border-color: var(--color-main-500);
+}
+
+.fileDropText {
+  font-family: 'Garet Book', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-main-600);
+}
+
+/* Нативный инпут прячем, но держим доступным для клика по label. */
+.fileInput {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  overflow: hidden;
+}
+
+/* Строка с именем файла. Фиксированная высота, чтобы при появлении имени
+   файла блок ниже (тип тегов) не смещался. */
+.fileName {
+  height: 16px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 12px;
+  color: var(--color-neutral-600);
+}
+
+/* Кнопка «Проверить файл». */
+.checkBtn {
+  align-self: flex-start;
+  height: 32px;
+  padding: 0 18px;
+  border: 1px solid var(--color-main-500);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--color-main-600);
+  font-family: 'Garet Book', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.checkBtn:hover:not(:disabled) {
+  background: var(--color-main-100);
+}
+
+.checkBtn:disabled {
+  border-color: var(--color-neutral-300);
+  color: var(--color-neutral-400);
+  cursor: not-allowed;
+}
+
+/* Блок с итогами проверки файла. */
+.checkInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 10px 12px;
+  background: var(--color-neutral-100);
+  border-radius: 8px;
+}
+
+.checkInfoLine {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.4;
+  color: var(--color-neutral-600);
+  overflow-wrap: break-word;
+}
+
+/* Кнопка «Привязать теги». */
+.bindBtn {
+  height: 36px;
+  padding: 0 24px;
+  border: none;
+  border-radius: 8px;
+  background: var(--color-main-500);
+  color: #fff;
+  font-family: 'Garet Book', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.bindBtn:hover:not(:disabled) {
+  background: var(--color-main-600);
+}
+
+.bindBtn:disabled {
+  background: var(--color-neutral-200);
+  color: var(--color-neutral-400);
+  cursor: not-allowed;
+}
+
+/* Кнопка «Сбросить» — слева в футере раздела XLSX. */
+.resetBtn {
+  height: 36px;
+  padding: 0 24px;
+  border: 1px solid var(--color-neutral-300);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--color-neutral-600);
+  font-family: 'Garet Book', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  margin-right: auto;
+  cursor: pointer;
+}
+
+.resetBtn:hover:not(:disabled) {
+  border-color: var(--color-neutral-400);
+  color: var(--color-neutral-900);
+}
+
+.resetBtn:disabled {
+  border-color: var(--color-neutral-200);
+  color: var(--color-neutral-300);
+  cursor: not-allowed;
+}
+
+/* Поле поиска тегов. */
+.remSearch {
+  box-sizing: border-box;
+  width: 100%;
+  height: 34px;
+  padding: 0 10px;
+  background: #fff;
+  border: 1px solid var(--color-neutral-300);
+  border-radius: 8px;
+  font-size: 13px;
+  color: var(--color-neutral-900);
+  outline: none;
+}
+
+.remSearch:focus {
+  border-color: var(--color-main-500);
+}
+
+/* Поле с плашками тегов: перенос по ширине, скролл по вертикали.
+   Высота зафиксирована, чтобы кнопка «Удалить» была видна без прокрутки
+   всего модального окна. */
+.remTagsBox {
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  gap: 4px;
+  height: 110px;
+  overflow-y: auto;
+  padding: 8px;
+  box-sizing: border-box;
+  background: #fff;
+  border: 1px solid var(--color-neutral-300);
+  border-radius: 8px;
+}
+
+/* Плашка тега как в колонках «Теги», но без иконки фильтра. */
+.remChip {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 6px;
+  border: none;
+  border-radius: 3px;
+  background: var(--color-tag-bg);
+  color: var(--color-tag-text);
+  font-size: 10px;
+  cursor: pointer;
+}
+
+.remChip:hover {
+  filter: brightness(0.95);
+}
+
+.remChipLabel {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Помечен на удаление: красная заливка. */
+.remChipMarked {
+  background: var(--color-status-error-primary);
+  color: #fff;
+}
+
+.remChipMarked:hover {
+  filter: brightness(0.95);
+}
+
+.remEmpty {
+  padding: 12px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--color-neutral-500);
+}
+
+/* Кнопка «Удалить». */
+.removeBtn {
+  height: 36px;
+  padding: 0 24px;
+  border: none;
+  border-radius: 8px;
+  background: var(--color-status-error-primary);
+  color: #fff;
+  font-family: 'Garet Book', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.removeBtn:hover:not(:disabled) {
+  opacity: 0.88;
+}
+
+.removeBtn:disabled {
+  background: var(--color-neutral-200);
+  color: var(--color-neutral-400);
+  cursor: not-allowed;
+}
+
+/* Сводный список отмеченных тегов на удаление из всех категорий.
+   Высота фиксированная: теги не переносятся, при переполнении появляется
+   горизонтальная прокрутка. */
+.markedTagsBox {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  height: 40px;
+  padding: 6px 8px;
+  box-sizing: border-box;
+  overflow-x: auto;
+  overflow-y: hidden;
+  background: #fff;
+  border: 1px solid var(--color-neutral-300);
+  border-radius: 8px;
+}
+
+.markedEmpty {
+  white-space: nowrap;
+  font-size: 12px;
+  color: var(--color-neutral-500);
+}
+
+.markedChip {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  gap: 4px;
+  padding: 3px 4px 3px 6px;
+  border-radius: 3px;
+  background: var(--color-status-error-primary);
+  color: #fff;
+  font-size: 10px;
+  max-width: 100%;
+}
+
+.markedChipLabel {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.markedChipRemove {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 12px;
+  height: 12px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: #fff;
+  opacity: 0.85;
+  font-size: 12px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.markedChipRemove:hover {
+  opacity: 1;
+  background: rgba(255, 255, 255, 0.25);
+}

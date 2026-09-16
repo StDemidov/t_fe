@@ -1,0 +1,809 @@
+.table,
+.table * {
+  box-sizing: border-box;
+}
+
+.table {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  overscroll-behavior: none;
+  border: 1px solid var(--color-neutral-200);
+  border-radius: 10px;
+  background: var(--color-neutral-50);
+}
+
+/* Вся ширина = максимум из строк, но не уже видимой области, чтобы шапка и футер
+   всегда покрывали видимую зону (не рвались при вертикальной прокрутке). */
+.tableContent {
+  display: flex;
+  flex-direction: column;
+  width: max-content;
+  min-width: 100%;
+}
+
+/* Шапка и футер — флекс-ряды всех колонок, закрепляются сверху/снизу внутри
+   единого скролл-контейнера (.table). */
+.headerRow,
+.footerRow {
+  flex-shrink: 0;
+  display: flex;
+  background: var(--color-header-bg);
+}
+
+.headerRow {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  border-bottom: 1px solid var(--color-neutral-200);
+}
+
+.footerRow {
+  position: sticky;
+  bottom: 0;
+  z-index: 30;
+  border-top: 1px solid var(--color-neutral-200);
+}
+
+/* Закреплённая слева колонка «Артикул» в шапке/футере — перекрывает
+   скроллируемые соседние ячейки непрозрачным фоном при горизонтальной прокрутке.
+   z-index выше, чтобы иконки (drag/close) соседних колонок не наезжали на неё. */
+.headerRow .fixedCol,
+.footerRow .fixedCol {
+  position: sticky;
+  left: 0;
+  z-index: 5;
+  background: var(--color-header-bg);
+  border-right: 1px solid var(--color-neutral-200);
+  box-shadow: 1px 0 0 var(--color-neutral-200);
+}
+
+.footerCell {
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-header-text);
+}
+
+/* Общие правила ячеек: флекс-ячейка фиксированной ширины (ширина — inline style). */
+.headerCell,
+.footerCell {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  padding: 8px 12px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  border-right: 1px solid var(--color-neutral-200);
+}
+
+.headerCell {
+  font-family: 'Garet Book', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--color-header-text);
+  letter-spacing: 0.5px;
+  gap: 4px;
+}
+
+/* Подпись колонки: сжимается, если не хватает места для иконок.
+   При переполнении при наведении текст едет влево и отматывается назад. */
+.headerLabel {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.headerLabelText {
+  display: inline-block;
+  white-space: nowrap;
+  will-change: transform;
+}
+
+/* Маятниковая прокрутка: вперёд к концу строки, затем назад к началу. */
+.headerLabelMarquee:hover .headerLabelText {
+  animation: headerMarquee var(--dur, 4s) linear infinite alternate;
+}
+
+@keyframes headerMarquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(calc(-1 * var(--shift, 0px)));
+  }
+}
+
+/* Маркер перетаскивания колонки. */
+.dragHandle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  cursor: grab;
+  color: var(--color-neutral-500);
+  font-size: 16px;
+  opacity: 0.7;
+  transition: color 0.15s ease, opacity 0.15s ease;
+}
+
+.dragHandle:hover {
+  color: var(--color-header-text);
+  opacity: 1;
+}
+
+.dragHandle:active {
+  cursor: grabbing;
+}
+
+/* Крестик скрытия колонки. */
+.hideColBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--color-neutral-500);
+  font-size: 16px;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: color 0.15s ease, opacity 0.15s ease;
+}
+
+.hideColBtn:hover {
+  color: var(--color-status-error-primary, #e53e3e);
+  opacity: 1;
+}
+
+/* Подсветка колонки-цели при перетаскивании. */
+.headerCell.dragOver {
+  background: var(--color-main-100, rgba(130, 84, 255, 0.12));
+  outline: 2px dashed var(--color-main-500, #623fc0);
+  outline-offset: -2px;
+}
+
+/* Тело: строки, каждая — флекс-ряд всех колонок. */
+.body {
+  display: block;
+  background: var(--color-neutral-50);
+}
+
+.row {
+  display: flex;
+}
+
+.cell {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  padding: 6px 12px;
+  min-height: 96px;
+  background: #ffffff;
+  border-right: 1px solid var(--color-neutral-200);
+  border-bottom: 1px solid var(--color-neutral-200);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Закреплённая слева колонка «Артикул» тела: закрепляется внутри каждой строки. */
+.cell.fixedCol {
+  position: sticky;
+  left: 0;
+  z-index: 10;
+  background: #ffffff;
+  box-shadow: 1px 0 0 var(--color-neutral-200);
+}
+
+/* Вертикальная полоса единого скролл-контейнера — стилизована и видна,
+   горизонтальная скрыта (строки скроллятся тянущей прокруткой). */
+.table::-webkit-scrollbar {
+  width: 8px;
+  height: 0;
+}
+
+.table::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.table::-webkit-scrollbar-thumb {
+  background: var(--color-neutral-300, #c9c9c9);
+  border-radius: 4px;
+}
+
+.table::-webkit-scrollbar-thumb:hover {
+  background: var(--color-neutral-400, #b0b0b0);
+}
+
+.photoCell {
+  justify-content: center;
+  padding: 0;
+}
+
+/* Ячейка «Рекламные расходы»: центрирует график и добавляет боковые отступы,
+   чтобы тултипы у крайних дат не обрезались краем ячейки (overflow: hidden). */
+.adsCell {
+  justify-content: center;
+  padding: 6px 26px;
+}
+
+/* ROI положительный ( > 100% ): зелёный, шрифт как в себестоимости. */
+.roiPositive {
+  font-family: 'BebasNeue', sans-serif;
+  font-size: 22px;
+  letter-spacing: 0.5px;
+  font-weight: 400;
+  color: var(--color-status-success-primary);
+}
+
+/* ROI отрицательный ( ≤ 100% ): оранжевый, шрифт как в себестоимости. */
+.roiNegative {
+  font-family: 'BebasNeue', sans-serif;
+  font-size: 22px;
+  letter-spacing: 0.5px;
+  font-weight: 400;
+  color: var(--color-status-attention-primary);
+}
+
+/* Ячейка тегов: фиксированная высота, чтобы контент прокручивался внутри, а не
+   растягивал всю строку. Вертикальный скролл — в TagsCell (полоса скрыта). */
+.tagsCell {
+  align-items: stretch;
+  height: 96px;
+  padding: 8px 12px;
+  overflow: hidden;
+}
+
+/* Колонка «Себестоимость»: центрирует контент по вертикали. */
+.selfPriceColumn {
+  justify-content: center;
+}
+
+/* Колонка «Остатки последние»: строки названия + значения столбиком. */
+.stocksLastColumn {
+  align-items: stretch;
+}
+
+/* Обёртка строк остатков. */
+.stocksLines {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+  width: 100%;
+}
+
+/* Отдельная строка: название слева, значение справа. */
+.stocksLine {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 12px;
+  line-height: 1.2;
+}
+
+.stocksLineLabel {
+  color: var(--color-neutral-500);
+  white-space: nowrap;
+}
+
+.stocksLineValue {
+  color: var(--color-main-500);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* Строка «Всего»: жирная, значение темнее. */
+.stocksLineStrong {
+  border-top: 1px solid var(--color-neutral-200);
+  padding-top: 4px;
+}
+
+.stocksLineStrong .stocksLineLabel {
+  font-weight: 700;
+}
+
+.stocksLineStrong .stocksLineValue {
+  color: var(--color-main-800, #1e1b4b);
+  font-weight: 800;
+}
+
+/* Нулевое значение оборачиваемости — оранжевым. */
+.turnoverZero {
+  color: var(--color-status-attention-primary, #f59e0b);
+}
+
+/* Футер колонок с разбивкой на строки (Остатки последние, Заказы, Продажи,
+   Остатки, EBITDA/день): уменьшенный шрифт, тёмный текст, без разделителя. */
+.footerCellLines .stocksLineLabel,
+.footerCellLines .stocksLineValue {
+  font-size: 11px;
+  color: var(--color-header-text);
+}
+
+.footerCellLines .stocksLineStrong {
+  border-top: none;
+  padding-top: 0;
+}
+
+/* Внутренняя обёртка ячейки себестоимости: значение + подпись по вертикали. */
+.selfPriceCell {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  color: var(--color-main-500);
+}
+
+.ndsValue {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  font-family: 'BebasNeue', sans-serif;
+  letter-spacing: 0.5px;
+  color: var(--color-main-500);
+  font-weight: 400;
+}
+
+.ruble {
+  font-size: 15px;
+}
+
+.ndsLabelRow {
+  display: grid;
+  grid-template-areas: 'label';
+  height: 14px;
+  margin-top: 2px;
+  overflow: hidden;
+}
+
+/* Оба label занимают одну ячейку сетки — переключаются только прозрачностью. */
+.ndsLabel {
+  grid-area: label;
+  font-family: 'Garet Book', sans-serif;
+  text-align: center;
+  font-size: 11px;
+  white-space: nowrap;
+  color: var(--color-neutral-500);
+  transition: opacity 0.15s ease;
+}
+
+.ndsLabel.visible {
+  opacity: 1;
+}
+
+.ndsLabel.hidden {
+  opacity: 0;
+}
+
+/* Объединённая ячейка «Артикул»: фото слева, справа vendorCode (бегущая строка) и sku. */
+.articleCell {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  min-width: 0;
+  overflow: hidden;
+  text-align: left;
+}
+
+/* Ссылка на страницу товара по фото: ведёт себя как само фото без лишних
+   отступов и сжатий во flex-контейнере. */
+.articlePhotoLink {
+  display: block;
+  flex-shrink: 0;
+  line-height: 0;
+  border-radius: 6px;
+}
+
+.articlePhotoLink:hover {
+  filter: brightness(1.12);
+  transition: filter 0.15s ease;
+}
+
+.articleInfo {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  align-items: flex-start;
+}
+
+/* Обёртка «бегущей строки»: при наведении на длинный vendorCode прокручивается.
+   Короткие названия (без переполнения) не анимируются — маркируется только
+   класс marquee (устанавливается при фактическом переполнении). */
+.articleMarquee {
+  overflow: hidden;
+  white-space: nowrap;
+  max-width: 100%;
+}
+
+.articleText {
+  display: inline-flex;
+  white-space: nowrap;
+  font-family: 'Garet Book', sans-serif;
+  font-size: 12px;
+  line-height: 1.2;
+  color: var(--color-neutral-800);
+}
+
+.articleTextItem {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.articleTextItem + .articleTextItem {
+  margin-left: 40px;
+}
+
+.articleMarquee.marquee:hover .articleText {
+  animation: marquee 6s linear infinite;
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.articleSku {
+  font-size: 12px;
+  color: var(--color-neutral-500);
+  white-space: nowrap;
+}
+
+/* Плашки SKU и категории в ряд под vendorCode. */
+.badgesRow {
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+  gap: 4px;
+  margin-top: 2px;
+}
+
+/* Ряд ABC-плашек под SKU и категорией: жирная буква + плашка значения. */
+.abcRow {
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+  gap: 3px;
+  margin-top: 2px;
+}
+
+/* Жирная буква-подпись перед плашкой (Б/К). */
+.abcLetter {
+  font-family: 'Garet Book', sans-serif;
+  font-size: 9px;
+  line-height: 1;
+  font-weight: 800;
+  color: var(--color-neutral-600);
+  white-space: nowrap;
+}
+
+/* Плашка ABC-значения. */
+.abcBadge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  padding: 1px 3px;
+  border-radius: 4px;
+  font-family: 'Garet Book', sans-serif;
+  font-size: 9px;
+  line-height: 1.1;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+/* Иконка фильтра на ABC-плашке (как на плашке категории). */
+.abcFilter {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 10px;
+  height: 10px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: inherit;
+  opacity: 0.7;
+  font-size: 9px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.abcFilter:hover {
+  opacity: 1;
+  color: var(--color-text-link, #623fc0);
+}
+
+/* Дата старта продаж: мелкая подпись внизу ячейки. */
+.startDate {
+  margin-top: 2px;
+  font-size: 9px;
+  line-height: 1.1;
+  color: var(--color-neutral-400);
+  white-space: nowrap;
+}
+
+/* Цвета плашек ABC по значению (принцип как в product-cards/ProductImage). */
+.abc_a {
+  background: var(--color-status-success-secondary);
+  color: var(--color-status-success-primary);
+}
+
+.abc_b {
+  background: var(--color-status-attention-secondary);
+  color: var(--color-status-attention-primary);
+}
+
+.abc_c {
+  background: var(--color-status-error-secondary);
+  color: var(--color-status-error-primary);
+}
+
+.abc_new {
+  background: var(--color-status-info-secondary);
+  color: var(--color-status-info-primary);
+}
+
+.abc_aaa {
+  background: var(--color-main-100);
+  color: var(--color-main-700);
+}
+
+/* Неизвестное/пустое значение ABC. */
+.abcNeutral {
+  background: var(--color-neutral-100);
+  color: var(--color-neutral-600);
+}
+
+.skuBadge,
+.categoryBadge,
+.patternBadge {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 20px;
+  box-sizing: border-box;
+  padding: 2px 2px;
+  border-radius: 4px;
+  font-family: 'Garet Book', sans-serif;
+  font-size: 9px;
+  line-height: 1.1;
+  font-weight: 800;
+  white-space: nowrap;
+  max-width: 100%;
+}
+
+/* Плашка SKU: тёмно-фиолетовый фон, жёлтый текст. */
+.skuBadge {
+  background: var(--color-card-id-bg);
+  color: var(--color-card-id-text);
+  cursor: pointer;
+  user-select: none;
+  width: 74px;
+}
+
+.skuBadge:hover {
+  filter: brightness(1.15);
+}
+
+/* Плашка категории: инвертированные цвета. */
+.categoryBadge {
+  background: var(--color-card-id-text);
+  color: var(--color-card-id-bg);
+  gap: 2px;
+  padding: 2px 4px;
+}
+
+/* Плашка лекала: стиль как у категории. */
+.patternBadge {
+  background: var(--color-card-id-text);
+  color: var(--color-card-id-bg);
+  gap: 2px;
+  padding: 2px 4px;
+}
+
+/* Текст категории: обрезается многоточием, чтобы плашка не расширялась. */
+.categoryLabel {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Иконка фильтра на плашке категории (как у тегов). */
+.categoryFilter {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 12px;
+  height: 12px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--color-card-id-bg);
+  opacity: 0.85;
+  font-size: 10px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.categoryFilter:hover {
+  color: var(--color-text-link, #623fc0);
+  opacity: 1;
+}
+
+/* Иконка Wildberries: ссылка-картинка справа от плашек. */
+.wbLogo {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+  overflow: hidden;
+  text-decoration: none;
+}
+
+.wbLogo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.wbLogo:hover {
+  filter: brightness(1.1);
+}
+
+/* Подсказка «Скопировано» у курсора (портал в body). */
+.vendorToast {
+  position: fixed;
+  z-index: 3000;
+  transform: translate(-50%, -100%);
+  padding: 3px 8px;
+  border-radius: 4px;
+  background: var(--color-neutral-800);
+  color: #fff;
+  font-family: 'Garet Book', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+  pointer-events: none;
+  animation: vendorToast 1s ease forwards;
+}
+
+@keyframes vendorToast {
+  0% {
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+/* Контейнер «бегущего» текста внутри плашки SKU (по аналогии с ProductImage):
+   верхняя строка — SKU, нижняя — «Скопировано»; при копировании блок едет вверх. */
+.badgeSlideWrap {
+  flex: 1;
+  min-width: 0;
+  width: 100%;
+  height: 16px;
+  position: relative;
+  overflow: hidden;
+}
+
+.badgeSlide {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform 0.25s ease;
+}
+
+.badgeSlideCopied {
+  transform: translateY(-50%);
+}
+
+.badgeSlideItem {
+  line-height: 16px;
+  white-space: nowrap;
+  text-align: center;
+}
+
+.badgeSlideItem:last-child {
+  font-size: 9px;
+}
+
+.cell:last-child,
+.headerCell:last-child,
+.footerCell:last-child {
+  border-right: none;
+}
+
+/* Пагинация. */
+.pagination {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 12px;
+  border: 1px solid var(--color-neutral-300);
+  border-radius: 10px;
+  background: var(--color-neutral-50);
+}
+
+.pageSize {
+  padding: 4px 8px;
+  border: 1px solid var(--color-neutral-300);
+  border-radius: 6px;
+  background: var(--color-neutral-50);
+  font-size: 13px;
+  color: var(--color-neutral-700);
+}
+
+.pageInfo {
+  font-size: 13px;
+  color: var(--color-neutral-600);
+}
+
+.pageButtons {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: auto;
+}
+
+.pageNumber {
+  min-width: 44px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--color-neutral-700);
+}
+
+.pageButton {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--color-neutral-300);
+  border-radius: 6px;
+  background: var(--color-neutral-50);
+  color: var(--color-neutral-700);
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.pageButton:disabled {
+  opacity: 0.4;
+  cursor: default;
+}

@@ -1,0 +1,259 @@
+.scroll {
+  align-self: stretch;
+  min-width: 0;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: none;
+  display: flex;
+  flex-direction: column;
+}
+
+.scroll::-webkit-scrollbar {
+  display: none;
+}
+
+/* Список плашек. Перенос по ширине: несколько тегов помещаются в одну строку
+   (2-3 в зависимости от длины). Авто-отступы по вертикали центрируют содержимое,
+   когда тегов немного, и дают прокрутку, когда они не помещаются. */
+.list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  align-content: center;
+  gap: 4px;
+  margin-top: auto;
+  margin-bottom: auto;
+  min-width: 0;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 3px 4px 3px 4px;
+  background: var(--color-tag-bg);
+  border-radius: 3px;
+  font-size: 8px;
+  color: var(--color-tag-text);
+  max-width: 100%;
+}
+
+.chipLabel {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.chipAdd {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  border: 1px solid var(--color-neutral-400);
+  border-radius: 3px;
+  background: transparent;
+  color: var(--color-tag-text);
+  font-size: 15px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.chipAdd:hover {
+  background: var(--color-tag-bg);
+}
+
+.chipRemove {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 12px;
+  height: 12px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--color-tag-text);
+  opacity: 0.85;
+  font-size: 10px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.chipRemove:hover {
+  color: var(--color-status-error-primary);
+  opacity: 1;
+}
+
+.chipFilter {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 12px;
+  height: 12px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--color-tag-text);
+  opacity: 0.85;
+  font-size: 10px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.chipFilter:hover {
+  color: var(--color-text-link, #623fc0);
+  opacity: 1;
+}
+
+/* Выпадающий список доступных тегов для привязки. Рендерится в портал.
+   Стиль повторяет общий DropdownFilter (фон, рамка, кнопки, ховеры, скролл). */
+.dropdown,
+.dropdown * {
+  box-sizing: border-box;
+}
+
+.dropdown {
+  position: absolute;
+  z-index: 1000;
+  min-width: 250px;
+  max-width: 280px;
+  background: var(--color-neutral-50);
+  border: 1px solid var(--color-neutral-300);
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  overflow-x: hidden;
+}
+
+.dropdownTitle {
+  font-family: 'Garet Book', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-neutral-700);
+}
+
+.dropdownTitle,
+.dropdownSearch,
+.dropdownItem {
+  min-width: 0;
+}
+
+.dropdownSearch {
+  width: 100%;
+  box-sizing: border-box;
+  height: 30px;
+  padding: 0 8px;
+  border: 1px solid var(--color-neutral-300);
+  border-radius: 6px;
+  background: #fff;
+  font-size: 13px;
+  color: var(--color-neutral-900);
+  outline: none;
+}
+
+.dropdownSearch:focus {
+  border-color: var(--color-main-500);
+}
+
+.dropdownSearch::placeholder {
+  color: var(--color-neutral-500);
+}
+
+.dropdownList {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  max-height: 260px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  min-width: 0;
+}
+
+.dropdownItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 6px 8px;
+  border-radius: 6px;
+  font-size: 13px;
+  color: var(--color-neutral-900);
+  cursor: pointer;
+}
+
+.dropdownItem:hover {
+  background: var(--color-main-100);
+}
+
+.dropdownItem input {
+  flex-shrink: 0;
+  width: 14px;
+  height: 14px;
+  accent-color: var(--color-main-500);
+  cursor: pointer;
+}
+
+.dropdownItem span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dropdownEmpty {
+  padding: 12px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--color-neutral-500);
+}
+
+.dropdownActions {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.dropdownApply,
+.dropdownCancel {
+  font-family: 'Garet Book', sans-serif;
+  flex: 1;
+  height: 30px;
+  border-radius: 6px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.dropdownCancel {
+  background: var(--color-neutral-100);
+  border: 1px solid var(--color-neutral-300);
+  color: var(--color-neutral-700);
+}
+
+.dropdownCancel:hover {
+  background: var(--color-neutral-200);
+}
+
+.dropdownApply {
+  background: var(--color-main-500);
+  border: 1px solid var(--color-main-500);
+  color: #fff;
+}
+
+.dropdownApply:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.dropdownApply:not(:disabled):hover {
+  background: var(--color-main-600);
+}

@@ -1,0 +1,220 @@
+.wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
+  min-width: 0;
+  flex: 1 1 0;
+}
+
+.root {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-width: 0;
+  flex: 1 1 0;
+  box-sizing: border-box;
+  padding: 0 2px;
+  cursor: default;
+}
+
+.svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.zeroLine {
+  stroke: rgba(0, 0, 0, 0.12);
+  stroke-width: 1;
+}
+
+.points {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: space-between;
+}
+
+.pointCell {
+  position: relative;
+  flex: 1 1 0;
+  min-width: 0;
+  height: 100%;
+  cursor: default;
+}
+
+.point {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.pointCell:hover .point {
+  opacity: 0.9;
+}
+
+.tooltip {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 2px;
+  background: rgba(0, 0, 0, 0.75);
+  color: #ffffff;
+  border-radius: 4px;
+  padding: 4px 6px;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+
+.pointCell:hover .tooltip {
+  opacity: 1;
+}
+
+.tooltipTitle {
+  font-size: 8px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.tooltipLine {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 9px;
+}
+
+.tooltipName {
+  font-weight: 600;
+}
+
+.tooltipBody {
+  margin-left: auto;
+}
+
+.sumOverlay {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  pointer-events: none;
+  font-family: 'Garet Book', sans-serif;
+  font-size: 12px;
+  color: #623fc0;
+  text-shadow: 0 0 4px rgba(255, 255, 255, 0.9), 0 0 2px #ffffff,
+    0 0 1px #ffffff;
+}
+
+.root:hover .sumOverlay {
+  opacity: 0;
+}
+
+.sumLine {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 600;
+}
+.sumDot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  flex: 0 0 auto;
+}
+
+.sumValue {
+  font-family: 'BebasNeue', sans-serif;
+  font-size: 15px;
+  letter-spacing: 0.5px;
+  font-weight: 400;
+  color: #623fc0;
+  white-space: nowrap;
+}
+
+.sumChange {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  font-family: 'BebasNeue', sans-serif;
+  font-size: 13px;
+  letter-spacing: 0.4px;
+  line-height: 1.2;
+  font-weight: 400;
+}
+
+.sumChangeUp {
+  color: #1a7a55;
+}
+
+.sumChangeDown {
+  color: #f59e0b;
+}
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.legendItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 2px 8px;
+  border: 1px solid var(--color-neutral-200);
+  border-radius: 999px;
+  background: var(--color-neutral-50);
+  font-family: 'Garet Book', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-neutral-700);
+  cursor: pointer;
+  user-select: none;
+}
+
+.legendItem:hover {
+  border-color: var(--color-neutral-400);
+}
+
+.legendItemHidden {
+  opacity: 0.45;
+  text-decoration: line-through;
+}
+
+.legendDot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex: 0 0 auto;
+}
+
+.noData {
+  flex: 1;
+  width: 100%;
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  color: var(--color-neutral-400);
+}

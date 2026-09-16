@@ -26,6 +26,9 @@ import mainDashboardReducer from './slices/mainDashboardSlice';
 import inventoryReducer from '../components/inventory/redux/inventorySlice';
 import inventoryFilterReducer from '../components/inventory/redux/inventoryFilterSlice';
 import productCardsReducer from '../entities/product-card/model/productCardsSlice';
+import skusMetricsReducer from '../entities/sku-metrics/model/skusMetricsSlice';
+import skuDetailReducer from '../entities/sku-detail/model/skuDetailSlice';
+import tagsReducer from '../entities/tags/model/tagsSlice';
 
 import { persistReducer, persistStore } from 'redux-persist';
 import { combineReducers } from '@reduxjs/toolkit';
@@ -103,6 +106,9 @@ const rootReducer = combineReducers({
   inventory: persistedInventoryReducer,
   inventoryFilter: persistedInventoryFilterReducer,
   productCards: productCardsReducer,
+  skusMetrics: skusMetricsReducer,
+  skuDetail: skuDetailReducer,
+  tags: tagsReducer,
 });
 
 const store = configureStore({

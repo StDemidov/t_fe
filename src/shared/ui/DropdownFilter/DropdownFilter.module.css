@@ -64,10 +64,8 @@
 }
 
 .panel {
-  position: absolute;
-  top: calc(100% + 4px);
-  left: 0;
-  z-index: 30;
+  position: fixed;
+  z-index: 1000;
   width: 280px;
   background: var(--color-neutral-50);
   border: 1px solid var(--color-neutral-300);
@@ -82,9 +80,7 @@
   transform-origin: top left;
   visibility: hidden;
   pointer-events: none;
-  transition:
-    opacity 0.15s ease,
-    transform 0.15s ease,
+  transition: opacity 0.15s ease, transform 0.15s ease,
     visibility 0s linear 0.15s;
 }
 
@@ -93,9 +89,7 @@
   transform: translateY(0) scale(1);
   visibility: visible;
   pointer-events: auto;
-  transition:
-    opacity 0.15s ease,
-    transform 0.15s ease;
+  transition: opacity 0.15s ease, transform 0.15s ease;
 }
 
 .search {
@@ -199,6 +193,7 @@
 
 .resetButton,
 .applyButton {
+  font-family: 'Garet Book', sans-serif;
   flex: 1;
   height: 30px;
   border-radius: 6px;

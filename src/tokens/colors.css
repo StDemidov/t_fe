@@ -47,4 +47,13 @@
   /* Плашка номера карточки */
   --color-card-id-bg: #6d28d9;
   --color-card-id-text: #d7ff00;
+
+  --color-tag-bg: #e8deff;
+  --color-tag-text: #5b3df5;
+
+  --color-header-bg: #f0eef8;
+  --color-header-text: #3a3850;
+
+  --color-footer-bg: #f0eef8;
+  --color-footer-text: #3a3850;
 }

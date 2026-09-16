@@ -8,6 +8,30 @@
   src: url('fonts/BebasNeue.ttf');
 }
 
+@font-face {
+  font-weight: 400;
+  font-family: 'J Audio Cassette';
+  src: url('fonts/J Audio Cassette.otf');
+}
+
+@font-face {
+  font-weight: 400;
+  font-family: 'Neue Soviet';
+  src: url('fonts/Neue_soviet.ttf');
+}
+
+@font-face {
+  font-weight: 400;
+  font-family: 'Garet Book';
+  src: url('fonts/Garet-Book.ttf');
+}
+
+@font-face {
+  font-weight: 400;
+  font-family: 'Garet Heavy';
+  src: url('fonts/Garet-Heavy.ttf');
+}
+
 section {
   margin-right: 50px;
   margin-left: 50px;

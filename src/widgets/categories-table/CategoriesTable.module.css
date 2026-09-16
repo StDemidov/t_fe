@@ -1,0 +1,377 @@
+.table,
+.table * {
+  box-sizing: border-box;
+}
+
+.table {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  overscroll-behavior: none;
+  border: 1px solid var(--color-neutral-200);
+  border-radius: 10px;
+  background: var(--color-neutral-50);
+}
+
+/* Вся ширина = максимум из строк, но не уже видимой области, чтобы шапка всегда
+   покрывала видимую зону. */
+.tableContent {
+  display: flex;
+  flex-direction: column;
+  width: max-content;
+  min-width: 100%;
+}
+
+/* Шапка — флекс-ряд всех колонок, закрепляется сверху внутри скролл-контейнера. */
+.headerRow {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  flex-shrink: 0;
+  display: flex;
+  background: var(--color-header-bg);
+  border-bottom: 1px solid var(--color-neutral-200);
+}
+
+/* Закреплённая слева колонка «Категория» в шапке — перекрывает скроллируемые
+   соседние ячейки непрозрачным фоном. z-index выше, чтобы иконки (drag/close)
+   соседних колонок не наезжали на неё. */
+.headerRow .fixedCol {
+  position: sticky;
+  left: 0;
+  z-index: 5;
+  background: var(--color-header-bg);
+  border-right: 1px solid var(--color-neutral-200);
+  box-shadow: 1px 0 0 var(--color-neutral-200);
+}
+
+/* Общие правила ячеек: флекс-ячейка фиксированной ширины (ширина — inline style). */
+.headerCell,
+.cell {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  padding: 8px 12px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  border-right: 1px solid var(--color-neutral-200);
+}
+
+.headerCell:last-child,
+.cell:last-child {
+  border-right: none;
+}
+
+.headerCell {
+  font-family: 'Garet Book', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--color-header-text);
+  letter-spacing: 0.5px;
+  gap: 4px;
+}
+
+/* Подпись колонки: сжимается, если не хватает места для иконок. */
+.headerLabel {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.headerLabelText {
+  display: inline-block;
+  white-space: nowrap;
+  will-change: transform;
+}
+
+/* Маятниковая прокрутка подписи при наведении. */
+.headerLabelMarquee:hover .headerLabelText {
+  animation: headerMarquee var(--dur, 4s) linear infinite alternate;
+}
+
+@keyframes headerMarquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(calc(-1 * var(--shift, 0px)));
+  }
+}
+
+/* Маркер перетаскивания колонки. */
+.dragHandle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  cursor: grab;
+  color: var(--color-neutral-500);
+  font-size: 16px;
+  opacity: 0.7;
+  transition: color 0.15s ease, opacity 0.15s ease;
+}
+
+.dragHandle:hover {
+  color: var(--color-header-text);
+  opacity: 1;
+}
+
+.dragHandle:active {
+  cursor: grabbing;
+}
+
+/* Крестик скрытия колонки. */
+.hideColBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--color-neutral-500);
+  font-size: 16px;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: color 0.15s ease, opacity 0.15s ease;
+}
+
+.hideColBtn:hover {
+  color: var(--color-status-error-primary, #e53e3e);
+  opacity: 1;
+}
+
+/* Подсветка колонки-цели при перетаскивании. */
+.headerCell.dragOver {
+  background: var(--color-main-100, rgba(130, 84, 255, 0.12));
+  outline: 2px dashed var(--color-main-500, #623fc0);
+  outline-offset: -2px;
+}
+
+/* Тело: строки, каждая — флекс-ряд всех колонок. */
+.body {
+  display: block;
+  background: var(--color-neutral-50);
+}
+
+.row {
+  display: flex;
+}
+
+.cell {
+  padding: 6px 12px;
+  min-height: 48px;
+  background: #ffffff;
+  border-bottom: 1px solid var(--color-neutral-200);
+  color: var(--color-neutral-800);
+  font-size: 14px;
+}
+
+/* Закреплённая слева колонка «Категория» тела. */
+.cell.fixedCol {
+  position: sticky;
+  left: 0;
+  z-index: 10;
+  background: #ffffff;
+  box-shadow: 1px 0 0 var(--color-neutral-200);
+}
+
+.categoryText {
+  font-family: 'Garet Book', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--color-neutral-800);
+}
+
+/* Число в «Кол-во артикулов»: посчитанные шрифтом Bebas Neue значения. */
+.skusCountNumber {
+  font-family: 'BebasNeue', sans-serif;
+  font-size: 24px;
+  letter-spacing: 0.5px;
+  font-weight: 400;
+  color: var(--color-main-500);
+}
+
+/* Графические ячейки (Заказы/Продажи/Остатки/EBITDA): центрируем диаграмму,
+   боковые паддинги оставляют место для всплывающих подсказок. */
+.chartCell {
+  justify-content: center;
+  padding: 6px 26px;
+}
+
+/* Ячейка «Кол-во артикулов»: число по центру. */
+.centerCell {
+  justify-content: center;
+}
+
+/* Ячейка «Остатки последние»: строки растягиваются по всей высоте колонки. */
+.linesCell {
+  align-items: stretch;
+}
+
+/* Колонка «Средняя себестоимость»: центрирует контент по вертикали. */
+.selfPriceColumn {
+  justify-content: center;
+}
+
+/* Внутренняя обёртка ячейки себестоимости: значение + подпись по вертикали. */
+.selfPriceCell {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  color: var(--color-main-500);
+}
+
+.ndsValue {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  font-family: 'BebasNeue', sans-serif;
+  letter-spacing: 0.5px;
+  color: var(--color-main-500);
+  font-weight: 400;
+}
+
+.ruble {
+  font-size: 15px;
+}
+
+.ndsLabelRow {
+  display: grid;
+  grid-template-areas: 'label';
+  height: 14px;
+  margin-top: 2px;
+  overflow: hidden;
+}
+
+/* Оба label занимают одну ячейку сетки — переключаются только прозрачностью. */
+.ndsLabel {
+  grid-area: label;
+  font-family: 'Garet Book', sans-serif;
+  text-align: center;
+  font-size: 11px;
+  white-space: nowrap;
+  color: var(--color-neutral-500);
+  transition: opacity 0.15s ease;
+}
+
+.ndsLabel.visible {
+  opacity: 1;
+}
+
+.ndsLabel.hidden {
+  opacity: 0;
+}
+
+.stocksLines {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+  width: 100%;
+  min-width: 0;
+}
+
+/* Отдельная строка: название слева, значение справа. */
+.stocksLine {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  font-size: 12px;
+  line-height: 1.2;
+}
+
+.stocksLineLabel {
+  color: var(--color-neutral-500);
+  white-space: nowrap;
+}
+
+.stocksLineValue {
+  color: var(--color-main-500);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* Строка «Всего»: жирная, значение темнее. */
+.stocksLineStrong {
+  border-top: 1px solid var(--color-neutral-200);
+  padding-top: 4px;
+}
+
+.stocksLineStrong .stocksLineLabel {
+  font-weight: 700;
+}
+
+.stocksLineStrong .stocksLineValue {
+  color: var(--color-main-800, #1e1b4b);
+  font-weight: 800;
+}
+
+/* Пагинация. */
+.pagination {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 12px;
+  border: 1px solid var(--color-neutral-300);
+  border-radius: 10px;
+  background: var(--color-neutral-50);
+}
+
+.pageSize {
+  padding: 4px 8px;
+  border: 1px solid var(--color-neutral-300);
+  border-radius: 6px;
+  background: var(--color-neutral-50);
+  font-size: 13px;
+  color: var(--color-neutral-700);
+}
+
+.pageInfo {
+  font-size: 13px;
+  color: var(--color-neutral-600);
+}
+
+.pageButtons {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: auto;
+}
+
+.pageNumber {
+  min-width: 44px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--color-neutral-700);
+}
+
+.pageButton {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--color-neutral-300);
+  border-radius: 6px;
+  background: var(--color-neutral-50);
+  color: var(--color-neutral-700);
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.pageButton:disabled {
+  opacity: 0.4;
+  cursor: default;
+}

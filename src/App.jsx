@@ -5,13 +5,7 @@ import Home from './components/home/Home';
 import NotFound from './components/not-found/NotFound';
 import MainLayout from './layouts/MainLayout';
 import './App.css';
-import VendorCodesList from './components/vendorcodes-list/VendorCodesList';
-import CategoriesListWMetrics from './components/categories_list_w_metrics/CategoriesListWMetrics';
 import Error from './components/error/Error';
-import SingleVendorCode from './components/single-vendorcode/SingleVendorCode';
-import PriceControlPage from './components/price-cotrol-page/PriceControlPage';
-import TasksDrain from './components/tasks_drain/TasksDrain';
-import TaskEditDrain from './components/tasks_drain/task-edit-drain/TaskEditDrain';
 import Tools from './components/tools/Tools';
 import AbcPage from './components/abc_page/AbcPage';
 import TaskCreateDrain from './components/tasks_drain/task-create/TaskCreateDrain';
@@ -55,14 +49,9 @@ function App() {
             {currentUser.token ? (
               <Routes>
                 <Route path="/" element={<MainLayout />}>
-                  <Route index element={<MainDashboardContainer />} />
+                  {/* <Route index element={<MainDashboardContainer />} /> */}
                   <Route path="forbidden" element={<ForbiddenPage />} />
-                  <Route path="vendorcodes" element={<VendorCodesList />} />
-                  <Route path="prints" element={<PrintsBaseMain />} />
-                  <Route
-                    path="vendorcodes/:id"
-                    element={<SingleVendorCode />}
-                  />
+                  {/* <Route path="prints" element={<PrintsBaseMain />} />
                   <Route path="barcodes" element={<InventoryPage />} />
                   <Route path="tools/ab_tests" element={<AbTestsMainPage />} />
                   <Route
@@ -77,59 +66,25 @@ function App() {
                   <Route
                     path="tools/campaigns/create"
                     element={<CampaignsCreate />}
-                  />
+                  /> */}
                   <Route
                     path="tools/ab_tests/info/:id"
                     element={<AbTestsSingleTest />}
                   />
-                  <Route
+                  {/* <Route
                     path="categories"
                     element={<CategoriesListWMetrics />}
-                  />
+                  /> */}
                   <Route path="tools" element={<Tools />} />
                   <Route path="tools/abc_page" element={<AbcPage />} />
                   <Route
                     path="tools/ebitda_settings"
                     element={<EbitdaSettings />}
                   />
-                  <Route path="tools/regroup" element={<MainRegroupPage />} />
-                  <Route
-                    path="tools/tasks_hold_stocks"
-                    element={<TasksHoldStocks />}
-                  />
-                  <Route
-                    path="tools/tasks_hold_stocks/create"
-                    element={<TaskHoldStocksCreate />}
-                  />
-                  <Route
-                    path="tools/tasks_hold_stocks/edit/:id"
-                    element={<TaskHoldStocksEdit />}
-                  />
-                  <Route
-                    path="tools/tasks_hold_stocks/:id"
-                    element={<SingleTaskHoldStocksInfo />}
-                  />
-                  <Route
-                    path="tools/price_control"
-                    element={<PriceControlPage />}
-                  />
-                  <Route path="tools/tasks_drain" element={<TasksDrain />} />
-                  <Route path="tools/tags_setup" element={<TagsPage />} />
+                  {/* <Route path="tools/regroup" element={<MainRegroupPage />} /> */}
                   <Route
                     path="tools/upload_photo"
                     element={<UploadImagePage />}
-                  />
-                  <Route
-                    path="tools/tasks_drain/:id"
-                    element={<SingleTaskDrainInfo />}
-                  />
-                  <Route
-                    path="tools/tasks_drain/create"
-                    element={<TaskCreateDrain />}
-                  />
-                  <Route
-                    path="tools/tasks_drain/edit/:id"
-                    element={<TaskEditDrain />}
                   />
                   {NewAppRoutes()}
                   <Route path="*" element={<NotFound />} />

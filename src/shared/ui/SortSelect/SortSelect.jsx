@@ -13,29 +13,64 @@ const DirectionIcon = ({ value }) => {
 };
 
 /**
- * Выпадающий селектор сортировки — единичный выбор с мгновенным применением.
- * По дизайну повторяет DropdownFilter, но без поиска и кнопок «Применить/Сброс»:
- * клик по опции сразу закрывает список и вызывает onChange.
+ * Выпадающий селектор сортировки с кнопками «Применить» / «Отмена».
  *
- * Направление (по возрастанию/убыванию) определяется по суффиксу значения
- * (`:asc`/`:desc`) и показывается иконкой рядом с названием.
+ * Клик по опции запоминает выбор во внутреннем «чертеже» (draft); при
+ * «Применить» вызывается onChange и список закрывается. «Отмена» сбрасывает
+ * выбор и закрывает панель. Направление (asc/desc) показывается иконкой
+ * рядом с чекбоксом в панели.
  *
  * @param {object} props
- * @param {import('react').ReactNode} [props.label] — подпись слева от селектора
  * @param {Array<{ value: string, label: string }>} props.options — варианты сортировки
  * @param {string} props.value — выбранное значение
- * @param {(value: string) => void} props.onChange — вызов при выборе варианта
+ * @param {(value: string) => void} props.onChange — вызов при «Применить»
  * @param {boolean} [props.disabled=false] — блокирует открытие селектора
  */
 const SortSelect = ({
-  label,
   options = [],
   value,
   onChange,
   disabled = false,
 }) => {
   const [open, setOpen] = useState(false);
+  const [draft, setDraft] = useState(value);
+  const [pos, setPos] = useState({ top: 0, left: 0 });
   const rootRef = useRef(null);
+  const triggerRef = useRef(null);
+
+  // При открытии начинаем с текущего значения.
+  useEffect(() => {
+    if (!open) return;
+    setDraft(value);
+  }, [open, value]);
+
+  // Позиция панели относительно вьюпорта (fixed), чтобы она не обрезалась
+  // переполнением родителя (напр. overflow-x родительской строки).
+  const computePos = () => {
+    const rect = triggerRef.current?.getBoundingClientRect();
+    if (!rect) return {};
+    const width = Math.max(rect.width, 240);
+    const margin = 16;
+    const left = Math.min(rect.left, window.innerWidth - width - margin);
+    return { top: rect.bottom + 4, left: Math.max(left, margin), width };
+  };
+
+  useEffect(() => {
+    if (!open) return;
+    setPos(computePos());
+  }, [open]);
+
+  // Панель позиционируется фиксированно: при скролле/ресайзе обновляем координаты.
+  useEffect(() => {
+    if (!open) return;
+    const update = () => setPos(computePos());
+    window.addEventListener('scroll', update, true);
+    window.addEventListener('resize', update);
+    return () => {
+      window.removeEventListener('scroll', update, true);
+      window.removeEventListener('resize', update);
+    };
+  }, [open]);
 
   // Закрытие по клику вне и по Escape.
   useEffect(() => {
@@ -60,12 +95,21 @@ const SortSelect = ({
     options.find((option) => option.value === value)?.label ??
     options[0]?.label;
 
+  const handleApply = () => {
+    onChange(draft);
+    setOpen(false);
+  };
+
+  const handleCancel = () => {
+    setOpen(false);
+  };
+
   return (
     <div className={styles.root} ref={rootRef}>
-      {label && <span className={styles.caption}>{label}</span>}
       <div className={styles.wrap}>
         <button
           type="button"
+          ref={triggerRef}
           className={styles.trigger}
           onClick={() => setOpen((prev) => !prev)}
           aria-expanded={open}
@@ -85,12 +129,13 @@ const SortSelect = ({
 
         <div
           className={`${styles.panel} ${open ? styles.panelOpen : ''}`}
+          style={pos}
           role="listbox"
           aria-hidden={!open}
         >
           <div className={styles.list}>
             {options.map((option) => {
-              const isSelected = option.value === value;
+              const isSelected = draft === option.value;
               return (
                 <button
                   type="button"
@@ -100,10 +145,7 @@ const SortSelect = ({
                   className={`${styles.option} ${
                     isSelected ? styles.optionSelected : ''
                   }`}
-                  onClick={() => {
-                    onChange(option.value);
-                    setOpen(false);
-                  }}
+                  onClick={() => setDraft(option.value)}
                 >
                   <span className={styles.optionLabel}>{option.label}</span>
                   <span className={styles.optionRight}>
@@ -120,6 +162,22 @@ const SortSelect = ({
                 </button>
               );
             })}
+          </div>
+          <div className={styles.actions}>
+            <button
+              type="button"
+              className={styles.resetButton}
+              onClick={handleCancel}
+            >
+              Отмена
+            </button>
+            <button
+              type="button"
+              className={styles.applyButton}
+              onClick={handleApply}
+            >
+              Применить
+            </button>
           </div>
         </div>
       </div>

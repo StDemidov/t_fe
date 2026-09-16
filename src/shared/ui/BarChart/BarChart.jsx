@@ -3,7 +3,11 @@ import styles from './BarChart.module.css';
 
 const hexToRgba = (hex, alpha) => {
   let h = hex.replace('#', '');
-  if (h.length === 3) h = h.split('').map((c) => c + c).join('');
+  if (h.length === 3)
+    h = h
+      .split('')
+      .map((c) => c + c)
+      .join('');
   const n = parseInt(h, 16);
   const r = (n >> 16) & 255;
   const g = (n >> 8) & 255;
@@ -16,8 +20,8 @@ const hexToRgba = (hex, alpha) => {
  *
  * Отрисовывается чистым CSS (без canvas) — лёгкая даже при сотнях экземпляров.
  * Поверх графика по умолчанию показывается сводка (summary); при наведении
- * она скрывается и столбцы становятся ярче. Подпись к каждому столбцу —
- * в нативном тултипе (label: значение).
+ * она скрывается и столбцы выделяются (затемняется столбец под курсором).
+ * Подпись к каждому столбцу — в нативном тултипе (label: значение).
  *
  * @param {object} props
  * @param {Record<string, number>} props.data — объект { дата: значение, … }
@@ -33,6 +37,7 @@ const BarChart = memo(function BarChart({
   color = '#8254ff',
   negativeColor = '#ff5454',
   zeroColor = '#a0a0a0',
+  summaryColor,
   height = 48,
 }) {
   const entries = Object.entries(data);
@@ -50,21 +55,60 @@ const BarChart = memo(function BarChart({
     return <div className={styles.noData}>Нет данных</div>;
   }
 
-  const maxAbs = Math.max(
-    1,
-    ...entries.map(([, value]) => Math.abs(Number(value) || 0))
-  );
+  // Логарифмическое масштабирование: log10(1 + |x|) сжимает крупные значения,
+  // чтобы они не выходили за пределы графика. log10(1+x) корректна и для 0.
+  const logVal = (x) => Math.log10(1 + x);
+
+  let maxPos = 0;
+  let maxNeg = 0;
+  entries.forEach(([, value]) => {
+    const n = Number(value) || 0;
+    if (n > 0) maxPos = Math.max(maxPos, n);
+    else if (n < 0) maxNeg = Math.max(maxNeg, -n);
+  });
+  const hasNeg = maxNeg > 0;
+  // Размеры положительной и отрицательной зон пропорциональны логарифмам
+  // максимальных величин — всё гарантированно помещается внутри графика.
+  const logPos = logVal(Math.max(1, maxPos));
+  const logNeg = logVal(Math.max(1, maxNeg));
+  const denom = logPos + logNeg;
+  const zonePos = (logPos / denom) * 100;
+  const zoneNeg = (logNeg / denom) * 100;
+  const zeroBottom = hasNeg ? zoneNeg : 0;
+
+  // Отступ между столбцами уменьшается с ростом числа точек, чтобы столбцы не
+  // выдавливались за пределы ячейки при большом диапазоне дат.
+  const gap =
+    entries.length > 40
+      ? 0
+      : entries.length > 20
+      ? 1
+      : entries.length > 10
+      ? 2
+      : 3;
 
   return (
-    <div className={styles.root} style={{ height }}>
+    <div className={styles.root} style={{ height, gap }}>
       {summary !== undefined && (
-        <div className={styles.sumOverlay}>{summary}</div>
+        <div
+          className={styles.sumOverlay}
+          style={summaryColor ? { color: summaryColor } : undefined}
+        >
+          {summary}
+        </div>
+      )}
+      {hasNeg && (
+        <div className={styles.zeroLine} style={{ bottom: `${zeroBottom}%` }} />
       )}
       {entries.map(([label, value]) => {
         const num = Number(value) || 0;
-        const barColor =
-          num > 0 ? color : num < 0 ? negativeColor : zeroColor;
-        const pct = (Math.abs(num) / maxAbs) * 100;
+        const barColor = num > 0 ? color : num < 0 ? negativeColor : zeroColor;
+        // Положительные растут вверх от нулевой оси, отрицательные — вниз.
+        // Высоты берутся в логарифмическом масштабе.
+        const pct =
+          num > 0
+            ? zonePos * (logVal(num) / logPos)
+            : zoneNeg * (logVal(-num) / logNeg);
         return (
           <div key={label} className={styles.barCell}>
             <span className={styles.tooltip}>
@@ -77,7 +121,9 @@ const BarChart = memo(function BarChart({
               className={styles.bar}
               style={{
                 height: `${pct}%`,
-                background: hexToRgba(barColor, 0.3),
+                bottom:
+                  num >= 0 ? `${zeroBottom}%` : `${zeroBottom - pct}%`,
+                background: hexToRgba(barColor, 0.85),
               }}
             />
           </div>

@@ -1,0 +1,134 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  height: calc(100vh - 150px);
+}
+
+.forbidden {
+  color: var(--color-neutral-500);
+}
+
+/* Полоса управления: кнопка сброса колонок и календарь в одну строку. */
+.filtersRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+/* Кнопка сброса порядка/видимости колонок: просто иконка, по высоте повторяет
+   календарь. Вращается при наведении. */
+.refreshColsBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: var(--color-neutral-500);
+  font-size: 24px;
+  line-height: 1;
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+
+.refreshColsBtn:hover:not(:disabled) {
+  color: var(--color-main-500);
+}
+
+.refreshColsBtn svg {
+  transition: transform 0.6s ease;
+}
+
+.refreshColsBtn:hover svg {
+  transform: rotate(360deg);
+}
+
+.refreshColsBtn:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.tableArea {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Скелетон полосы управления: круглая кнопка + календарь. */
+.skeletonFilters {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 40px;
+}
+
+/* Базовая плашка скелетона с бликом. */
+.skeletonBlock {
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+  background: var(--color-neutral-200);
+  border-radius: 8px;
+}
+
+.skeletonBlock::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.6),
+    transparent
+  );
+  animation: shimmer 1.4s infinite;
+}
+
+.skeletonBtn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+.skeletonDate {
+  width: 240px;
+  height: 40px;
+}
+
+/* Скелетон таблицы: один большой прямоугольник с бликом. */
+.skeleton {
+  flex: 1;
+  min-height: 0;
+  position: relative;
+  overflow: hidden;
+  background: var(--color-neutral-200);
+  border-radius: 10px;
+}
+
+.skeleton::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.6),
+    transparent
+  );
+  animation: shimmer 1.4s infinite;
+}
+
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}

@@ -36,16 +36,44 @@ const DropdownFilter = ({
   const [open, setOpen] = useState(false);
   const [draft, setDraft] = useState([]);
   const [search, setSearch] = useState('');
+  const [pos, setPos] = useState({ top: 0, left: 0 });
   const rootRef = useRef(null);
+  const triggerRef = useRef(null);
   const searchRef = useRef(null);
+
+  // Вычисляем позицию панели относительно вьюпорта (fixed), чтобы она не
+  // обрезалась переполнением родителя (напр. overflow-x родительской строки).
+  const computePos = () => {
+    const rect = triggerRef.current?.getBoundingClientRect();
+    if (!rect) return {};
+    // Панель фиксированной ширины прижимаем к краю вьюпорта, чтобы она не
+    // уходила за правый край экрана у крайних фильтров.
+    const width = Math.max(rect.width, 280);
+    const margin = 16;
+    const left = Math.min(rect.left, window.innerWidth - width - margin);
+    return { top: rect.bottom + 4, left: Math.max(left, margin), width };
+  };
 
   // При открытии начинаем с применённых значений, чистим поиск и фокусируем его.
   useEffect(() => {
     if (!open) return;
     setDraft(selected);
     setSearch('');
+    setPos(computePos());
     searchRef.current?.focus();
   }, [open, selected]);
+
+  // Панель позиционируется фиксированно: при скролле/ресайзе обновляем координаты.
+  useEffect(() => {
+    if (!open) return;
+    const update = () => setPos(computePos());
+    window.addEventListener('scroll', update, true);
+    window.addEventListener('resize', update);
+    return () => {
+      window.removeEventListener('scroll', update, true);
+      window.removeEventListener('resize', update);
+    };
+  }, [open]);
 
   // Закрытие по клику вне и по Escape.
   useEffect(() => {
@@ -111,6 +139,7 @@ const DropdownFilter = ({
     <div className={styles.root} ref={rootRef}>
       <button
         type="button"
+        ref={triggerRef}
         className={styles.trigger}
         onClick={() => setOpen((value) => !value)}
         aria-expanded={open}
@@ -134,6 +163,7 @@ const DropdownFilter = ({
 
       <div
         className={`${styles.panel} ${open ? styles.panelOpen : ''}`}
+        style={pos}
         role="listbox"
         aria-hidden={!open}
       >

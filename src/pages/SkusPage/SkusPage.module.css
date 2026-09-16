@@ -1,0 +1,300 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  height: calc(100vh - 150px);
+}
+
+.forbidden {
+  color: var(--color-neutral-500);
+}
+
+.content {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Полоса фильтров: одна строка, скролл по горизонтали. */
+.filtersRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  overflow-x: auto;
+  min-height: 40px;
+  flex-shrink: 0;
+}
+
+/* Группа иконок-кнопок (сброс колонок, Excel, сброс фильтров, теги):
+   все на одном расстоянии друг от друга. */
+.actionsButtons {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  flex-shrink: 0;
+}
+
+/* Полоса сортировок: одна строка, скролл по горизонтали. */
+
+/* Кнопка сброса порядка/видимости колонок: просто иконка, без вида кнопки,
+   по высоте повторяет фильтры/календарь. Вращается при наведении. */
+.refreshColsBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: var(--color-neutral-500);
+  font-size: 24px;
+  line-height: 1;
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+
+.refreshColsBtn:hover {
+  color: var(--color-main-500);
+}
+
+.refreshColsBtn svg {
+  transition: transform 0.6s ease;
+}
+
+.refreshColsBtn:hover svg {
+  transform: rotate(360deg);
+}
+
+/* Кнопка выгрузки Excel: до наведения выглядит как кнопка сброса колонок
+   (прозрачная иконка нейтрального цвета), при наведении — зелёная. */
+.excelBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: var(--color-neutral-500);
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+
+.excelBtn:hover:not(:disabled) {
+  color: #1b8f3c;
+}
+
+.excelBtn:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+/* Кнопка сброса фильтров: иконка, подсвечивается оранжевым при наведении. */
+.resetFiltersBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: var(--color-neutral-500);
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+
+.resetFiltersBtn:hover {
+  color: var(--color-status-attention-primary);
+}
+
+/* Кнопка управления тегами: как другие иконки-кнопки, нейтральный цвет. */
+.tagsBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: var(--color-neutral-500);
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+
+.tagsBtn:hover:not(:disabled) {
+  color: var(--color-main-500);
+}
+
+.tagsBtn:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.tableArea {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  position: relative;
+}
+
+/* Оверлей поверх таблицы на время формирования отчёта. */
+.exportOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(2px);
+}
+
+/* Статус-бар загрузки. */
+.exportBar {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  border-radius: 10px;
+  background: var(--color-card-bg, #fff);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.16);
+  color: var(--color-neutral-700);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.exportText {
+  white-space: nowrap;
+}
+
+.exportSpinner {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  border: 2px solid var(--color-main-200, #d7caf5);
+  border-top-color: var(--color-main-600, #623fc0);
+  border-radius: 50%;
+  animation: exportSpin 0.9s linear infinite;
+}
+
+@keyframes exportSpin {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Скелетон страницы: повторяет layout — фильтры сверху, таблица снизу. */
+.skeleton {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.skeletonFilters {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  overflow: hidden;
+  min-height: 40px;
+  flex-shrink: 0;
+}
+
+.skeletonActions {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  flex-shrink: 0;
+}
+
+/* Базовая плашка скелетона с бликом. */
+.skeletonBlock {
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+  background: var(--color-neutral-200);
+  border-radius: 8px;
+}
+
+.skeletonBlock::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.6),
+    transparent
+  );
+  animation: shimmer 1.4s infinite;
+}
+
+/* Круглые иконки-кнопки (сброс колонок, Excel, сброс фильтров, теги). */
+.skeletonBtn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+/* Плашки фильтров по размерам реальных контролов. */
+.skeletonDate {
+  width: 220px;
+  height: 40px;
+}
+
+.skeletonSearch {
+  width: 260px;
+  height: 40px;
+}
+
+.skeletonSort {
+  width: 180px;
+  height: 40px;
+}
+
+.skeletonSelect {
+  width: 150px;
+  height: 40px;
+}
+
+/* Скелетон таблицы: один большой прямоугольник. */
+.skeletonTable {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid var(--color-neutral-200);
+  border-radius: 10px;
+}
+
+.skeletonTableBody {
+  flex: 1;
+  border-radius: 0;
+}
+
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}

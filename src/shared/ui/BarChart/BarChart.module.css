@@ -6,34 +6,45 @@
   padding: 0 2px;
   box-sizing: border-box;
   cursor: default;
+  width: 100%;
+  min-width: 0;
+  flex: 1 1 0;
 }
 
 .barCell {
   position: relative;
-  flex: 1;
-  align-self: stretch;
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
+  flex: 1 1 0;
+  min-width: 0;
+  height: 100%;
   cursor: default;
 }
 
 .bar {
+  position: absolute;
+  left: 0;
   width: 100%;
-  min-height: 0;
-  border-radius: 2px;
   box-sizing: border-box;
-  opacity: 0.6;
+  opacity: 0.35;
   transition: opacity 0.3s ease, filter 0.3s ease;
 }
 
 .root:hover .bar {
-  opacity: 0.35;
+  opacity: 0.55;
 }
 
 .barCell:hover .bar {
   opacity: 1;
-  filter: brightness(0.85) saturate(1.2);
+  filter: brightness(0.45) saturate(1.2);
+}
+
+.zeroLine {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 50%;
+  height: 1px;
+  background: rgba(0, 0, 0, 0.12);
+  pointer-events: none;
 }
 
 .tooltip {
@@ -79,8 +90,10 @@
   justify-content: center;
   pointer-events: none;
   font-family: 'BebasNeue', sans-serif;
-  font-size: 16px;
+  font-size: 24px;
   color: #623fc0;
+  text-shadow: 0 0 4px rgba(255, 255, 255, 0.9), 0 0 2px #ffffff,
+    0 0 1px #ffffff;
   opacity: 1;
   transition: opacity 0.3s ease;
 }

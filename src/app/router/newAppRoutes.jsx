@@ -22,6 +22,9 @@ const withSuspense = (LazyComponent) => (
 );
 
 const ProductCardsPage = lazy(() => import('../../pages/ProductCardsPage'));
+const SkusPage = lazy(() => import('../../pages/SkusPage'));
+const SkuDetailPage = lazy(() => import('../../pages/SkuDetailPage'));
+const CategoriesPage = lazy(() => import('../../pages/CategoriesPage'));
 
 export function NewAppRoutes() {
   return (
@@ -29,6 +32,22 @@ export function NewAppRoutes() {
       <Route
         path="tools/cards"
         element={withSuspense(ProductCardsPage)}
+      />
+      <Route
+        path="skus"
+        element={withSuspense(SkusPage)}
+      />
+      <Route
+        path="skus/:sku"
+        element={withSuspense(SkuDetailPage)}
+      />
+      <Route
+        path="categories_new"
+        element={withSuspense(CategoriesPage)}
+      />
+      <Route
+        path="categories"
+        element={withSuspense(CategoriesPage)}
       />
       {/* Новые маршруты — ниже */}
     </>

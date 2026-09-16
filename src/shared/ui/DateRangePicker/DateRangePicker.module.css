@@ -1,0 +1,198 @@
+.root {
+  position: relative;
+  display: inline-flex;
+}
+
+.trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 34px;
+  padding: 0 12px;
+  border: 1px solid var(--color-neutral-300);
+  border-radius: 8px;
+  background: var(--color-neutral-50);
+  color: var(--color-neutral-700);
+  font-size: 13px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.trigger:hover:not(:disabled) {
+  border-color: var(--color-main-500);
+}
+
+.trigger:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.calendarIcon {
+  width: 16px;
+  height: 16px;
+  color: var(--color-main-500);
+}
+
+.triggerText {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.popover {
+  position: fixed;
+  z-index: 30;
+  width: 280px;
+  padding: 12px;
+  background: var(--color-neutral-50);
+  border: 1px solid var(--color-neutral-200);
+  border-radius: 10px;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.12);
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.navButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: 1px solid var(--color-neutral-300);
+  border-radius: 6px;
+  background: var(--color-neutral-50);
+  color: var(--color-neutral-700);
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.navButton:hover {
+  border-color: var(--color-main-500);
+}
+
+.monthLabel {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-neutral-800);
+  text-transform: capitalize;
+}
+
+.gridHeader {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  margin-bottom: 4px;
+}
+
+.weekday {
+  text-align: center;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-neutral-500);
+  padding: 4px 0;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+}
+
+.empty {
+  height: 32px;
+}
+
+.day {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 32px;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--color-neutral-800);
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.day:hover {
+  background: var(--color-neutral-200);
+}
+
+.outside {
+  color: var(--color-neutral-400);
+}
+
+.disabled {
+  color: var(--color-neutral-300);
+  cursor: not-allowed;
+}
+
+.disabled:hover {
+  background: transparent;
+}
+
+.inRange {
+  background: rgba(130, 84, 255, 0.15);
+  border-radius: 0;
+}
+
+.start,
+.end {
+  background: var(--color-card-id-bg);
+  color: var(--color-card-id-text);
+  font-weight: 600;
+}
+
+.point {
+  border-radius: 6px;
+}
+
+.actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--color-neutral-200);
+}
+
+.closeButton,
+.applyButton {
+  font-family: 'Garet Book', sans-serif;
+  flex: 1;
+  height: 30px;
+  border-radius: 6px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.closeButton {
+  background: var(--color-neutral-100);
+  border: 1px solid var(--color-neutral-300);
+  color: var(--color-neutral-700);
+}
+
+.closeButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.applyButton {
+  background: var(--color-main-500);
+  border: 1px solid var(--color-main-500);
+  color: #fff;
+}
+
+.applyButton:hover:not(:disabled) {
+  background: var(--color-main-600);
+}
+
+.applyButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
