@@ -9,6 +9,7 @@ export { default as SwitchFilter } from './SwitchFilter';
 export { default as SearchFilter } from './SearchFilter';
 export { default as BarChart } from './BarChart';
 export { default as LineChart } from './LineChart';
+export { default as SignedLineChart } from './SignedLineChart';
 export { default as StepLineChart } from './StepLineChart';
 export { default as StackedBarChart } from './StackedBarChart';
 export { default as StackedBarChartComparison } from './StackedBarChartComparison';

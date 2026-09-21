@@ -55,10 +55,7 @@ const BarChart = memo(function BarChart({
     return <div className={styles.noData}>Нет данных</div>;
   }
 
-  // Логарифмическое масштабирование: log10(1 + |x|) сжимает крупные значения,
-  // чтобы они не выходили за пределы графика. log10(1+x) корректна и для 0.
-  const logVal = (x) => Math.log10(1 + x);
-
+  // Линейное масштабирование: без сжатия логарифмом.
   let maxPos = 0;
   let maxNeg = 0;
   entries.forEach(([, value]) => {
@@ -67,13 +64,11 @@ const BarChart = memo(function BarChart({
     else if (n < 0) maxNeg = Math.max(maxNeg, -n);
   });
   const hasNeg = maxNeg > 0;
-  // Размеры положительной и отрицательной зон пропорциональны логарифмам
-  // максимальных величин — всё гарантированно помещается внутри графика.
-  const logPos = logVal(Math.max(1, maxPos));
-  const logNeg = logVal(Math.max(1, maxNeg));
-  const denom = logPos + logNeg;
-  const zonePos = (logPos / denom) * 100;
-  const zoneNeg = (logNeg / denom) * 100;
+  // Размеры положительной и отрицательной зон пропорциональны максимальным
+  // величинам — всё гарантированно помещается внутри графика.
+  const sumAbs = maxPos + maxNeg;
+  const zonePos = sumAbs > 0 ? (maxPos / sumAbs) * 100 : 100;
+  const zoneNeg = hasNeg ? 100 - zonePos : 0;
   const zeroBottom = hasNeg ? zoneNeg : 0;
 
   // Отступ между столбцами уменьшается с ростом числа точек, чтобы столбцы не
@@ -104,11 +99,15 @@ const BarChart = memo(function BarChart({
         const num = Number(value) || 0;
         const barColor = num > 0 ? color : num < 0 ? negativeColor : zeroColor;
         // Положительные растут вверх от нулевой оси, отрицательные — вниз.
-        // Высоты берутся в логарифмическом масштабе.
+        // Высоты берутся в линейном масштабе от максимума по модулю.
         const pct =
           num > 0
-            ? zonePos * (logVal(num) / logPos)
-            : zoneNeg * (logVal(-num) / logNeg);
+            ? maxPos > 0
+              ? zonePos * (num / maxPos)
+              : 0
+            : maxNeg > 0
+            ? zoneNeg * (-num / maxNeg)
+            : 0;
         return (
           <div key={label} className={styles.barCell}>
             <span className={styles.tooltip}>

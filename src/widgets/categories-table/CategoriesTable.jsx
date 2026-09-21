@@ -4,7 +4,13 @@ import { IoMdCloseCircle } from 'react-icons/io';
 import LazyLoad from 'react-lazyload';
 
 import { getVisibleColumns, FIXED_COLUMN_ID, lastDaily, sumDailyMap, divideDailyPercent, percentRatio } from './columns';
-import { BarChart, LineChart, StackedBarChart, StepLineChart } from '../../shared/ui';
+import {
+  BarChart,
+  LineChart,
+  SignedLineChart,
+  StackedBarChart,
+  StepLineChart,
+} from '../../shared/ui';
 import styles from './CategoriesTable.module.css';
 
 /** Варианты количества строк на странице. */
@@ -319,7 +325,7 @@ const CategoriesTable = ({ items = [], resetTrigger = 0 }) => {
       const s = item[chartCf[1]];
       return (
         <LazyChart height={60}>
-          <BarChart
+          <SignedLineChart
             data={item[chartCf[0]] || {}}
             summary={
               s === null || s === undefined || s === '' ? '—' : formatNumber(s)

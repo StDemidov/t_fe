@@ -11,7 +11,7 @@ import { IoMdCloseCircle } from 'react-icons/io';
 import LazyLoad from 'react-lazyload';
 
 import { getVisibleColumns, sumDaily, lastDaily } from './columns';
-import { BarChart, LineChart, StackedBarChart, StepLineChart } from '../../shared/ui';
+import { BarChart, LineChart, SignedLineChart, StackedBarChart, StepLineChart } from '../../shared/ui';
 import ArticleCell from './ArticleCell';
 import SelfPriceCell from './SelfPriceCell';
 import TagsCell from './TagsCell';
@@ -392,7 +392,7 @@ const SkusTable = ({ items, footerItems = [], onTagFilter, onCategoryFilter, onP
       const s = lastDaily(item.ebitda);
       return (
         <LazyChart height={60}>
-          <BarChart
+          <SignedLineChart
             data={item.ebitda || {}}
             summary={s}
             summaryColor={s !== null && s < 0 ? '#ff3b3b' : undefined}

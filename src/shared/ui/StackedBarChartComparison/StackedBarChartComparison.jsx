@@ -159,10 +159,6 @@ const StackedBarChartComparison = memo(function StackedBarChartComparison({
   );
   const totalChange = pctChange(total, comparisonTotal);
 
-  // Логарифмическое масштабирование: log10(1 + |x|) сжимает крупные значения,
-  // чтобы они не выходили за пределы графика.
-  const logVal = (x) => Math.log10(1 + x);
-
   // Суммарные положительная и отрицательная величины по каждой дате.
   const posExt = (date) =>
     nonEmpty.reduce(
@@ -182,13 +178,12 @@ const StackedBarChartComparison = memo(function StackedBarChartComparison({
     maxNeg = Math.max(maxNeg, -negExt(date));
   });
   const hasNeg = maxNeg > 0;
-  // Размеры положительной и отрицательной зон пропорциональны логарифмам
-  // максимальных суммарных величин — всё гарантированно помещается.
-  const logPos = logVal(Math.max(1, maxPos));
-  const logNeg = logVal(Math.max(1, maxNeg));
-  const denom = logPos + logNeg;
-  const zonePos = (logPos / denom) * 100;
-  const zoneNeg = (logNeg / denom) * 100;
+  // Линейное масштабирование: ось 0Y строится по сумме всех датасетов на дату,
+  // а не по максимальному из них, — столбцы не выходят за пределы. Размеры зон
+  // пропорциональны суммарным максимумам.
+  const sumAbs = maxPos + maxNeg;
+  const zonePos = sumAbs > 0 ? (maxPos / sumAbs) * 100 : 100;
+  const zoneNeg = hasNeg ? 100 - zonePos : 0;
   const zeroBottom = hasNeg ? zoneNeg : 0;
 
   // Отступ между столбцами уменьшается с ростом числа точек.
@@ -240,24 +235,6 @@ const StackedBarChartComparison = memo(function StackedBarChartComparison({
           <div className={styles.zeroLine} style={{ bottom: `${zeroBottom}%` }} />
         )}
         {dates.map((date) => {
-          const posTotal = posExt(date);
-          const negTotal = negExt(date);
-          // Суммы логов отдельных сегментов даты (в отличие от лога суммы) — чтобы
-          // суммарная высота сегментов ровно заполняла отведённую зону без выхода
-          // за пределы строки.
-          const posLog =
-            nonEmpty.reduce((sum, d) => {
-              const n = Number(d.data[date]) || 0;
-              return n > 0 ? sum + logVal(n) : sum;
-            }, 0) || 1;
-          const negLog =
-            nonEmpty.reduce((sum, d) => {
-              const n = Number(d.data[date]) || 0;
-              return n < 0 ? sum + logVal(-n) : sum;
-            }, 0) || 1;
-          // Доля положительной/отрицательной зоны, заполненная стеком этой даты.
-          const stackPosH = posTotal > 0 ? zonePos * (logVal(posTotal) / logPos) : 0;
-          const stackNegH = negTotal < 0 ? zoneNeg * (logVal(-negTotal) / logNeg) : 0;
           let posCum = 0;
           let negCum = 0;
           return (
@@ -277,7 +254,7 @@ const StackedBarChartComparison = memo(function StackedBarChartComparison({
                 const num = Number(d.data[date]) || 0;
                 if (num === 0) return null;
                 if (num > 0) {
-                  const h = stackPosH * (logVal(num) / posLog);
+                  const h = maxPos > 0 ? zonePos * (num / maxPos) : 0;
                   const el = (
                     <div
                       key={d.name}
@@ -294,7 +271,7 @@ const StackedBarChartComparison = memo(function StackedBarChartComparison({
                   posCum += h;
                   return el;
                 }
-                const h = stackNegH * (logVal(-num) / negLog);
+                const h = maxNeg > 0 ? zoneNeg * (-num / maxNeg) : 0;
                 const segColor = d.negativeColor || d.color;
                 const el = (
                   <div
