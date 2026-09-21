@@ -88,9 +88,20 @@ const TagsCell = ({ tags = [], sku, type, scrollLockRef, onTagFilter }) => {
   const openDropdown = () => {
     const rect = addRef.current?.getBoundingClientRect();
     if (rect) {
+      const gap = 4;
+      const maxDropdownHeight = 380;
+      const spaceBelow = window.innerHeight - rect.bottom - gap;
+      const spaceAbove = rect.top - gap;
+      // Если снизу не хватает места, а сверху больше — раскрываем вверх.
+      const flip = spaceBelow < maxDropdownHeight && spaceAbove > spaceBelow;
       setPos({
-        top: rect.bottom + 4 + window.scrollY,
-        left: rect.left + window.scrollX,
+        top: flip ? rect.top - gap : rect.bottom + gap,
+        left: Math.min(rect.left, Math.max(8, window.innerWidth - 288)),
+        maxHeight: Math.max(
+          160,
+          Math.min(maxDropdownHeight, flip ? spaceAbove : spaceBelow)
+        ),
+        flip,
       });
     }
     setSelected(new Set());
@@ -231,7 +242,12 @@ const TagsCell = ({ tags = [], sku, type, scrollLockRef, onTagFilter }) => {
           <div
             ref={popoverRef}
             className={styles.dropdown}
-            style={{ top: pos.top, left: pos.left }}
+            style={{
+              top: pos.top,
+              left: pos.left,
+              maxHeight: pos.maxHeight,
+              transform: pos.flip ? 'translateY(-100%)' : undefined,
+            }}
           >
             <div className={styles.dropdownTitle}>Добавить теги</div>
             <input

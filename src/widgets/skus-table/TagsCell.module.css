@@ -121,7 +121,7 @@
 }
 
 .dropdown {
-  position: absolute;
+  position: fixed;
   z-index: 1000;
   min-width: 250px;
   max-width: 280px;
@@ -178,6 +178,8 @@
   overflow-y: auto;
   overflow-x: hidden;
   min-width: 0;
+  flex: 1 1 auto;
+  min-height: 0;
 }
 
 .dropdownItem {
