@@ -20,7 +20,7 @@ import styles from './TagsManagerModal.module.css';
 const TABS = [
   { id: 'create', label: 'Создание тегов' },
   { id: 'remove', label: 'Удаление тегов' },
-  { id: 'xlsx', label: 'Привязка тегов через XLSX' },
+  { id: 'xlsx', label: 'Привязка тегов XLSX' },
 ];
 
 // Типы тегов: label — подпись в выпадающем списке, key — ключ для запроса.
@@ -415,6 +415,7 @@ const TagsManagerModal = ({
   if (!open) return null;
 
   const activeTab = TABS.find((t) => t.id === tab);
+  const tabIndex = Math.max(0, TABS.findIndex((t) => t.id === tab));
 
   return createPortal(
     <>
@@ -431,19 +432,36 @@ const TagsManagerModal = ({
             <FaTimes />
           </button>
         </div>
-        <div className={styles.tabs}>
+        <div className={styles.tabContainer}>
           {TABS.map((t) => (
-            <button
-              type="button"
+            <input
               key={t.id}
-              className={`${styles.tab} ${
-                tab === t.id ? styles.tabActive : ''
+              type="radio"
+              name="tags-modal-tab"
+              id={`tags-tab-${t.id}`}
+              className={styles.tabRadio}
+              checked={tab === t.id}
+              onChange={() => setTab(t.id)}
+            />
+          ))}
+          {TABS.map((t) => (
+            <label
+              key={`${t.id}-label`}
+              className={`${styles.tabLabel} ${
+                tab === t.id ? styles.tabLabelActive : ''
               }`}
-              onClick={() => setTab(t.id)}
+              htmlFor={`tags-tab-${t.id}`}
             >
               {t.label}
-            </button>
+            </label>
           ))}
+          <div
+            className={styles.indicator}
+            style={{
+              width: `calc((100% - 4px) / ${TABS.length})`,
+              left: `calc(2px + ${tabIndex} * (100% - 4px) / ${TABS.length})`,
+            }}
+          />
         </div>
         <div className={styles.content}>
           {tab === 'create' ? (

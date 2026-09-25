@@ -1,0 +1,171 @@
+/* ─── OrdersToProcessorsToolbar ────────────────────────────────────────────── */
+
+.toolbar {
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.filtersRow {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  height: 52px;
+  padding: 0 12px;
+  gap: 8px;
+}
+
+.filtersGroup {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex: 1;
+  overflow-x: auto;
+  overscroll-behavior: none;
+  min-width: 0;
+}
+.filtersGroup::-webkit-scrollbar {
+  height: 0;
+}
+
+/* Кнопка сброса фильтров: иконка, подсвечивается оранжевым при наведении. */
+.resetFiltersBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: var(--color-neutral-500);
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+
+.resetFiltersBtn:hover {
+  color: var(--color-status-attention-primary);
+}
+
+.actionsGroup {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.actionBtnSecondary {
+  height: 30px;
+  padding: 0 16px;
+  background: #fff;
+  color: #374151;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+  white-space: nowrap;
+}
+.actionBtnSecondary:hover:not(:disabled) {
+  border-color: #6c63ff;
+  color: #6c63ff;
+}
+.actionBtnSecondary:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+/* Пагинация — поверх фильтров. */
+.pagination {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 12px;
+  border: 1px solid var(--color-neutral-300);
+  border-radius: 10px;
+  background: var(--color-neutral-50);
+  margin: 8px 12px 0;
+}
+
+.pageSize {
+  padding: 4px 8px;
+  border: 1px solid var(--color-neutral-300);
+  border-radius: 6px;
+  background: var(--color-neutral-50);
+  font-size: 13px;
+  color: var(--color-neutral-700);
+}
+
+.pageInfo {
+  font-size: 13px;
+  color: var(--color-neutral-600);
+}
+
+.pageButtons {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: auto;
+}
+
+.pageNumber {
+  min-width: 44px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--color-neutral-700);
+}
+
+.pageButton {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--color-neutral-300);
+  border-radius: 6px;
+  background: var(--color-neutral-50);
+  color: var(--color-neutral-700);
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.pageButton:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+/* Reset orders button */
+.actionBtnReset {
+  height: 30px;
+  padding: 0 14px;
+  background: #fef2f2;
+  color: #ef4444;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  border: 1.5px solid #fecaca;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, opacity 0.15s;
+  white-space: nowrap;
+}
+.actionBtnReset:hover:not(:disabled) {
+  background: #ef4444;
+  color: #fff;
+  border-color: #ef4444;
+}
+.actionBtnReset:disabled {
+  opacity: 0.35;
+  cursor: default;
+}

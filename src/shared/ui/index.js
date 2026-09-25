@@ -8,6 +8,7 @@ export { default as DropdownFilter } from './DropdownFilter';
 export { default as SwitchFilter } from './SwitchFilter';
 export { default as SearchFilter } from './SearchFilter';
 export { default as BarChart } from './BarChart';
+export { default as OrdersPriceChart } from './OrdersPriceChart';
 export { default as LineChart } from './LineChart';
 export { default as SignedLineChart } from './SignedLineChart';
 export { default as StepLineChart } from './StepLineChart';

@@ -25,6 +25,7 @@ const ProductCardsPage = lazy(() => import('../../pages/ProductCardsPage'));
 const SkusPage = lazy(() => import('../../pages/SkusPage'));
 const SkuDetailPage = lazy(() => import('../../pages/SkuDetailPage'));
 const CategoriesPage = lazy(() => import('../../pages/CategoriesPage'));
+const OrdersToProcessorsPage = lazy(() => import('../../pages/OrdersToProcessorsPage'));
 
 export function NewAppRoutes() {
   return (
@@ -48,6 +49,10 @@ export function NewAppRoutes() {
       <Route
         path="categories"
         element={withSuspense(CategoriesPage)}
+      />
+      <Route
+        path="tools/orders_to_processors"
+        element={withSuspense(OrdersToProcessorsPage)}
       />
       {/* Новые маршруты — ниже */}
     </>

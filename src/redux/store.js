@@ -29,6 +29,7 @@ import productCardsReducer from '../entities/product-card/model/productCardsSlic
 import skusMetricsReducer from '../entities/sku-metrics/model/skusMetricsSlice';
 import skuDetailReducer from '../entities/sku-detail/model/skuDetailSlice';
 import tagsReducer from '../entities/tags/model/tagsSlice';
+import ordersToProcessorsReducer from '../entities/orders-to-processors/model/ordersToProcessorsSlice';
 
 import { persistReducer, persistStore } from 'redux-persist';
 import { combineReducers } from '@reduxjs/toolkit';
@@ -68,6 +69,13 @@ const inventoryFilterPersistConfig = {
   ],
 };
 
+const ordersToProcessorsPersistConfig = {
+  key: 'ordersToProcessors',
+  storage,
+  // Персистим только пользовательские вводы — не большой список items.
+  whitelist: ['extraOrders', 'startCalcDates'],
+};
+
 const authReducer = persistReducer(authPersistConfig, userReducer);
 const orderBCReducer = persistReducer(ordersPersistConfig, ordersReducer);
 const persistedInventoryReducer = persistReducer(
@@ -77,6 +85,10 @@ const persistedInventoryReducer = persistReducer(
 const persistedInventoryFilterReducer = persistReducer(
   inventoryFilterPersistConfig,
   inventoryFilterReducer
+);
+const persistedOrdersToProcessorsReducer = persistReducer(
+  ordersToProcessorsPersistConfig,
+  ordersToProcessorsReducer
 );
 
 const rootReducer = combineReducers({
@@ -109,6 +121,7 @@ const rootReducer = combineReducers({
   skusMetrics: skusMetricsReducer,
   skuDetail: skuDetailReducer,
   tags: tagsReducer,
+  ordersToProcessors: persistedOrdersToProcessorsReducer,
 });
 
 const store = configureStore({

@@ -1,0 +1,179 @@
+/* ─── OrdersToProcessorsSkeleton ───────────────────────────────────────────── */
+
+.root {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+}
+
+.toolbar {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background: #fff;
+  border-bottom: 1px solid #f3f4f6;
+  padding-bottom: 8px;
+}
+
+.paginationRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 12px;
+}
+
+.filtersRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 12px;
+}
+
+.scope {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  margin: 0 12px;
+}
+
+.header {
+  display: flex;
+  gap: 4px;
+  padding: 4px 0;
+}
+
+.rows {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.row {
+  display: flex;
+  gap: 8px;
+  align-items: stretch;
+}
+
+.card {
+  width: 520px;
+  min-width: 520px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px 16px;
+  border-right: 1px solid #f3f4f6;
+  box-sizing: border-box;
+}
+
+.cardTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.chipRow {
+  display: flex;
+  gap: 6px;
+}
+
+.metrics {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+}
+
+.ganttRow {
+  display: flex;
+  gap: 4px;
+  flex: 1;
+  align-items: center;
+  padding: 0 4px;
+  border-right: 1px solid #f3f4f6;
+  box-sizing: border-box;
+}
+
+.weekCell {
+  flex: 1 1 0;
+  min-width: 30px;
+  height: 40px;
+}
+
+/* ── Блоки-заглушки ── */
+
+.block {
+  position: relative;
+  overflow: hidden;
+  background: #f0f1f3;
+  border-radius: 6px;
+}
+
+.block::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.65) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transform: translateX(-100%);
+  animation: shimmer 1.4s infinite;
+}
+
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* Размеры блоков */
+.pgSmall {
+  width: 44px;
+  height: 28px;
+}
+
+.pgWide {
+  width: 140px;
+  height: 28px;
+}
+
+.filter {
+  width: 130px;
+  height: 30px;
+}
+
+.filterWide {
+  width: 170px;
+  height: 30px;
+}
+
+.vc {
+  width: 200px;
+  height: 14px;
+}
+
+.dateLine {
+  width: 130px;
+  height: 10px;
+  margin-top: 6px;
+}
+
+.icon {
+  width: 26px;
+  height: 26px;
+  border-radius: 7px;
+}
+
+.chip {
+  width: 70px;
+  height: 20px;
+  border-radius: 4px;
+}
+
+.metric {
+  height: 42px;
+}

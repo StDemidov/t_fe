@@ -1,0 +1,81 @@
+/* ─── AppMenu ─────────────────────────────────────────────────────────────── */
+
+/* Высота меню увеличена вдвое относительно исходной (~42px);
+   размер шрифта не меняется. */
+.nav {
+  box-sizing: border-box;
+  height: 84px;
+  display: flex;
+  align-items: center;
+  background: var(--color-neutral-50);
+  padding: 0 8px;
+}
+
+.menuItems {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  flex: 1;
+  margin: 0;
+  padding: 0;
+}
+
+.menuItem {
+  margin-left: 30px;
+}
+
+/* Ссылки: заглавные, без переноса слов на новую строку. */
+.navLink {
+  display: inline-block;
+  text-decoration: none;
+  font-family: 'BebasNeue', sans-serif;
+  color: var(--color-neutral-400);
+  font-size: 20px;
+  font-weight: 500;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transition: color 0.5s ease-in-out;
+}
+
+.navLink:hover {
+  color: var(--color-main-500);
+}
+
+.navLink.active {
+  color: var(--color-main-500);
+}
+
+/* Правая группа: логотип и кнопка выхода. */
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-right: 32px;
+}
+
+.logo {
+  height: 28px;
+  width: auto;
+  object-fit: contain;
+}
+
+.logoutButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--color-neutral-400);
+  font-size: 20px;
+  cursor: pointer;
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.logoutButton:hover {
+  color: var(--color-main-500);
+  transform: scale(1.2);
+}

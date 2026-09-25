@@ -16,6 +16,9 @@ export const endpoints = {
   categories: {
     getCategories: '/get_db_data/categories_metrics',
   },
+  ordersToProcessors: {
+    getPredicts: '/orders_to_processors/get_predicts',
+  },
   tags: {
     getTags: '/tags/get_all_tags',
     createTag: '/tags/create_tags',

@@ -3,17 +3,20 @@ import { MdLogout } from 'react-icons/md';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { clearCredentials, selectUser } from '../../redux/slices/authSlice';
-import styles from './style.module.css';
+import tishkaLogo from '../../shared/assets/tishka_logo.png';
+import styles from './AppMenu.module.css';
 
-const Menu = () => {
+/** Верхнее меню навигации с логотипом и кнопкой выхода. */
+const AppMenu = () => {
   const dispatch = useDispatch();
   const currentUser = useSelector(selectUser);
 
-  const handleLogout = (e) => {
+  const handleLogout = () => {
     dispatch(clearCredentials());
   };
+
   return (
-    <nav className={styles.navMenu}>
+    <nav className={styles.nav}>
       <ul className={styles.menuItems}>
         {/* <li>
           <NavLink className={styles.navLink} to="." end content="Главная">
@@ -22,7 +25,7 @@ const Menu = () => {
         </li> */}
         {(currentUser.permissions.vendorcodes ||
           currentUser.permissions.is_admin) && (
-          <li>
+          <li className={styles.menuItem}>
             <NavLink className={styles.navLink} to="skus" content="Товары">
               Товары
             </NavLink>
@@ -30,7 +33,7 @@ const Menu = () => {
         )}
         {(currentUser.permissions.category_metrics ||
           currentUser.permissions.is_admin) && (
-          <li>
+          <li className={styles.menuItem}>
             <NavLink
               className={styles.navLink}
               to="categories"
@@ -62,7 +65,7 @@ const Menu = () => {
         )} */}
         {(currentUser.permissions.barcodes_predicts ||
           currentUser.permissions.is_admin) && (
-          <li>
+          <li className={styles.menuItem}>
             <NavLink
               className={styles.navLink}
               to="/tools/orders_to_processors"
@@ -72,18 +75,26 @@ const Menu = () => {
             </NavLink>
           </li>
         )}
-        <li>
+        <li className={styles.menuItem}>
           <NavLink className={styles.navLink} to="tools" content="Инструменты">
             Инструменты
           </NavLink>
         </li>
-        <li className={styles.logoutBlock}></li>
       </ul>
-      <button className={styles.logoutButton} onClick={handleLogout}>
-        <MdLogout />
-      </button>
+      <div className={styles.actions}>
+        <img className={styles.logo} src={tishkaLogo} alt="Tishka" />
+        <button
+          type="button"
+          className={styles.logoutButton}
+          title="Выйти"
+          aria-label="Выйти"
+          onClick={handleLogout}
+        >
+          <MdLogout />
+        </button>
+      </div>
     </nav>
   );
 };
 
-export default Menu;
+export default AppMenu;

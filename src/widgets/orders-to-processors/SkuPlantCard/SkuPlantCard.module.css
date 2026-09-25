@@ -1,0 +1,562 @@
+/* ─── SkuPlantCard ─────────────────────────────────────────────────────────── */
+
+.skuCard {
+  display: flex;
+  flex-direction: column;
+  width: 520px;
+  min-width: 520px;
+  max-width: 520px;
+  background: #fff;
+  border-right: 1px solid #f3f4f6;
+  flex-shrink: 0;
+  overflow: hidden;
+  position: sticky;
+  left: 0;
+  z-index: 10;
+}
+
+/* ── Header ──────────────────────────────────────────────────────────────── */
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 9px 16px 7px;
+  border-bottom: 1px solid #f3f4f6;
+  gap: 8px;
+  flex-shrink: 0;
+  min-height: 38px;
+}
+
+.vcNameBtn {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  flex: 1;
+  min-width: 0;
+  text-align: left;
+}
+.vcNameBtn:hover .vcName {
+  color: #4c1d95;
+}
+
+.vcNameRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.vcName {
+  font-family: 'Garet Book', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: #374151;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  letter-spacing: 0.2px;
+  transition: color 0.15s;
+}
+
+.vcHeaderDate {
+  font-family: 'Garet Book', sans-serif;
+  font-size: 10px;
+  font-weight: 500;
+  color: #9ca3af;
+  white-space: nowrap;
+}
+
+@keyframes fadeInFast {
+  from {
+    opacity: 0;
+    transform: translateY(2px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes fadeOutSlow {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+.copyHint {
+  font-size: 10px;
+  color: #6c63ff;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  white-space: nowrap;
+  flex-shrink: 0;
+  font-weight: 600;
+}
+.copyHintFadeIn {
+  animation: fadeInFast 0.15s ease forwards;
+}
+.copyHintFadeOut {
+  animation: fadeOutSlow 0.8s ease forwards;
+}
+
+.headerActions {
+  display: flex;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.iconBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: none;
+  background: transparent;
+  border-radius: 7px;
+  cursor: pointer;
+  color: #9ca3af;
+  transition: color 0.15s, background 0.15s;
+  text-decoration: none;
+  font-size: 15px;
+}
+.iconBtn:hover {
+  color: #6c63ff;
+  background: #f5f3ff;
+}
+.iconBtnDelete {
+  font-size: 18px;
+}
+.iconBtnDelete:hover {
+  color: #ef4444 !important;
+  background: #fef2f2 !important;
+}
+.iconBtn:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+.iconBtn:disabled:hover {
+  color: #9ca3af !important;
+  background: transparent !important;
+}
+
+/* ── Body ────────────────────────────────────────────────────────────────── */
+
+.cardBody {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  padding: 10px 0 10px 16px;
+  gap: 12px;
+}
+
+.infoCol {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+  overflow: hidden;
+  padding-right: 4px;
+}
+
+/* Date row */
+.dateRow {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  flex-shrink: 0;
+}
+.dateLabel {
+  font-size: 11px;
+  color: #9ca3af;
+  white-space: nowrap;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-weight: 500;
+}
+.dateInput {
+  flex: 1;
+  min-width: 0;
+  height: 28px;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 7px;
+  padding: 0 8px;
+  font-size: 12px;
+  font-family: monospace;
+  color: #374151;
+  background: #fafafa;
+  transition: border-color 0.15s;
+  box-sizing: border-box;
+}
+.dateInput:focus {
+  outline: none;
+  border-color: #6c63ff;
+  background: #fff;
+}
+.applyAllBtn {
+  height: 28px;
+  padding: 0 10px;
+  font-size: 12px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-weight: 600;
+  background: #f5f3ff;
+  border: 1.5px solid #ddd6fe;
+  border-radius: 7px;
+  color: #6c63ff;
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: background 0.15s;
+  line-height: 1;
+  box-sizing: border-box;
+}
+.applyAllBtn:hover:not(:disabled) {
+  background: #6c63ff;
+  color: #fff;
+  border-color: #6c63ff;
+}
+.applyAllBtn:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+/* Chips */
+.chipsRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  flex-shrink: 0;
+}
+.chip {
+  font-size: 10px;
+  color: #6b7280;
+  background: #f9fafb;
+  border: 1px solid #f3f4f6;
+  border-radius: 6px;
+  padding: 2px 7px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-weight: 500;
+}
+
+/* Плашки категории, лекала и страны — стиль как в Товарах. */
+.categoryBadge,
+.patternBadge,
+.countryBadge {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  height: 20px;
+  box-sizing: border-box;
+  padding: 2px 4px;
+  border-radius: 4px;
+  font-family: 'Garet Book', sans-serif;
+  font-size: 9px;
+  line-height: 1.1;
+  font-weight: 800;
+  white-space: nowrap;
+  max-width: 100%;
+  background: var(--color-card-id-text);
+  color: var(--color-card-id-bg);
+}
+
+.badgeLabel {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.badgeFilter {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 12px;
+  height: 12px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--color-card-id-bg);
+  opacity: 0.85;
+  font-size: 10px;
+  line-height: 1;
+  cursor: pointer;
+}
+.badgeFilter:hover {
+  color: var(--color-text-link, #623fc0);
+  opacity: 1;
+}
+
+/* Metrics */
+.metricsGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+  flex-shrink: 0;
+}
+.metricBox {
+  background: #f9fafb;
+  border: 1px solid #f3f4f6;
+  border-radius: 6px;
+  padding: 3px 8px 4px;
+}
+.metricLabel {
+  font-size: 8px;
+  color: #9ca3af;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 400;
+  line-height: 1.2;
+  font-family: 'Garet Book', sans-serif;
+}
+.metricValue {
+  font-size: 16px;
+  font-weight: 400;
+  color: #4c1d95;
+  font-family: 'BebasNeue', sans-serif;
+  line-height: 1;
+  margin-top: 1px;
+  letter-spacing: 0.4px;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Себестоимость: значение и подпись «с НДС / без НДС» в один ряд (подпись справа). */
+.selfPriceRow {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 4px;
+  white-space: nowrap;
+}
+
+/* Закладки подписей подкладываются слоями — переключаются прозрачностью. */
+.ndsLabelStack {
+  display: grid;
+  grid-template-areas: 'label';
+  font-size: 8px;
+  line-height: 1;
+}
+
+.ndsLabel {
+  grid-area: label;
+  font-family: 'Garet Book', sans-serif;
+  text-align: center;
+  font-size: 8px;
+  white-space: nowrap;
+  color: #9ca3af;
+  transition: opacity 0.15s ease;
+}
+
+.ndsLabel.visible {
+  opacity: 1;
+}
+
+.ndsLabel.hidden {
+  opacity: 0;
+}
+
+/* Charts */
+.chartsRow {
+  display: flex;
+  gap: 8px;
+  flex: 1;
+  align-items: flex-start;
+  min-height: 0;
+  margin-top: 4px;
+  padding-bottom: 2px;
+}
+
+.chartWrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+  min-width: 0;
+}
+
+.chartTitle {
+  font-size: 9px;
+  color: #9ca3af;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 700;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  text-align: center;
+}
+
+/* Image */
+.imageCol {
+  width: 160px;
+  min-width: 160px;
+  max-width: 160px;
+  padding: 0 12px 0 0;
+  flex-shrink: 0;
+  align-self: stretch;
+  display: flex;
+}
+
+.imageWrap {
+  position: relative;
+  flex: 1;
+  width: 100%;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #f3f4f6;
+}
+
+.photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Плашки ABC по углам фото сверху: Бренд слева, Категория справа. */
+.abcOverlay {
+  position: absolute;
+  top: 6px;
+  left: 8px;
+  right: 8px;
+  z-index: 2;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 6px;
+  pointer-events: none;
+}
+
+.abcCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 46px;
+  padding: 4px 6px;
+  box-sizing: border-box;
+  border-radius: 5px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.18);
+}
+
+.abcLabel {
+  font-family: 'Garet Book', sans-serif;
+  font-size: 8px;
+  line-height: 1;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.abcValue {
+  font-family: 'Garet Book', sans-serif;
+  font-size: 13px;
+  line-height: 1.1;
+  font-weight: 800;
+  margin-top: 2px;
+}
+
+/* Цвета плашек ABC по значению (как на странице Артикула). */
+.abc_a {
+  background: var(--color-status-success-secondary);
+  color: var(--color-status-success-primary);
+}
+.abc_b {
+  background: var(--color-status-attention-secondary);
+  color: var(--color-status-attention-primary);
+}
+.abc_c {
+  background: var(--color-status-error-secondary);
+  color: var(--color-status-error-primary);
+}
+.abc_new {
+  background: var(--color-status-info-secondary);
+  color: var(--color-status-info-primary);
+}
+.abc_aaa {
+  background: var(--color-main-100);
+  color: var(--color-main-700);
+}
+.abcNeutral {
+  background: var(--color-neutral-100);
+  color: var(--color-neutral-600);
+}
+
+/* Процент выкупа — своя плашка в нижнем правом углу. */
+.buyoutCard {
+  position: absolute;
+  right: 8px;
+  bottom: 6px;
+  z-index: 2;
+  background: rgba(255, 255, 255, 0.92);
+  color: #111827;
+}
+
+/* Плашка SKU: тёмно-фиолетовый фон, лимонный текст — как в Товарах.
+   По клику копируется, текст «бежит» вверх и сменяется на «Скопировано». */
+.skuBadge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 74px;
+  height: 20px;
+  box-sizing: border-box;
+  border-radius: 4px;
+  background: var(--color-card-id-bg);
+  color: var(--color-card-id-text);
+  font-family: 'Garet Book', sans-serif;
+  font-size: 9px;
+  line-height: 1.1;
+  font-weight: 800;
+  white-space: nowrap;
+  cursor: pointer;
+  user-select: none;
+}
+.skuBadge:hover {
+  filter: brightness(1.15);
+}
+
+.badgeSlideWrap {
+  flex: 1;
+  min-width: 0;
+  width: 100%;
+  height: 16px;
+  position: relative;
+  overflow: hidden;
+}
+
+.badgeSlide {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform 0.25s ease;
+}
+
+.badgeSlideCopied {
+  transform: translateY(-50%);
+}
+
+.badgeSlideItem {
+  line-height: 16px;
+  white-space: nowrap;
+  text-align: center;
+}
+
+.badgeSlideItem:last-child {
+  font-size: 9px;
+}

@@ -50,33 +50,71 @@
   color: var(--color-neutral-800);
 }
 
-/* Вкладки разделов. */
-.tabs {
+/* Вкладки разделов: pill-контейнер со скользящим индикатором.
+   Радио-кнопки скрыты, клики обрабатываются через labels (htmlFor).
+   Высота трека фиксированная, а индикатор позиционируется по inset —
+   так «пилюля» никогда не выходит за пределы серой строки. */
+.tabContainer {
+  position: relative;
   display: flex;
-  gap: 4px;
-  padding: 0 16px;
-  border-bottom: 1px solid var(--color-neutral-200);
+  align-items: center;
+  box-sizing: border-box;
+  height: 32px;
+  padding: 2px;
+  margin: 0 16px 12px;
+  background-color: #dadadb;
+  border-radius: 9px;
 }
 
-.tab {
-  padding: 10px 14px;
-  border: none;
-  background: transparent;
+.tabRadio {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.tabLabel {
+  position: relative;
+  z-index: 999;
+  flex: 1;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-family: 'Garet Book', sans-serif;
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 600;
-  color: var(--color-neutral-500);
+  color: var(--color-neutral-700);
+  opacity: 0.55;
   cursor: pointer;
-  border-bottom: 2px solid transparent;
+  user-select: none;
+  white-space: nowrap;
+  transition: opacity 0.15s ease;
 }
 
-.tab:hover {
-  color: var(--color-neutral-800);
+.tabLabel:hover {
+  opacity: 1;
 }
 
-.tabActive {
-  color: var(--color-main-600);
-  border-bottom-color: var(--color-main-500);
+.tabLabelActive {
+  opacity: 1;
+  color: var(--color-neutral-900);
+}
+
+/* Скользящая «пилюля» под активной вкладкой.
+   top/bottom фиксируют её ровно между паддингами трека. */
+.indicator {
+  position: absolute;
+  top: 2px;
+  bottom: 2px;
+  z-index: 9;
+  box-sizing: border-box;
+  background: #ffffff;
+  border: 0.5px solid rgba(0, 0, 0, 0.04);
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.12), 0px 2px 1px rgba(0, 0, 0, 0.04);
+  border-radius: 7px;
+  transition: left 0.2s ease-out;
 }
 
 /* Наполнение раздела. Формы растягиваются на всю высоту, чтобы кнопки
