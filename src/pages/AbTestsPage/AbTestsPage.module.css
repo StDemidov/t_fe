@@ -1,0 +1,88 @@
+/* Высота = весь экран минус меню (84px, см. AppMenu.module.css).
+   Иначе 84 + 100vh дают внешнюю прокрутку и обрезанный пагинатор. */
+.root {
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  width: 100%;
+  height: calc(100vh - 84px);
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+/* Таблица всегда занимает всю свободную высоту — пагинация стоит на месте
+   независимо от количества тестов. */
+.tableArea {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+
+
+.titleIndent {
+  margin: 0 0 0 12px;
+}
+
+/* Разделы: Активные / Завершенные / В обработке; кнопка создания — справа */
+.tabs {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+  padding: 0 12px 8px;
+}
+
+.tabsLeft {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.createBtn {
+  margin-left: auto;
+  height: 30px;
+  padding: 0 14px;
+  border: none;
+  border-radius: 8px;
+  background: var(--color-main-500);
+  font-family: 'Garet Book', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: #fff;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.createBtn:hover {
+  background: var(--color-main-600);
+}
+
+.tab {
+  padding: 6px 14px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  font-family: 'Garet Book', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-neutral-500);
+  cursor: pointer;
+  transition: color 0.2s ease, background 0.2s ease;
+}
+
+.tab:hover {
+  color: var(--color-neutral-800);
+  background: var(--color-neutral-100);
+}
+
+.tabActive {
+  color: #fff;
+  background: var(--color-main-500);
+}
+
+.tabActive:hover {
+  color: #fff;
+  background: var(--color-main-600);
+}

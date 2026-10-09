@@ -30,6 +30,7 @@ import skusMetricsReducer from '../entities/sku-metrics/model/skusMetricsSlice';
 import skuDetailReducer from '../entities/sku-detail/model/skuDetailSlice';
 import tagsReducer from '../entities/tags/model/tagsSlice';
 import ordersToProcessorsReducer from '../entities/orders-to-processors/model/ordersToProcessorsSlice';
+import abTestsNewReducer from '../entities/ab-tests/model/abTestsSlice';
 
 import { persistReducer, persistStore } from 'redux-persist';
 import { combineReducers } from '@reduxjs/toolkit';
@@ -122,6 +123,7 @@ const rootReducer = combineReducers({
   skuDetail: skuDetailReducer,
   tags: tagsReducer,
   ordersToProcessors: persistedOrdersToProcessorsReducer,
+  abTestsNew: abTestsNewReducer,
 });
 
 const store = configureStore({

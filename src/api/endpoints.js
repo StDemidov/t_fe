@@ -8,6 +8,7 @@ export const endpoints = {
   },
   skusMetrics: {
     getSkusMetrics: '/get_db_data/skus_metrics',
+    getSelfprices: '/get_db_data/selfprices',
   },
   skuDetail: {
     getSkuDetailed: '/get_db_data/sku_detailed',
@@ -25,5 +26,17 @@ export const endpoints = {
     linkTagsToSkus: '/tags/link_tags_to_skus',
     unlinkTagsFromSkus: '/tags/unlink_tags_from_skus',
     deleteTags: '/tags/delete_tags',
+  },
+  abTests: {
+    getActive: '/ab_tests/active',
+    getFinished: '/ab_tests/finished',
+    getPending: '/ab_tests/pending',
+    getSkusAvailability: '/ab_tests/skus_test_availability',
+    getLaunchPrepInfo: '/ab_tests/launch_prep_info',
+    prepareAbTest: '/ab_tests/prepare_ab_test',
+    pause: '/ab_tests/pause',
+    start: '/ab_tests/start',
+    finish: '/ab_tests/finish',
+    delete: '/ab_tests/delete',
   },
 };

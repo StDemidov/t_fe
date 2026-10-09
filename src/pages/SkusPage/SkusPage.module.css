@@ -97,6 +97,34 @@
   cursor: default;
 }
 
+/* Кнопка выгрузки себестоимостей: та же иконка-кнопка, при
+   наведении подсвечивается фиолетовым (как теги). */
+.selfpriceBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: var(--color-neutral-500);
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+
+.selfpriceBtn:hover:not(:disabled) {
+  color: var(--color-main-500);
+}
+
+.selfpriceBtn:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
 /* Кнопка сброса фильтров: иконка, подсвечивается оранжевым при наведении. */
 .resetFiltersBtn {
   display: inline-flex;

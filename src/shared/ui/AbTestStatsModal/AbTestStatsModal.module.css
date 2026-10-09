@@ -1,0 +1,207 @@
+/* ─── AbTestStatsModal ─────────────────────────────────────────────────────── */
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.modal {
+  width: 720px;
+  max-width: calc(100vw - 32px);
+  height: auto;
+  max-height: min(380px, calc(100vh - 64px));
+  display: flex;
+  flex-direction: column;
+  background: var(--color-neutral-50);
+  border-radius: 12px;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+}
+
+.header {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--color-neutral-200);
+}
+
+.headerLeft {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  min-width: 0;
+}
+
+.title {
+  font-family: 'BebasNeue', sans-serif;
+  font-size: 20px;
+  letter-spacing: 0.5px;
+  color: var(--color-neutral-900);
+}
+
+.subtitle {
+  font-family: 'Garet Book', sans-serif;
+  font-size: 12px;
+  color: var(--color-neutral-500);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.closeBtn {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--color-neutral-500);
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.closeBtn:hover {
+  background: var(--color-neutral-100);
+  color: var(--color-neutral-900);
+}
+
+.content {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 12px 16px 16px;
+}
+
+.state {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  font-family: 'Garet Book', sans-serif;
+  font-size: 15px;
+  color: var(--color-neutral-400);
+}
+
+/* Ряд всех фотографий теста: центрируется по горизонтали и вертикали,
+   при нехватке места прокручивается по горизонтали.
+   `safe center` не даёт обрезать первые фото при переполнении. */
+.photosRow {
+  --photo-size: 120px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  justify-content: safe center;
+  gap: 12px;
+  flex: 1;
+  min-height: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 4px 4px 8px;
+}
+
+.photoCard {
+  flex-shrink: 0;
+  width: var(--photo-size);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.photoWrap {
+  position: relative;
+  width: var(--photo-size);
+  height: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--color-neutral-200);
+  border-radius: 8px;
+  background: var(--color-neutral-100);
+  overflow: hidden;
+}
+
+/* Фото-победитель выделен зелёной обводкой (box-shadow не меняет геометрию) */
+.photoWinner {
+  border-color: #10b981;
+  box-shadow: 0 0 0 2px #10b981;
+}
+
+.photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.photoIcon {
+  font-size: 26px;
+  color: var(--color-neutral-400);
+}
+
+/* Плашка «Победитель» — поверх фото, в нижней части */
+.winnerBadge {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 2px 4px;
+  background: rgba(16, 185, 129, 0.92);
+  font-family: 'Garet Book', sans-serif;
+  font-size: 9px;
+  line-height: 1.3;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  text-align: center;
+  color: #fff;
+}
+
+/* Статистика под фото — шириной ровно по фото, значения по краям */
+.stats {
+  width: var(--photo-size);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-family: 'Garet Book', sans-serif;
+  color: #dc2626;
+}
+
+.statsWinner {
+  color: #047857;
+}
+
+.stat {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 6px;
+}
+
+.statLabel {
+  font-size: 10px;
+  color: var(--color-neutral-500);
+}
+
+.statValue {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}

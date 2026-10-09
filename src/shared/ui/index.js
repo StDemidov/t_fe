@@ -20,3 +20,6 @@ export { default as SeasonalChart } from './SeasonalChart';
 export { default as SortSelect } from './SortSelect';
 export { default as DateRangePicker } from './DateRangePicker';
 export { default as TagsManagerModal } from './TagsManagerModal';
+export { default as AbTestCreateModal } from './AbTestCreateModal';
+export { default as AbTestStatsModal } from './AbTestStatsModal';
+export { default as ConfirmModal } from './ConfirmModal';

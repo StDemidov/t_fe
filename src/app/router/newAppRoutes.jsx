@@ -26,6 +26,7 @@ const SkusPage = lazy(() => import('../../pages/SkusPage'));
 const SkuDetailPage = lazy(() => import('../../pages/SkuDetailPage'));
 const CategoriesPage = lazy(() => import('../../pages/CategoriesPage'));
 const OrdersToProcessorsPage = lazy(() => import('../../pages/OrdersToProcessorsPage'));
+const AbTestsPage = lazy(() => import('../../pages/AbTestsPage'));
 
 export function NewAppRoutes() {
   return (
@@ -53,6 +54,10 @@ export function NewAppRoutes() {
       <Route
         path="tools/orders_to_processors"
         element={withSuspense(OrdersToProcessorsPage)}
+      />
+      <Route
+        path="tools/ab_tests"
+        element={withSuspense(AbTestsPage)}
       />
       {/* Новые маршруты — ниже */}
     </>

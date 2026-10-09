@@ -37,3 +37,19 @@ export const fetchSkusMetrics = async ({ startDate, endDate }) => {
   });
   return res.data || [];
 };
+
+/**
+ * Себестоимости по всем SKU: на каждый артикул — словарь баркодов
+ * с ценой с НДС и без НДС. Ответ уже готовый список — без нормализации.
+ *
+ * @returns {Promise<Array<{
+ *   sku: number|string,
+ *   vendorcode: string,
+ *   category: string,
+ *   barcodes: Record<string, { selfpriceWithNds: number, selfpriceWithoutNds: number }>,
+ * }>>}
+ */
+export const fetchSelfprices = async () => {
+  const res = await apiClient.get(endpoints.skusMetrics.getSelfprices);
+  return res.data || [];
+};

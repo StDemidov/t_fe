@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { IoMdRefreshCircle } from 'react-icons/io';
 import { MdFilterAltOff } from 'react-icons/md';
-import { FaFileExcel, FaTag } from 'react-icons/fa';
+import { FaFileExcel, FaRubleSign, FaTag } from 'react-icons/fa';
 import * as XLSX from 'xlsx';
 
 import { selectUser } from '../../redux/slices/authSlice';
@@ -14,6 +14,7 @@ import {
   getDefaultEndDate,
 } from '../../entities/sku-metrics';
 import { fetchSkusMetrics as fetchSkusMetricsRaw } from '../../entities/sku-metrics/api/fetchSkusMetrics';
+import { fetchSelfprices as fetchSelfpricesRaw } from '../../entities/sku-metrics/api/fetchSkusMetrics';
 import { fetchTags } from '../../entities/tags';
 
 import '../../app/styles/global.css';
@@ -490,6 +491,47 @@ const SkusPage = () => {
     }
   };
 
+  // Выгрузка себестоимостей: один запрос get_db_data/selfprices, результат
+  // не храним — сразу строим Excel. На каждый артикул приходит словарь
+  // баркодов, поэтому для каждого баркода создаём отдельную строку,
+  // а SKU/Артикул/Категория в ней повторяются.
+  const handleExportSelfprices = async () => {
+    if (isExporting) return;
+    setIsExporting(true);
+    try {
+      const list = await fetchSelfpricesRaw();
+      if (!Array.isArray(list) || list.length === 0) return;
+
+      const rows = [];
+      list.forEach((item) => {
+        Object.entries(item.barcodes || {}).forEach(([barcode, prices]) => {
+          rows.push({
+            'SKU': item.sku,
+            'Артикул': item.vendorcode,
+            'Категория': item.category,
+            'Баркод': barcode,
+            'Себестоимость с НДС': prices?.selfpriceWithNds ?? '',
+            'Себестоимость без НДС': prices?.selfpriceWithoutNds ?? '',
+          });
+        });
+      });
+
+      const sheet = XLSX.utils.json_to_sheet(rows);
+      const book = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(book, sheet, 'Себестоимость');
+      const today = new Date();
+      const dd = String(today.getDate()).padStart(2, '0');
+      const mm = String(today.getMonth() + 1).padStart(2, '0');
+      const yyyy = today.getFullYear();
+      XLSX.writeFile(
+        book,
+        `Себестоимости_STD_${dd}.${mm}.${yyyy}.xlsx`
+      );
+    } finally {
+      setIsExporting(false);
+    }
+  };
+
   if (
     user?.permissions?.is_admin !== true &&
     user?.permissions?.vendorcodes !== true
@@ -560,6 +602,15 @@ const SkusPage = () => {
                 disabled={isExporting || isLoading}
               >
                 <FaFileExcel />
+              </button>
+              <button
+                type="button"
+                className={styles.selfpriceBtn}
+                title="Выгрузить себестоимости"
+                onClick={handleExportSelfprices}
+                disabled={isExporting || isLoading}
+              >
+                <FaRubleSign />
               </button>
               <button
                 type="button"
