@@ -326,7 +326,7 @@
 .setup {
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 14px;
 }
 
 .setupHead {
@@ -338,21 +338,21 @@
 
 .setupSku {
   font-family: 'BebasNeue', sans-serif;
-  font-size: 18px;
+  font-size: 15px;
   letter-spacing: 0.4px;
   color: var(--color-neutral-800);
 }
 
 .setupSkuId {
   font-family: 'Garet Book', sans-serif;
-  font-size: 12px;
+  font-size: 10px;
   color: var(--color-neutral-500);
 }
 
 .setupSection {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 6px;
 }
 
 .setupLabel {
@@ -360,7 +360,7 @@
   align-items: center;
   gap: 8px;
   font-family: 'Garet Book', sans-serif;
-  font-size: 12px;
+  font-size: 10px;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -385,7 +385,7 @@
 .setupPhoto {
   position: relative;
   flex: 0 0 auto;
-  width: 72px;
+  width: 144px;
   aspect-ratio: 3 / 4;
   padding: 0;
   border: 2px solid var(--color-neutral-200);
@@ -414,21 +414,21 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 18px;
-  height: 18px;
+  width: 15px;
+  height: 15px;
   border-radius: 50%;
   background: #10b981;
   color: #fff;
-  font-size: 12px;
+  font-size: 10px;
 }
 
 .setupPhotoNum {
   position: absolute;
   left: 4px;
   bottom: 4px;
-  min-width: 16px;
-  height: 16px;
-  padding: 0 4px;
+  min-width: 13px;
+  height: 13px;
+  padding: 0 3px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -436,20 +436,20 @@
   background: rgba(0, 0, 0, 0.55);
   color: #fff;
   font-family: 'Garet Book', sans-serif;
-  font-size: 10px;
+  font-size: 9px;
 }
 
 /* Ползунок + поле ввода значения */
 .sliderRow {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
 }
 
 .slider {
   flex: 1;
   min-width: 0;
-  height: 6px;
+  height: 4px;
   appearance: none;
   border-radius: 4px;
   background: var(--color-neutral-200);
@@ -459,8 +459,8 @@
 
 .slider::-webkit-slider-thumb {
   appearance: none;
-  width: 18px;
-  height: 18px;
+  width: 14px;
+  height: 14px;
   border: none;
   border-radius: 50%;
   background: var(--color-main-500);
@@ -468,8 +468,8 @@
 }
 
 .slider::-moz-range-thumb {
-  width: 18px;
-  height: 18px;
+  width: 14px;
+  height: 14px;
   border: none;
   border-radius: 50%;
   background: var(--color-main-500);
@@ -477,14 +477,14 @@
 }
 
 .numberInput {
-  width: 90px;
-  height: 32px;
+  width: 76px;
+  height: 26px;
   padding: 0 8px;
   border: 1px solid var(--color-neutral-300);
   border-radius: 8px;
   background: #fff;
   font-family: 'Garet Book', sans-serif;
-  font-size: 13px;
+  font-size: 11px;
   color: var(--color-neutral-800);
   text-align: right;
   outline: none;
@@ -496,15 +496,15 @@
 
 /* Бюджет: неизменяемое поле, число меняется с анимацией */
 .budget {
-  height: 36px;
+  height: 26px;
   display: flex;
   align-items: center;
-  padding: 0 12px;
+  padding: 0 10px;
   border: 1px solid var(--color-neutral-300);
   border-radius: 8px;
   background: var(--color-neutral-100);
   font-family: 'Garet Book', sans-serif;
-  font-size: 15px;
+  font-size: 12px;
   font-weight: 600;
   font-variant-numeric: tabular-nums;
   color: var(--color-neutral-800);
@@ -519,11 +519,11 @@
 
 .balanceCard {
   flex: 1;
-  min-width: 160px;
+  min-width: 140px;
   display: flex;
   flex-direction: column;
   gap: 3px;
-  padding: 10px 12px;
+  padding: 8px 10px;
   border: 1px solid var(--color-neutral-300);
   border-radius: 8px;
   background: #fff;
@@ -543,19 +543,19 @@
 }
 
 .balanceTitle {
-  font-size: 12px;
+  font-size: 10px;
   color: var(--color-neutral-500);
 }
 
 .balanceValue {
-  font-size: 15px;
+  font-size: 12px;
   font-weight: 600;
   font-variant-numeric: tabular-nums;
   color: var(--color-neutral-800);
 }
 
 .balanceWarn {
-  font-size: 11px;
+  font-size: 9px;
   color: var(--color-danger-500, #ef4444);
 }
 
@@ -565,16 +565,16 @@
   align-items: center;
   gap: 8px;
   font-family: 'Garet Book', sans-serif;
-  font-size: 14px;
+  font-size: 12px;
   font-variant-numeric: tabular-nums;
   color: var(--color-neutral-700);
 }
 
 .cashbackPercent {
-  padding: 2px 6px;
+  padding: 1px 4px;
   border-radius: 4px;
   background: var(--color-neutral-200);
-  font-size: 12px;
+  font-size: 10px;
   color: var(--color-neutral-600);
 }
 
@@ -601,13 +601,13 @@
 }
 
 .createBtn {
-  height: 36px;
-  padding: 0 18px;
+  height: 28px;
+  padding: 0 14px;
   border: none;
   border-radius: 8px;
   background: var(--color-main-500);
   font-family: 'Garet Book', sans-serif;
-  font-size: 13px;
+  font-size: 11px;
   font-weight: 600;
   color: #fff;
   cursor: pointer;
@@ -623,13 +623,13 @@
 }
 
 .secondaryBtn {
-  height: 36px;
-  padding: 0 18px;
+  height: 28px;
+  padding: 0 14px;
   border: 1px solid var(--color-neutral-300);
   border-radius: 8px;
   background: #fff;
   font-family: 'Garet Book', sans-serif;
-  font-size: 13px;
+  font-size: 11px;
   font-weight: 600;
   color: var(--color-neutral-700);
   cursor: pointer;
@@ -641,8 +641,8 @@
 
 /* Лоадер на месте кнопок во время создания */
 .footerLoader {
-  width: 28px;
-  height: 28px;
+  width: 22px;
+  height: 22px;
   border: 3px solid var(--color-neutral-300);
   border-top-color: var(--color-main-500);
   border-radius: 50%;
