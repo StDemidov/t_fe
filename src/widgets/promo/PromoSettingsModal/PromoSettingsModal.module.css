@@ -1,0 +1,250 @@
+.overlay {
+  position: fixed;
+  z-index: 1000;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: rgb(20 18 42 / 48%);
+}
+
+.modal {
+  display: flex;
+  width: min(680px, 100%);
+  max-height: min(860px, calc(100vh - 40px));
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid var(--color-neutral-200);
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 20px 60px rgb(20 18 42 / 24%);
+}
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 20px 24px 16px;
+  border-bottom: 1px solid var(--color-neutral-200);
+}
+
+.header h2 {
+  margin: 0;
+  color: var(--color-neutral-900);
+  font-size: 18px;
+}
+
+.header p {
+  margin: 4px 0 0;
+  color: var(--color-neutral-500);
+  font-size: 12px;
+}
+
+.closeButton {
+  display: grid;
+  width: 30px;
+  height: 30px;
+  place-items: center;
+  border: 0;
+  border-radius: 8px;
+  background: var(--color-neutral-100);
+  color: var(--color-neutral-600);
+  transition: background 160ms ease, color 160ms ease;
+  cursor: pointer;
+}
+
+.closeButton:hover {
+  background: var(--color-status-error-secondary);
+  color: var(--color-status-error-primary);
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  overflow: auto;
+  padding: 16px 24px;
+}
+
+.section {
+  padding: 14px;
+  border: 1px solid var(--color-neutral-200);
+  border-radius: 12px;
+  background: var(--color-neutral-50);
+}
+
+.section h3 {
+  margin: 0 0 10px;
+  color: var(--color-neutral-700);
+  font-size: 13px;
+}
+
+.fieldGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.fieldGrid label,
+.singleField,
+.hourGrid label {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 5px;
+  color: var(--color-neutral-600);
+  font-size: 12px;
+}
+
+.fieldGrid input,
+.singleField input,
+.hourGrid select {
+  width: 100%;
+  height: 34px;
+  box-sizing: border-box;
+  padding: 0 10px;
+  border: 1px solid var(--color-neutral-300);
+  border-radius: 8px;
+  background: #fff;
+  color: var(--color-neutral-900);
+  font: inherit;
+}
+
+.fieldGrid input:disabled,
+.hourGrid select:disabled {
+  background: var(--color-neutral-100);
+  color: var(--color-neutral-400);
+  cursor: not-allowed;
+}
+
+.singleField {
+  max-width: 260px;
+}
+
+.toggle,
+.choices button {
+  min-height: 32px;
+  padding: 0 12px;
+  border: 1px solid var(--color-neutral-300);
+  border-radius: 8px;
+  background: #fff;
+  color: var(--color-neutral-600);
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.toggle.active,
+.choices button.selected {
+  border-color: var(--color-main-500);
+  background: var(--color-main-50);
+  color: var(--color-main-700);
+}
+
+.choices {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 10px 0;
+}
+
+.choices button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.hint {
+  margin: 8px 0 0;
+  color: var(--color-neutral-500);
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+.hourGrid {
+  display: flex;
+  gap: 12px;
+}
+
+.hourGrid label {
+  width: 120px;
+}
+
+.validation,
+.error {
+  padding: 10px 12px;
+  border-radius: 8px;
+  font-size: 12px;
+}
+
+.validation {
+  background: var(--color-status-attention-secondary);
+  color: var(--color-status-attention-primary);
+}
+
+.error {
+  background: var(--color-status-error-secondary);
+  color: var(--color-status-error-primary);
+}
+
+.footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 16px 24px 20px;
+  border-top: 1px solid var(--color-neutral-200);
+}
+
+.cancel,
+.submit {
+  min-height: 36px;
+  padding: 0 16px;
+  border-radius: 8px;
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.cancel {
+  border: 1px solid var(--color-neutral-300);
+  background: #fff;
+  color: var(--color-neutral-600);
+}
+
+.submit {
+  border: 1px solid var(--color-main-500);
+  background: var(--color-main-500);
+  color: #fff;
+}
+
+.submit:hover:not(:disabled) {
+  background: var(--color-main-600);
+}
+
+.submit:disabled,
+.cancel:disabled,
+.closeButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+@media (max-width: 560px) {
+  .overlay {
+    padding: 10px;
+  }
+
+  .modal {
+    max-height: calc(100vh - 20px);
+  }
+
+  .header,
+  .content,
+  .footer {
+    padding-right: 16px;
+    padding-left: 16px;
+  }
+
+  .fieldGrid {
+    grid-template-columns: 1fr;
+  }
+}

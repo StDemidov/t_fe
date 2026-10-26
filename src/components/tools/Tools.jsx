@@ -7,7 +7,7 @@ import { selectUser } from '../../redux/slices/authSlice';
 const Tools = () => {
   const currentUser = useSelector(selectUser);
   return (
-    <section>
+    <section className={styles.toolsSection}>
       {(currentUser.permissions.tags_create ||
         currentUser.permissions.images_upload ||
         currentUser.permissions.regroup ||

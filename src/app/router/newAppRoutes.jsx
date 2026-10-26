@@ -27,6 +27,9 @@ const SkuDetailPage = lazy(() => import('../../pages/SkuDetailPage'));
 const CategoriesPage = lazy(() => import('../../pages/CategoriesPage'));
 const OrdersToProcessorsPage = lazy(() => import('../../pages/OrdersToProcessorsPage'));
 const AbTestsPage = lazy(() => import('../../pages/AbTestsPage'));
+const PromoPage = lazy(() => import('../../pages/PromoPage'));
+const PromoCreatePage = lazy(() => import('../../pages/PromoCreatePage'));
+const PromoDetailPage = lazy(() => import('../../pages/PromoDetailPage'));
 
 export function NewAppRoutes() {
   return (
@@ -58,6 +61,18 @@ export function NewAppRoutes() {
       <Route
         path="tools/ab_tests"
         element={withSuspense(AbTestsPage)}
+      />
+      <Route
+        path="promo"
+        element={withSuspense(PromoPage)}
+      />
+      <Route
+        path="promo/create"
+        element={withSuspense(PromoCreatePage)}
+      />
+      <Route
+        path="promo/:id"
+        element={withSuspense(PromoDetailPage)}
       />
       {/* Новые маршруты — ниже */}
     </>

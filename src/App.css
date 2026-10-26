@@ -32,11 +32,6 @@
   src: url('fonts/Garet-Heavy.ttf');
 }
 
-section {
-  margin-right: 50px;
-  margin-left: 50px;
-}
-
 h1 {
   font-size: 30px;
   color: #8f8f8f;

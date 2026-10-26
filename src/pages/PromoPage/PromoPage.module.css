@@ -1,0 +1,408 @@
+/* Высота = весь экран минус меню (84px, см. AppMenu.module.css).
+   Иначе 84 + 100vh дают внешнюю прокрутку и обрезанный пагинатор. */
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background: #fff;
+  width: 100%;
+  height: calc(100vh - 84px);
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.titleIndent {
+  margin: 0 0 0 12px;
+}
+
+/* Шапка: заголовок + кнопка обновления рядом */
+.header {
+  flex-shrink: 0;
+}
+
+.headerLeft {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+/* Разделы: Активные / Завершенные / В обработке; кнопка создания — справа */
+.tabs {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+  padding: 0 12px;
+}
+
+.tabsLeft {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Кнопка «Создать РК» (как «Создать тест» в A/B тестах) */
+.createBtn {
+  margin-left: auto;
+  height: 30px;
+  padding: 0 14px;
+  border: none;
+  border-radius: 8px;
+  background: var(--color-main-500);
+  font-family: 'Garet Book', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: #fff;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.createBtn:hover {
+  background: var(--color-main-600);
+}
+
+.tab {
+  padding: 6px 14px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  font-family: 'Garet Book', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-neutral-500);
+  cursor: pointer;
+  transition: color 0.2s ease, background 0.2s ease;
+}
+
+.tab:hover {
+  color: var(--color-neutral-800);
+  background: var(--color-neutral-100);
+}
+
+.tabActive {
+  color: #fff;
+  background: var(--color-main-500);
+}
+
+.tabActive:hover {
+  color: #fff;
+  background: var(--color-main-600);
+}
+
+/* Полоса тулбара: обновление, сброс колонок, календарь */
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+  padding: 0 12px;
+  min-height: 40px;
+}
+
+.filtersScroll {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  min-width: 0;
+  flex: 1 1 auto;
+  overflow-x: auto;
+  overflow-y: visible;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.filtersScroll::-webkit-scrollbar {
+  display: none;
+}
+
+/* Блок массового редактирования — прижат вправо в строке фильтров */
+.bulkBlock {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: auto;
+  flex-shrink: 0;
+  padding-left: 8px;
+  background: #fff;
+}
+
+.selectedCount {
+  margin-right: 4px;
+  font-family: 'Garet Book', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-neutral-600);
+  white-space: nowrap;
+}
+
+.bulkBtn,
+.bulkBtnDanger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--color-main-500);
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.bulkBtn:hover:not(:disabled) {
+  background: var(--color-main-100);
+}
+
+.bulkBtnDanger {
+  color: #e5484d;
+}
+
+.bulkBtnDanger:hover:not(:disabled) {
+  background: rgba(229, 72, 77, 0.1);
+}
+
+.bulkBtn:disabled,
+.bulkBtnDanger:disabled {
+  color: var(--color-neutral-300);
+  cursor: default;
+}
+
+/* Кнопка обновления раздела: иконка, как в A/B тестах */
+.refreshBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: var(--color-neutral-500);
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+
+.refreshBtn:hover:not(:disabled) {
+  color: var(--color-main-500);
+}
+
+.refreshBtn:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.refreshBtn svg {
+  transition: transform 0.6s ease;
+}
+
+.refreshBtn:hover:not(:disabled) svg {
+  transform: rotate(360deg);
+}
+
+/* Кнопка сброса порядка/видимости колонок (как в «Товарах») */
+.refreshColsBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: var(--color-neutral-500);
+  font-size: 24px;
+  line-height: 1;
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+
+.refreshColsBtn:hover {
+  color: var(--color-main-500);
+}
+
+.refreshColsBtn svg {
+  transition: transform 0.6s ease;
+}
+
+.refreshColsBtn:hover svg {
+  transform: rotate(360deg);
+}
+
+/* Кнопка сброса фильтров: без вращения иконки */
+.resetFiltersBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: var(--color-neutral-500);
+  font-size: 24px;
+  line-height: 1;
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+
+.resetFiltersBtn:hover {
+  color: var(--color-main-500);
+}
+
+.excelBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: var(--color-status-success-primary);
+  font-size: 21px;
+  line-height: 1;
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+
+.excelBtn:hover:not(:disabled) {
+  color: var(--color-main-500);
+}
+
+.excelBtn:disabled {
+  color: var(--color-neutral-300);
+  cursor: default;
+}
+
+/* Таблица всегда занимает всю свободную высоту */
+.tableArea {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 0 12px 12px;
+  box-sizing: border-box;
+}
+
+/* Заглушка раздела «В обработке» */
+.stub {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-neutral-500);
+  font-family: 'Garet Book', sans-serif;
+  font-size: 15px;
+  background: var(--color-neutral-100);
+  border-radius: 12px;
+}
+
+/* ─── Модалка подтверждения / настроек ────────────────────────────────────── */
+
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(20, 18, 42, 0.4);
+}
+
+.modal {
+  width: 520px;
+  max-width: calc(100vw - 32px);
+  box-sizing: border-box;
+  padding: 24px;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 12px 40px rgba(20, 18, 42, 0.25);
+}
+
+.modalTitle {
+  margin: 0 0 10px;
+  font-family: 'Garet Book', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--color-neutral-800);
+}
+
+.modalText {
+  margin: 0;
+  font-family: 'Garet Book', sans-serif;
+  font-size: 13px;
+  line-height: 1.4;
+  color: var(--color-neutral-600);
+  overflow-wrap: anywhere;
+}
+
+.modalCount {
+  margin: 8px 0 0;
+  font-family: 'Garet Book', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-neutral-700);
+}
+
+/* Артикул в тексте подтверждения — красным */
+.modalVendor {
+  display: inline;
+  color: var(--color-status-error-primary, #e53e3e);
+  font-weight: 700;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.modalActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 18px;
+}
+
+/* Для одиночного действия кнопки по центру */
+.modalActionsCenter {
+  justify-content: center;
+}
+
+.modalCancel,
+.modalConfirm {
+  height: 32px;
+  padding: 0 16px;
+  border-radius: 8px;
+  font-family: 'Garet Book', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid transparent;
+}
+
+.modalCancel {
+  background: var(--color-neutral-100);
+  border-color: var(--color-neutral-300);
+  color: var(--color-neutral-700);
+}
+
+.modalCancel:hover {
+  background: var(--color-neutral-200);
+}
+
+.modalConfirm {
+  background: var(--color-main-500);
+  color: #fff;
+}
+
+.modalConfirm:hover {
+  background: var(--color-main-600);
+}

@@ -87,6 +87,18 @@ const AppMenu = () => {
             </NavLink>
           </li>
         )}
+        {(currentUser.permissions.ad_camps_view ||
+          currentUser.permissions.is_admin) && (
+          <li className={styles.menuItem}>
+            <NavLink
+              className={styles.navLink}
+              to="/promo"
+              content="Реклама"
+            >
+              Реклама
+            </NavLink>
+          </li>
+        )}
         <li className={styles.menuItem}>
           <NavLink className={styles.navLink} to="tools" content="Инструменты">
             Инструменты

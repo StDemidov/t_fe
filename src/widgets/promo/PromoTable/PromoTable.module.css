@@ -1,0 +1,1016 @@
+.table,
+.table * {
+  box-sizing: border-box;
+}
+
+.table {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  overscroll-behavior: none;
+  border: 1px solid var(--color-neutral-200);
+  border-radius: 10px;
+  background: var(--color-neutral-50);
+}
+
+/* Вся ширина = максимум из строк, но не уже видимой области. */
+.tableContent {
+  display: flex;
+  flex-direction: column;
+  width: max-content;
+  min-width: 100%;
+}
+
+/* Растянутый режим: контент занимает ровно ширину контейнера,
+   колонки тянутся флексом и заполняют всё пространство. */
+.tableContentStretch {
+  width: 100%;
+}
+
+/* Ячейка растянутого режима: ширина задаётся флексом из inline-стиля. */
+.stretchCell {
+  flex-shrink: 1;
+}
+
+/* Шапка — флекс-ряд колонок, закрепляется сверху внутри скролл-контейнера. */
+.headerRow {
+  flex-shrink: 0;
+  display: flex;
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  background: var(--color-header-bg);
+  border-bottom: 1px solid var(--color-neutral-200);
+}
+
+/* Закреплённая слева колонка «Артикул» в шапке — перекрывает скроллируемые
+   соседние ячейки непрозрачным фоном при горизонтальной прокрутке. */
+.headerRow .fixedCol {
+  position: sticky;
+  left: 0;
+  z-index: 5;
+  background: var(--color-header-bg);
+  border-right: 1px solid var(--color-neutral-200);
+  box-shadow: 1px 0 0 var(--color-neutral-200);
+}
+
+/* Закреплённая справа колонка «Действия» в шапке: прилипает к правому краю. */
+.headerRow .fixedRightCol {
+  position: sticky;
+  right: 0;
+  z-index: 5;
+  background: var(--color-header-bg);
+  border-left: 1px solid var(--color-neutral-200);
+  box-shadow: -1px 0 0 var(--color-neutral-200);
+}
+
+/* Общие правила ячеек шапки: флекс-ячейка фиксированной ширины. */
+.headerCell {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  padding: 8px 12px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  border-right: 1px solid var(--color-neutral-200);
+  font-family: 'Garet Book', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--color-header-text);
+  letter-spacing: 0.5px;
+  gap: 4px;
+}
+
+/* Подпись колонки: сжимается, если не хватает места для иконок.
+   При переполнении при наведении текст едет влево и отматывается назад. */
+.headerLabel {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.headerLabelText {
+  display: inline-block;
+  white-space: nowrap;
+  will-change: transform;
+}
+
+/* Маятниковая прокрутка: вперёд к концу строки, затем назад к началу. */
+.headerLabelMarquee:hover .headerLabelText {
+  animation: headerMarquee var(--dur, 4s) linear infinite alternate;
+}
+
+@keyframes headerMarquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(calc(-1 * var(--shift, 0px)));
+  }
+}
+
+/* Маркер перетаскивания колонки. */
+.dragHandle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  cursor: grab;
+  color: var(--color-neutral-500);
+  font-size: 16px;
+  opacity: 0.7;
+  transition: color 0.15s ease, opacity 0.15s ease;
+}
+
+.dragHandle:hover {
+  color: var(--color-header-text);
+  opacity: 1;
+}
+
+.dragHandle:active {
+  cursor: grabbing;
+}
+
+/* Крестик скрытия колонки. */
+.hideColBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--color-neutral-500);
+  font-size: 16px;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: color 0.15s ease, opacity 0.15s ease;
+}
+
+.hideColBtn:hover {
+  color: var(--color-status-error-primary, #e53e3e);
+  opacity: 1;
+}
+
+/* Подсветка колонки-цели при перетаскивании. */
+.headerCell.dragOver {
+  background: var(--color-main-100, rgba(130, 84, 255, 0.12));
+  outline: 2px dashed var(--color-main-500, #623fc0);
+  outline-offset: -2px;
+}
+
+/* Тело: строки, каждая — флекс-ряд всех колонок. */
+.body {
+  display: block;
+  background: var(--color-neutral-50);
+}
+
+.row {
+  display: flex;
+}
+
+.cell {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  padding: 6px 12px;
+  min-height: 88px;
+  background: #ffffff;
+  border-right: 1px solid var(--color-neutral-200);
+  border-bottom: 1px solid var(--color-neutral-200);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Закреплённая слева колонка «Артикул» тела: закрепляется внутри каждой строки. */
+.cell.fixedCol {
+  position: sticky;
+  left: 0;
+  z-index: 10;
+  background: #ffffff;
+  box-shadow: 1px 0 0 var(--color-neutral-200);
+}
+
+/* Закреплённая справа колонка «Действия» тела: прилипает к правому краю. */
+.cell.fixedRightCol {
+  position: sticky;
+  right: 0;
+  z-index: 10;
+  background: #ffffff;
+  box-shadow: -1px 0 0 var(--color-neutral-200);
+}
+
+/* ─── Кнопки действий в закреплённой колонке «Действия» ───────────────────── */
+
+.actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+}
+
+.actionBtn,
+.actionBtnDanger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  border: 1px solid var(--color-neutral-300);
+  border-radius: 6px;
+  background: var(--color-neutral-50);
+  color: var(--color-neutral-600);
+  font-size: 15px;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.actionBtn:hover {
+  background: var(--color-neutral-100);
+  color: var(--color-neutral-900);
+}
+
+.actionBtnDanger {
+  color: var(--color-status-error-primary, #ef4444);
+}
+
+.actionBtnDanger:hover {
+  border-color: #ef4444;
+  background: #fef2f2;
+  color: #ef4444;
+}
+
+/* Ячейка с графиком: центрирует диаграмму, боковые отступы — чтобы тултипы
+   у крайних дат не обрезались краем ячейки (overflow: hidden). */
+.chartCell {
+  justify-content: center;
+  padding: 6px 26px;
+}
+
+/* Ячейка со статусом: плашка по центру */
+.centerCell {
+  justify-content: center;
+}
+
+/* Вертикальная полоса единого скролл-контейнера — стилизована и видна,
+   горизонтальная скрыта. */
+.table::-webkit-scrollbar {
+  width: 8px;
+  height: 0;
+}
+
+.table::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.table::-webkit-scrollbar-thumb {
+  background: var(--color-neutral-300, #c9c9c9);
+  border-radius: 4px;
+}
+
+.table::-webkit-scrollbar-thumb:hover {
+  background: var(--color-neutral-400, #b0b0b0);
+}
+
+/* Ячейка «Артикул»: фото слева, справа vendorCode (бегущая строка). */
+.articleCell {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  overflow: hidden;
+  text-align: left;
+}
+
+/* Фото товара (3:4), без рейтинга. */
+.articlePhoto {
+  flex-shrink: 0;
+  width: 42px;
+  height: 56px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+/* Обёртка фото для выбора кампании */
+.articlePhotoWrap {
+  position: relative;
+  flex-shrink: 0;
+  width: 42px;
+  height: 56px;
+  border-radius: 6px;
+}
+
+.articlePhotoWrap .articlePhoto {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.articlePhotoSelectable {
+  cursor: pointer;
+}
+
+/* Затемнение + галочка поверх фото при выборе */
+.photoOverlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  background: rgba(20, 18, 42, 0);
+  color: #fff;
+  font-size: 16px;
+  opacity: 0;
+  transition: background 0.15s ease, opacity 0.15s ease;
+  pointer-events: none;
+}
+
+.articlePhotoSelectable:hover .photoOverlay {
+  background: rgba(20, 18, 42, 0.45);
+  opacity: 0.85;
+}
+
+.photoOverlayVisible {
+  background: rgba(20, 18, 42, 0.55);
+  opacity: 1;
+}
+
+.articlePhotoSelectable:hover .photoOverlayVisible {
+  background: rgba(20, 18, 42, 0.55);
+  opacity: 1;
+}
+
+.photoCheck {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--color-main-500);
+  color: #fff;
+  font-size: 12px;
+}
+
+/* Кнопки «снять/выделить все» в шапке колонки «Артикул» */
+.headerSelectBtns {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  flex-shrink: 0;
+  margin-left: auto;
+}
+
+.headerSelectBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--color-neutral-500);
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.hiddenFileInput {
+  display: none;
+}
+
+.headerSelectBtn:hover {
+  color: var(--color-main-500);
+}
+
+.articleInfo {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  align-items: flex-start;
+}
+
+/* Обёртка «бегущей строки»: при наведении на длинный vendorCode прокручивается. */
+.articleMarquee {
+  overflow: hidden;
+  white-space: nowrap;
+  max-width: 100%;
+  cursor: pointer;
+}
+
+.articleText {
+  display: inline-flex;
+  white-space: nowrap;
+  font-family: 'Garet Book', sans-serif;
+  font-size: 12px;
+  line-height: 1.2;
+  color: var(--color-neutral-800);
+}
+
+.articleTextItem {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.articleTextItem + .articleTextItem {
+  margin-left: 40px;
+}
+
+.articleMarquee.marquee:hover .articleText {
+  animation: marquee 6s linear infinite;
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* Подсказка «Скопировано» у курсора (портал в body). */
+.vendorToast {
+  position: fixed;
+  z-index: 3000;
+  transform: translate(-50%, -100%);
+  padding: 3px 8px;
+  border-radius: 4px;
+  background: var(--color-neutral-800);
+  color: #fff;
+  font-family: 'Garet Book', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+  pointer-events: none;
+  animation: vendorToast 1s ease forwards;
+}
+
+/* Ряд плашек под vendorCode: SKU, категория, лекало. */
+.badgesRow {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  max-width: 100%;
+  min-width: 0;
+}
+
+/* Общие правила плашек ряда (как в «Товарах»). */
+.skuBadge,
+.categoryBadge,
+.patternBadge,
+.wbCampBadge,
+.bidTypeBadge {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 20px;
+  box-sizing: border-box;
+  padding: 2px 2px;
+  border-radius: 4px;
+  font-family: 'Garet Book', sans-serif;
+  font-size: 9px;
+  line-height: 1.1;
+  font-weight: 800;
+  white-space: nowrap;
+  max-width: 100%;
+}
+
+/* Плашка SKU: тёмно-фиолетовый фон, жёлтый текст, копируется по клику. */
+.skuBadge {
+  background: var(--color-card-id-bg);
+  color: var(--color-card-id-text);
+  cursor: pointer;
+  user-select: none;
+  width: 74px;
+}
+
+.skuBadge:hover {
+  filter: brightness(1.15);
+}
+
+/* Плашка ID кампании WB: как SKU, но шире (до 12 знаков). */
+.wbCampBadge {
+  background: var(--color-card-id-bg);
+  color: var(--color-card-id-text);
+  cursor: pointer;
+  user-select: none;
+  width: 96px;
+}
+
+.wbCampBadge:hover {
+  filter: brightness(1.15);
+}
+
+/* Плашка категории и лекала: инвертированные цвета. */
+.categoryBadge,
+.patternBadge,
+.bidTypeBadge {
+  background: var(--color-card-id-text);
+  color: var(--color-card-id-bg);
+  gap: 2px;
+  padding: 2px 4px;
+}
+
+/* Текст категории/лекала: обрезается многоточием. */
+.categoryLabel {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Иконка фильтра на плашке категории/лекала. */
+.categoryFilter {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 12px;
+  height: 12px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--color-card-id-bg);
+  opacity: 0.85;
+  font-size: 10px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.categoryFilter:hover {
+  color: var(--color-text-link, #623fc0);
+  opacity: 1;
+}
+
+/* Контейнер «бегущего» текста внутри плашки (SKU / ID кампании). */
+.badgeSlideWrap {
+  flex: 1;
+  min-width: 0;
+  width: 100%;
+  height: 16px;
+  position: relative;
+  overflow: hidden;
+}
+
+.badgeSlide {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform 0.25s ease;
+}
+
+.badgeSlideCopied {
+  transform: translateY(-50%);
+}
+
+.badgeSlideItem {
+  line-height: 16px;
+  white-space: nowrap;
+  text-align: center;
+}
+
+.badgeSlideItem:last-child {
+  font-size: 9px;
+}
+
+/* Ячейка «Информация об РК»: название + плашка ID по центру + даты. */
+.rkInfoCell {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+  width: 100%;
+}
+
+/* Ряд плашек ID и типа кампании: по центру под названием. */
+.rkBadgeRow {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+  width: 100%;
+}
+
+/* Даты старта/завершения: по центру, мелким шрифтом. */
+.rkDates {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+  font-family: 'Garet Book', sans-serif;
+  font-size: 9px;
+  line-height: 1.3;
+  color: var(--color-neutral-600);
+}
+
+/* ─── Плашка статуса ──────────────────────────────────────────────────────── */
+
+.statusBadge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  max-width: 100%;
+  min-height: 20px;
+  box-sizing: border-box;
+  padding: 3px 8px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  font-family: 'Garet Book', sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 1.2;
+  text-align: center;
+  white-space: normal;
+}
+
+/* Иконка причины паузы слева внутри плашки */
+.statusIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 11px;
+  line-height: 1;
+}
+
+/* Служебный/завершённый статус — серый */
+.statusToneNeutral {
+  background: var(--color-neutral-100);
+  border-color: var(--color-neutral-300);
+  color: var(--color-neutral-600);
+}
+
+/* Ожидание (CPM, бюджет, запуск) — жёлтый */
+.statusToneWait {
+  background: var(--color-status-attention-secondary);
+  border-color: #fde68a;
+  color: var(--color-status-attention-primary);
+}
+
+/* Активна — зелёный */
+.statusToneSuccess {
+  background: var(--color-status-success-secondary);
+  border-color: #a7f3d0;
+  color: var(--color-status-success-primary);
+}
+
+/* Пауза / «нужно сделать» — оранжевый */
+.statusToneAttention {
+  background: var(--color-status-attention-secondary);
+  border-color: #fde68a;
+  color: var(--color-status-attention-primary);
+}
+
+/* Ошибка / заблокирована — красный */
+.statusToneError {
+  background: var(--color-status-error-secondary);
+  border-color: #fecaca;
+  color: var(--color-status-error-primary);
+}
+
+/* ─── Ставки ──────────────────────────────────────────────────────────────── */
+
+/* Две плашки (рекомендации/поиск) у ручной кампании — по центру ячейки */
+.bidCell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  min-width: 0;
+  width: 100%;
+}
+
+/* Плашка значения ставки (одна у единой, по одной у каждой строки ручной).
+   Фиксированная ширина — плашка с прочерком не меньше плашки со ставкой. */
+.bidBadge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  width: 80px;
+  height: 20px;
+  box-sizing: border-box;
+  padding: 3px 8px;
+  border: 1px solid var(--color-neutral-200);
+  border-radius: 4px;
+  background: var(--color-neutral-100);
+  font-family: 'Garet Book', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--color-neutral-800);
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+/* Иконка размещения активна — зелёная */
+.bidIconOn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 12px;
+  line-height: 1;
+  color: var(--color-status-success-primary);
+}
+
+/* Иконка размещения неактивна — красная */
+.bidIconOff {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 12px;
+  line-height: 1;
+  color: var(--color-status-error-primary);
+}
+
+/* ─── Время активности / Оборачиваемость / Пороги ─────────────────────────── */
+
+/* Универсальная плашка для этих колонок: фиксированная высота, мин. ширина */
+.infoBadge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 80px;
+  height: 20px;
+  box-sizing: border-box;
+  padding: 3px 8px;
+  border: 1px solid var(--color-neutral-200);
+  border-radius: 4px;
+  background: var(--color-neutral-100);
+  font-family: 'Garet Book', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--color-neutral-800);
+  white-space: nowrap;
+}
+
+/* Круглосуточно — зелёная */
+.activeHoursAlways {
+  background: var(--color-status-success-secondary);
+  border-color: #a7f3d0;
+  color: var(--color-status-success-primary);
+}
+
+/* Ограничение по времени — оранжевая */
+.activeHoursLimited {
+  background: var(--color-status-attention-secondary);
+  border-color: #fde68a;
+  color: var(--color-status-attention-primary);
+}
+
+/* Оборачиваемость по размерам — голубая */
+.turnoverBySizes {
+  background: var(--color-status-info-secondary);
+  border-color: #bfdbfe;
+  color: var(--color-status-info-primary);
+}
+
+/* Оборачиваемость по артикулу — сиреневая */
+.turnoverBySku {
+  background: var(--color-tag-bg);
+  border-color: var(--color-main-200);
+  color: var(--color-tag-text);
+}
+
+/* ─── Фиксация ────────────────────────────────────────────────────────────── */
+
+/* Плашка + CTR/CR фиксации у единой кампании — по центру ячейки */
+.fixationCell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  min-width: 0;
+  width: 100%;
+}
+
+/* Зафиксирована — зелёная */
+.fixationFixed {
+  background: var(--color-status-success-secondary);
+  border-color: #a7f3d0;
+  color: var(--color-status-success-primary);
+}
+
+/* Не зафиксирована — жёлтая */
+.fixationUnfixed {
+  background: var(--color-status-attention-secondary);
+  border-color: #fde68a;
+  color: var(--color-status-attention-primary);
+}
+
+/* Строки CTR/CR под плашкой */
+.fixationText {
+  font-family: 'Garet Book', sans-serif;
+  font-size: 10px;
+  line-height: 1.2;
+  color: var(--color-neutral-600);
+  white-space: nowrap;
+}
+
+/* ─── Бюджет ──────────────────────────────────────────────────────────────── */
+
+/* Крупное значение бюджета + суммы пополнения и порога под ним */
+.budgetCell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  min-width: 0;
+  width: 100%;
+}
+
+.budgetValue {
+  font-family: 'Garet Book', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--color-neutral-800);
+  white-space: nowrap;
+}
+
+.budgetText {
+  font-family: 'Garet Book', sans-serif;
+  font-size: 10px;
+  line-height: 1.2;
+  color: var(--color-neutral-600);
+  white-space: nowrap;
+}
+
+/* Подсказка «Нет доступных действий» в колонке «Действия» */
+.noActions {
+  font-family: 'Garet Book', sans-serif;
+  font-size: 11px;
+  line-height: 1.2;
+  color: var(--color-neutral-500);
+  text-align: center;
+  white-space: normal;
+}
+
+/* Оборачиваемость: плашка + порог и кол-во дней под ней */
+.turnoverCell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  min-width: 0;
+  width: 100%;}
+
+.turnoverText {
+  font-family: 'Garet Book', sans-serif;
+  font-size: 10px;
+  line-height: 1.2;
+  color: var(--color-neutral-600);
+  white-space: nowrap;
+}
+
+/* Пороги: сетка 2×2 — подписи в одной колонке, плашки строго друг под другом */
+.thresholdsCell {
+  display: grid;
+  grid-template-columns: auto auto;
+  gap: 4px 6px;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  width: 100%;
+}
+
+/* Метрики кластеров: сетка 2×3 — подписи слева, плашки строго друг под другом */
+.clusterCell {
+  display: grid;
+  grid-template-columns: auto auto;
+  gap: 4px 6px;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  width: 100%;
+}
+
+.thresholdLabel {
+  font-family: 'Garet Book', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--color-neutral-600);
+  white-space: nowrap;
+  text-align: right;
+}
+
+@keyframes vendorToast {
+  0% {
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+/* Скелетон ячейки на время загрузки. */
+.skeletonBlock {
+  width: 100%;
+  height: 60px;
+  border-radius: 8px;
+  background: linear-gradient(
+    90deg,
+    var(--color-neutral-100) 25%,
+    var(--color-neutral-200) 50%,
+    var(--color-neutral-100) 75%
+  );
+  background-size: 200% 100%;
+  animation: skeletonPulse 1.4s ease infinite;
+}
+
+@keyframes skeletonPulse {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* Пагинация. */
+.pagination {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 12px;
+  border: 1px solid var(--color-neutral-300);
+  border-radius: 10px;
+  background: var(--color-neutral-50);
+  margin-top: 8px;
+}
+
+.pageSize {
+  padding: 4px 8px;
+  border: 1px solid var(--color-neutral-300);
+  border-radius: 6px;
+  background: var(--color-neutral-50);
+  font-size: 13px;
+  color: var(--color-neutral-700);
+}
+
+.pageInfo {
+  font-size: 13px;
+  color: var(--color-neutral-600);
+}
+
+.pageButtons {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: auto;
+}
+
+.pageNumber {
+  min-width: 44px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--color-neutral-700);
+}
+
+.pageButton {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--color-neutral-300);
+  border-radius: 6px;
+  background: var(--color-neutral-50);
+  color: var(--color-neutral-700);
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.pageButton:disabled {
+  opacity: 0.4;
+  cursor: default;
+}

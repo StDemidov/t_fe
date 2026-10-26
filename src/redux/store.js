@@ -31,6 +31,7 @@ import skuDetailReducer from '../entities/sku-detail/model/skuDetailSlice';
 import tagsReducer from '../entities/tags/model/tagsSlice';
 import ordersToProcessorsReducer from '../entities/orders-to-processors/model/ordersToProcessorsSlice';
 import abTestsNewReducer from '../entities/ab-tests/model/abTestsSlice';
+import promoReducer from '../entities/promo/model/promoSlice';
 
 import { persistReducer, persistStore } from 'redux-persist';
 import { combineReducers } from '@reduxjs/toolkit';
@@ -124,6 +125,7 @@ const rootReducer = combineReducers({
   tags: tagsReducer,
   ordersToProcessors: persistedOrdersToProcessorsReducer,
   abTestsNew: abTestsNewReducer,
+  promo: promoReducer,
 });
 
 const store = configureStore({

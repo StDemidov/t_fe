@@ -1,0 +1,927 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  box-sizing: border-box;
+  max-width: 100%;
+  min-width: 0;
+  overflow-x: clip;
+  width: 100%;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.backBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 8px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--color-neutral-600);
+  font: 600 14px 'Garet Book', sans-serif;
+  cursor: pointer;
+}
+
+.backBtn:hover {
+  color: var(--color-main-500);
+}
+
+.toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  justify-content: flex-start;
+  padding: 10px 14px;
+  border: 1px solid var(--color-neutral-200);
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+}
+
+.toolbarProduct {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  margin-left: 4px;
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.toolbarProductVisible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.toolbarPhoto {
+  display: block;
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
+  border: 1px solid var(--color-neutral-200);
+  border-radius: 6px;
+  object-fit: cover;
+}
+
+.toolbarVendor {
+  overflow: hidden;
+  color: var(--color-neutral-900);
+  font-family: 'Garet Book', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.topGrid {
+  display: grid;
+    grid-template-columns: 190px minmax(360px, 1.35fr) minmax(220px, 0.75fr) minmax(
+      615px,
+      1.8fr
+    );
+  gap: 14px;
+}
+
+.productCard {
+  height: 270px;
+  overflow: hidden;
+  border-radius: 10px;
+  background: var(--color-neutral-100);
+}
+
+.image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.noImage {
+  display: grid;
+  place-items: center;
+  height: 100%;
+  color: var(--color-neutral-400);
+  font-size: 42px;
+}
+
+.infoCard {
+  min-width: 0;
+  padding: 12px;
+}
+
+.badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.badge {
+  padding: 4px 9px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.badgeCategory {
+  background: var(--color-card-id-bg);
+  color: var(--color-card-id-text);
+}
+
+.badgePattern {
+  background: var(--color-card-id-text);
+  color: var(--color-card-id-bg);
+}
+
+.badgeCountry {
+  background: var(--color-status-info-secondary);
+  color: var(--color-status-info-primary);
+}
+
+.sectionTitle {
+  margin: 0 0 14px;
+  color: var(--color-neutral-600);
+  font: 800 14px 'Garet Book', sans-serif;
+  text-transform: uppercase;
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.sectionHeader .sectionTitle {
+  margin-bottom: 0;
+}
+
+.settingsButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  flex-shrink: 0;
+  padding: 0;
+  border: 1px solid var(--color-main-500);
+  border-radius: 7px;
+  background: var(--color-main-500);
+  color: #fff;
+  font-size: 16px;
+  font: 12px 'Garet Book', sans-serif;
+  cursor: pointer;
+}
+
+.settingsButton:hover {
+  background: var(--color-main-600);
+}
+
+.infoRow {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.infoLabel {
+  flex: 0 0 112px;
+  color: var(--color-neutral-500);
+  font-size: 11px;
+}
+
+.infoValue {
+  flex: 1 1 auto;
+  min-width: 0;
+  color: var(--color-neutral-800);
+  font-size: 13px;
+  text-align: left;
+  word-break: break-word;
+}
+
+.infoCard:not(.settingsCard) .infoRow {
+  justify-content: flex-start;
+}
+
+.infoCard:not(.settingsCard) .infoLabel,
+.infoCard:not(.settingsCard) .infoValue {
+  text-align: left;
+}
+
+.settingsCard .infoRow {
+  justify-content: space-between;
+}
+
+.settingsCard .infoValue {
+  margin-left: auto;
+  text-align: right;
+}
+
+.settingsCard .infoLabel {
+  flex: 0 0 auto;
+  font-size: 10px;
+  white-space: nowrap;
+}
+
+.settingValue {
+  color: var(--color-neutral-800);
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.articleValue {
+  color: var(--color-neutral-900);
+  font-family: 'Garet Book', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.marqueeValue {
+  display: block;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.marqueeValueText {
+  display: inline-block;
+  min-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.marqueeValueOverflow:hover .marqueeValueText {
+  animation: detailValueMarquee 6s linear infinite;
+  text-overflow: clip;
+}
+
+@keyframes detailValueMarquee {
+  0%,
+  15% {
+    transform: translateX(0);
+  }
+
+  85%,
+  100% {
+    transform: translateX(calc(-1 * var(--marquee-shift)));
+  }
+}
+
+.campaignTypeBadge {
+  background: var(--color-main-50);
+  color: var(--color-main-700);
+}
+
+.valueBadge {
+  display: inline-flex;
+  max-width: 100%;
+  overflow: hidden;
+  padding: 4px 8px;
+  border: 1px solid var(--color-neutral-200);
+  border-radius: 5px;
+  background: var(--color-neutral-100);
+  color: var(--color-neutral-700);
+  font-size: 11px;
+  font-weight: 800;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.metricsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(100px, 1fr));
+  grid-template-rows: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.metricCard {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+  min-height: 0;
+  padding: 12px;
+  background: var(--color-neutral-50);
+}
+
+.cardTitle {
+  color: var(--color-neutral-600);
+  font: 800 12px 'Garet Book', sans-serif;
+  text-transform: uppercase;
+}
+
+.metricValue {
+  color: var(--color-main-500);
+  font: 24px 'BebasNeue', sans-serif;
+}
+
+.chartsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.analyticsGrid {
+  align-self: stretch;
+  display: grid;
+  grid-template-columns: minmax(0, 4fr) minmax(0, 1fr);
+  gap: 10px;
+  align-items: stretch;
+  box-sizing: border-box;
+  min-width: 0;
+  width: auto;
+}
+
+.analyticsGrid .chartsGrid {
+  min-width: 0;
+}
+
+.chartCard {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+  height: 190px;
+  padding: 14px;
+  overflow: hidden;
+}
+
+.chartCard .cardTitle {
+  width: 100%;
+  text-align: left;
+}
+
+.state,
+.error {
+  padding: 30px;
+  color: var(--color-neutral-500);
+  text-align: center;
+}
+
+.error {
+  color: var(--color-status-error-primary, #dc2626);
+}
+
+.logsSection {
+  align-self: stretch;
+  box-sizing: border-box;
+  contain: size;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  height: auto;
+  overflow: hidden;
+  border: 1px solid var(--color-neutral-200);
+  border-radius: 8px;
+  background: var(--color-neutral-50);
+}
+
+.logsTitle {
+  flex-shrink: 0;
+  margin: 0;
+  padding: 14px;
+  color: var(--color-neutral-600);
+  font: 800 14px 'Garet Book', sans-serif;
+  text-transform: uppercase;
+}
+
+.logsList {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 8px;
+  min-height: 0;
+  padding: 0;
+  overflow-y: auto;
+}
+
+.logRow {
+  display: grid;
+  grid-template-columns: 78px minmax(0, 1fr) 64px;
+  align-items: center;
+  gap: 8px;
+  padding: 0 14px 8px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--color-neutral-200);
+}
+
+.logDate,
+.logAuthor {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 22px;
+  padding: 2px 5px;
+  border: 1px solid var(--color-neutral-200);
+  border-radius: 5px;
+  background: var(--color-neutral-100);
+  color: var(--color-neutral-700);
+  font-size: 9px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.logText {
+  min-width: 0;
+  color: var(--color-neutral-800);
+  font-size: 12px;
+  line-height: 1.35;
+  text-align: center;
+  overflow-wrap: anywhere;
+}
+
+.logSurname {
+  color: var(--color-main-700);
+  font-weight: 800;
+}
+
+.logsEmpty {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  color: var(--color-neutral-500);
+}
+
+.logsSkeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 0;
+}
+
+.logSkeletonRow {
+  display: grid;
+  grid-template-columns: 62px 1fr 58px;
+  gap: 8px;
+  padding: 0 14px;
+}
+
+.logSkeletonRow span {
+  display: block;
+  height: 28px;
+  border-radius: 5px;
+  background: var(--color-neutral-200);
+  animation: skeletonPulse 1.3s ease-in-out infinite alternate;
+}
+
+.clustersSection {
+  align-self: stretch;
+  background: var(--color-neutral-50);
+  box-sizing: border-box;
+  border: 1px solid var(--color-neutral-200);
+  border-radius: 8px;
+  max-width: 100%;
+  min-width: 0;
+  margin-right: auto;
+  margin-left: auto;
+  overflow: hidden;
+  padding: 0;
+  width: 100%;
+}
+
+.clustersTitle {
+  margin: 0;
+  padding: 14px 14px 0;
+  color: var(--color-neutral-600);
+  font: 800 14px 'Garet Book', sans-serif;
+  text-align: left;
+  text-transform: uppercase;
+}
+
+.clusterToolbar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+  padding: 12px 14px;
+}
+
+.applyClustersButton {
+  height: 34px;
+  padding: 0 12px;
+  border: 1px solid var(--color-main-500);
+  border-radius: 8px;
+  background: var(--color-main-500);
+  color: #fff;
+  font: 13px 'Garet Book', sans-serif;
+  cursor: pointer;
+}
+
+.clusterActions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: auto;
+}
+
+.fixClustersButton {
+  height: 34px;
+  padding: 0 12px;
+  border: 1px solid var(--color-main-500);
+  border-radius: 8px;
+  background: var(--color-neutral-50);
+  color: var(--color-main-500);
+  font: 13px 'Garet Book', sans-serif;
+  cursor: pointer;
+}
+
+.fixClustersButton:disabled {
+  border-color: var(--color-neutral-300);
+  background: var(--color-neutral-200);
+  color: var(--color-neutral-500);
+  cursor: not-allowed;
+}
+
+.applyClustersButton:disabled {
+  border-color: var(--color-neutral-300);
+  background: var(--color-neutral-200);
+  color: var(--color-neutral-500);
+  cursor: not-allowed;
+}
+
+.clusterTableWrap {
+  display: flex;
+  justify-content: center;
+  box-sizing: border-box;
+  max-height: 620px;
+  max-width: 100%;
+  min-width: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  width: 100%;
+}
+
+.clusterTable {
+  box-sizing: border-box;
+  max-width: 100%;
+  width: 100%;
+  min-width: 0;
+  margin-right: auto;
+  margin-left: auto;
+  table-layout: fixed;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 12px;
+}
+
+.clusterTable th,
+.clusterTable td {
+  box-sizing: border-box;
+  overflow: hidden;
+  padding: 9px 10px;
+  border-bottom: 1px solid var(--color-neutral-100);
+  text-align: center;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+.clusterTable th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: var(--color-neutral-50);
+  color: var(--color-neutral-600);
+  font-family: 'Garet Book', sans-serif;
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  white-space: normal;
+}
+
+.clusterTable th:first-child,
+.clusterTable td:first-child {
+  text-align: left;
+}
+
+.clusterNameCell {
+  width: 16%;
+  max-width: 16%;
+}
+
+.clusterName {
+  min-width: 0;
+  overflow: hidden;
+}
+
+.clusterNameText {
+  display: inline-block;
+  min-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.clusterName:hover .clusterNameText {
+  animation: clusterMarquee 6s linear infinite;
+  text-overflow: clip;
+}
+
+@keyframes clusterMarquee {
+  0%,
+  15% {
+    transform: translateX(0);
+  }
+
+  85%,
+  100% {
+    transform: translateX(calc(-100% + 220px));
+  }
+}
+
+.bidInput {
+  width: 72px;
+  padding: 5px 7px;
+  border: 1px solid var(--color-neutral-200);
+  border-radius: 5px;
+  background: var(--color-neutral-100);
+  color: var(--color-neutral-700);
+  font: 700 18px 'BebasNeue', sans-serif;
+  text-align: right;
+}
+
+.bidInput:disabled {
+  opacity: 1;
+  cursor: not-allowed;
+}
+
+.notAvailable {
+  color: var(--color-neutral-400);
+}
+
+.switch {
+  position: relative;
+  display: inline-flex;
+  width: 34px;
+  height: 19px;
+  cursor: default;
+}
+
+.switch input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+.switchTrack {
+  width: 100%;
+  height: 100%;
+  border-radius: 999px;
+  background: var(--color-neutral-300);
+}
+
+.switchDisabled {
+  opacity: 0.45;
+}
+
+.switchTrack::after {
+  display: block;
+  width: 15px;
+  height: 15px;
+  margin: 2px;
+  border-radius: 50%;
+  background: #fff;
+  content: '';
+  transition: transform 0.15s ease;
+}
+
+.switch input:checked + .switchTrack {
+  background: var(--color-status-success-primary);
+}
+
+.switch input:checked + .switchTrack::after {
+  transform: translateX(15px);
+}
+
+.fixationCell {
+  color: var(--color-main-500);
+  font-size: 16px;
+}
+
+.clusterMetric {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.clusterMetric strong {
+  color: var(--color-main-500);
+  font: 20px 'BebasNeue', sans-serif;
+}
+
+.clusterMetric span,
+.clusterRatio {
+  color: var(--color-neutral-500);
+  font-size: 10px;
+}
+
+.clusterRatio {
+  color: var(--color-main-500);
+  font: 20px 'BebasNeue', sans-serif;
+}
+
+.clusterSkeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.clusterSkeletonRow {
+  display: grid;
+  grid-template-columns: repeat(13, minmax(70px, 1fr));
+  gap: 10px;
+  width: 100%;
+  padding: 10px;
+  border-bottom: 1px solid var(--color-neutral-100);
+}
+
+.skeletonLine {
+  display: block;
+  height: 22px;
+  border-radius: 5px;
+  background: var(--color-neutral-200);
+  animation: skeletonPulse 1.3s ease-in-out infinite alternate;
+}
+
+.emptyClusters {
+  padding: 24px;
+  color: var(--color-neutral-500);
+  text-align: center;
+}
+
+.modalOverlay {
+  position: fixed;
+  z-index: 1000;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(15, 23, 42, 0.35);
+}
+
+.confirmModal {
+  width: min(420px, 100%);
+  padding: 22px;
+  border: 1px solid var(--color-neutral-200);
+  border-radius: 10px;
+  background: var(--color-neutral-50);
+  box-shadow: 0 12px 40px rgba(15, 23, 42, 0.2);
+}
+
+.confirmTitle {
+  margin: 0 0 12px;
+  color: var(--color-neutral-900);
+  font: 800 18px 'Garet Book', sans-serif;
+}
+
+.confirmText {
+  margin: 0 0 20px;
+  color: var(--color-neutral-700);
+  font-size: 14px;
+}
+
+.confirmActions {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.cancelButton,
+.confirmButton {
+  height: 34px;
+  padding: 0 14px;
+  border-radius: 7px;
+  font: 13px 'Garet Book', sans-serif;
+  cursor: pointer;
+}
+
+.cancelButton {
+  border: 1px solid var(--color-neutral-300);
+  background: var(--color-neutral-100);
+  color: var(--color-neutral-700);
+}
+
+.confirmButton {
+  border: 1px solid var(--color-main-500);
+  background: var(--color-main-500);
+  color: #fff;
+}
+
+.cancelButton:disabled,
+.confirmButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.campaignSkeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.campaignSkeletonTop {
+  display: grid;
+  grid-template-columns: 190px minmax(260px, 1fr) minmax(220px, 0.75fr) minmax(
+      300px,
+      1fr
+    );
+  gap: 14px;
+}
+
+.campaignSkeletonImage,
+.campaignSkeletonCard,
+.campaignSkeletonMetrics,
+.campaignSkeletonChart {
+  display: block;
+  border-radius: 8px;
+  background: var(--color-neutral-200);
+  animation: skeletonPulse 1.3s ease-in-out infinite alternate;
+}
+
+.campaignSkeletonImage,
+.campaignSkeletonCard,
+.campaignSkeletonMetrics {
+  height: 270px;
+}
+
+.campaignSkeletonCharts {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.campaignSkeletonChart {
+  height: 190px;
+}
+
+@keyframes skeletonPulse {
+  from {
+    opacity: 0.55;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@media (max-width: 1100px) {
+  .analyticsGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .logsSection {
+    contain: none;
+    flex: none;
+    height: 400px;
+  }
+
+  .topGrid {
+    grid-template-columns: 200px 1fr;
+  }
+
+  .metricsGrid {
+    grid-column: 2;
+    grid-row: 2;
+  }
+}
+
+@media (max-width: 700px) {
+  .topGrid,
+  .chartsGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .topGrid .infoCard:last-child,
+  .metricsGrid {
+    grid-column: auto;
+    grid-row: auto;
+  }
+
+  .productCard {
+    height: 240px;
+  }
+
+  .metricsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .infoLabel {
+    flex-basis: 120px;
+  }
+}
