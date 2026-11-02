@@ -1,5 +1,6 @@
 import React from 'react';
 import { MdFilterAltOff } from 'react-icons/md';
+import { FiPackage } from 'react-icons/fi';
 import {
   DateRangePicker,
   SearchFilter,
@@ -67,6 +68,7 @@ const OrdersToProcessorsToolbar = ({
   onResetFilters,
   searchResetKey,
   onExportXls,
+  onManageOrders,
   // Pagination
   currentPage,
   totalPages,
@@ -267,6 +269,17 @@ const OrdersToProcessorsToolbar = ({
           <button className={styles.actionBtnSecondary} onClick={onExportXls} disabled={disabled}>
             Сформировать
           </button>
+          {onManageOrders ? (
+            <button
+              type="button"
+              className={styles.actionBtnSecondary}
+              onClick={onManageOrders}
+              disabled={disabled}
+              title="Управление заказами"
+            >
+              <FiPackage /> Заказы
+            </button>
+          ) : null}
         </div>
       </div>
     </div>

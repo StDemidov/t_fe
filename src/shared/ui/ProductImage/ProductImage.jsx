@@ -5,16 +5,15 @@ import styles from './ProductImage.module.css';
 /**
  * Лениво загружаемая картинка товара.
  * Поверх фотки: плашки ABC (общая и по категории) и полоска SKU внизу —
- * по клику копирует sku (текст на секунду сменяется на «Скопировано»),
- * рядом иконка-ссылка на страницу vendorcode (открывает новую вкладку).
+ * По клику копирует sku (текст на секунду сменяется на «Скопировано»),
+ * рядом иконка-ссылка на страницу товара (открывает новую вкладку).
  * @param {object} props
  * @param {string} props.src — полный URL картинки
  * @param {string} props.alt — текст (vendorcode)
  * @param {number} [props.size] — размер миниатюры в пикселях (иначе заполняет колонку)
  * @param {string} [props.abc] — ABC-категория товара
  * @param {string} [props.abcInCategory] — ABC-категория товара внутри категории
- * @param {string} [props.sku] — артикул товара (копируется по клику)
- * @param {number} [props.skuId] — id товара для ссылки на vendorcode
+ * @param {string} [props.sku] — артикул товара (копируется по клику, идёт в ссылку на товар)
  * @param {boolean} [props.noStock] — товар с нулевыми остатками: поверх фото красная заливка
  * @param {number} [props.refreshToken] — смена токена пересоздаёт <img> и повторяет загрузку
  */
@@ -25,7 +24,6 @@ const ProductImage = ({
   abc,
   abcInCategory,
   sku,
-  skuId,
   noStock,
   refreshToken = 0,
 }) => {
@@ -97,9 +95,9 @@ const ProductImage = ({
         </div>
         <a
           className={styles.skuLink}
-          href={`/vendorcodes/${skuId}`}
+          href={`/skus/${sku}`}
           onClick={(e) => e.stopPropagation()}
-          title="Открыть vendorcode"
+          title="Открыть товар"
           target="_blank"
           rel="noopener noreferrer"
         >

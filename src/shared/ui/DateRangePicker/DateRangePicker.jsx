@@ -12,8 +12,10 @@ const MONTHS = [
 ];
 
 const toDate = (str) => {
+  if (!str) return new Date();
   const [y, m, d] = str.split('-').map(Number);
-  return new Date(y, m - 1, d);
+  const date = new Date(y, m - 1, d);
+  return Number.isNaN(date.getTime()) ? new Date() : date;
 };
 
 const formatDate = (date) => {
@@ -61,6 +63,8 @@ const clampDate = (dateStr, minDate, maxDate) => {
  * @param {(range: { startDate: string, endDate: string }) => void} props.onChange
  * @param {string} [props.minDate] — минимально допустимая дата YYYY-mm-dd
  * @param {string} [props.maxDate] — максимально допустимая дата YYYY-mm-dd
+ * @param {boolean} [props.single=false] — выбрать одну дату вместо диапазона
+ * @param {boolean} [props.iconOnly=false] — показывать только иконку календаря
  * @param {boolean} [props.disabled=false]
  */
 const DateRangePicker = ({
@@ -68,6 +72,8 @@ const DateRangePicker = ({
   onChange,
   minDate,
   maxDate,
+  single = false,
+  iconOnly = false,
   disabled = false,
 }) => {
   const { startDate: initialStart = '', endDate: initialEnd = '' } = value || {};
@@ -119,6 +125,11 @@ const DateRangePicker = ({
 
   const handleSelect = (dateStr) => {
     if (clampDate(dateStr, minDate, maxDate) === null) return;
+
+    if (single) {
+      apply(dateStr, dateStr);
+      return;
+    }
 
     // Если диапазон уже готов — этот клик начинает новый выбор.
     const myPickingStart = Boolean(draftStart && draftEnd) ? true : pickingStart;
@@ -259,7 +270,7 @@ const DateRangePicker = ({
       <button
         type="button"
         ref={triggerRef}
-        className={styles.trigger}
+        className={`${styles.trigger} ${iconOnly ? styles.iconOnly : ''}`}
         onClick={toggle}
         disabled={disabled}
       >
@@ -271,13 +282,15 @@ const DateRangePicker = ({
           <line x1="8" y1="2" x2="8" y2="6" />
           <line x1="3" y1="10" x2="21" y2="10" />
         </svg>
-        <span className={styles.triggerText}>
-          {initialStart && initialEnd
-            ? initialStart === initialEnd
-              ? fmtForButton(initialEnd)
-              : `${fmtForButton(initialStart)} — ${fmtForButton(initialEnd)}`
-            : 'Выбрать даты'}
-        </span>
+        {!iconOnly && (
+          <span className={styles.triggerText}>
+            {initialStart && initialEnd
+              ? initialStart === initialEnd
+                ? fmtForButton(initialEnd)
+                : `${fmtForButton(initialStart)} — ${fmtForButton(initialEnd)}`
+              : 'Выбрать даты'}
+          </span>
+        )}
       </button>
 
       {popover}

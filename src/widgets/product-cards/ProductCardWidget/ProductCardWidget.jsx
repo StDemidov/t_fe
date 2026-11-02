@@ -14,18 +14,15 @@ import styles from './ProductCardWidget.module.css';
 const fmtAmount = (value) =>
   value.toLocaleString('ru-RU', { maximumFractionDigits: 1 });
 
-/** Строит объект { дата: значение } из дневного списка (последние N дней, до вчера). */
-const buildDailyData = (list) => {
+/** Дата 'YYYY-MM-DD' → 'дд.мм' (как в AbcHeatmap). */
+const fmtDayMonth = (date) =>
+  `${date.slice(8, 10)}.${date.slice(5, 7)}`;
+
+/** Таймсерия {'YYYY-MM-DD': число | null} → {'дд.мм': число} для графика. */
+const buildDailyData = (daily) => {
   const data = {};
-  const base = new Date();
-  base.setDate(base.getDate() - 1);
-  for (let i = 0; i < list.length; i++) {
-    const date = new Date(base);
-    date.setDate(base.getDate() - (list.length - 1 - i));
-    const key = `${String(date.getDate()).padStart(2, '0')}.${String(
-      date.getMonth() + 1
-    ).padStart(2, '0')}`;
-    data[key] = list[i];
+  for (const date of Object.keys(daily || {}).sort()) {
+    data[fmtDayMonth(date)] = Number(daily[date]) || 0;
   }
   return data;
 };
@@ -232,7 +229,6 @@ const ProductCardWidget = memo(function ProductCardWidget({
                 abc={item.abc}
                 abcInCategory={item.abcInCategory}
                 sku={item.sku}
-                skuId={item.id}
                 noStock={item.stocks === 0}
                 refreshToken={refreshToken}
               />

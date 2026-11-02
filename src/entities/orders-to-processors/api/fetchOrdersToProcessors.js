@@ -34,3 +34,28 @@ export const fetchOrdersToProcessors = async ({ startDate, endDate }) => {
   });
   return res.data || [];
 };
+
+/** Список созданных заказов для переработчиков. */
+export const fetchOrdersToProcessorsOrders = async () => {
+  const res = await apiClient.get(endpoints.ordersToProcessors.getOrders);
+  const data = res.data;
+  return Array.isArray(data) ? data : data?.orders || [];
+};
+
+/** Создание одного или нескольких заказов. Тело всегда является массивом. */
+export const createOrdersToProcessors = async (orders) => {
+  const res = await apiClient.post(
+    endpoints.ordersToProcessors.createOrders,
+    orders
+  );
+  return res.data;
+};
+
+/** Удаление выбранных заказов по ID. */
+export const deleteOrdersToProcessors = async (ordersIdsList) => {
+  const payload = ordersIdsList.map(Number);
+  const res = await apiClient.delete(endpoints.ordersToProcessors.deleteOrders, {
+    data: payload,
+  });
+  return res.data;
+};

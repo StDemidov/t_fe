@@ -19,6 +19,9 @@ export const endpoints = {
   },
   ordersToProcessors: {
     getPredicts: '/orders_to_processors/get_predicts',
+    getOrders: '/orders_to_processors/get_orders_to_processors',
+    createOrders: '/orders_to_processors/create_orders_to_processors',
+    deleteOrders: '/orders_to_processors/delete_orders_to_processors',
   },
   tags: {
     getTags: '/tags/get_all_tags',

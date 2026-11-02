@@ -12,6 +12,9 @@ export {
 export {
   getDefaultEndDate,
   getDefaultStartDate,
+  fetchOrdersToProcessorsOrders,
+  createOrdersToProcessors,
+  deleteOrdersToProcessors,
 } from './api/fetchOrdersToProcessors';
 
 export * from './model/selectors';

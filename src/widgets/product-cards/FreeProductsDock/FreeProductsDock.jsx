@@ -53,7 +53,6 @@ const FreeProductsDock = memo(function FreeProductsDock({ groups }) {
                   abc={sku.abc}
                   abcInCategory={sku.abcInCategory}
                   sku={sku.sku}
-                  skuId={sku.id}
                   noStock={sku.stocks === 0}
                   size={IMAGE_SIZE}
                 />

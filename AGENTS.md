@@ -21,6 +21,7 @@ Two structures coexist. The FSD folders (`src/app`, `src/api`, `src/entities`, `
 - FSD: routes go in `src/app/router/newAppRoutes.jsx` (`NewAppRoutes` is currently commented out in `App.jsx`). Convention files: `_STRUCTURE.js` in `entities/features/widgets`, and copy `src/pages/_template/NewFeaturePage` for new pages.
 - New feature imports `../../app/styles/global.css` (utility classes `.page`, `.card`, `.pageTitle`) and uses CSS Modules (`*.module.css`).
 - Follow the FSD flow when adding a feature: `pages/` (thin route entry) → `widgets/` (UI blocks) → `features/` (user actions) → `entities/` (slice + api normalize). Keep it there; do not wire new routes into `App.jsx`.
+- To surface a page in the UI, add a card in `src/components/tools/Tools.jsx` (cards of dormant features are commented out there — uncomment to re-enable). Permission-gate the card the same way the page itself does.
 
 ## State & API
 
@@ -28,6 +29,8 @@ Two structures coexist. The FSD folders (`src/app`, `src/api`, `src/entities`, `
 - Persist `whitelist`s matter: `inventory` must NOT persist `skuList`/`ordersMap` (too large → `QuotaExceededError`). Respect existing whitelists.
 - API client: legacy `src/utils/host.js`; new `src/api/client.js` re-exports `hostName` from it. Both inject `Authorization: Bearer <token>` from `auth.user?.token`, dispatch `clearCredentials` on 401, redirect to `/forbidden` on 403.
 - Slices live in `src/redux/slices/`, but some components keep feature-local slices (e.g. `src/components/inventory/redux/`). Store imports both — match whichever side you're editing.
+- Daily metrics shape: legacy endpoints return comma-strings or plain arrays; rewritten endpoints return time-series objects `{'YYYY-MM-DD': number | null}`. FSD entities keep the object shape — merge/sum by date key, `null` counts as 0 (`sumDaily` in `entities/sku-metrics`, `mergeDaily` in `entities/product-card`). Don't convert them back to arrays. Date labels for charts: reformat the key (`'YYYY-MM-DD'` → `'дд.мм'`, see `AbcHeatmap`), never re-derive dates locally.
+- Product page links: the current product page is `/skus/:sku` (`SkuDetailPage`, param is the WB article number, not the DB id); `/vendorcodes/:id` is the legacy page. Point new UI at `/skus/${sku}`.
 
 ## Styling
 

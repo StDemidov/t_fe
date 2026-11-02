@@ -21,17 +21,24 @@ import {
   clearStartCalcDates,
 } from '../../entities/orders-to-processors';
 import { isValidDateFormat } from '../../widgets/orders-to-processors/lib/gantt';
+import { selectUser } from '../../redux/slices/authSlice';
 
 import OrdersToProcessorsToolbar from '../../widgets/orders-to-processors/OrdersToProcessorsToolbar';
 import GanttHeader from '../../widgets/orders-to-processors/GanttHeader';
 import SkuPlantRow from '../../widgets/orders-to-processors/SkuPlantRow';
 import OrdersToProcessorsSkeleton from '../../widgets/orders-to-processors/OrdersToProcessorsSkeleton';
+import OrdersToProcessorsOrdersModal from '../../widgets/orders-to-processors/OrdersToProcessorsOrdersModal';
 
 import { useOrdersToProcessorsData } from './hooks/useOrdersToProcessorsData';
 import styles from './OrdersToProcessorsPage.module.css';
 
 const OrdersToProcessorsPage = () => {
   const dispatch = useDispatch();
+  const currentUser = useSelector(selectUser);
+  const canManageOrders = Boolean(
+    currentUser?.permissions?.is_admin ||
+      currentUser?.permissions?.barcodes_orders
+  );
 
   // ── Data from Redux ──
   const items = useSelector(selectOrdersToProcessorsItems);
@@ -59,6 +66,7 @@ const OrdersToProcessorsPage = () => {
   const [sortValue, setSortValue] = useState('totalEbitdaAvg:desc');
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(25);
+  const [ordersModalOpen, setOrdersModalOpen] = useState(false);
 
   // ── Fetch на каждый новый диапазон дат ──
   useEffect(() => {
@@ -215,6 +223,18 @@ const OrdersToProcessorsPage = () => {
   const hasDates = Object.keys(startCalcDates).length > 0;
   const hasOrders = Object.values(extraOrders).some((v) => Number(v) > 0);
 
+  const handleOrdersChanged = useCallback(() => {
+    dispatch(fetchOrdersToProcessors(dateRange));
+  }, [dateRange, dispatch]);
+
+  const ordersModal = ordersModalOpen ? (
+    <OrdersToProcessorsOrdersModal
+      open={ordersModalOpen}
+      onClose={() => setOrdersModalOpen(false)}
+      onChanged={handleOrdersChanged}
+    />
+  ) : null;
+
   // ── Экспорт (предварительная версия — формат уточняется) ──
   const handleExportXls = useCallback(async () => {
     const byPattern = {};
@@ -352,7 +372,10 @@ const OrdersToProcessorsPage = () => {
           hasOrders={hasOrders}
           onResetFilters={handleResetFilters}
           searchResetKey={searchResetKey}
-          onExportXls={handleExportXls}
+           onExportXls={handleExportXls}
+           onManageOrders={
+             canManageOrders ? () => setOrdersModalOpen(true) : undefined
+           }
           currentPage={1}
           totalPages={1}
           totalCount={0}
@@ -362,6 +385,7 @@ const OrdersToProcessorsPage = () => {
           disabled={items.length === 0}
         />
         <div className={styles.emptyState}>Ничего не найдено</div>
+        {ordersModal}
       </div>
     );
   }
@@ -414,6 +438,9 @@ const OrdersToProcessorsPage = () => {
         onResetFilters={handleResetFilters}
         searchResetKey={searchResetKey}
         onExportXls={handleExportXls}
+        onManageOrders={
+          canManageOrders ? () => setOrdersModalOpen(true) : undefined
+        }
         currentPage={currentPage}
         totalPages={totalPages}
         totalCount={totalCount}
@@ -446,6 +473,7 @@ const OrdersToProcessorsPage = () => {
           ))}
         </div>
       </div>
+      {ordersModal}
     </animated.div>
   );
 };

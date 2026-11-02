@@ -68,7 +68,7 @@ const Tools = () => {
                 </div>
               </NavLink>
             )} */}
-            {/* {(currentUser.permissions.is_admin ||
+            {(currentUser.permissions.is_admin ||
               currentUser.permissions.vendorcodes) && (
               <NavLink to="cards" className={styles.link}>
                 <div className={styles.card}>
@@ -80,7 +80,7 @@ const Tools = () => {
                   </div>
                 </div>
               </NavLink>
-            )} */}
+            )}
           </div>
         </>
       )}
