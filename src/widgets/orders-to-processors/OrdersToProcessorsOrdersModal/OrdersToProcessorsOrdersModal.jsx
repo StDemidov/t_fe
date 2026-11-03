@@ -33,6 +33,8 @@ const normalizeHeader = (value) =>
     .toLowerCase()
     .replace(/ё/g, 'е');
 
+const normalizeVendorCode = (value) => String(value || '').trim().toLowerCase();
+
 const parseOrderNameFromFileName = (fileName) => {
   const match = String(fileName || '').match(/^\s*\[([^\]]+)\]/);
   if (!match) {
@@ -45,32 +47,39 @@ const parseOrderNameFromFileName = (fileName) => {
   return name;
 };
 
-const parseExcel = async (file) => {
+const parseExcel = async (file, predictorItems) => {
   const workbook = XLSX.read(await file.arrayBuffer(), { type: 'array' });
   const sheet = workbook.Sheets[workbook.SheetNames[0]];
   const rows = XLSX.utils.sheet_to_json(sheet, { header: 1, defval: '' });
   if (rows.length < 2) throw new Error('Файл не содержит строк с данными');
 
   const headers = rows[0].map(normalizeHeader);
-  const skuIndex = headers.findIndex((value) => value === 'sku');
+  const vendorCodeIndex = headers.findIndex(
+    (value) => value === 'артикул' || value === 'vendorcode' || value === 'vendor code'
+  );
   const sizeIndex = headers.findIndex(
     (value) => value === 'размер' || value === 'size'
   );
   const quantityIndex = headers.findIndex(
     (value) => value === 'количество' || value === 'quantity'
   );
-  if (skuIndex === -1 || sizeIndex === -1 || quantityIndex === -1) {
-    throw new Error('Нужны колонки: SKU, Размер, Количество');
+  if (vendorCodeIndex === -1 || sizeIndex === -1 || quantityIndex === -1) {
+    throw new Error('Нужны колонки: Артикул, Размер, Количество');
   }
 
   const duplicateRows = new Set();
   const data = rows.slice(1).map((row, index) => {
-    const sku = Number(row[skuIndex]);
+    const vendorCode = String(row[vendorCodeIndex] || '').trim();
     const size = String(row[sizeIndex] || '').trim();
     const quantity = Number(row[quantityIndex]);
-    const key = `${sku}::${size.toUpperCase()}`;
-    if (!Number.isInteger(sku) || sku <= 0) {
-      throw new Error(`Строка ${index + 2}: SKU должен быть целым числом`);
+    const matchedItem = predictorItems.find(
+      (item) => normalizeVendorCode(item.vendorCode) === normalizeVendorCode(vendorCode)
+    );
+    const sku = Number(matchedItem?.sku);
+    const key = `${normalizeVendorCode(vendorCode)}::${size.toUpperCase()}`;
+    if (!vendorCode) throw new Error(`Строка ${index + 2}: не указан артикул`);
+    if (!matchedItem || !Number.isInteger(sku) || sku <= 0) {
+      throw new Error(`Строка ${index + 2}: артикул не найден среди данных прогнозов`);
     }
     if (!size) throw new Error(`Строка ${index + 2}: не указан размер`);
     if (!Number.isInteger(quantity) || quantity <= 0) {
@@ -88,14 +97,19 @@ const parseExcel = async (file) => {
 
 const downloadTemplate = () => {
   const worksheet = XLSX.utils.aoa_to_sheet([
-    ['SKU', 'Размер', 'Количество'],
+    ['Артикул', 'Размер', 'Количество'],
   ]);
   const workbook = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(workbook, worksheet, 'Заказ');
   XLSX.writeFile(workbook, '[Название заказа] шаблон.xlsx');
 };
 
-const OrdersToProcessorsOrdersModal = ({ open, onClose, onChanged }) => {
+const OrdersToProcessorsOrdersModal = ({
+  open,
+  onClose,
+  onChanged,
+  predictorItems = [],
+}) => {
   const dispatch = useDispatch();
   const fileInputRef = useRef(null);
   const [orders, setOrders] = useState([]);
@@ -151,7 +165,7 @@ const OrdersToProcessorsOrdersModal = ({ open, onClose, onChanged }) => {
     if (!file) return;
     try {
       setName(parseOrderNameFromFileName(file.name));
-      setRows(await parseExcel(file));
+      setRows(await parseExcel(file, predictorItems));
       setMessage('');
     } catch (error) {
       setName('');
@@ -248,7 +262,7 @@ const OrdersToProcessorsOrdersModal = ({ open, onClose, onChanged }) => {
             <p className={styles.instruction}>
               Название заказа берётся из имени файла в формате{' '}
               <b>[Название заказа] файл.xlsx</b>. Первый лист должен содержать
-              колонки: <b>SKU</b>, <b>Размер</b>, <b>Количество</b>.{' '}
+              колонки: <b>Артикул</b>, <b>Размер</b>, <b>Количество</b>.{' '}
               <button
                 type="button"
                 className={styles.templateLink}

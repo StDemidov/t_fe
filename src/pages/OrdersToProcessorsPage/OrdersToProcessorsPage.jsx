@@ -230,6 +230,7 @@ const OrdersToProcessorsPage = () => {
   const ordersModal = ordersModalOpen ? (
     <OrdersToProcessorsOrdersModal
       open={ordersModalOpen}
+      predictorItems={items}
       onClose={() => setOrdersModalOpen(false)}
       onChanged={handleOrdersChanged}
     />
