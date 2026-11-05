@@ -45,6 +45,8 @@ import styles from './PromoPage.module.css';
 const ACTION_CONF = {
   pause: {
     statuses: PAUSABLE_STATUSES,
+    // Повторная пауза не нужна, только если кампанию уже запаузил сам пользователь.
+    exclude: (item) => item.isPausedByUser === true,
     confirmTitle: 'Поставить на паузу',
     confirmText: 'Поставить выбранные кампании на паузу?',
     rowVerb: 'Поставить на паузу',
@@ -476,7 +478,8 @@ const PromoPage = () => {
     const targetIds = conf.statuses
       ? ids.filter((id) => {
           const item = items.find((it) => it.id === id);
-          return item && conf.statuses.has(Number(item.status));
+          if (!item || !conf.statuses.has(Number(item.status))) return false;
+          return !(conf.exclude && conf.exclude(item));
         })
       : ids;
     if (targetIds.length === 0) return;

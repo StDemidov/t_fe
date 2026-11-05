@@ -432,7 +432,8 @@ const PromoTable = ({
         <ActionsCell
           canManage={canManage}
           onPause={
-            canManage && onPause && PAUSABLE_STATUSES.has(status)
+            canManage && onPause && PAUSABLE_STATUSES.has(status) &&
+            !item.isPausedByUser
               ? () => onPause(item)
               : null
           }
