@@ -508,6 +508,14 @@ const SkusTable = ({ items, footerItems = [], onTagFilter, onCategoryFilter, onP
         </div>
       );
     }
+    if (column.id === 'ordersToProcessors') {
+      const v = Number(item.ordersToProcessors) || 0;
+      const cls =
+        v === 0
+          ? styles.ordersToProcessorsZero
+          : styles.ordersToProcessorsValue;
+      return <span className={cls}>{v}</span>;
+    }
     if (
       column.id === 'turnoverFbs' ||
       column.id === 'turnoverFbw' ||
@@ -613,7 +621,7 @@ const footerCellClass = (column) =>
   const bodyCellClass = (column) =>
     column.id === 'article'
       ? `${styles.cell} ${styles.fixedCol}`
-      : column.id === 'selfprice'
+      : column.id === 'selfprice' || column.id === 'ordersToProcessors'
       ? `${styles.cell} ${styles.selfPriceColumn}`
       : column.id === 'stocksLast' || column.id === 'turnoverFbs' || column.id === 'turnoverFbw' || column.id === 'turnoverTotal'
       ? `${styles.cell} ${styles.stocksLastColumn}`

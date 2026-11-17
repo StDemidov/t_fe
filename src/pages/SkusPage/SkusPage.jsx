@@ -72,6 +72,9 @@ const SORT_OPTIONS = [
   { value: 'stocksLastFbw:desc', label: 'Остатки FBW' },
   { value: 'stocksLast:asc', label: 'Остатки суммарно' },
   { value: 'stocksLast:desc', label: 'Остатки суммарно' },
+  // Заказы переработчику
+  { value: 'ordersToProcessors:asc', label: 'Заказы переработчику' },
+  { value: 'ordersToProcessors:desc', label: 'Заказы переработчику' },
   // Рекламные расходы
   { value: 'adsCostsSum:asc', label: 'Рекл. расходы' },
   { value: 'adsCostsSum:desc', label: 'Рекл. расходы' },

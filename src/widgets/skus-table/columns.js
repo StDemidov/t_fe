@@ -87,6 +87,13 @@ export const COLUMNS = [
       (Number(item.quantityOnWayToWarehouseCurrent) || 0),
   },
   {
+    id: 'ordersToProcessors',
+    label: 'Заказы переработчику',
+    width: 160,
+    key: 'ordersToProcessors',
+    render: (item) => item.ordersToProcessors,
+  },
+  {
     id: 'turnoverFbs',
     label: 'Обор-сть FBS',
     width: 220,

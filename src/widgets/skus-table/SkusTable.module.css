@@ -320,6 +320,24 @@
   color: var(--color-status-attention-primary, #f59e0b);
 }
 
+/* Значение колонки «Заказы переработчику»: фиолетовым, шрифт как в себестоимости. */
+.ordersToProcessorsValue {
+  font-family: 'BebasNeue', sans-serif;
+  font-size: 22px;
+  letter-spacing: 0.5px;
+  font-weight: 400;
+  color: var(--color-main-500);
+}
+
+/* Нулевое значение «Заказы переработчику» — оранжевым. */
+.ordersToProcessorsZero {
+  font-family: 'BebasNeue', sans-serif;
+  font-size: 22px;
+  letter-spacing: 0.5px;
+  font-weight: 400;
+  color: var(--color-status-attention-primary, #f59e0b);
+}
+
 /* Футер колонок с разбивкой на строки (Остатки последние, Заказы, Продажи,
    Остатки, EBITDA/день): уменьшенный шрифт, тёмный текст, без разделителя. */
 .footerCellLines .stocksLineLabel,
