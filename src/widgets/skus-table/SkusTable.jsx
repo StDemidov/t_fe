@@ -6,7 +6,7 @@ import {
   useRef,
   useState,
 } from 'react';
-import { MdDragIndicator } from 'react-icons/md';
+import { MdDragIndicator, MdOutlineUpdate } from 'react-icons/md';
 import { IoMdCloseCircle } from 'react-icons/io';
 import LazyLoad from 'react-lazyload';
 
@@ -378,14 +378,32 @@ const SkusTable = ({ items, footerItems = [], onTagFilter, onCategoryFilter, onP
       );
     }
     if (column.id === 'priceBeforeSpp') {
+      const sppAmount = item.sppAmount;
+      const sppLastUpdate = item.sppLastUpdate;
       return (
-        <LazyChart height={60}>
-          <StepLineChart
-            data={item.price || {}}
-            summary={formatNumber(lastDaily(item.price))}
-            height={60}
-          />
-        </LazyChart>
+        <div className={styles.priceSppCell}>
+          <LazyChart height={60}>
+            <StepLineChart
+              data={item.price || {}}
+              summary={formatNumber(lastDaily(item.price))}
+              height={60}
+            />
+          </LazyChart>
+          <div className={styles.sppRow}>
+            <span className={styles.sppLabel}>СПП</span>
+            <span className={styles.sppBadge}>
+              {sppAmount === null || sppAmount === undefined
+                ? '—'
+                : `${sppAmount}%`}
+            </span>
+            {sppLastUpdate ? (
+              <MdOutlineUpdate
+                className={styles.sppUpdateIcon}
+                title={sppLastUpdate}
+              />
+            ) : null}
+          </div>
+        </div>
       );
     }
     if (column.id === 'ebitda') {

@@ -338,6 +338,53 @@
   color: var(--color-status-attention-primary, #f59e0b);
 }
 
+/* Ячейка «Цена»: график и под ним блок СПП (подпись + плашка + дата). */
+.priceSppCell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  width: 100%;
+}
+
+/* Строка СПП: подпись и плашка со значением. */
+.sppRow {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.sppLabel {
+  font-family: 'Garet Book', sans-serif;
+  font-size: 11px;
+  color: var(--color-neutral-500);
+  white-space: nowrap;
+}
+
+/* Плашка значения СПП — в фирменном фиолетовом. */
+.sppBadge {
+  padding: 1px 6px;
+  border-radius: 4px;
+  background: var(--color-main-100);
+  color: var(--color-main-700);
+  font-family: 'Garet Book', sans-serif;
+  font-size: 11px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+/* Иконка обновления СПП: при наведении показывает дату последнего обновления. */
+.sppUpdateIcon {
+  flex-shrink: 0;
+  font-size: 14px;
+  color: var(--color-neutral-500);
+  cursor: help;
+}
+
+.sppUpdateIcon:hover {
+  color: var(--color-main-500);
+}
+
 /* Футер колонок с разбивкой на строки (Остатки последние, Заказы, Продажи,
    Остатки, EBITDA/день): уменьшенный шрифт, тёмный текст, без разделителя. */
 .footerCellLines .stocksLineLabel,

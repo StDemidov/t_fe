@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { DateRangePicker, LineChart, MultiLineChart, StackedBarChart, StackedBarChartComparison, StepLineChart, AbcHeatmap, SeasonalChart } from '../../shared/ui';
 import TagsCell from '../../widgets/skus-table/TagsCell';
 import SelfPriceCell from '../../widgets/skus-table/SelfPriceCell';
-import { MdOutlineKeyboardArrowUp, MdKeyboardArrowDown, MdCurrencyRuble } from 'react-icons/md';
+import { MdOutlineKeyboardArrowUp, MdKeyboardArrowDown, MdCurrencyRuble, MdOutlineUpdate } from 'react-icons/md';
 import wbLogo from '../../shared/assets/wb_logo.png';
 import {
   fetchSkuDetail,
@@ -460,6 +460,8 @@ const SkuDetailPage = () => {
     ) || 0;
   const stocksOnWay =
     quantityOnWayToClientCurrent + quantityOnWayToWarehouseCurrent;
+  const ordersToProcessors =
+    Number(skuMetrics.ordersToProcessors ?? data?.ordersToProcessors) || 0;
 
   // Суммовые показатели (текущий и прошлый период) для мини-блоков.
   const ebitdaSumTotal =
@@ -573,6 +575,10 @@ const SkuDetailPage = () => {
 
   // Цена до СПП: последнее не null значение из датасета price, без сравнения.
   const priceLast = lastNonNull(skuMetrics.price ?? data?.price);
+
+  // СПП: размер скидки и дата последнего обновления (из skuMetrics).
+  const sppAmount = skuMetrics.sppAmount ?? data?.sppAmount;
+  const sppLastUpdate = skuMetrics.sppLastUpdate ?? data?.sppLastUpdate;
 
   // Датасеты графика «Остатки»: суммы — последние не null значения.
   const stocksChartDatasets = [
@@ -803,16 +809,18 @@ const SkuDetailPage = () => {
       content: (
         <div className={`${styles.turnLines} ${styles.stocksLines}`}>
           <span className={styles.turnLine}>
-            <span className={styles.turnLabel}>Остатки FBW</span>
-            <b className={styles.turnValue}>{fmtNum(stocksFbwCurrent)}</b>
-          </span>
-          <span className={styles.turnLine}>
-            <span className={styles.turnLabel}>Остатки FBS</span>
-            <b className={styles.turnValue}>{fmtNum(stocksFbsCurrent)}</b>
+            <span className={styles.turnLabel}>Остатки FBW/FBS</span>
+            <b className={styles.turnValue}>
+              {fmtNum(stocksFbwCurrent)} / {fmtNum(stocksFbsCurrent)}
+            </b>
           </span>
           <span className={styles.turnLine}>
             <span className={styles.turnLabel}>В пути</span>
             <b className={styles.turnValue}>{fmtNum(stocksOnWay)}</b>
+          </span>
+          <span className={styles.turnLine}>
+            <span className={styles.turnLabel}>Заказы перераб.</span>
+            <b className={styles.turnValue}>{fmtNum(ordersToProcessors)}</b>
           </span>
         </div>
       ),
@@ -1179,6 +1187,20 @@ const SkuDetailPage = () => {
               summary={priceLast !== null ? fmtNum(priceLast) : '—'}
               height={88}
             />
+            <div className={styles.sppRow}>
+              <span className={styles.sppLabel}>СПП</span>
+              <span className={styles.sppBadge}>
+                {sppAmount === null || sppAmount === undefined
+                  ? '—'
+                  : `${sppAmount}%`}
+              </span>
+              {sppLastUpdate ? (
+                <MdOutlineUpdate
+                  className={styles.sppUpdateIcon}
+                  title={sppLastUpdate}
+                />
+              ) : null}
+            </div>
           </div>
           <div className={`card ${styles.chartCard}`}>
             <span className={styles.miniTitle}>Остатки</span>

@@ -46,7 +46,7 @@ export const COLUMNS = [
   },
   {
     id: 'priceBeforeSpp',
-    label: 'Цена до СПП',
+    label: 'Цена',
     width: 220,
     key: 'price',
     // Сводка — последнее не null значение цены по дням.

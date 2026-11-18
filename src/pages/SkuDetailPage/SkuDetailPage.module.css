@@ -266,6 +266,44 @@
   box-sizing: border-box;
 }
 
+/* Строка СПП под графиком «Цена до СПП»: подпись + плашка + иконка обновления. */
+.sppRow {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.sppLabel {
+  font-family: 'Garet Book', sans-serif;
+  font-size: 11px;
+  color: var(--color-neutral-500);
+  white-space: nowrap;
+}
+
+/* Плашка значения СПП — в фирменном фиолетовом. */
+.sppBadge {
+  padding: 1px 6px;
+  border-radius: 4px;
+  background: var(--color-main-100);
+  color: var(--color-main-700);
+  font-family: 'Garet Book', sans-serif;
+  font-size: 11px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+/* Иконка обновления СПП: при наведении показывает дату последнего обновления. */
+.sppUpdateIcon {
+  flex-shrink: 0;
+  font-size: 14px;
+  color: var(--color-neutral-500);
+  cursor: help;
+}
+
+.sppUpdateIcon:hover {
+  color: var(--color-main-500);
+}
+
 /* Ряд тепловых карт ABC по дням (бренд/категория). */
 .abcRow {
   display: grid;
@@ -372,17 +410,17 @@
   white-space: nowrap;
 }
 
-/* Более мелкий текст в блоке «Остатки». */
+/* Более мелкий текст в блоке «Остатки» — чтобы влезло 4 строки. */
 .stocksLines {
   gap: 2px;
 }
 
 .stocksLines .turnLine {
-  font-size: 12px;
+  font-size: 11px;
 }
 
 .stocksLines .turnValue {
-  font-size: 13px;
+  font-size: 12px;
 }
 
 /* Нулевое значение оборачиваемости — как в таблице Товаров. Более высокая
