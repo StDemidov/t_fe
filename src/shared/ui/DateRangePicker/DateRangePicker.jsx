@@ -44,6 +44,14 @@ const clampDate = (dateStr, minDate, maxDate) => {
   return dateStr;
 };
 
+/** Заготовленные периоды: отсчёт всегда от максимально доступной даты. */
+const PRESETS = [
+  { label: 'Неделя', days: 6 },
+  { label: '2 недели', days: 13 },
+  { label: 'Месяц', days: 30 },
+  { label: '2 месяца', days: 60 },
+];
+
 /**
  * Календарь выбора дат (как выпадающий фильтр).
  *
@@ -54,6 +62,10 @@ const clampDate = (dateStr, minDate, maxDate) => {
  * Выбранные даты накапливаются во внутреннем «чертеже» (draft) и применяются
  * только по кнопке «Применить» — тогда вызывается onChange и календарь
  * закрывается. Кнопка «Закрыть» просто сворачивает календарь без применения.
+ *
+ * Справа от сетки — панель заготовленных периодов (неделя, 2 недели, месяц,
+ * 2 месяца): каждый отсчитывается от максимально доступной даты (maxDate)
+ * и применяется сразу по клику. В режиме single панель скрыта.
  *
  * Выпадашка рендерится в портал и позиционируется по кнопке — чтобы её не
  * обрезал контейнер фильтров с overflow.
@@ -166,6 +178,29 @@ const DateRangePicker = ({
     apply(draftStart, draftEnd);
   };
 
+  // Диапазон пресета: конец — максимально доступная дата, начало — минус
+  // заданное число дней (с зажимом к minDate).
+  const presetRange = (days) => {
+    const base = toDate(maxDate);
+    const end = formatDate(base);
+    let start = formatDate(
+      new Date(base.getFullYear(), base.getMonth(), base.getDate() - days)
+    );
+    if (minDate && start < minDate) start = minDate;
+    return { start, end };
+  };
+
+  const isPresetActive = (days) => {
+    if (!initialStart || !initialEnd) return false;
+    const { start, end } = presetRange(days);
+    return initialStart === start && initialEnd === end;
+  };
+
+  const handlePreset = (days) => {
+    const { start, end } = presetRange(days);
+    apply(start, end);
+  };
+
   const handleClose = () => {
     setPickingStart(true);
     setOpen(false);
@@ -180,85 +215,107 @@ const DateRangePicker = ({
         className={styles.popover}
         style={{ top: pos.top, left: pos.left }}
       >
-        <div className={styles.nav}>
-          <button
-            type="button"
-            className={styles.navButton}
-            onClick={() => setViewMonth((m) => addMonths(m, -1))}
-          >
-            <FaChevronLeft />
-          </button>
-          <span className={styles.monthLabel}>
-            {MONTHS[viewMonth.getMonth()]} {viewMonth.getFullYear()}
-          </span>
-          <button
-            type="button"
-            className={styles.navButton}
-            onClick={() => setViewMonth((m) => addMonths(m, 1))}
-          >
-            <FaChevronRight />
-          </button>
-        </div>
-
-        <div className={styles.gridHeader}>
-          {WEEKDAYS.map((d) => (
-            <span key={d} className={styles.weekday}>{d}</span>
-          ))}
-        </div>
-
-        <div className={styles.grid}>
-          {monthDays.map((cell, i) => {
-            const { dateStr, inMonth } = cell;
-            if (!dateStr) {
-              return <span key={`empty-${i}`} className={styles.empty} />;
-            }
-            const disabledDay = clampDate(dateStr, minDate, maxDate) === null;
-            const date = toDate(dateStr);
-            const isStart = draftStart && dateStr === draftStart;
-            const isEnd = draftEnd && dateStr === draftEnd;
-            const inRange = isInRange(
-              date,
-              draftStart ? toDate(draftStart) : null,
-              draftEnd ? toDate(draftEnd) : null
-            );
-            return (
+        <div className={styles.body}>
+          <div className={styles.calendar}>
+            <div className={styles.nav}>
               <button
-                key={dateStr}
                 type="button"
-                disabled={disabledDay}
-                className={[
-                  styles.day,
-                  inMonth ? '' : styles.outside,
-                  disabledDay ? styles.disabled : '',
-                  isStart ? styles.start : '',
-                  isEnd ? styles.end : '',
-                  isStart && isEnd ? styles.point : '',
-                  inRange && !isStart && !isEnd ? styles.inRange : '',
-                ].join(' ')}
-                onClick={() => handleSelect(dateStr)}
+                className={styles.navButton}
+                onClick={() => setViewMonth((m) => addMonths(m, -1))}
               >
-                {date.getDate()}
+                <FaChevronLeft />
               </button>
-            );
-          })}
-        </div>
+              <span className={styles.monthLabel}>
+                {MONTHS[viewMonth.getMonth()]} {viewMonth.getFullYear()}
+              </span>
+              <button
+                type="button"
+                className={styles.navButton}
+                onClick={() => setViewMonth((m) => addMonths(m, 1))}
+              >
+                <FaChevronRight />
+              </button>
+            </div>
 
-        <div className={styles.actions}>
-          <button
-            type="button"
-            className={styles.closeButton}
-            onClick={handleClose}
-          >
-            Закрыть
-          </button>
-          <button
-            type="button"
-            className={styles.applyButton}
-            onClick={handleApply}
-            disabled={!draftStart}
-          >
-            Применить
-          </button>
+            <div className={styles.gridHeader}>
+              {WEEKDAYS.map((d) => (
+                <span key={d} className={styles.weekday}>{d}</span>
+              ))}
+            </div>
+
+            <div className={styles.grid}>
+              {monthDays.map((cell, i) => {
+                const { dateStr, inMonth } = cell;
+                if (!dateStr) {
+                  return <span key={`empty-${i}`} className={styles.empty} />;
+                }
+                const disabledDay = clampDate(dateStr, minDate, maxDate) === null;
+                const date = toDate(dateStr);
+                const isStart = draftStart && dateStr === draftStart;
+                const isEnd = draftEnd && dateStr === draftEnd;
+                const inRange = isInRange(
+                  date,
+                  draftStart ? toDate(draftStart) : null,
+                  draftEnd ? toDate(draftEnd) : null
+                );
+                return (
+                  <button
+                    key={dateStr}
+                    type="button"
+                    disabled={disabledDay}
+                    className={[
+                      styles.day,
+                      inMonth ? '' : styles.outside,
+                      disabledDay ? styles.disabled : '',
+                      isStart ? styles.start : '',
+                      isEnd ? styles.end : '',
+                      isStart && isEnd ? styles.point : '',
+                      inRange && !isStart && !isEnd ? styles.inRange : '',
+                    ].join(' ')}
+                    onClick={() => handleSelect(dateStr)}
+                  >
+                    {date.getDate()}
+                  </button>
+                );
+              })}
+            </div>
+
+            <div className={styles.actions}>
+              <button
+                type="button"
+                className={styles.closeButton}
+                onClick={handleClose}
+              >
+                Закрыть
+              </button>
+              <button
+                type="button"
+                className={styles.applyButton}
+                onClick={handleApply}
+                disabled={!draftStart}
+              >
+                Применить
+              </button>
+            </div>
+          </div>
+
+          {!single && (
+            <div className={styles.presets}>
+              <span className={styles.presetsTitle}>Период</span>
+              {PRESETS.map((preset) => (
+                <button
+                  key={preset.label}
+                  type="button"
+                  className={`${styles.presetButton} ${
+                    isPresetActive(preset.days) ? styles.presetButtonActive : ''
+                  }`}
+                  onClick={() => handlePreset(preset.days)}
+                >
+                  {preset.label}
+                </button>
+              ))}
+            </div>
+          )}
         </div>
       </div>,
       document.body

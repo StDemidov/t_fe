@@ -48,12 +48,65 @@
 .popover {
   position: fixed;
   z-index: 1100;
-  width: 280px;
   padding: 12px;
   background: var(--color-neutral-50);
   border: 1px solid var(--color-neutral-200);
   border-radius: 10px;
   box-shadow: 0 6px 24px rgba(0, 0, 0, 0.12);
+}
+
+/* Строка: календарь + боковая панель заготовленных периодов. */
+.body {
+  display: flex;
+  gap: 12px;
+}
+
+.calendar {
+  width: 256px;
+  flex-shrink: 0;
+}
+
+/* Панель пресетов справа от календаря. */
+.presets {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 112px;
+  padding-left: 12px;
+  border-left: 1px solid var(--color-neutral-200);
+}
+
+.presetsTitle {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--color-neutral-500);
+  padding: 2px 8px 4px;
+}
+
+.presetButton {
+  text-align: left;
+  padding: 6px 8px;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--color-neutral-700);
+  font-family: 'Garet Book', sans-serif;
+  font-size: 13px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.presetButton:hover {
+  background: var(--color-neutral-200);
+}
+
+.presetButtonActive,
+.presetButtonActive:hover {
+  background: var(--color-main-100);
+  color: var(--color-main-700);
+  font-weight: 600;
 }
 
 .nav {

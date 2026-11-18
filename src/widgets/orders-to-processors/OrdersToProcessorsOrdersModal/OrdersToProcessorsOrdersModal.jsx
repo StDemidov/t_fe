@@ -10,6 +10,7 @@ import {
   fetchOrdersToProcessorsOrders,
 } from '../../../entities/orders-to-processors';
 import { DateRangePicker } from '../../../shared/ui';
+import { isValidDateFormat } from '../lib/gantt';
 import { setError } from '../../../redux/slices/errorSlice';
 import { setNotification } from '../../../redux/slices/notificationSlice';
 import styles from './OrdersToProcessorsOrdersModal.module.css';
@@ -115,9 +116,8 @@ const OrdersToProcessorsOrdersModal = ({
   const [orders, setOrders] = useState([]);
   const [selectedIds, setSelectedIds] = useState([]);
   const [ordersSearch, setOrdersSearch] = useState('');
-  const [name, setName] = useState('');
+  const [parsedOrders, setParsedOrders] = useState([]); // [{name, data, filename}]
   const [plannedCompletionDate, setPlannedCompletionDate] = useState('');
-  const [rows, setRows] = useState([]);
   const [ordersLoading, setOrdersLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [deleting, setDeleting] = useState(false);
@@ -131,6 +131,8 @@ const OrdersToProcessorsOrdersModal = ({
     const rightDate = right.plannedCompletionDate || '9999-12-31';
     return String(leftDate).localeCompare(String(rightDate));
   });
+
+  const totalRows = parsedOrders.reduce((sum, order) => sum + order.data.length, 0);
 
   const loadOrders = async () => {
     setOrdersLoading(true);
@@ -159,46 +161,59 @@ const OrdersToProcessorsOrdersModal = ({
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [deleting, onClose, open, saving]);
 
-  const handleFile = async (event) => {
-    const file = event.target.files?.[0];
+  const handleFiles = async (event) => {
+    const files = Array.from(event.target.files || []);
     event.target.value = '';
-    if (!file) return;
+    if (files.length === 0) return;
     try {
-      setName(parseOrderNameFromFileName(file.name));
-      setRows(await parseExcel(file, predictorItems));
+      const parsed = [];
+      for (const file of files) {
+        const orderName = parseOrderNameFromFileName(file.name);
+        const data = await parseExcel(file, predictorItems);
+        parsed.push({ name: orderName, data, filename: file.name });
+      }
+      const names = parsed.map((order) => order.name);
+      const duplicate = names.find((n, i) => names.indexOf(n) !== i);
+      if (duplicate) {
+        throw new Error(`Дублирующееся название заказа в файлах: «${duplicate}»`);
+      }
+      setParsedOrders(parsed);
       setMessage('');
     } catch (error) {
-      setName('');
-      setRows([]);
+      setParsedOrders([]);
       setMessage(error.message || 'Не удалось прочитать Excel-файл');
     }
   };
 
   const handleCreate = async () => {
-    const normalizedName = normalizeName(name);
-    if (!normalizedName) return setMessage('Укажите название заказа');
-    if (!plannedCompletionDate) return setMessage('Укажите дату завершения');
-    if (rows.length === 0) return setMessage('Загрузите Excel-файл');
+    if (parsedOrders.length === 0) return setMessage('Загрузите Excel-файл');
+    if (!isValidDateFormat(plannedCompletionDate)) {
+      return setMessage('Укажите дату завершения в формате ГГГГ-ММ-ДД');
+    }
 
-    const duplicate = orders.some(
-      (order) => normalizeName(order.name) === normalizedName
-    );
-    if (duplicate) return setMessage('Заказ с таким названием уже существует');
+    const existingNames = new Set(orders.map((order) => normalizeName(order.name)));
+    const duplicate = parsedOrders.find((order) => existingNames.has(order.name));
+    if (duplicate) return setMessage(`Заказ «${duplicate.name}» уже существует`);
 
     setSaving(true);
     setMessage('');
     try {
-      await createOrdersToProcessors([
-        {
-          name: normalizedName,
+      await createOrdersToProcessors(
+        parsedOrders.map((order) => ({
+          name: order.name,
           plannedCompletionDate,
-          data: rows,
-        },
-      ]);
-      dispatch(setNotification('Заказ успешно создан'));
-      setName('');
+          data: order.data,
+        }))
+      );
+      dispatch(
+        setNotification(
+          parsedOrders.length === 1
+            ? 'Заказ успешно создан'
+            : `Заказы успешно созданы (${parsedOrders.length})`
+        )
+      );
+      setParsedOrders([]);
       setPlannedCompletionDate('');
-      setRows([]);
       await loadOrders();
       onChanged?.();
     } catch (error) {
@@ -270,17 +285,29 @@ const OrdersToProcessorsOrdersModal = ({
               >
                 (Шаблон)
               </button>{' '}
-              Повторяющиеся пары SKU и размера запрещены.
+              Повторяющиеся пары SKU и размера запрещены. Можно выбрать{' '}
+              <b>несколько файлов</b> — из каждого будет создан отдельный заказ
+              с общей датой завершения.
             </p>
             <div className={styles.fields}>
               <label>
                 <span>Название из файла</span>
-                <input value={name} readOnly placeholder="Файл ещё не выбран" />
+                <input
+                  value={parsedOrders.map((order) => order.name).join(', ')}
+                  readOnly
+                  placeholder="Файл ещё не выбран"
+                />
               </label>
               <label>
                 <span>Плановая дата завершения</span>
                 <div className={styles.dateInputRow}>
-                  <input value={plannedCompletionDate} readOnly placeholder="ГГГГ-ММ-ДД" />
+                  <input
+                    value={plannedCompletionDate}
+                    placeholder="ГГГГ-ММ-ДД"
+                    onChange={(event) =>
+                      setPlannedCompletionDate(event.target.value)
+                    }
+                  />
                   <DateRangePicker
                     value={{
                       startDate: plannedCompletionDate,
@@ -301,13 +328,18 @@ const OrdersToProcessorsOrdersModal = ({
               >
                 <FaFileExcel /> Загрузить Excel
               </button>
-              <span>{rows.length ? `Строк загружено: ${rows.length}` : 'Файл не выбран'}</span>
+              <span>
+                {parsedOrders.length
+                  ? `Файлов: ${parsedOrders.length}, строк: ${totalRows}`
+                  : 'Файл не выбран'}
+              </span>
               <input
                 ref={fileInputRef}
                 className={styles.hiddenInput}
                 type="file"
                 accept=".xlsx,.xls"
-                onChange={handleFile}
+                multiple
+                onChange={handleFiles}
               />
             </div>
             <button
@@ -316,7 +348,11 @@ const OrdersToProcessorsOrdersModal = ({
               disabled={saving}
               onClick={handleCreate}
             >
-              {saving ? 'Создание...' : 'Создать заказ'}
+              {saving
+                ? 'Создание...'
+                : parsedOrders.length > 1
+                ? `Создать заказы (${parsedOrders.length})`
+                : 'Создать заказ'}
             </button>
           </section>
 
