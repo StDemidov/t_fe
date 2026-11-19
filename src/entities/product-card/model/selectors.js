@@ -45,7 +45,7 @@ export const selectProductCards = (state) => state.productCards;
  * Суммирует дневные таймсерии товаров ({'YYYY-MM-DD': число | null}) в одну
  * суммарную таймсерию: по каждой дате сумма значений, null считается нулём.
  */
-const mergeDaily = (dailies) => {
+export const mergeDaily = (dailies) => {
   const result = {};
   for (const daily of dailies) {
     for (const [date, value] of Object.entries(daily)) {

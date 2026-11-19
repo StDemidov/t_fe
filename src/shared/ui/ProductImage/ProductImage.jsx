@@ -16,6 +16,7 @@ import styles from './ProductImage.module.css';
  * @param {string} [props.sku] — артикул товара (копируется по клику, идёт в ссылку на товар)
  * @param {boolean} [props.noStock] — товар с нулевыми остатками: поверх фото красная заливка
  * @param {number} [props.refreshToken] — смена токена пересоздаёт <img> и повторяет загрузку
+ * @param {boolean} [props.linkable=true] — показывать иконку-ссылку на страницу товара
  */
 const ProductImage = ({
   src,
@@ -26,6 +27,7 @@ const ProductImage = ({
   sku,
   noStock,
   refreshToken = 0,
+  linkable = true,
 }) => {
   const [copied, setCopied] = useState(false);
   const sizeStyle = size ? { width: size, height: size } : {};
@@ -93,16 +95,18 @@ const ProductImage = ({
             <span className={styles.skuSlideItem}>Скопировано</span>
           </div>
         </div>
-        <a
-          className={styles.skuLink}
-          href={`/skus/${sku}`}
-          onClick={(e) => e.stopPropagation()}
-          title="Открыть товар"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <IoLinkOutline />
-        </a>
+        {linkable && (
+          <a
+            className={styles.skuLink}
+            href={`/skus/${sku}`}
+            onClick={(e) => e.stopPropagation()}
+            title="Открыть товар"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <IoLinkOutline />
+          </a>
+        )}
       </div>
     </div>
   );

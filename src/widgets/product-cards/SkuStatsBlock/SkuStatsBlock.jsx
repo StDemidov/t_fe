@@ -14,10 +14,15 @@ const campaignStatusClass = (status) => {
  * @param {object} props
  * @param {{ stats: object }} props.sku — артикул со статистикой в stats (см. getSkuStats)
  * @param {boolean} [props.open] — показывать ли блок
+ * @param {boolean} [props.large] — крупный шрифт на всю ширину ячейки (страница товара)
  */
-const SkuStatsBlock = ({ sku, open }) => {
+const SkuStatsBlock = ({ sku, open, large = false }) => {
   const unified = sku.unifiedCampaign || {};
   const manual = sku.manualCampaign || {};
+  // Плашки кампаний показываем только когда бекенд отдаёт данные кампаний
+  // (в метриках карточки товара их нет — без плашек вид чище).
+  const hasCampaignBadges =
+    'unifiedCampaign' in sku || 'manualCampaign' in sku;
 
   const renderBadge = (label, status, adId) =>
     adId ? (
@@ -41,11 +46,17 @@ const SkuStatsBlock = ({ sku, open }) => {
   const fmt = (value) => value.toLocaleString('ru-RU');
 
   return (
-    <div className={`${styles.block} ${open ? styles.open : ''}`}>
-      <div className={styles.badges}>
-        {renderBadge('Авто', unified.status, unified.adId)}
-        {renderBadge('Аук', manual.status, manual.adId)}
-      </div>
+    <div
+      className={`${styles.block} ${large ? styles.large : ''} ${
+        open ? (large ? styles.openLarge : styles.open) : ''
+      }`}
+    >
+      {hasCampaignBadges && (
+        <div className={styles.badges}>
+          {renderBadge('Авто', unified.status, unified.adId)}
+          {renderBadge('Аук', manual.status, manual.adId)}
+        </div>
+      )}
       <div className={styles.row}>
         <span className={styles.label}>Остатки</span>
         <span className={styles.value}>{fmt(stats.stocks)}</span>

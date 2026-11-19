@@ -20,6 +20,21 @@
   transition: max-height 0.18s ease-out, opacity 0.18s ease-out;
 }
 
+/* Крупный вариант (страница товара): шрифт больше, блок на всю ширину ячейки. */
+.large {
+  width: 100%;
+  font-size: 11px;
+  gap: 3px;
+  padding: 6px 8px;
+}
+
+.openLarge {
+  max-height: 220px;
+  opacity: 1;
+  pointer-events: auto;
+  transition: max-height 0.18s ease-out, opacity 0.18s ease-out;
+}
+
 .badges {
   display: flex;
   gap: 4px;

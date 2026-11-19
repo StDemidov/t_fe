@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { DateRangePicker, LineChart, MultiLineChart, StackedBarChart, StackedBarChartComparison, StepLineChart, AbcHeatmap, SeasonalChart } from '../../shared/ui';
 import TagsCell from '../../widgets/skus-table/TagsCell';
 import SelfPriceCell from '../../widgets/skus-table/SelfPriceCell';
+import { CardSkusBlock } from '../../widgets/card-skus';
 import { MdOutlineKeyboardArrowUp, MdKeyboardArrowDown, MdCurrencyRuble, MdOutlineUpdate } from 'react-icons/md';
 import wbLogo from '../../shared/assets/wb_logo.png';
 import {
@@ -1554,6 +1555,10 @@ const SkuDetailPage = () => {
             </div>
           )}
         </div>
+      )}
+
+      {data && (
+        <CardSkusBlock cardMetrics={entry?.cardMetrics} currentSku={sku} />
       )}
 
       {vendorCopied

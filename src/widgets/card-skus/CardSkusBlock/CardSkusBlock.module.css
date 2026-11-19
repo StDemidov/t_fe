@@ -1,0 +1,167 @@
+.root {
+  margin-top: 14px;
+}
+
+.head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.title {
+  margin: 0;
+  font-family: 'Garet Book', sans-serif;
+  font-size: 15px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--color-neutral-700);
+}
+
+.countBadge {
+  padding: 2px 8px;
+  border-radius: 6px;
+  background: var(--color-main-100);
+  color: var(--color-main-700);
+  font-family: 'Garet Book', sans-serif;
+  font-size: 11px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+/* Горизонтальный скролл строки товаров. */
+.scroll {
+  overflow-x: auto;
+  padding-bottom: 4px;
+}
+
+.row {
+  display: flex;
+  align-items: stretch;
+  gap: 8px;
+  width: max-content;
+  min-width: 100%;
+}
+
+/* Суммарная панель: прибита слева, товары при скролле заезжают под неё. */
+.totals {
+  position: sticky;
+  left: 0;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 230px;
+  flex-shrink: 0;
+  padding: 10px 12px 10px 10px;
+  border: 1px solid var(--color-neutral-200);
+  border-radius: 10px;
+  background: var(--color-neutral-50);
+  box-shadow: 4px 0 8px -4px rgba(0, 0, 0, 0.18);
+  box-sizing: border-box;
+}
+
+.abcRow {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 4px;
+}
+
+.abcChip {
+  font-size: 10px;
+  font-weight: 600;
+  border-radius: 4px;
+  padding: 1px 5px;
+  white-space: nowrap;
+}
+
+.abc_a {
+  background: var(--color-status-success-secondary);
+  color: var(--color-status-success-primary);
+}
+
+.abc_b {
+  background: var(--color-status-attention-secondary);
+  color: var(--color-status-attention-primary);
+}
+
+.abc_c {
+  background: var(--color-status-error-secondary);
+  color: var(--color-status-error-primary);
+}
+
+.abc_new {
+  background: var(--color-status-info-secondary);
+  color: var(--color-status-info-primary);
+}
+
+.abc_aaa {
+  background: var(--color-main-100);
+  color: var(--color-main-700);
+}
+
+.charts {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.chartBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.chartLabel {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-neutral-500);
+  white-space: nowrap;
+}
+
+.brief {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding-top: 6px;
+  border-top: 1px solid var(--color-neutral-200);
+  font-size: 12px;
+}
+
+.briefRow {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  color: var(--color-neutral-500);
+}
+
+.briefRow b {
+  color: var(--color-neutral-900);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* Ячейка товара: фото + всегда раскрытая статистика, всё центрировано. */
+.skuCell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 124px;
+  flex-shrink: 0;
+  padding: 8px 6px;
+  border: 1px solid var(--color-neutral-200);
+  border-radius: 10px;
+  background: #ffffff;
+  box-sizing: border-box;
+}
+
+/* Текущий товар страницы — бледно-фиолетовый фон. */
+.skuCellCurrent {
+  background: var(--color-main-100);
+  border-color: var(--color-main-100);
+}
