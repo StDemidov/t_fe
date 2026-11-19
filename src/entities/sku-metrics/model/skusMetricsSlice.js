@@ -251,6 +251,8 @@ const initialState = {
   items: [],
   isLoading: false,
   error: null,
+  /** Ключ диапазона дат («start::end»), за который загружены items. */
+  rangeKey: null,
 };
 
 const skusMetricsSlice = createSlice({
@@ -310,6 +312,7 @@ const skusMetricsSlice = createSlice({
         state.isLoading = false;
         // Элементы уже обогащены (в кэше или после порционной обработки).
         state.items = action.payload.items;
+        state.rangeKey = action.payload.key;
       })
       .addCase(fetchSkusMetrics.rejected, (state, action) => {
         state.isLoading = false;

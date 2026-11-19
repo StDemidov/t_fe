@@ -10,6 +10,7 @@ import {
   fetchSkusMetrics,
   selectSkusMetricsItems,
   selectSkusMetricsIsLoading,
+  selectSkusMetricsRangeKey,
   getDefaultStartDate,
   getDefaultEndDate,
 } from '../../entities/sku-metrics';
@@ -91,6 +92,7 @@ const SkusPage = () => {
   const user = useSelector(selectUser);
   const items = useSelector(selectSkusMetricsItems);
   const isLoading = useSelector(selectSkusMetricsIsLoading);
+  const loadedRangeKey = useSelector(selectSkusMetricsRangeKey);
 
   const [searchQuery, setSearchQuery] = useState('');
   const [filterMainTags, setFilterMainTags] = useState([]);
@@ -388,63 +390,86 @@ const SkusPage = () => {
   // Выгрузка данных в Excel. Для каждого артикула создаётся строка на каждую
   // дату диапазона; поля-словари {дата: значение} берут значение за дату,
   // остальные — дублируются. Поля с тегами выводятся списком через запятую.
+  // Если данные за текущий диапазон уже загружены в стор (их показывает
+  // таблица), повторный запрос к API не делается.
   const handleExportExcel = async () => {
     if (isExporting) return;
     setIsExporting(true);
+    // Даём React отрисовать оверлей загрузки до начала тяжёлой сборки:
+    // без этого yield весь синхронный код ниже блокирует поток раньше,
+    // чем браузер успеет показать спиннер.
+    await new Promise((resolve) => setTimeout(resolve, 0));
     try {
-      const list = await fetchSkusMetricsRaw(dateRange);
+      const rangeKey = `${dateRange.startDate}::${dateRange.endDate}`;
+      const list =
+        loadedRangeKey === rangeKey && items.length > 0
+          ? items
+          : await fetchSkusMetricsRaw(dateRange);
       if (!Array.isArray(list) || list.length === 0) return;
 
       // Порядок колонок выгрузки. value — функция (item, date) => ячейка.
+      // daily: true — значение зависит от даты; остальные колонки считаются
+      // один раз на артикул и дублируются во все строки-даты.
       const COLUMNS = [
         { label: 'SKU', value: (it) => it.sku },
         { label: 'Старт продаж', value: (it) => it.startOfRealizationDate },
         { label: 'Артикул', value: (it) => it.vendorCode },
-        { label: 'Дата', value: (_it, date) => date },
+        { label: 'Дата', daily: true, value: (_it, date) => date },
         { label: 'Категория', value: (it) => it.category },
         { label: 'Стиль', value: (it) => it.style },
         { label: 'Страна', value: (it) => it.countryOfOrigin },
-        { label: 'лекало', value: (it) => it.pattern },
-        { label: 'Заказы (всего)', value: (it, d) => byDate(it, d, 'ordersFbw', 'ordersFbs') },
-        { label: 'Заказы FBS', value: (it, d) => at(it, d, 'ordersFbs') },
-        { label: 'Заказы FBW', value: (it, d) => at(it, d, 'ordersFbw') },
-        { label: 'Продажи (всего)', value: (it, d) => byDate(it, d, 'salesFbw', 'salesFbs') },
-        { label: 'Продажи FBS', value: (it, d) => at(it, d, 'salesFbs') },
-        { label: 'Продажи FBW', value: (it, d) => at(it, d, 'salesFbw') },
-        { label: 'Остатки (всего)', value: (it, d) => byDate(it, d, 'stocksFbw', 'stocksFbs') },
-        { label: 'Остатки FBS', value: (it, d) => at(it, d, 'stocksFbs') },
-        { label: 'Остатки FBW', value: (it, d) => at(it, d, 'stocksFbw') },
+        { label: 'Лекало', value: (it) => it.pattern },
+        { label: 'Заказы (всего)', daily: true, value: (it, d) => byDate(it, d, 'ordersFbw', 'ordersFbs') },
+        { label: 'Заказы FBS', daily: true, value: (it, d) => at(it, d, 'ordersFbs') },
+        { label: 'Заказы FBW', daily: true, value: (it, d) => at(it, d, 'ordersFbw') },
+        { label: 'Продажи (всего)', daily: true, value: (it, d) => byDate(it, d, 'salesFbw', 'salesFbs') },
+        { label: 'Продажи FBS', daily: true, value: (it, d) => at(it, d, 'salesFbs') },
+        { label: 'Продажи FBW', daily: true, value: (it, d) => at(it, d, 'salesFbw') },
+        { label: 'Остатки (всего)', daily: true, value: (it, d) => byDate(it, d, 'stocksFbw', 'stocksFbs') },
+        { label: 'Остатки FBS', daily: true, value: (it, d) => at(it, d, 'stocksFbs') },
+        { label: 'Остатки FBW', daily: true, value: (it, d) => at(it, d, 'stocksFbw') },
+        {
+          label: 'Товары в пути',
+          value: (it) =>
+            (Number(it.quantityOnWayToClientCurrent) || 0) +
+            (Number(it.quantityOnWayToWarehouseCurrent) || 0),
+        },
+        { label: 'Заказы переработчику', value: (it) => it.ordersToProcessors },
         {
           label: 'EBITDA/День (всего)',
+          daily: true,
           value: (it, d) => byDate(it, d, 'totalEbitdaFbw', 'totalEbitdaFbs'),
         },
-        { label: 'EBITDA/день FBS', value: (it, d) => at(it, d, 'totalEbitdaFbs') },
-        { label: 'EBITDA/день FBW', value: (it, d) => at(it, d, 'totalEbitdaFbw') },
-        { label: 'Цена до СПП', value: (it, d) => at(it, d, 'price') },
-        { label: 'EBITDA', value: (it, d) => at(it, d, 'ebitda') },
-        { label: 'Рекламные расходы', value: (it, d) => at(it, d, 'adsCosts') },
-        { label: 'процент выкупа', value: (it, d) => at(it, d, 'buyoutPercent') },
-        { label: 'Клики', value: (it, d) => at(it, d, 'clicks') },
-        { label: 'Добавления в корзину', value: (it, d) => at(it, d, 'addingsToCart') },
+        { label: 'EBITDA/день FBS', daily: true, value: (it, d) => at(it, d, 'totalEbitdaFbs') },
+        { label: 'EBITDA/день FBW', daily: true, value: (it, d) => at(it, d, 'totalEbitdaFbw') },
+        { label: 'Цена до СПП', daily: true, value: (it, d) => at(it, d, 'price') },
+        { label: 'EBITDA', daily: true, value: (it, d) => at(it, d, 'ebitda') },
+        { label: 'Рекламные расходы', daily: true, value: (it, d) => at(it, d, 'adsCosts') },
+        { label: 'Процент выкупа', daily: true, value: (it, d) => at(it, d, 'buyoutPercent') },
+        { label: 'Клики', daily: true, value: (it, d) => at(it, d, 'clicks') },
+        { label: 'Добавления в корзину', daily: true, value: (it, d) => at(it, d, 'addingsToCart') },
         {
           label: 'CR из клика в корзину',
+          daily: true,
           value: (it, d) =>
             ratio(at(it, d, 'addingsToCart'), at(it, d, 'clicks')),
         },
         {
           label: 'CR из корзины в заказ',
+          daily: true,
           value: (it, d) =>
             ratio(byDate(it, d, 'ordersFbw', 'ordersFbs'), at(it, d, 'addingsToCart')),
         },
         {
           label: 'CR из клика в заказ',
+          daily: true,
           value: (it, d) =>
             ratio(byDate(it, d, 'ordersFbw', 'ordersFbs'), at(it, d, 'clicks')),
         },
-        { label: 'ABC (бренд)', value: (it, d) => at(it, d, 'abcAmongAll') },
-        { label: 'ABC (категория)', value: (it, d) => at(it, d, 'abcAmongCategory') },
-        { label: 'CPO', value: (it, d) => at(it, d, 'cpo') },
-        { label: 'CPS', value: (it, d) => at(it, d, 'cps') },
+        { label: 'ABC (бренд)', daily: true, value: (it, d) => at(it, d, 'abcAmongAll') },
+        { label: 'ABC (категория)', daily: true, value: (it, d) => at(it, d, 'abcAmongCategory') },
+        { label: 'CPO', daily: true, value: (it, d) => at(it, d, 'cpo') },
+        { label: 'CPS', daily: true, value: (it, d) => at(it, d, 'cps') },
         { label: 'ROI (%)', value: (it) => roiPercentOf(it) },
         { label: 'Себестоимость с НДС', value: (it) => it.selfpriceWithNds },
         { label: 'Себестоимость без НДС', value: (it) => it.selfpriceWithoutNds },
@@ -453,42 +478,57 @@ const SkusPage = () => {
         { label: 'Теги (доп)', value: (it) => joinTags(it.otherTags) },
       ];
 
-      // Набор дат из всех дневных полей артикула.
+      // Дневные поля, из которых собирается набор дат артикула.
+      const DAILY_FIELDS = [
+        'ordersFbw', 'ordersFbs', 'salesFbw', 'salesFbs', 'stocksFbw',
+        'stocksFbs', 'totalEbitdaFbw', 'totalEbitdaFbs', 'price', 'ebitda',
+        'adsCosts', 'buyoutPercent', 'clicks', 'addingsToCart',
+        'abcAmongAll', 'abcAmongCategory', 'cpo', 'cps',
+      ];
+      // Отсортированный набор дат из дневных полей артикула.
       const collectDates = (item) => {
-        const dates = [];
         const seen = new Set();
-        for (const k of Object.keys(item)) {
+        for (const k of DAILY_FIELDS) {
           const v = item[k];
-          if (!v || typeof v !== 'object' || Array.isArray(v)) continue;
-          for (const d of Object.keys(v)) {
-            if (!seen.has(d)) {
-              seen.add(d);
-              dates.push(d);
-            }
-          }
+          if (!v || typeof v !== 'object') continue;
+          for (const d of Object.keys(v)) seen.add(d);
         }
-        return dates;
+        return [...seen].sort();
       };
 
-      const rows = [];
-      list.forEach((item) => {
-        const dates = collectDates(item);
-        const roi = roiPercentOf(item);
-        dates.forEach((date) => {
-          const row = {};
-          COLUMNS.forEach((col) => {
-            row[col.label] =
-              col.label === 'ROI (%)' ? cell(roi) : cell(col.value(item, date));
+      // Плоский массив массивов (первая строка — заголовки): быстрее и
+      // компактнее по памяти, чем объекты на каждую строку.
+      const aoa = [COLUMNS.map((col) => col.label)];
+      // Собираем строки порциями, отдавая управление браузеру между ними,
+      // чтобы интерфейс и оверлей загрузки не зависали на больших выгрузках
+      // (тот же подход, что enrichChunked в skusMetricsSlice).
+      const CHUNK = 100;
+      for (let start = 0; start < list.length; start += CHUNK) {
+        const end = Math.min(start + CHUNK, list.length);
+        for (let j = start; j < end; j += 1) {
+          const item = list[j];
+          const dates = collectDates(item);
+          // Скалярные колонки (включая ROI) считаем один раз на артикул.
+          const statics = COLUMNS.map((col) =>
+            col.daily ? null : cell(col.value(item))
+          );
+          dates.forEach((date) => {
+            aoa.push(
+              COLUMNS.map((col, i) =>
+                col.daily ? cell(col.value(item, date)) : statics[i]
+              )
+            );
           });
-          rows.push(row);
-        });
-      });
+        }
+        await new Promise((resolve) => setTimeout(resolve, 0));
+      }
 
-      const sheet = XLSX.utils.json_to_sheet(rows);
+      const sheet = XLSX.utils.aoa_to_sheet(aoa);
       const book = XLSX.utils.book_new();
       XLSX.utils.book_append_sheet(book, sheet, 'SKU');
       const fname = `skus_metrics_${dateRange.startDate}_${dateRange.endDate}.xlsx`;
-      XLSX.writeFile(book, fname);
+      // compression: включает DEFLATE внутри xlsx — файл в разы меньше.
+      XLSX.writeFile(book, fname, { compression: true });
     } finally {
       setIsExporting(false);
     }
@@ -528,7 +568,8 @@ const SkusPage = () => {
       const yyyy = today.getFullYear();
       XLSX.writeFile(
         book,
-        `Себестоимости_STD_${dd}.${mm}.${yyyy}.xlsx`
+        `Себестоимости_STD_${dd}.${mm}.${yyyy}.xlsx`,
+        { compression: true }
       );
     } finally {
       setIsExporting(false);
