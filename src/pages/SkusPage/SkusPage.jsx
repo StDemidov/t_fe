@@ -20,6 +20,8 @@ import { fetchTags } from '../../entities/tags';
 
 import '../../app/styles/global.css';
 import { SkusTable } from '../../widgets/skus-table';
+import { matchesAllColumnFilters } from '../../widgets/skus-table/columnFilters';
+import ExportModal from './ExportModal';
 import {
   SearchFilter,
   DateRangePicker,
@@ -103,13 +105,19 @@ const SkusPage = () => {
   const [filterStyle, setFilterStyle] = useState([]);
   const [filterAbcAll, setFilterAbcAll] = useState([]);
   const [filterAbcCat, setFilterAbcCat] = useState([]);
+  // Числовые фильтры колонок таблицы: { [columnId]: фильтр | null }.
+  const [columnFilters, setColumnFilters] = useState({});
+  // Фильтр по дате старта продаж (null — не задан): { startDate, endDate }.
+  const [filterStartSale, setFilterStartSale] = useState(null);
   const [sortValue, setSortValue] = useState('ebitdaDay:desc');
   // Счётчик сброса порядка/видимости колонок таблицы.
   const [resetColumns, setResetColumns] = useState(0);
   // Ключ перезапуска поисковой строки при сбросе фильтров.
   const [searchResetKey, setSearchResetKey] = useState(0);
-  // Флаг загрузки выгрузки Excel.
+  // Флаг загрузки выгрузки себестоимостей.
   const [isExporting, setIsExporting] = useState(false);
+  // Состояние модалки экспорта Excel: null | 'choose' | 'loading' | 'success'.
+  const [exportState, setExportState] = useState(null);
   // Открыто ли окно управления тегами.
   const [tagsModalOpen, setTagsModalOpen] = useState(false);
   // По умолчанию — данные за 2 недели по вчерашний день включительно.
@@ -203,6 +211,18 @@ const SkusPage = () => {
         !filterAbcCat.includes(String(item.abcAmongCategoryCurrent))
       )
         return false;
+      if (!matchesAllColumnFilters(item, columnFilters)) return false;
+      // Дата старта продаж внутри выбранного диапазона (включительно);
+      // артикулы без даты при активном фильтре отсекаются.
+      if (filterStartSale) {
+        const d = String(item.startOfRealizationDate || '');
+        if (
+          !d ||
+          d < filterStartSale.startDate ||
+          d > filterStartSale.endDate
+        )
+          return false;
+      }
       return true;
     });
   }, [
@@ -216,6 +236,8 @@ const SkusPage = () => {
     filterStyle,
     filterAbcAll,
     filterAbcCat,
+    columnFilters,
+    filterStartSale,
   ]);
 
   // Сортировка по одному выбранному полю.
@@ -296,7 +318,13 @@ const SkusPage = () => {
     setFilterStyle([]);
     setFilterAbcAll([]);
     setFilterAbcCat([]);
+    setColumnFilters({});
+    setFilterStartSale(null);
   };
+
+  // Применение/снятие числового фильтра колонки из её заголовка.
+  const handleColumnFilter = (columnId, filter) =>
+    setColumnFilters((prev) => ({ ...prev, [columnId]: filter }));
 
   // Хелперы выгрузки Excel.
   // Значение из словаря {дата: значение} за конкретную дату.
@@ -390,22 +418,11 @@ const SkusPage = () => {
   // Выгрузка данных в Excel. Для каждого артикула создаётся строка на каждую
   // дату диапазона; поля-словари {дата: значение} берут значение за дату,
   // остальные — дублируются. Поля с тегами выводятся списком через запятую.
-  // Если данные за текущий диапазон уже загружены в стор (их показывает
-  // таблица), повторный запрос к API не делается.
-  const handleExportExcel = async () => {
-    if (isExporting) return;
-    setIsExporting(true);
-    // Даём React отрисовать оверлей загрузки до начала тяжёлой сборки:
-    // без этого yield весь синхронный код ниже блокирует поток раньше,
-    // чем браузер успеет показать спиннер.
+  const exportSkusToExcel = async (list) => {
+    // Даём React отрисовать состояние «Формирование отчёта…» до начала
+    // тяжёлой сборки: без этого yield весь синхронный код ниже блокирует
+    // поток раньше, чем браузер успеет показать спиннер.
     await new Promise((resolve) => setTimeout(resolve, 0));
-    try {
-      const rangeKey = `${dateRange.startDate}::${dateRange.endDate}`;
-      const list =
-        loadedRangeKey === rangeKey && items.length > 0
-          ? items
-          : await fetchSkusMetricsRaw(dateRange);
-      if (!Array.isArray(list) || list.length === 0) return;
 
       // Порядок колонок выгрузки. value — функция (item, date) => ячейка.
       // daily: true — значение зависит от даты; остальные колонки считаются
@@ -529,8 +546,31 @@ const SkusPage = () => {
       const fname = `skus_metrics_${dateRange.startDate}_${dateRange.endDate}.xlsx`;
       // compression: включает DEFLATE внутри xlsx — файл в разы меньше.
       XLSX.writeFile(book, fname, { compression: true });
-    } finally {
-      setIsExporting(false);
+  };
+
+  // Выбор в модалке экспорта: все данные или отфильтрованные артикулы.
+  // «Все данные» берём из стора, если диапазон совпадает (их показывает
+  // таблица) — повторный запрос к API не нужен.
+  const handleExportChoice = async (scope) => {
+    setExportState('loading');
+    try {
+      const rangeKey = `${dateRange.startDate}::${dateRange.endDate}`;
+      const list =
+        scope === 'filtered'
+          ? filteredItems
+          : loadedRangeKey === rangeKey && items.length > 0
+          ? items
+          : await fetchSkusMetricsRaw(dateRange);
+      if (!Array.isArray(list) || list.length === 0) {
+        setExportState(null);
+        return;
+      }
+      await exportSkusToExcel(list);
+      setExportState('success');
+      // Через полторы секунды закрываем модалку и возвращаем на начальный экран.
+      setTimeout(() => setExportState(null), 1500);
+    } catch {
+      setExportState(null);
     }
   };
 
@@ -591,6 +631,45 @@ const SkusPage = () => {
     <div className={`page ${styles.root}`}>
       <header className="pageHeader">
         <h1 className="pageTitle">Товары</h1>
+        <div className={styles.headerActions}>
+          {user?.permissions?.is_admin === true ||
+          user?.permissions?.tags_create === true ? (
+            <button
+              type="button"
+              className={styles.headerBtn}
+              onClick={() => setTagsModalOpen(true)}
+              disabled={isLoading}
+            >
+              <FaTag className={styles.headerBtnIcon} />
+              Управление тегами
+            </button>
+          ) : null}
+          <button
+            type="button"
+            className={styles.headerBtn}
+            onClick={() => setExportState('choose')}
+            disabled={isLoading || exportState !== null}
+          >
+            <FaFileExcel className={styles.headerBtnIcon} />
+            Экспорт
+          </button>
+          <button
+            type="button"
+            className={styles.headerBtn}
+            onClick={handleExportSelfprices}
+            disabled={isExporting || isLoading}
+          >
+            <FaRubleSign className={styles.headerBtnIcon} />
+            Себестоимости
+          </button>
+          <DateRangePicker
+            value={dateRange}
+            onChange={setDateRange}
+            minDate="2024-07-01"
+            maxDate={getDefaultEndDate()}
+            disabled={isLoading}
+          />
+        </div>
       </header>
 
       {isLoading ? (
@@ -629,134 +708,92 @@ const SkusPage = () => {
       ) : (
         <div className={styles.content}>
           <div className={styles.filtersRow}>
-            <div className={styles.actionsButtons}>
-              <button
-                type="button"
-                className={styles.refreshColsBtn}
-                title="Вернуть скрытые колонки и сбросить порядок"
-                onClick={() => setResetColumns((n) => n + 1)}
-              >
-                <IoMdRefreshCircle />
-              </button>
-              <button
-                type="button"
-                className={styles.excelBtn}
-                title="Выгрузить данные в Excel"
-                onClick={handleExportExcel}
-                disabled={isExporting || isLoading}
-              >
-                <FaFileExcel />
-              </button>
-              <button
-                type="button"
-                className={styles.selfpriceBtn}
-                title="Выгрузить себестоимости"
-                onClick={handleExportSelfprices}
-                disabled={isExporting || isLoading}
-              >
-                <FaRubleSign />
-              </button>
-              <button
-                type="button"
-                className={styles.resetFiltersBtn}
-                title="Сбросить все фильтры"
-                onClick={handleResetFilters}
-              >
-                <MdFilterAltOff />
-              </button>
-              {user?.permissions?.is_admin === true ||
-              user?.permissions?.tags_create === true ? (
+            {/* Левая часть — кнопки действий и фильтры; при нехватке
+                места скроллится по горизонтали. */}
+            <div className={styles.filtersLeft}>
+              <div className={styles.actionsButtons}>
                 <button
                   type="button"
-                  className={styles.tagsBtn}
-                  title="Управление тегами"              onClick={() => setTagsModalOpen(true)}
-                  disabled={isLoading}
+                  className={styles.refreshColsBtn}
+                  title="Вернуть скрытые колонки и сбросить порядок"
+                  onClick={() => setResetColumns((n) => n + 1)}
                 >
-                  <FaTag />
+                  <IoMdRefreshCircle />
                 </button>
-              ) : null}
+                <button
+                  type="button"
+                  className={styles.resetFiltersBtn}
+                  title="Сбросить все фильтры"
+                  onClick={handleResetFilters}
+                >
+                  <MdFilterAltOff />
+                </button>
+              </div>
+              <TagsManagerModal
+                open={tagsModalOpen}
+                onClose={() => setTagsModalOpen(false)}
+                onTagsRemoved={handleTagsRemoved}
+                skuList={items.map((it) => String(it.sku))}
+              />
+              <SearchFilter
+                key={searchResetKey}
+                placeholder="Поиск по артикулу…"
+                onSearch={setSearchQuery}
+                disabled={isLoading}
+              />
+              <DateRangePicker
+                value={filterStartSale}
+                onChange={setFilterStartSale}
+                onClear={() => setFilterStartSale(null)}
+                placeholder="Старт продаж"
+                disabled={isLoading}
+              />
+              <DropdownFilter
+                title="Категория"
+                options={categoryOptions}
+                selected={filterCategory}
+                onApply={setFilterCategory}
+                disabled={isLoading}
+              />
+              <DropdownFilter
+                title="Лекало"
+                options={patternOptions}
+                selected={filterPattern}
+                onApply={setFilterPattern}
+                disabled={isLoading}
+              />
+              <DropdownFilter
+                title="Стиль"
+                options={styleOptions}
+                selected={filterStyle}
+                onApply={setFilterStyle}
+                disabled={isLoading}
+              />
+              <DropdownFilter
+                title="ABC (бренд)"
+                options={abcAllOptions}
+                selected={filterAbcAll}
+                onApply={setFilterAbcAll}
+                disabled={isLoading}
+              />
+              <DropdownFilter
+                title="ABC (кат.)"
+                options={abcCatOptions}
+                selected={filterAbcCat}
+                onApply={setFilterAbcCat}
+                disabled={isLoading}
+              />
             </div>
-            <TagsManagerModal
-              open={tagsModalOpen}
-              onClose={() => setTagsModalOpen(false)}
-              onTagsRemoved={handleTagsRemoved}
-              skuList={items.map((it) => String(it.sku))}
-            />
-            <DateRangePicker
-              value={dateRange}
-              onChange={setDateRange}
-              minDate="2024-07-01"
-              maxDate={getDefaultEndDate()}
-              disabled={isLoading}
-            />
-            <SearchFilter
-              key={searchResetKey}
-              placeholder="Поиск по артикулу…"
-              onSearch={setSearchQuery}
-              disabled={isLoading}
-            />
-            <SortSelect
-              options={SORT_OPTIONS}
-              value={sortValue}
-              onChange={setSortValue}
-              disabled={isLoading}
-            />
-            <DropdownFilter
-              title="Теги"
-              options={mainTagOptions}
-              selected={filterMainTags}
-              onApply={setFilterMainTags}
-              disabled={isLoading}
-            />
-            <DropdownFilter
-              title="Теги (ткань)"
-              options={clothTagOptions}
-              selected={filterClothTags}
-              onApply={setFilterClothTags}
-              disabled={isLoading}
-            />
-            <DropdownFilter
-              title="Теги (доп)"
-              options={otherTagOptions}
-              selected={filterOtherTags}
-              onApply={setFilterOtherTags}
-              disabled={isLoading}
-            />
-            <DropdownFilter
-              title="Категория"
-              options={categoryOptions}
-              selected={filterCategory}
-              onApply={setFilterCategory}
-              disabled={isLoading}
-            />
-            <DropdownFilter
-              title="Лекало"
-              options={patternOptions}
-              selected={filterPattern}
-              onApply={setFilterPattern}
-              disabled={isLoading}
-            />
-            <DropdownFilter
-              title="Стиль"
-              options={styleOptions}
-              selected={filterStyle}
-              onApply={setFilterStyle}
-              disabled={isLoading}
-            />
-            <DropdownFilter
-              title="ABC (бренд)"
-              options={abcAllOptions}
-              selected={filterAbcAll}
-              onApply={setFilterAbcAll}
-              disabled={isLoading}
-            />
-            <DropdownFilter
-              title="ABC (кат.)"
-              options={abcCatOptions}
-              selected={filterAbcCat}
-              onApply={setFilterAbcCat}
-              disabled={isLoading}
-            />
+            {/* Правая часть — сортировки, прижаты к правому краю
+                страницы (под календарём). */}
+            <div className={styles.filtersRight}>
+              <SortSelect
+                options={SORT_OPTIONS}
+                value={sortValue}
+                onChange={setSortValue}
+                disabled={isLoading}
+              />
+            </div>
           </div>
 
           <div className={styles.tableArea}>
@@ -768,7 +805,31 @@ const SkusPage = () => {
               onPatternFilter={handlePatternFilter}
               onAbcAllFilter={handleAbcFilter('abcAmongAllCurrent')}
               onAbcCategoryFilter={handleAbcFilter('abcAmongCategoryCurrent')}
+              columnFilters={columnFilters}
+              onColumnFilter={handleColumnFilter}
+              tagsFilters={{
+                tags: {
+                  options: mainTagOptions,
+                  selected: filterMainTags,
+                  onApply: setFilterMainTags,
+                },
+                tagsCloth: {
+                  options: clothTagOptions,
+                  selected: filterClothTags,
+                  onApply: setFilterClothTags,
+                },
+                tagsAdditional: {
+                  options: otherTagOptions,
+                  selected: filterOtherTags,
+                  onApply: setFilterOtherTags,
+                },
+              }}
               resetTrigger={resetColumns}
+            />
+            <ExportModal
+              state={exportState}
+              onClose={() => setExportState(null)}
+              onExport={handleExportChoice}
             />
             {isExporting && (
               <div className={styles.exportOverlay}>

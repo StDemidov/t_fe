@@ -1,0 +1,186 @@
+.root {
+  display: inline-flex;
+  flex-shrink: 0;
+}
+
+/* Кнопка фильтра — в стиле крестика скрытия колонки. */
+.trigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--color-neutral-500);
+  font-size: 16px;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: color 0.15s ease, opacity 0.15s ease;
+}
+
+.trigger:hover {
+  color: var(--color-main-500);
+  opacity: 1;
+}
+
+/* Активный фильтр — подсвеченная иконка. */
+.triggerActive {
+  color: var(--color-main-500);
+  opacity: 1;
+}
+
+.panel {
+  position: fixed;
+  z-index: 1000;
+  background: var(--color-neutral-50);
+  border: 1px solid var(--color-neutral-300);
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  opacity: 0;
+  transform: translateY(-6px) scale(0.98);
+  transform-origin: top left;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.15s ease, transform 0.15s ease,
+    visibility 0s linear 0.15s;
+}
+
+.panelOpen {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  visibility: visible;
+  pointer-events: auto;
+  transition: opacity 0.15s ease, transform 0.15s ease;
+}
+
+.search {
+  width: 100%;
+  box-sizing: border-box;
+  height: 30px;
+  padding: 0 8px;
+  border: 1px solid var(--color-neutral-300);
+  border-radius: 6px;
+  background: #fff;
+  font-size: 13px;
+  color: var(--color-neutral-900);
+  outline: none;
+}
+
+.search:focus {
+  border-color: var(--color-main-500);
+}
+
+.list {
+  max-height: 260px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.empty {
+  padding: 12px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--color-neutral-500);
+}
+
+.option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 6px 8px;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  font-size: 13px;
+  color: var(--color-neutral-900);
+  text-align: left;
+  cursor: pointer;
+}
+
+.option:hover {
+  background: var(--color-main-100);
+}
+
+.optionSelected {
+  background: var(--color-main-100);
+}
+
+.checkbox {
+  flex-shrink: 0;
+  width: 14px;
+  height: 14px;
+  border: 1.5px solid var(--color-neutral-400);
+  border-radius: 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+.checkboxOn {
+  background: var(--color-main-500);
+  border-color: var(--color-main-500);
+}
+
+.checkboxOn::after {
+  content: '';
+  width: 6px;
+  height: 3px;
+  border-left: 2px solid #fff;
+  border-bottom: 2px solid #fff;
+  transform: rotate(-45deg) translateY(-1px);
+}
+
+.optionLabel {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.resetButton,
+.applyButton {
+  font-family: 'Garet Book', sans-serif;
+  flex: 1;
+  height: 30px;
+  border-radius: 6px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.resetButton {
+  background: var(--color-neutral-100);
+  border: 1px solid var(--color-neutral-300);
+  color: var(--color-neutral-700);
+}
+
+.resetButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.applyButton {
+  background: var(--color-main-500);
+  border: 1px solid var(--color-main-500);
+  color: #fff;
+}
+
+.applyButton:hover {
+  background: var(--color-main-600);
+}

@@ -8,13 +8,17 @@ import {
 } from 'react';
 import { MdDragIndicator, MdOutlineUpdate } from 'react-icons/md';
 import { IoMdCloseCircle } from 'react-icons/io';
+import { FaRegSadCry } from 'react-icons/fa';
 import LazyLoad from 'react-lazyload';
 
 import { getVisibleColumns, sumDaily, lastDaily } from './columns';
 import { BarChart, LineChart, SignedLineChart, StackedBarChart, StepLineChart } from '../../shared/ui';
 import ArticleCell from './ArticleCell';
+import ColumnFilter from './ColumnFilter';
+import { COLUMN_FILTERS } from './columnFilters';
 import SelfPriceCell from './SelfPriceCell';
 import TagsCell from './TagsCell';
+import TagsFilter from './TagsFilter';
 import styles from './SkusTable.module.css';
 
 /** Варианты количества строк на странице. */
@@ -101,7 +105,7 @@ const LazyChart = ({ height, children }) => {
  * columnOrder (массив ID) и hiddenColumns (Set). resetTrigger сбрасывает
  * всё к исходному порядку.
  */
-const SkusTable = ({ items, footerItems = [], onTagFilter, onCategoryFilter, onPatternFilter, onAbcAllFilter, onAbcCategoryFilter, resetTrigger = 0 }) => {
+const SkusTable = ({ items, footerItems = [], onTagFilter, onCategoryFilter, onPatternFilter, onAbcAllFilter, onAbcCategoryFilter, columnFilters, onColumnFilter, tagsFilters, resetTrigger = 0 }) => {
   const allColumns = useMemo(() => getVisibleColumns(), []);
   const defaultOrder = useMemo(() => allColumns.map((c) => c.id), [allColumns]);
 
@@ -672,6 +676,20 @@ const footerCellClass = (column) =>
             </span>
           )}
           <HeaderLabel>{column.label}</HeaderLabel>
+          {tagsFilters?.[column.id] && (
+            <TagsFilter
+              options={tagsFilters[column.id].options}
+              selected={tagsFilters[column.id].selected}
+              onApply={tagsFilters[column.id].onApply}
+            />
+          )}
+          {COLUMN_FILTERS[column.id] && (
+            <ColumnFilter
+              sections={COLUMN_FILTERS[column.id]}
+              value={columnFilters?.[column.id] ?? null}
+              onApply={(filter) => onColumnFilter?.(column.id, filter)}
+            />
+          )}
           {!isArticle && (
             <button
               type="button"
@@ -852,13 +870,24 @@ const footerCellClass = (column) =>
           {/* Шапка: закрепляется сверху внутри скролл-контейнера. */}
           <div className={styles.headerRow}>{renderHeaderCells()}</div>
 
-          {/* Тело: строки, каждая — флекс-ряд всех колонок. */}
+          {/* Тело: строки, каждая — флекс-ряд всех колонок. Пустая выдача —
+              центрированная заглушка на всю высоту таблицы. */}
           <div className={styles.body}>
-            {pageItems.map((item, index) => (
-              <div key={item.sku ?? index} className={styles.row}>
-                {renderBodyCells(item)}
+            {pageItems.length === 0 ? (
+              <div className={styles.emptyState}>
+                <FaRegSadCry className={styles.emptyIcon} />
+                <span>
+                  Ничего не удалось найти в соответствии с заданными
+                  критериями
+                </span>
               </div>
-            ))}
+            ) : (
+              pageItems.map((item, index) => (
+                <div key={item.sku ?? index} className={styles.row}>
+                  {renderBodyCells(item)}
+                </div>
+              ))
+            )}
           </div>
 
           {/* Футер: закрепляется снизу внутри скролл-контейнера. */}

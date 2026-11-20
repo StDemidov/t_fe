@@ -78,6 +78,10 @@ const PRESETS = [
  * @param {boolean} [props.single=false] — выбрать одну дату вместо диапазона
  * @param {boolean} [props.iconOnly=false] — показывать только иконку календаря
  * @param {boolean} [props.disabled=false]
+ * @param {string} [props.placeholder='Выбрать даты'] — текст кнопки, когда
+ *   даты не выбраны (для режима фильтра)
+ * @param {() => void} [props.onClear] — если передан, в календаре появляется
+ *   кнопка «Сброс» (снять выбор дат, напр. для фильтра)
  */
 const DateRangePicker = ({
   value,
@@ -87,6 +91,8 @@ const DateRangePicker = ({
   single = false,
   iconOnly = false,
   disabled = false,
+  placeholder = 'Выбрать даты',
+  onClear,
 }) => {
   const { startDate: initialStart = '', endDate: initialEnd = '' } = value || {};
   const [open, setOpen] = useState(false);
@@ -104,6 +110,18 @@ const DateRangePicker = ({
     setDraftStart(initialStart);
     setDraftEnd(initialEnd);
   }, [initialStart, initialEnd]);
+
+  // После открытия зажимаем позицию выпадашки в пределы вьюпорта:
+  // кнопка у правого края экрана не должна уводить календарь за край.
+  useEffect(() => {
+    if (!open || !popoverRef.current) return;
+    const rect = triggerRef.current?.getBoundingClientRect();
+    if (!rect) return;
+    const width = popoverRef.current.offsetWidth;
+    const margin = 8;
+    const left = Math.min(rect.left, window.innerWidth - width - margin);
+    setPos({ top: rect.bottom + 6, left: Math.max(left, margin) });
+  }, [open]);
 
   useEffect(() => {
     if (!open) return;
@@ -206,6 +224,15 @@ const DateRangePicker = ({
     setOpen(false);
   };
 
+  // Сброс выбора (режим фильтра): чистим черновик и сообщаем родителю.
+  const handleClear = () => {
+    setDraftStart('');
+    setDraftEnd('');
+    setPickingStart(true);
+    setOpen(false);
+    onClear?.();
+  };
+
   const monthDays = buildMonthCells(viewMonth);
 
   const popover = open ? (
@@ -281,13 +308,25 @@ const DateRangePicker = ({
             </div>
 
             <div className={styles.actions}>
-              <button
-                type="button"
-                className={styles.closeButton}
-                onClick={handleClose}
-              >
-                Закрыть
-              </button>
+              {onClear ? (
+                // В режиме фильтра (есть onClear) «Закрыть» не нужна —
+                // календарь закрывается кликом вне и по Escape.
+                <button
+                  type="button"
+                  className={styles.closeButton}
+                  onClick={handleClear}
+                >
+                  Сброс
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  className={styles.closeButton}
+                  onClick={handleClose}
+                >
+                  Закрыть
+                </button>
+              )}
               <button
                 type="button"
                 className={styles.applyButton}
@@ -345,7 +384,7 @@ const DateRangePicker = ({
               ? initialStart === initialEnd
                 ? fmtForButton(initialEnd)
                 : `${fmtForButton(initialStart)} — ${fmtForButton(initialEnd)}`
-              : 'Выбрать даты'}
+              : placeholder}
           </span>
         )}
       </button>
